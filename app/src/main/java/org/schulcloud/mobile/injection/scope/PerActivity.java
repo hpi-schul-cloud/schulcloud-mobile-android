@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.injection;
+package org.schulcloud.mobile.injection.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

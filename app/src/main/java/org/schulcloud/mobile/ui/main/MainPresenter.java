@@ -4,16 +4,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import timber.log.Timber;
 import org.schulcloud.mobile.data.DataManager;
-import org.schulcloud.mobile.data.model.Ribot;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 @ConfigPersistent
 public class MainPresenter extends BasePresenter<MainMvpView> {
@@ -37,29 +36,28 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
-    public void loadRibots() {
+    public void loadUsers() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getRibots()
+        mSubscription = mDataManager.getUsers()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<Ribot>>() {
+                .subscribe(new Subscriber<List<User>>() {
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e(e, "There was an error loading the ribots.");
+                        Timber.e(e, "There was an error loading the users.");
                         getMvpView().showError();
                     }
 
                     @Override
-                    public void onNext(List<Ribot> ribots) {
-                        if (ribots.isEmpty()) {
-                            getMvpView().showRibotsEmpty();
+                    public void onNext(List<User> users) {
+                        if (users.isEmpty()) {
+                            getMvpView().showUsersEmpty();
                         } else {
-                            getMvpView().showRibots(ribots);
+                            getMvpView().showUsers(users);
                         }
                     }
                 });

@@ -9,15 +9,14 @@ import android.os.IBinder;
 
 import javax.inject.Inject;
 
+import org.schulcloud.mobile.BoilerplateApplication;
+import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.util.AndroidComponentUtil;
+import org.schulcloud.mobile.util.NetworkUtil;
 import rx.Observer;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
-import org.schulcloud.mobile.BoilerplateApplication;
-import org.schulcloud.mobile.data.model.Ribot;
-import org.schulcloud.mobile.util.AndroidComponentUtil;
-import org.schulcloud.mobile.util.NetworkUtil;
-import org.schulcloud.mobile.util.RxUtil;
 
 public class SyncService extends Service {
 
@@ -49,10 +48,10 @@ public class SyncService extends Service {
             return START_NOT_STICKY;
         }
 
-        RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncRibots()
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
+        mSubscription = mDataManager.syncUsers()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Ribot>() {
+                .subscribe(new Observer<User>() {
                     @Override
                     public void onCompleted() {
                         Timber.i("Synced successfully!");
@@ -63,11 +62,10 @@ public class SyncService extends Service {
                     public void onError(Throwable e) {
                         Timber.w(e, "Error syncing.");
                         stopSelf(startId);
-
                     }
 
                     @Override
-                    public void onNext(Ribot ribot) {
+                    public void onNext(User user) {
                     }
                 });
 

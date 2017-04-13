@@ -1,70 +1,84 @@
 package org.schulcloud.mobile.data.local;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
-
 import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import org.schulcloud.mobile.data.model.User;
+import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import org.schulcloud.mobile.data.model.Ribot;
+import timber.log.Timber;
 
 @Singleton
 public class DatabaseHelper {
 
-    private final BriteDatabase mDb;
+    private final Provider<Realm> mRealmProvider;
 
     @Inject
-    public DatabaseHelper(DbOpenHelper dbOpenHelper) {
-        SqlBrite.Builder briteBuilder = new SqlBrite.Builder();
-        mDb = briteBuilder.build().wrapDatabaseHelper(dbOpenHelper, Schedulers.immediate());
+    DatabaseHelper(Provider<Realm> realmProvider) {
+        mRealmProvider = realmProvider;
     }
 
-    public BriteDatabase getBriteDb() {
-        return mDb;
-    }
-
-    public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
-        return Observable.create(new Observable.OnSubscribe<Ribot>() {
+    public Observable<User> setUsers(final Collection<User> newUsers) {
+        return Observable.create(new Observable.OnSubscribe<User>() {
             @Override
-            public void call(Subscriber<? super Ribot> subscriber) {
+            public void call(Subscriber<? super User> subscriber) {
                 if (subscriber.isUnsubscribed()) return;
-                BriteDatabase.Transaction transaction = mDb.newTransaction();
+                Realm realm = null;
+
                 try {
-                    mDb.delete(Db.RibotProfileTable.TABLE_NAME, null);
-                    for (Ribot ribot : newRibots) {
-                        long result = mDb.insert(Db.RibotProfileTable.TABLE_NAME,
-                                Db.RibotProfileTable.toContentValues(ribot.profile()),
-                                SQLiteDatabase.CONFLICT_REPLACE);
-                        if (result >= 0) subscriber.onNext(ribot);
-                    }
-                    transaction.markSuccessful();
-                    subscriber.onCompleted();
+                    realm = mRealmProvider.get();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.copyToRealmOrUpdate(newUsers);
+                        }
+                    });
+                } catch (Exception e) {
+                    Timber.e(e, "There was an error while adding in Realm.");
+                    subscriber.onError(e);
                 } finally {
-                    transaction.end();
+                    if (realm != null) {
+                        realm.close();
+                    }
                 }
             }
         });
     }
 
-    public Observable<List<Ribot>> getRibots() {
-        return mDb.createQuery(Db.RibotProfileTable.TABLE_NAME,
-                "SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME)
-                .mapToList(new Func1<Cursor, Ribot>() {
+    public Observable<List<User>> getUsers() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(User.class).findAllAsync().asObservable()
+                .filter(new Func1<RealmResults<User>, Boolean>() {
                     @Override
-                    public Ribot call(Cursor cursor) {
-                        return Ribot.create(Db.RibotProfileTable.parseCursor(cursor));
+                    public Boolean call(RealmResults<User> users) {
+                        return users.isLoaded();
+                    }
+                })
+                .map(new Func1<RealmResults<User>, List<User>>() {
+                    @Override
+                    public List<User> call(RealmResults<User> users) {
+                        return realm.copyFromRealm(users);
                     }
                 });
     }
 
+    /*public Observable<List<User>> getUsers() {
+        final Realm realm = mRealmProvider.get();
+        RealmResults<User> realmUsers = realm.where(User.class).findAll();
+
+        realm.beginTransaction();
+        List<User> users = realm.copyFromRealm(realmUsers);
+        realm.commitTransaction();
+
+        realm.close();
+
+        return Observable.just(users);
+    }*/
 }

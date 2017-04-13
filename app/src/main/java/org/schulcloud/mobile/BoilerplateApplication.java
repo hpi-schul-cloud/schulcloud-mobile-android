@@ -5,11 +5,11 @@ import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 
-import io.fabric.sdk.android.Fabric;
-import timber.log.Timber;
 import org.schulcloud.mobile.injection.component.ApplicationComponent;
 import org.schulcloud.mobile.injection.component.DaggerApplicationComponent;
 import org.schulcloud.mobile.injection.module.ApplicationModule;
+import io.fabric.sdk.android.Fabric;
+import timber.log.Timber;
 
 public class BoilerplateApplication extends Application  {
 

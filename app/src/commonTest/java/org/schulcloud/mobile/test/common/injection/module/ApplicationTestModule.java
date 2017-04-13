@@ -5,11 +5,12 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
+import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.remote.RestService;
+import org.schulcloud.mobile.injection.ApplicationContext;
 import dagger.Module;
 import dagger.Provides;
-import org.schulcloud.mobile.data.DataManager;
-import org.schulcloud.mobile.data.remote.RibotsService;
-import org.schulcloud.mobile.injection.ApplicationContext;
+import io.realm.Realm;
 
 import static org.mockito.Mockito.mock;
 
@@ -37,6 +38,11 @@ public class ApplicationTestModule {
         return mApplication;
     }
 
+    @Provides
+    Realm provideRealm() {
+        return Realm.getDefaultInstance();
+    }
+
     /************* MOCKS *************/
 
     @Provides
@@ -47,8 +53,8 @@ public class ApplicationTestModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return mock(RibotsService.class);
+    RestService provideRestService() {
+        return mock(RestService.class);
     }
 
 }

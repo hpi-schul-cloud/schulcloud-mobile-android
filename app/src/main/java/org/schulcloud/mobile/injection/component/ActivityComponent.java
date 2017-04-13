@@ -1,9 +1,9 @@
 package org.schulcloud.mobile.injection.component;
 
-import dagger.Subcomponent;
-import org.schulcloud.mobile.injection.PerActivity;
+import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import dagger.Subcomponent;
 
 /**
  * This component inject dependencies to all Activities across the application
@@ -13,5 +13,4 @@ import org.schulcloud.mobile.ui.main.MainActivity;
 public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);
-
 }

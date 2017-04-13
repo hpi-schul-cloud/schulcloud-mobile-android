@@ -12,21 +12,21 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.SyncService;
-import org.schulcloud.mobile.data.model.Ribot;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.DialogFactory;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "be.neodigi.androidboilerplate.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject MainPresenter mMainPresenter;
-    @Inject RibotsAdapter mRibotsAdapter;
+    @Inject UsersAdapter mUsersAdapter;
 
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 
@@ -48,10 +48,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mRecyclerView.setAdapter(mRibotsAdapter);
+        mRecyclerView.setAdapter(mUsersAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
-        mMainPresenter.loadRibots();
+        mMainPresenter.loadUsers();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(SyncService.getStartIntent(this));
@@ -60,17 +60,16 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         mMainPresenter.detachView();
+        super.onDestroy();
     }
 
     /***** MVP View methods implementation *****/
 
     @Override
-    public void showRibots(List<Ribot> ribots) {
-        mRibotsAdapter.setRibots(ribots);
-        mRibotsAdapter.notifyDataSetChanged();
+    public void showUsers(List<User> users) {
+        mUsersAdapter.setUsers(users);
+        mUsersAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -80,9 +79,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void showRibotsEmpty() {
-        mRibotsAdapter.setRibots(Collections.<Ribot>emptyList());
-        mRibotsAdapter.notifyDataSetChanged();
+    public void showUsersEmpty() {
+        mUsersAdapter.setUsers(Collections.<User>emptyList());
+        mUsersAdapter.notifyDataSetChanged();
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }
 

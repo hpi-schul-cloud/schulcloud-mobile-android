@@ -20,8 +20,8 @@ public class UnlockDeviceAndroidJUnitRunner extends AndroidJUnitRunner {
 
     private PowerManager.WakeLock mWakeLock;
 
-    @SuppressLint("MissingPermission")
     @Override
+    @SuppressLint("MissingPermission")
     public void onStart() {
         Application application = (Application) getTargetContext().getApplicationContext();
         String simpleName = UnlockDeviceAndroidJUnitRunner.class.getSimpleName();
@@ -30,7 +30,7 @@ public class UnlockDeviceAndroidJUnitRunner extends AndroidJUnitRunner {
                 .newKeyguardLock(simpleName)
                 .disableKeyguard();
         // Wake up the screen.
-        PowerManager powerManager = ((PowerManager) application.getSystemService(POWER_SERVICE));
+        PowerManager powerManager = (PowerManager) application.getSystemService(POWER_SERVICE);
         mWakeLock = powerManager.newWakeLock(FULL_WAKE_LOCK | ACQUIRE_CAUSES_WAKEUP |
                 ON_AFTER_RELEASE, simpleName);
         mWakeLock.acquire();
@@ -39,7 +39,7 @@ public class UnlockDeviceAndroidJUnitRunner extends AndroidJUnitRunner {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mWakeLock.release();
+        super.onDestroy();
     }
 }

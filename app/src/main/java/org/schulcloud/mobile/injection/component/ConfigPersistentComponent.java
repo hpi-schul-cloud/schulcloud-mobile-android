@@ -1,9 +1,9 @@
 package org.schulcloud.mobile.injection.component;
 
-import dagger.Component;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import dagger.Component;
 
 /**
  * A dagger component that will live during the lifecycle of an Activity but it won't

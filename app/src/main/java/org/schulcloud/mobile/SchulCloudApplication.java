@@ -11,7 +11,7 @@ import org.schulcloud.mobile.injection.module.ApplicationModule;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
-public class BoilerplateApplication extends Application  {
+public class SchulCloudApplication extends Application  {
 
     ApplicationComponent mApplicationComponent;
 
@@ -25,8 +25,8 @@ public class BoilerplateApplication extends Application  {
         }
     }
 
-    public static BoilerplateApplication get(Context context) {
-        return (BoilerplateApplication) context.getApplicationContext();
+    public static SchulCloudApplication get(Context context) {
+        return (SchulCloudApplication) context.getApplicationContext();
     }
 
     public ApplicationComponent getComponent() {

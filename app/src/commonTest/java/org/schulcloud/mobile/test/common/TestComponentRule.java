@@ -6,7 +6,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-import org.schulcloud.mobile.BoilerplateApplication;
+import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.test.common.injection.component.DaggerTestComponent;
 import org.schulcloud.mobile.test.common.injection.component.TestComponent;
@@ -26,7 +26,7 @@ public class TestComponentRule implements TestRule {
 
     public TestComponentRule(Context context) {
         mContext = context;
-        BoilerplateApplication application = BoilerplateApplication.get(context);
+        SchulCloudApplication application = SchulCloudApplication.get(context);
         mTestComponent = DaggerTestComponent.builder()
                 .applicationTestModule(new ApplicationTestModule(application))
                 .build();
@@ -45,7 +45,7 @@ public class TestComponentRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                BoilerplateApplication application = BoilerplateApplication.get(mContext);
+                SchulCloudApplication application = SchulCloudApplication.get(mContext);
                 application.setComponent(mTestComponent);
                 base.evaluate();
                 application.setComponent(null);

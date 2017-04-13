@@ -10,6 +10,7 @@ import javax.inject.Singleton;
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.User;
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import rx.Observable;
 import rx.Subscriber;
@@ -90,6 +91,7 @@ public class DatabaseHelper {
                     subscriber.onError(e);
                 } finally {
                     if (realm != null) {
+                        subscriber.onCompleted();
                         realm.close();
                     }
                 }
@@ -97,21 +99,9 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<List<AccessToken>> getAccessToken() {
+    public Observable<AccessToken> getAccessToken() {
         final Realm realm = mRealmProvider.get();
-        return realm.where(AccessToken.class).findAllAsync().asObservable()
-                .filter(new Func1<RealmResults<AccessToken>, Boolean>() {
-                    @Override
-                    public Boolean call(RealmResults<AccessToken> accessTokens) {
-                        return accessTokens.isLoaded();
-                    }
-                })
-                .map(new Func1<RealmResults<AccessToken>, List<AccessToken>>() {
-                    @Override
-                    public List<AccessToken> call(RealmResults<AccessToken> accessTokens) {
-                        return realm.copyFromRealm(accessTokens);
-                    }
-                });
+        return realm.where(AccessToken.class).findFirstAsync().asObservable();
     }
 
     /*public Observable<List<User>> getUsers() {

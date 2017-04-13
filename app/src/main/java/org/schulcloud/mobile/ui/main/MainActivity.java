@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_ribots))
+        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_sign_in))
                 .show();
     }
 

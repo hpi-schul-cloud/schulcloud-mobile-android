@@ -47,7 +47,23 @@ public class DataManager {
         return mDatabaseHelper.getUsers().distinct();
     }
 
+    public Observable<AccessToken> getAccessToken() {
+        return mDatabaseHelper.getAccessToken().distinct();
+    }
+
     public Observable<AccessToken> signIn(String username, String password) {
-        return mDatabaseHelper.setAccessToken(mRestService.signIn(new Credentials(username, password)).toBlocking().first());
+        return mRestService.signIn(new Credentials(username, password))
+                .concatMap(new Func1<AccessToken, Observable<AccessToken>>() {
+                    @Override
+                    public Observable<AccessToken> call(AccessToken accessToken) {
+                        return mDatabaseHelper.setAccessToken(accessToken)
+                                .concatMap(new Func1<AccessToken, Observable<AccessToken>>() {
+                                    @Override
+                                    public Observable<AccessToken> call(AccessToken accessToken) {
+                                        return mDatabaseHelper.getAccessToken();
+                                    }
+                                });
+                    }
+                });
     }
 }

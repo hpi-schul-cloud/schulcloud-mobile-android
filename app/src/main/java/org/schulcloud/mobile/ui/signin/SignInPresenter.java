@@ -4,6 +4,7 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.main.MainMvpView;
 import org.schulcloud.mobile.util.RxUtil;
 
 import java.util.List;
@@ -24,10 +25,26 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
         mDataManager = dataManager;
     }
 
-    public void signIn() {
-        checkViewAttached();
+    @Override
+    public void attachView(SignInMvpView mvpView) {
+        super.attachView(mvpView);
+    }
 
-        mSubscription = mDataManager.signIn("schueler@schul-cloud.org", "schulcloud")
+    @Override
+    public void detachView() {
+        super.detachView();
+        if (mSubscription != null) mSubscription.unsubscribe();
+    }
+
+    public void signIn(String username, String password) {
+        checkViewAttached();
+        RxUtil.unsubscribe(mSubscription);
+
+        // todo: remove credentials
+        username = username.equals("") ? "schueler@schul-cloud.org" : username;
+        password = password.equals("") ? "schulcloud" : password;
+
+        mSubscription = mDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<AccessToken>() {
                     @Override

@@ -1,13 +1,10 @@
 package org.schulcloud.mobile.test.common;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.schulcloud.mobile.data.model.Name;
-import org.schulcloud.mobile.data.model.Profile;
-import org.schulcloud.mobile.data.model.Ribot;
+import org.schulcloud.mobile.data.model.User;
 
 /**
  * Factory class that makes instances of data models with random field values.
@@ -19,31 +16,20 @@ public class TestDataFactory {
         return UUID.randomUUID().toString();
     }
 
-    public static Ribot makeRibot(String uniqueSuffix) {
-        return Ribot.create(makeProfile(uniqueSuffix));
+    public static User makeUser(String uniqueSuffix) {
+        User u = new User();
+        u.setId(1);
+        u.setName(uniqueSuffix);
+        u.setEmail(uniqueSuffix);
+        u.setUsername(uniqueSuffix);
+        return u;
     }
 
-    public static List<Ribot> makeListRibots(int number) {
-        List<Ribot> ribots = new ArrayList<>();
+    public static List<User> makeListUsers(int number) {
+        List<User> users = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            ribots.add(makeRibot(String.valueOf(i)));
+            users.add(makeUser(String.valueOf(i)));
         }
-        return ribots;
+        return users;
     }
-
-    public static Profile makeProfile(String uniqueSuffix) {
-        return Profile.builder()
-                .setName(makeName(uniqueSuffix))
-                .setEmail("email" + uniqueSuffix + "@ribot.co.uk")
-                .setDateOfBirth(new Date())
-                .setHexColor("#0066FF")
-                .setAvatar("http://api.ribot.io/images/" + uniqueSuffix)
-                .setBio(randomUuid())
-                .build();
-    }
-
-    public static Name makeName(String uniqueSuffix) {
-        return Name.create("Name-" + uniqueSuffix, "Surname-" + uniqueSuffix);
-    }
-
 }

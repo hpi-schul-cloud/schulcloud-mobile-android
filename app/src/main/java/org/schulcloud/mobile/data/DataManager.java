@@ -5,24 +5,24 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
-import rx.functions.Func1;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.model.Ribot;
-import org.schulcloud.mobile.data.remote.RibotsService;
+import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.remote.RestService;
+import rx.Observable;
+import rx.functions.Func1;
 
 @Singleton
 public class DataManager {
 
-    private final RibotsService mRibotsService;
+    private final RestService mRestService;
     private final DatabaseHelper mDatabaseHelper;
     private final PreferencesHelper mPreferencesHelper;
 
     @Inject
-    public DataManager(RibotsService ribotsService, PreferencesHelper preferencesHelper,
+    public DataManager(RestService restService, PreferencesHelper preferencesHelper,
                        DatabaseHelper databaseHelper) {
-        mRibotsService = ribotsService;
+        mRestService = restService;
         mPreferencesHelper = preferencesHelper;
         mDatabaseHelper = databaseHelper;
     }
@@ -31,18 +31,18 @@ public class DataManager {
         return mPreferencesHelper;
     }
 
-    public Observable<Ribot> syncRibots() {
-        return mRibotsService.getRibots()
-                .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
+    public Observable<User> syncUsers() {
+        return mRestService.getUsers()
+                .concatMap(new Func1<List<User>, Observable<User>>() {
                     @Override
-                    public Observable<Ribot> call(List<Ribot> ribots) {
-                        return mDatabaseHelper.setRibots(ribots);
+                    public Observable<User> call(List<User> users) {
+                        return mDatabaseHelper.setUsers(users);
                     }
                 });
     }
 
-    public Observable<List<Ribot>> getRibots() {
-        return mDatabaseHelper.getRibots().distinct();
+    public Observable<List<User>> getUsers() {
+        return mDatabaseHelper.getUsers().distinct();
     }
 
 }

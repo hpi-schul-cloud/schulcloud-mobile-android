@@ -1,29 +1,23 @@
 package org.schulcloud.mobile.ui.base;
 
 import android.os.Bundle;
+import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import timber.log.Timber;
 import org.schulcloud.mobile.BoilerplateApplication;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
+import timber.log.Timber;
 
-/**
- * Abstract activity that every other Activity in this application must implement. It handles
- * creation of Dagger components and makes sure that instances of ConfigPersistentComponent survive
- * across configuration changes.
- */
 public class BaseActivity extends AppCompatActivity {
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
-    private static final Map<Long, ConfigPersistentComponent> sComponentsMap = new HashMap<>();
+    private static final LongSparseArray<ConfigPersistentComponent> sComponentsMap = new LongSparseArray<>();
 
     private ActivityComponent mActivityComponent;
     private long mActivityId;
@@ -37,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         mActivityId = savedInstanceState != null ?
                 savedInstanceState.getLong(KEY_ACTIVITY_ID) : NEXT_ID.getAndIncrement();
         ConfigPersistentComponent configPersistentComponent;
-        if (!sComponentsMap.containsKey(mActivityId)) {
+        if (null == sComponentsMap.get(mActivityId)) {
             Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
                     .applicationComponent(BoilerplateApplication.get(this).getComponent())
@@ -68,5 +62,4 @@ public class BaseActivity extends AppCompatActivity {
     public ActivityComponent activityComponent() {
         return mActivityComponent;
     }
-
 }

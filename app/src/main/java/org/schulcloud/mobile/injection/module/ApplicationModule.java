@@ -5,17 +5,18 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
+import org.schulcloud.mobile.injection.ApplicationContext;
 import dagger.Module;
 import dagger.Provides;
-import org.schulcloud.mobile.data.remote.RibotsService;
-import org.schulcloud.mobile.injection.ApplicationContext;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Provide application-level dependencies.
  */
 @Module
 public class ApplicationModule {
-    protected final Application mApplication;
+    private final Application mApplication;
 
     public ApplicationModule(Application application) {
         mApplication = application;
@@ -34,8 +35,15 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return RibotsService.Creator.newRibotsService();
+    RealmConfiguration provideRealmConfiguration(@ApplicationContext Context context) {
+        Realm.init(context);
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder();
+        builder.name("boilerplate.realm");
+        return builder.build();
     }
 
+    @Provides
+    Realm provideRealm(RealmConfiguration realmConfiguration) {
+        return Realm.getInstance(realmConfiguration);
+    }
 }

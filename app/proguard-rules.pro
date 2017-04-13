@@ -16,30 +16,15 @@
 #   public *;
 #}
 
-# ButterKnife rules
--keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
-
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
-
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
-
 # Retrofit rules
-# Platform calls Class.forName on types which do not exist on Android to determine platform.
--dontnote retrofit2.Platform
-# Platform used when running on RoboVM on iOS. Will not be used at runtime.
--dontnote retrofit2.Platform$IOS$MainThreadExecutor
-# Platform used when running on Java 8 VMs. Will not be used at runtime.
--dontwarn retrofit2.Platform$Java8
-# Retain generic type information for use by reflection by converters and adapters.
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 -keepattributes Signature
-# Retain declared checked exceptions for use by a Proxy instance.
 -keepattributes Exceptions
+
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
 
 # OkHttp rules
 -dontwarn okio.**
@@ -62,14 +47,19 @@
 -keep class sun.misc.Unsafe { *; }
 # TODO change to match your package model
 # Keep non static or private fields of models so Gson can find their names
--keepclassmembers class uk.co.ribot.androidboilerplate.data.model.** {
+-keepclassmembers class be.neodigi.androidboilerplate.data.model.** {
     !static !private <fields>;
 }
 # TODO change to match your Retrofit services (only if using inner models withing the service)
 # Some models used by gson are inner classes inside the retrofit service
--keepclassmembers class uk.co.ribot.androidboilerplate.data.remote.RibotsService$** {
+-keepclassmembers class be.neodigi.androidboilerplate.data.remote.RestService$** {
     !static !private <fields>;
 }
+
+# Parcel library
+-keep interface org.parceler.Parcel
+-keep @org.parceler.Parcel class * { *; }
+-keep class **$$Parcelable { *; }
 
 # Produces useful obfuscated stack traces
 # http://proguard.sourceforge.net/manual/examples.html#stacktrace

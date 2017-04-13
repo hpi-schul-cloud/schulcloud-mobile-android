@@ -3,7 +3,9 @@ package org.schulcloud.mobile.runner;
 import android.os.Bundle;
 import android.support.test.espresso.Espresso;
 
+import org.schulcloud.mobile.util.RxIdlingExecutionHook;
 import org.schulcloud.mobile.util.RxIdlingResource;
+import rx.plugins.RxJavaPlugins;
 
 /**
  * Runner that registers a Espresso Indling resource that handles waiting for
@@ -17,7 +19,8 @@ public class RxAndroidJUnitRunner extends UnlockDeviceAndroidJUnitRunner {
     public void onCreate(Bundle arguments) {
         super.onCreate(arguments);
         RxIdlingResource rxIdlingResource = new RxIdlingResource();
+        RxJavaPlugins.getInstance()
+                .registerObservableExecutionHook(new RxIdlingExecutionHook(rxIdlingResource));
         Espresso.registerIdlingResources(rxIdlingResource);
     }
-
 }

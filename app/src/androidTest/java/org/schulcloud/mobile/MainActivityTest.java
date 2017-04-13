@@ -14,11 +14,11 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import rx.Observable;
-import org.schulcloud.mobile.data.model.Ribot;
-import org.schulcloud.mobile.test.common.TestComponentRule;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.test.common.TestDataFactory;
+import org.schulcloud.mobile.test.common.TestComponentRule;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import rx.Observable;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -50,22 +50,22 @@ public class MainActivityTest {
     public final TestRule chain = RuleChain.outerRule(component).around(main);
 
     @Test
-    public void listOfRibotsShows() {
-        List<Ribot> testDataRibots = TestDataFactory.makeListRibots(20);
-        when(component.getMockDataManager().getRibots())
-                .thenReturn(Observable.just(testDataRibots));
+    public void listOfUsersShows() {
+        List<User> testDataUsers = TestDataFactory.makeListUsers(20);
+        when(component.getMockDataManager().getUsers())
+                .thenReturn(Observable.just(testDataUsers));
 
         main.launchActivity(null);
 
         int position = 0;
-        for (Ribot ribot : testDataRibots) {
+        for (User user : testDataUsers) {
             onView(withId(R.id.recycler_view))
                     .perform(RecyclerViewActions.scrollToPosition(position));
-            String name = String.format("%s %s", ribot.profile().name().first(),
-                    ribot.profile().name().last());
+            String name = String.format("%s %s", user.getUsername(),
+                    user.getName());
             onView(withText(name))
                     .check(matches(isDisplayed()));
-            onView(withText(ribot.profile().email()))
+            onView(withText(user.getEmail()))
                     .check(matches(isDisplayed()));
             position++;
         }

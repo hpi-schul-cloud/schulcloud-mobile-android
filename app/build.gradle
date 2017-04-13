@@ -49,14 +49,14 @@ android {
             ext.betaDistributionReleaseNotesFilePath =
                     file('../crashlytics_release_notes.txt').absolutePath
 
-            buildConfigField "String", "URL_ENDPOINT", "\"http://jsonplaceholder.typicode.com/\""
+            buildConfigField "String", "URL_ENDPOINT", "\"http://172.22.3.201:3030/\""
         }
 
         debug {
             versionNameSuffix " Debug"
             debuggable true
 
-            buildConfigField "String", "URL_ENDPOINT", "\"http://jsonplaceholder.typicode.com/\""
+            buildConfigField "String", "URL_ENDPOINT", "\"http://8d617684.ngrok.io/\""
         }
     }
 
@@ -114,9 +114,6 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
     compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP_VERSION"
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
         transitive = true;
     }
@@ -124,12 +121,11 @@ dependencies {
     compile "org.parceler:parceler-api:$PARCELER_VERSION"
     apt "org.parceler:parceler:$PARCELER_VERSION"
 
-    compile 'com.jakewharton.timber:timber:4.1.2'
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     apt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
-    compile  "com.google.dagger:dagger:$DAGGER_VERSION"
-    provided 'org.glassfish:javax.annotation:10.0-b28' //Required by Dagger2
+    compile "com.google.dagger:dagger:$DAGGER_VERSION"
+    //Required by Dagger2
     apt daggerCompiler
     testApt daggerCompiler
     androidTestApt daggerCompiler
@@ -153,7 +149,6 @@ dependencies {
     // Unit tests dependencies
     testCompile jUnit
     testCompile mockito
-    testCompile 'org.powermock:powermock-core:1.6.4'
     testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
     testCompile "org.powermock:powermock-module-junit4-rule:$POWERMOCK_VERSION"
     testCompile "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
@@ -161,11 +156,19 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-core:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-integration:$HAMCREST_VERSION"
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:24.2.1'
+    testCompile 'org.powermock:powermock-core:1.6.4'
     testCompile 'org.robolectric:robolectric:3.1'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 
 // Log out test results to console
-tasks.matching {it instanceof Test}.all {
+tasks.matching { it instanceof Test }.all {
     testLogging.events = ["failed", "passed", "skipped"]
 }
 

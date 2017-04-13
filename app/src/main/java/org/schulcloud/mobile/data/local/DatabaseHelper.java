@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.User;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -65,6 +66,50 @@ public class DatabaseHelper {
                     @Override
                     public List<User> call(RealmResults<User> users) {
                         return realm.copyFromRealm(users);
+                    }
+                });
+    }
+
+    public Observable<AccessToken> setAccessToken(final AccessToken newAccessToken) {
+        return Observable.create(new Observable.OnSubscribe<AccessToken>() {
+            @Override
+            public void call(Subscriber<? super AccessToken> subscriber) {
+                if (subscriber.isUnsubscribed()) return;
+                Realm realm = null;
+
+                try {
+                    realm = mRealmProvider.get();
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.copyToRealmOrUpdate(newAccessToken);
+                        }
+                    });
+                } catch (Exception e) {
+                    Timber.e(e, "There was an error while adding in Realm.");
+                    subscriber.onError(e);
+                } finally {
+                    if (realm != null) {
+                        realm.close();
+                    }
+                }
+            }
+        });
+    }
+
+    public Observable<List<AccessToken>> getAccessToken() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(AccessToken.class).findAllAsync().asObservable()
+                .filter(new Func1<RealmResults<AccessToken>, Boolean>() {
+                    @Override
+                    public Boolean call(RealmResults<AccessToken> accessTokens) {
+                        return accessTokens.isLoaded();
+                    }
+                })
+                .map(new Func1<RealmResults<AccessToken>, List<AccessToken>>() {
+                    @Override
+                    public List<AccessToken> call(RealmResults<AccessToken> accessTokens) {
+                        return realm.copyFromRealm(accessTokens);
                     }
                 });
     }

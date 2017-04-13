@@ -40,7 +40,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     public void onBindViewHolder(UserViewHolder holder, int position) {
         User user = mUsers.get(position);
         holder.nameTextView.setText(String.format("%s %s",
-                user.getUsername(), user.getName()));
+                user.getLastName(), user.getFirstName()));
         holder.emailTextView.setText(user.getEmail());
     }
 

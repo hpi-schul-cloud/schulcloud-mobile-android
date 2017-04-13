@@ -9,4 +9,5 @@
 
     <string name="empty_ribots">There aren\'t any users</string>
     <string name="error_loading_ribots">There was a problem loading the users</string>
+    <string name="title_activity_acitivty_sign_in">AcitivtySignIn</string>
 </resources>

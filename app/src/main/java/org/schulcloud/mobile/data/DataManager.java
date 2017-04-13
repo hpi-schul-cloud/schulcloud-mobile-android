@@ -7,6 +7,8 @@ import javax.inject.Singleton;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
+import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Credentials;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.remote.RestService;
 import rx.Observable;
@@ -45,4 +47,7 @@ public class DataManager {
         return mDatabaseHelper.getUsers().distinct();
     }
 
+    public Observable<AccessToken> signIn(String username, String password) {
+        return mDatabaseHelper.setAccessToken(mRestService.signIn(new Credentials(username, password)).toBlocking().first());
+    }
 }

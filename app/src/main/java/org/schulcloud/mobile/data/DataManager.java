@@ -7,6 +7,8 @@ import javax.inject.Singleton;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
+import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Credentials;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.remote.RestService;
 import rx.Observable;
@@ -45,4 +47,23 @@ public class DataManager {
         return mDatabaseHelper.getUsers().distinct();
     }
 
+    public Observable<AccessToken> getAccessToken() {
+        return mDatabaseHelper.getAccessToken().distinct();
+    }
+
+    public Observable<AccessToken> signIn(String username, String password) {
+        return mRestService.signIn(new Credentials(username, password))
+                .concatMap(new Func1<AccessToken, Observable<AccessToken>>() {
+                    @Override
+                    public Observable<AccessToken> call(AccessToken accessToken) {
+                        return mDatabaseHelper.setAccessToken(accessToken)
+                                .concatMap(new Func1<AccessToken, Observable<AccessToken>>() {
+                                    @Override
+                                    public Observable<AccessToken> call(AccessToken accessToken) {
+                                        return mDatabaseHelper.getAccessToken();
+                                    }
+                                });
+                    }
+                });
+    }
 }

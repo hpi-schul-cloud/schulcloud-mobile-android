@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.schulcloud.mobile" >
+    package="org.schulcloud.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="org.schulcloud.mobile.BoilerplateApplication"
+        android:name=".SchulCloudApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name="org.schulcloud.mobile.ui.main.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".ui.main.MainActivity"
+            android:label="@string/app_name">
         </activity>
 
-        <service android:name="org.schulcloud.mobile.data.SyncService"/>
+        <service android:name=".data.SyncService" />
 
         <receiver
-            android:name="org.schulcloud.mobile.data.SyncService$SyncOnConnectionAvailable"
+            android:name=".data.SyncService$SyncOnConnectionAvailable"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".ui.signin.SignInActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

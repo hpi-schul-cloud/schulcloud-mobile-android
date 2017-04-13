@@ -9,7 +9,7 @@ import android.os.IBinder;
 
 import javax.inject.Inject;
 
-import org.schulcloud.mobile.BoilerplateApplication;
+import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
@@ -34,7 +34,7 @@ public class SyncService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        BoilerplateApplication.get(this).getComponent().inject(this);
+        SchulCloudApplication.get(this).getComponent().inject(this);
     }
 
     @Override

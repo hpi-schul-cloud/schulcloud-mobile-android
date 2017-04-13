@@ -12,35 +12,35 @@ import io.realm.annotations.PrimaryKey;
 public class User extends RealmObject {
 
     @PrimaryKey
-    public int id;
-    public String name;
-    public String username;
+    public String _id;
+    public String firstName;
+    public String lastName;
     public String email;
-    public String phone;
-    public String website;
+    public String schoolId;
+    public String displayName;
 
-    public int getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -51,20 +51,19 @@ public class User extends RealmObject {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getSchoolId() {
+        return schoolId;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
-

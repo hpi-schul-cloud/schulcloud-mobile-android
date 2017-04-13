@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.schulcloud.mobile.BoilerplateApplication;
+import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
@@ -34,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
         if (null == sComponentsMap.get(mActivityId)) {
             Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
-                    .applicationComponent(BoilerplateApplication.get(this).getComponent())
+                    .applicationComponent(SchulCloudApplication.get(this).getComponent())
                     .build();
             sComponentsMap.put(mActivityId, configPersistentComponent);
         } else {

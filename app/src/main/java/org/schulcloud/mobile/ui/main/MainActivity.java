@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements MainMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "be.neodigi.androidboilerplate.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject MainPresenter mMainPresenter;
     @Inject UsersAdapter mUsersAdapter;
@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Override
     public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_ribots))
+        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_sign_in))
                 .show();
     }
 

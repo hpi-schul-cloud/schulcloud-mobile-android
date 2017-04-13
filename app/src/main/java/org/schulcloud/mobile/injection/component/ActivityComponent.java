@@ -3,6 +3,8 @@ package org.schulcloud.mobile.injection.component;
 import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import org.schulcloud.mobile.ui.signin.SignInActivity;
+
 import dagger.Subcomponent;
 
 /**
@@ -13,4 +15,6 @@ import dagger.Subcomponent;
 public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);
+
+    void inject(SignInActivity signInActivity);
 }

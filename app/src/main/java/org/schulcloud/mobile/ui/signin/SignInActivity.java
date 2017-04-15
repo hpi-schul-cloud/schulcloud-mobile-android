@@ -44,11 +44,8 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
         ButterKnife.bind(this);
 
         mSignInPresenter.attachView(this);
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSignInPresenter.signIn(username.getText().toString(), password.getText().toString());
-            }
+        btn_login.setOnClickListener(v -> {
+            mSignInPresenter.signIn(username.getText().toString(), password.getText().toString());
         });
     }
 

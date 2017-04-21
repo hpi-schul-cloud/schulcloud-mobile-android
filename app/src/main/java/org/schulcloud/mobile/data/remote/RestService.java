@@ -23,6 +23,6 @@ public interface RestService {
     Observable<AccessToken> signIn(@Body Credentials credentials);
 
     // todo: move Authorization-Header to somewhere better
-    @GET("fileStorage?storageContext={storageContext}")
+    @GET("fileStorage")
     Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("storageContext") String storageContext);
 }

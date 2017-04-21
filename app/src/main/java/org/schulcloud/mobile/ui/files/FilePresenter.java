@@ -42,20 +42,19 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     public void loadFiles() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        // todo: get correct storage context
-        mSubscription = mDataManager.getFiles("users/0000d213816abba584714c0a")
+        mSubscription = mDataManager.getFiles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         // onNext
                         files -> {
-                            System.out.println(files);
                             getMvpView().showFiles(files);
                         },
                         // onError
                         error -> {
                             Timber.e(error, "There was an error loading the files.");
                             getMvpView().showError();
-                        });
+                        },
+                        () -> {});
     }
 }
 

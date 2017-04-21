@@ -7,8 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.SyncService;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.util.DialogFactory;
@@ -60,9 +60,9 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         mFilePresenter.attachView(this);
         mFilePresenter.loadFiles();
 
-        /**if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-            startService(SyncService.getStartIntent(this));
-        }**/
+        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
+            startService(FileSyncService.getStartIntent(this));
+        }
     }
 
     @Override

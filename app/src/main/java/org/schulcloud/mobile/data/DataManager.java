@@ -35,6 +35,8 @@ public class DataManager {
         return mPreferencesHelper;
     }
 
+    /**** User ****/
+
     public Observable<User> syncUsers() {
         return mRestService.getUsers()
                 .concatMap(new Func1<List<User>, Observable<User>>() {
@@ -69,13 +71,24 @@ public class DataManager {
                 });
     }
 
-    public Observable<List<File>> getFiles(String storageContext) {
+    /**** Files ****/
+
+    public Observable<File> syncFiles(String storageContext) {
         // todo: get AccessToken from DB
         // todo: also fetch directories
         return mRestService.getFiles(
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJhY2NvdW50SWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjYWEiLCJ1c2VySWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjMGEiLCJpYXQiOjE0OTI3NjA2MDMsImV4cCI6MTQ5Mjg0NzAwMywiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiYW5vbnltb3VzIn0.tP3UlFYAptKQhKANJ2BU1ZvLO2OoTalnamV1HwYWEyE",
-                "users/0000d213816abba584714c0a")
-                .concatMap(filesResponse -> mDatabaseHelper.setFiles(filesResponse.files))
-                .concatMap(files -> mDatabaseHelper.getFiles().distinct());
+                storageContext)
+                .concatMap(new Func1<FilesResponse, Observable<File>>() {
+                    @Override
+                    public Observable<File> call(FilesResponse filesResponse) {
+                        return mDatabaseHelper.setFiles(filesResponse.files);
+                    }
+                });
     }
+
+    public Observable<List<File>> getFiles() {
+        return mDatabaseHelper.getFiles().distinct();
+    }
+
 }

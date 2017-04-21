@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.data;
+package org.schulcloud.mobile.data.sync;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -7,28 +7,34 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
 
-import javax.inject.Inject;
-
 import org.schulcloud.mobile.SchulCloudApplication;
+import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import rx.Observer;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class SyncService extends Service {
+public class FileSyncService extends Service {
 
-    @Inject DataManager mDataManager;
+    @Inject
+    DataManager mDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
-        return new Intent(context, SyncService.class);
+        return new Intent(context, FileSyncService.class);
     }
 
     public static boolean isRunning(Context context) {
-        return AndroidComponentUtil.isServiceRunning(context, SyncService.class);
+        return AndroidComponentUtil.isServiceRunning(context, FileSyncService.class);
     }
 
     @Override
@@ -49,23 +55,23 @@ public class SyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncUsers()
+        // todo: get storageContext from Intent
+        mSubscription = mDataManager.syncFiles("users/0000d213816abba584714c0a")
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<User>() {
+                .subscribe(new Observer<File>() {
                     @Override
                     public void onCompleted() {
-                        Timber.i("Synced successfully!");
-                        stopSelf(startId);
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.w(e, "Error syncing.");
-                        stopSelf(startId);
+
                     }
 
                     @Override
-                    public void onNext(User user) {
+                    public void onNext(File file) {
+
                     }
                 });
 

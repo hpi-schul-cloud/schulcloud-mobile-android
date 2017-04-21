@@ -79,7 +79,7 @@ public class DatabaseHelper {
         return realm.where(AccessToken.class).findFirstAsync().asObservable();
     }
 
-    public Observable<List<File>> setFiles(final Collection<File> files) {
+    public Observable<File> setFiles(final Collection<File> files) {
         return Observable.create(subscriber -> {
             if (subscriber.isUnsubscribed()) return;
             Realm realm = null;

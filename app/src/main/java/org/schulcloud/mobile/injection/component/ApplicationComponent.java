@@ -6,6 +6,7 @@ import android.content.Context;
 import javax.inject.Singleton;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
@@ -24,6 +25,8 @@ public interface ApplicationComponent {
 
     void inject(UserSyncService userSyncService);
     void inject(FileSyncService fileSyncService);
+    void inject(DirectorySyncService directorySyncService);
+
 
     @ApplicationContext Context context();
     Application application();

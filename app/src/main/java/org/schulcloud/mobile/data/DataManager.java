@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.User;
@@ -89,6 +90,24 @@ public class DataManager {
 
     public Observable<List<File>> getFiles() {
         return mDatabaseHelper.getFiles().distinct();
+    }
+
+    public Observable<Directory> syncDirectories(String storageContext) {
+        // todo: get AccessToken from DB
+        // todo: also fetch directories
+        return mRestService.getFiles(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJhY2NvdW50SWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjYWEiLCJ1c2VySWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjMGEiLCJpYXQiOjE0OTI3NjA2MDMsImV4cCI6MTQ5Mjg0NzAwMywiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiYW5vbnltb3VzIn0.tP3UlFYAptKQhKANJ2BU1ZvLO2OoTalnamV1HwYWEyE",
+                storageContext)
+                .concatMap(new Func1<FilesResponse, Observable<Directory>>() {
+                    @Override
+                    public Observable<Directory> call(FilesResponse filesResponse) {
+                        return mDatabaseHelper.setDirectories(filesResponse.directories);
+                    }
+                });
+    }
+
+    public Observable<List<Directory>> getDirectories() {
+        return mDatabaseHelper.getDirectories().distinct();
     }
 
 }

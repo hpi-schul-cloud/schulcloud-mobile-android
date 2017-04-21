@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.data.model.responseBodies;
 
+import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.List;
  */
 
 public class FilesResponse {
-    // todo directories
-
     public List<File> files;
+    public List<Directory> directories;
 }

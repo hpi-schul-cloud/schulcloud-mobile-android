@@ -8,6 +8,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
 import io.realm.Realm;
@@ -27,6 +28,8 @@ public class DatabaseHelper {
     DatabaseHelper(Provider<Realm> realmProvider) {
         mRealmProvider = realmProvider;
     }
+
+    /**** Users ****/
 
     public Observable<User> setUsers(final Collection<User> newUsers) {
         return Observable.create(subscriber -> {
@@ -79,6 +82,8 @@ public class DatabaseHelper {
         return realm.where(AccessToken.class).findFirstAsync().asObservable();
     }
 
+    /**** Files ****/
+
     public Observable<File> setFiles(final Collection<File> files) {
         return Observable.create(subscriber -> {
             if (subscriber.isUnsubscribed()) return;
@@ -104,5 +109,32 @@ public class DatabaseHelper {
         return realm.where(File.class).findAllAsync().asObservable()
                 .filter(files -> files.isLoaded())
                 .map(files -> realm.copyFromRealm(files));
+    }
+
+    public Observable<Directory> setDirectories(final Collection<Directory> directories) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(directories));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    subscriber.onCompleted();
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Directory>> getDirectories() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Directory.class).findAllAsync().asObservable()
+                .filter(directories -> directories.isLoaded())
+                .map(directories -> realm.copyFromRealm(directories));
     }
 }

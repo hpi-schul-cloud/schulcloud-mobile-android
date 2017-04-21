@@ -9,4 +9,5 @@
 
     <string name="empty_ribots">There aren\'t any users</string>
     <string name="error_sign_in">Wrong username or password</string>
+    <string name="error_files_fetch">Oops! Something went wrong while fetching the files!</string>
 </resources>

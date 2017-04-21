@@ -8,6 +8,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -78,16 +79,30 @@ public class DatabaseHelper {
         return realm.where(AccessToken.class).findFirstAsync().asObservable();
     }
 
-    /*public Observable<List<User>> getUsers() {
+    public Observable<List<File>> setFiles(final Collection<File> files) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(files));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    subscriber.onCompleted();
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<File>> getFiles() {
         final Realm realm = mRealmProvider.get();
-        RealmResults<User> realmUsers = realm.where(User.class).findAll();
-
-        realm.beginTransaction();
-        List<User> users = realm.copyFromRealm(realmUsers);
-        realm.commitTransaction();
-
-        realm.close();
-
-        return Observable.just(users);
-    }*/
+        return realm.where(File.class).findAllAsync().asObservable()
+                .filter(files -> files.isLoaded())
+                .map(files -> realm.copyFromRealm(files));
+    }
 }

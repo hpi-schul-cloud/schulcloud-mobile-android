@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.util.DialogFactory;
 
@@ -61,7 +62,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     public void showSignInSuccessful() {
         DialogFactory.createSimpleOkErrorDialog(this, "Login", "Successfully logged in!").
                 show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, FileActivity.class);
         this.startActivity(intent);
     }
 

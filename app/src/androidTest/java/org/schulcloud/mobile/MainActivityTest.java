@@ -61,8 +61,8 @@ public class MainActivityTest {
         for (User user : testDataUsers) {
             onView(withId(R.id.recycler_view))
                     .perform(RecyclerViewActions.scrollToPosition(position));
-            String name = String.format("%s %s", user.getUsername(),
-                    user.getName());
+            String name = String.format("%s %s", user.getLastName(),
+                    user.getFirstName());
             onView(withText(name))
                     .check(matches(isDisplayed()));
             onView(withText(user.getEmail()))

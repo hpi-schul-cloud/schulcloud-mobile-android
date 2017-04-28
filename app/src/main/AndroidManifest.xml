@@ -20,11 +20,30 @@
             android:name=".ui.base.BaseActivity"
             android:label="@string/app_name">
         </activity>
-
-        <service android:name=".data.SyncService" />
+        <service android:name=".data.sync.UserSyncService" />
 
         <receiver
-            android:name=".data.SyncService$SyncOnConnectionAvailable"
+            android:name=".data.sync.UserSyncService$SyncOnConnectionAvailable"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".data.sync.FileSyncService" />
+
+        <receiver
+            android:name=".data.sync.FileSyncService$SyncOnConnectionAvailable"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".data.sync.DirectorySyncService" />
+
+        <receiver
+            android:name=".data.sync.DirectorySyncService$SyncOnConnectionAvailable"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -39,6 +58,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.files.FileActivity"
+            android:label="@string/app_name">
         </activity>
     </application>
 

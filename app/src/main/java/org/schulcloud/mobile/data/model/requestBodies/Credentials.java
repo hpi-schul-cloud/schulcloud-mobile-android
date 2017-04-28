@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.data.model;
+package org.schulcloud.mobile.data.model.requestBodies;
 
 public class Credentials {
     public String username;

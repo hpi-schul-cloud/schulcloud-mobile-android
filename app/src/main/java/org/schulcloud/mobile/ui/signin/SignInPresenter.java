@@ -57,7 +57,7 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
                     },
                     // onError
                     error -> {
-                        Timber.e(error, "There was an error loading the users.");
+                        Timber.e(error, "There was an error signing in.");
                         getMvpView().showSignInFailed();
                     },
                     // onCompleted

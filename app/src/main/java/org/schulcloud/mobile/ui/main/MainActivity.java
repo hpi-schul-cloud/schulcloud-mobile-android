@@ -15,7 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.SyncService;
+import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.DialogFactory;
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.loadUsers();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-            startService(SyncService.getStartIntent(this));
+            startService(UserSyncService.getStartIntent(this));
         }
     }
 

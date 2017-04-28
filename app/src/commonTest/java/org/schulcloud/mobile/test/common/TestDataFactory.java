@@ -18,15 +18,15 @@ public class TestDataFactory {
 
     public static User makeUser(String uniqueSuffix) {
         User u = new User();
-        u.setId(1);
-        u.setName(uniqueSuffix);
+        u.set_id(randomUuid());
+        u.setLastName(uniqueSuffix);
         u.setEmail(uniqueSuffix);
-        u.setUsername(uniqueSuffix);
+        u.setFirstName(uniqueSuffix);
         return u;
     }
 
     public static List<User> makeListUsers(int number) {
-        List<User> users = new ArrayList<>();
+        List <User> users = new ArrayList<>();
         for (int i = 0; i < number; i++) {
             users.add(makeUser(String.valueOf(i)));
         }

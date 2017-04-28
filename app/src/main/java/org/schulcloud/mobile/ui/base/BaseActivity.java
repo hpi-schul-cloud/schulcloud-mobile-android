@@ -1,20 +1,15 @@
 package org.schulcloud.mobile.ui.base;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v4.util.LongSparseArray;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicLong;
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
@@ -23,14 +18,33 @@ import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import org.schulcloud.mobile.ui.signin.SignInActivity;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 import timber.log.Timber;
 
 public class BaseActivity extends AppCompatActivity {
 
     protected DrawerLayout mDrawer;
-    protected ListView drawerList;
+    protected ListView mDrawerList;
     protected ActionBarDrawerToggle drawerToggle;
+
+    // Curently just nonsense Data and Logos, change here for the actual list
+    private String[] layers = {
+            "Menu",
+            "About",
+            "Datenschutz",
+            "Impressum",
+            "Kontakt"
+    };
+    private int[] resources = {
+            R.drawable.common_google_signin_btn_icon_light,
+            R.drawable.common_google_signin_btn_icon_dark,
+            R.drawable.common_google_signin_btn_icon_dark,
+            R.drawable.common_google_signin_btn_icon_light,
+            R.drawable.common_google_signin_btn_icon_dark
+    };
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
@@ -44,21 +58,15 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.drawer_layout);
+        TypefaceProvider.registerDefaultIconSets();
 
+        // Idea found on StackOverflow
+        // http://stackoverflow.com/questions/21405958/how-to-display-navigation-drawer-in-all-activities
+        // Init and data filling of the navigation drawer
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        ArrayList<DrawerListItem> drawerListItems = new ArrayList<DrawerListItem>();
-        drawerListItems.add(new DrawerListItem(0,"AIR° DEVICES"));
-        drawerListItems.add(new DrawerListItem(1,"A/C Device [1]"));
-        drawerListItems.add(new DrawerListItem(1,"A/C Device [2]"));
-        drawerListItems.add(new DrawerListItem(1,"A/C Device [3]"));
-        drawerListItems.add(new DrawerListItem(0,"AIR° FEATURES"));
-        drawerListItems.add(new DrawerListItem(2,"SLEEP MODE"));
-        drawerListItems.add(new DrawerListItem(2,"TRACKING MODE"));
-        drawerListItems.add(new DrawerListItem(2,"SETTINGS"));
-        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, R.layout.drawer_list_item, drawerListItems);
-        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(mDrawerAdapter);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(new NavItemAdapter(this, layers, resources));
+        mDrawerList.setOnItemClickListener((arg0, arg1, pos, arg3) -> openActivityForPos(pos));
 
         // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is
         // being called after a configuration change.
@@ -76,6 +84,34 @@ public class BaseActivity extends AppCompatActivity {
             configPersistentComponent = sComponentsMap.get(mActivityId);
         }
         mActivityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
+    }
+
+
+    // Magic happens here for chosing according to the position in the array
+    private void openActivityForPos(int pos) {
+        Class c;
+        switch (pos) {
+            case 0:
+                c = MainActivity.class;
+                break;
+            case 1:
+                c = BaseActivity.class;
+                break;
+            case 2:
+                c = MainActivity.class;
+                break;
+            case 3:
+                c = SignInActivity.class;
+                break;
+            case 4:
+                c = MainActivity.class;
+                break;
+            default: return;
+        }
+
+        Intent intent = new Intent(this, c);
+        this.startActivity(intent);
+        this.finish();
     }
 
     @Override

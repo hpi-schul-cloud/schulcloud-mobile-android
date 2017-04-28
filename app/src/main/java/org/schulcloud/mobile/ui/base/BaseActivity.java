@@ -6,6 +6,8 @@ import android.support.v4.util.LongSparseArray;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 
@@ -29,7 +31,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected DrawerLayout mDrawer;
     protected ListView mDrawerList;
-    protected ActionBarDrawerToggle drawerToggle;
+    protected ActionBarDrawerToggle mDrawerToggle;
+    private Toolbar mToolbar;
 
     // Curently just nonsense Data and Logos, change here for the actual list
     private String[] layers = {
@@ -61,6 +64,12 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.drawer_layout);
         TypefaceProvider.registerDefaultIconSets();
 
+        // Setup Actionbar / Toolbar
+        mToolbar = (Toolbar) findViewById(R.id.action_bar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         // Idea found on StackOverflow
         // http://stackoverflow.com/questions/21405958/how-to-display-navigation-drawer-in-all-activities
         // Init and data filling of the navigation drawer
@@ -68,6 +77,22 @@ public class BaseActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(new NavItemAdapter(this, layers, resources));
         mDrawerList.setOnItemClickListener((arg0, arg1, pos, arg3) -> openActivityForPos(pos));
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+
+        mDrawer.setDrawerListener(mDrawerToggle);
+
+        mDrawer.post(() -> mDrawerToggle.syncState());
 
         // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is
         // being called after a configuration change.

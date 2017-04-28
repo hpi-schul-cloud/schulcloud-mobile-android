@@ -54,7 +54,7 @@ public class DirectorySyncService extends Service {
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
         // todo: get storageContext from Intent
-        mSubscription = mDataManager.syncDirectories("users/0000d213816abba584714c0a")
+        mSubscription = mDataManager.syncDirectories("users/0000d224816abba584714c9c")
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Directory>() {
                     @Override
@@ -64,7 +64,7 @@ public class DirectorySyncService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        System.err.print(e.getMessage());
                     }
 
                     @Override

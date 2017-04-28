@@ -56,7 +56,7 @@ public class FileSyncService extends Service {
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
         // todo: get storageContext from Intent
-        mSubscription = mDataManager.syncFiles("users/0000d213816abba584714c0a")
+        mSubscription = mDataManager.syncFiles("users/0000d224816abba584714c9c")
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<File>() {
                     @Override
@@ -66,7 +66,7 @@ public class FileSyncService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        System.err.print(e.getMessage());
                     }
 
                     @Override

@@ -52,22 +52,16 @@ public class DataManager {
         return mDatabaseHelper.getUsers().distinct();
     }
 
-    public Observable<AccessToken> getAccessToken() {
-        return mDatabaseHelper.getAccessToken().distinct();
+    public String getAccessToken() {
+        return mPreferencesHelper.getAccessToken();
     }
 
-    public Observable<AccessToken> signIn(String username, String password) {
+    public Observable<String> signIn(String username, String password) {
         return mRestService.signIn(new Credentials(username, password))
-                .concatMap(new Func1<AccessToken, Observable<AccessToken>>() {
+                .concatMap(new Func1<AccessToken, Observable<String>>() {
                     @Override
-                    public Observable<AccessToken> call(AccessToken accessToken) {
-                        return mDatabaseHelper.setAccessToken(accessToken)
-                                .concatMap(new Func1<AccessToken, Observable<AccessToken>>() {
-                                    @Override
-                                    public Observable<AccessToken> call(AccessToken accessToken) {
-                                        return mDatabaseHelper.getAccessToken();
-                                    }
-                                });
+                    public Observable<String> call(AccessToken accessToken) {
+                        return Observable.just(mPreferencesHelper.saveAccessToken(accessToken));
                     }
                 });
     }
@@ -75,10 +69,9 @@ public class DataManager {
     /**** Files ****/
 
     public Observable<File> syncFiles(String storageContext) {
-        // todo: get AccessToken from DB
-        // todo: also fetch directories
+        // get AccessToken for Authorization
         return mRestService.getFiles(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJhY2NvdW50SWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjYWEiLCJ1c2VySWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjMGEiLCJpYXQiOjE0OTI3NjA2MDMsImV4cCI6MTQ5Mjg0NzAwMywiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiYW5vbnltb3VzIn0.tP3UlFYAptKQhKANJ2BU1ZvLO2OoTalnamV1HwYWEyE",
+                getAccessToken(),
                 storageContext)
                 .concatMap(new Func1<FilesResponse, Observable<File>>() {
                     @Override
@@ -93,10 +86,9 @@ public class DataManager {
     }
 
     public Observable<Directory> syncDirectories(String storageContext) {
-        // todo: get AccessToken from DB
-        // todo: also fetch directories
+        // get AccessToken for Authorization
         return mRestService.getFiles(
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJhY2NvdW50SWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjYWEiLCJ1c2VySWQiOiIwMDAwZDIxMzgxNmFiYmE1ODQ3MTRjMGEiLCJpYXQiOjE0OTI3NjA2MDMsImV4cCI6MTQ5Mjg0NzAwMywiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiYW5vbnltb3VzIn0.tP3UlFYAptKQhKANJ2BU1ZvLO2OoTalnamV1HwYWEyE",
+                getAccessToken(),
                 storageContext)
                 .concatMap(new Func1<FilesResponse, Observable<Directory>>() {
                     @Override

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
@@ -63,7 +65,11 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        setContentView(R.layout.activity_files);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //inflate your activity layout here!
+        View contentView = inflater.inflate(R.layout.activity_files, null, false);
+        mDrawer.addView(contentView, 0);
         ButterKnife.bind(this);
 
         fileRecyclerView.setAdapter(mFilesAdapter);

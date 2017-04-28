@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/gray"
+    android:paddingTop="?attr/actionBarSize"
     android:fillViewport="true">
 <LinearLayout
     android:layout_width="match_parent"

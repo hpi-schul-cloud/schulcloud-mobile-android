@@ -20,6 +20,7 @@ import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
+import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 
@@ -38,14 +39,14 @@ public class BaseActivity extends AppCompatActivity {
     private String[] layers = {
             "Menu",
             "About",
-            "Datenschutz",
+            "Meine Dateien",
             "Impressum",
             "Kontakt"
     };
     private String[] resources = {
             FontAwesome.FA_BEER,
             FontAwesome.FA_COMPASS,
-            FontAwesome.FA_BUS,
+            FontAwesome.FA_FILE,
             FontAwesome.FA_UMBRELLA,
             FontAwesome.FA_OPTIN_MONSTER
     };
@@ -124,7 +125,7 @@ public class BaseActivity extends AppCompatActivity {
                 c = BaseActivity.class;
                 break;
             case 2:
-                c = MainActivity.class;
+                c = FileActivity.class;
                 break;
             case 3:
                 c = SignInActivity.class;

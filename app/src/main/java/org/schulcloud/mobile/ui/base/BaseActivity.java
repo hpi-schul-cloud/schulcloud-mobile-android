@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.ListView;
 
 import com.beardedhen.androidbootstrap.TypefaceProvider;
+import com.beardedhen.androidbootstrap.font.FontAwesome;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
@@ -38,12 +39,12 @@ public class BaseActivity extends AppCompatActivity {
             "Impressum",
             "Kontakt"
     };
-    private int[] resources = {
-            R.drawable.common_google_signin_btn_icon_light,
-            R.drawable.common_google_signin_btn_icon_dark,
-            R.drawable.common_google_signin_btn_icon_dark,
-            R.drawable.common_google_signin_btn_icon_light,
-            R.drawable.common_google_signin_btn_icon_dark
+    private String[] resources = {
+            FontAwesome.FA_BEER,
+            FontAwesome.FA_COMPASS,
+            FontAwesome.FA_BUS,
+            FontAwesome.FA_UMBRELLA,
+            FontAwesome.FA_OPTIN_MONSTER
     };
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";

@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 
@@ -14,9 +15,9 @@ public class NavItemAdapter extends BaseAdapter {
 
     private Activity activity;
     private String[] titles;
-    private int[] icIds;
+    private String[] icIds;
 
-    public NavItemAdapter(Activity context, String[] titles, int[] icIds) {
+    public NavItemAdapter(Activity context, String[] titles, String[] icIds) {
         this.activity = context;
         this.titles = titles;
         this.icIds = icIds;
@@ -42,7 +43,7 @@ public class NavItemAdapter extends BaseAdapter {
         RelativeLayout relativeLayout =
                 (RelativeLayout) activity.getLayoutInflater().inflate(R.layout.drawer_list_item, null);
         ((TextView) relativeLayout.findViewById(R.id.drawer_item_textView)).setText(titles[position]);
-        ((ImageView) relativeLayout.findViewById(R.id.drawer_item_icon)).setImageResource(icIds[position]);
+        ((AwesomeTextView) relativeLayout.findViewById(R.id.drawer_item_icon)).setFontAwesomeIcon(icIds[position]);
         return relativeLayout;
     }
 }

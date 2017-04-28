@@ -8,6 +8,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
@@ -27,6 +28,11 @@ public class DatabaseHelper {
     @Inject
     DatabaseHelper(Provider<Realm> realmProvider) {
         mRealmProvider = realmProvider;
+    }
+
+    public void clearTable(Class table) {
+        final Realm realm = mRealmProvider.get();
+        realm.executeTransaction(realm1 -> realm1.delete(table));
     }
 
     /**** Users ****/
@@ -82,7 +88,34 @@ public class DatabaseHelper {
         return realm.where(AccessToken.class).findFirstAsync().asObservable();
     }
 
-    /**** Files ****/
+    public Observable<CurrentUser> setCurrentUser(final CurrentUser currentUser) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(currentUser));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    subscriber.onCompleted();
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<CurrentUser> getCurrentUser() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(CurrentUser.class).findFirstAsync().asObservable();
+    }
+
+
+
+    /**** FileStorage ****/
 
     public Observable<File> setFiles(final Collection<File> files) {
         return Observable.create(subscriber -> {

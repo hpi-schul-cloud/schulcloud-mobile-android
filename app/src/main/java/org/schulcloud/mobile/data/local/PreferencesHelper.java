@@ -32,8 +32,22 @@ public class PreferencesHelper {
         return null;
     }
 
+    public String saveCurrentUserId(String userId) {
+        SharedPreferences.Editor editor = mPref.edit();
+        // todo: save pref-keys in strings.xml or constant
+        editor.putString("currentUser", userId);
+        if (editor.commit()) {
+            return userId;
+        }
+
+        return null;
+    }
+
     public String getAccessToken() {
         return mPref.getString("jwt", "null");
+    }
+    public String getCurrentUserId() {
+        return mPref.getString("currentUser", "null");
     }
 
     public void clear() {

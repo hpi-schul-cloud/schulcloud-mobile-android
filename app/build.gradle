@@ -57,7 +57,7 @@ android {
             versionNameSuffix " Debug"
             debuggable true
 
-            buildConfigField "String", "URL_ENDPOINT", "\"http://aea253ed.ngrok.io/\""
+            buildConfigField "String", "URL_ENDPOINT", "\"https://schul-cloud.org:8080/\""
         }
     }
 
@@ -118,6 +118,7 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_VERSION"
     compile "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
     compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP_VERSION"
+    compile 'com.beardedhen:androidbootstrap:2.3.0'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
         transitive = true;

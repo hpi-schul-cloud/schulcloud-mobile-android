@@ -13,7 +13,7 @@ import rx.Observable;
 
 public interface RestService {
 
-    @GET("users")
+    @GET("users?$limit=-1")
     Observable<List<User>> getUsers();
 
     @POST("authentication")

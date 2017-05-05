@@ -17,10 +17,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by niklaskiefer on 21.04.17.
- */
-
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> {
     private List<File> mFiles;
 

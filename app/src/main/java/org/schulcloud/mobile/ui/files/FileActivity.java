@@ -24,9 +24,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by niklaskiefer on 21.04.17.
- */
 
 public class FileActivity extends BaseActivity implements FileMvpView {
 

@@ -6,9 +6,6 @@ import org.schulcloud.mobile.ui.base.MvpView;
 
 import java.util.List;
 
-/**
- * Created by niklaskiefer on 21.04.17.
- */
 
 public interface FileMvpView extends MvpView {
     void showFiles(List<File> files);

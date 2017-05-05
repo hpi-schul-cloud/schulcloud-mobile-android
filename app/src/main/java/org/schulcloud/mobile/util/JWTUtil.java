@@ -7,9 +7,6 @@ import com.google.gson.JsonParser;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by niklaskiefer on 28.04.17.
- */
 
 public class JWTUtil {
     public static String decodeToCurrentUser(String JWTEncoded) {

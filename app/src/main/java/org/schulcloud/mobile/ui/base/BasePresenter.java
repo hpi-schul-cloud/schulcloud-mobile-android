@@ -2,8 +2,6 @@ package org.schulcloud.mobile.ui.base;
 
 import org.schulcloud.mobile.data.DataManager;
 
-import javax.inject.Inject;
-
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;

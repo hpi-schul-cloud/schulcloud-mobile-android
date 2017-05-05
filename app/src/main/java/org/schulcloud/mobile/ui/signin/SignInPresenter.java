@@ -1,19 +1,11 @@
 package org.schulcloud.mobile.ui.signin;
 
 import org.schulcloud.mobile.data.DataManager;
-import org.schulcloud.mobile.data.model.AccessToken;
-import org.schulcloud.mobile.data.model.CurrentUser;
-import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.base.BasePresenter;
-import org.schulcloud.mobile.ui.main.MainMvpView;
 import org.schulcloud.mobile.util.RxUtil;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 

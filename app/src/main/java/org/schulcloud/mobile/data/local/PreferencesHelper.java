@@ -3,11 +3,11 @@ package org.schulcloud.mobile.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.injection.ApplicationContext;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 @Singleton
 public class PreferencesHelper {

@@ -6,13 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.beardedhen.androidbootstrap.AwesomeTextView;
-import com.beardedhen.androidbootstrap.font.FontAwesome;
-
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
-import org.schulcloud.mobile.data.model.User;
-import org.schulcloud.mobile.ui.main.UsersAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

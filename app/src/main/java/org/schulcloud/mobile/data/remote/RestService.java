@@ -1,12 +1,12 @@
 package org.schulcloud.mobile.data.remote;
 
-import java.util.List;
-
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
-import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;

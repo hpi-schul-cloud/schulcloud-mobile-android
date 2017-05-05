@@ -1,5 +1,11 @@
 package org.schulcloud.mobile.data.local;
 
+import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.Directory;
+import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.User;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -7,17 +13,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import org.schulcloud.mobile.data.model.AccessToken;
-import org.schulcloud.mobile.data.model.CurrentUser;
-import org.schulcloud.mobile.data.model.Directory;
-import org.schulcloud.mobile.data.model.File;
-import org.schulcloud.mobile.data.model.User;
 import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
 import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Func1;
 import timber.log.Timber;
 
 @Singleton

@@ -9,17 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.sync.UserSyncService;
+import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.signin.SignInActivity;
+import org.schulcloud.mobile.util.DialogFactory;
+
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.sync.UserSyncService;
-import org.schulcloud.mobile.data.model.User;
-import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.signin.SignInActivity;
-import org.schulcloud.mobile.util.DialogFactory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
+import com.beardedhen.androidbootstrap.font.FontAwesome;
+
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
@@ -56,7 +59,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     class FilesViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.text_name) TextView nameTextView;
-
 
         public FilesViewHolder(View itemView) {
             super(itemView);

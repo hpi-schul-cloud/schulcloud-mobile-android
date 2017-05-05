@@ -71,5 +71,9 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         },
                         () -> {});
     }
+
+    public void checkSignedIn() {
+        super.isAlreadySignedIn(mDataManager);
+    }
 }
 

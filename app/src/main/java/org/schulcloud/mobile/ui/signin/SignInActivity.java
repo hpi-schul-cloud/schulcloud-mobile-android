@@ -71,4 +71,9 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
         DialogFactory.createGenericErrorDialog(this, getString(R.string.error_sign_in))
                 .show();
     }
+
+    @Override
+    public void goToSignIn() {
+        // obsolete in SignInActivity
+    }
 }

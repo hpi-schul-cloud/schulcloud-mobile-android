@@ -17,9 +17,6 @@ import timber.log.Timber;
 @ConfigPersistent
 public class MainPresenter extends BasePresenter<MainMvpView> {
 
-    private final DataManager mDataManager;
-    private Subscription mSubscription;
-
     @Inject
     public MainPresenter(DataManager dataManager) {
         mDataManager = dataManager;
@@ -61,6 +58,10 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                         }
                     }
                 });
+    }
+
+    public void checkSignedIn() {
+        super.isAlreadySignedIn(mDataManager);
     }
 
 }

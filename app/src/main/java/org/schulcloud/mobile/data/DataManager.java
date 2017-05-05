@@ -1,11 +1,6 @@
 package org.schulcloud.mobile.data;
 
-import com.google.gson.JsonObject;
-
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import android.util.Log;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
@@ -13,11 +8,18 @@ import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
-import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.Credentials;
+import org.schulcloud.mobile.data.model.requestBodies.Device;
+import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.JWTUtil;
+
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 import rx.functions.Func1;
@@ -44,7 +46,7 @@ public class DataManager {
     /**** User ****/
 
     public Observable<User> syncUsers() {
-        return mRestService.getUsers()
+        return mRestService.getUsers(getAccessToken())
                 .concatMap(new Func1<List<User>, Observable<User>>() {
                     @Override
                     public Observable<User> call(List<User> users) {
@@ -78,7 +80,7 @@ public class DataManager {
     }
 
     public Observable<CurrentUser> syncCurrentUser(String userId) {
-        return mRestService.getUser(userId).concatMap(new Func1<CurrentUser, Observable<CurrentUser>>() {
+        return mRestService.getUser(getAccessToken(), userId).concatMap(new Func1<CurrentUser, Observable<CurrentUser>>() {
             @Override
             public Observable<CurrentUser> call(CurrentUser currentUser) {
                 return mDatabaseHelper.setCurrentUser(currentUser);
@@ -134,6 +136,21 @@ public class DataManager {
 
     public Observable<List<Directory>> getDirectories() {
         return mDatabaseHelper.getDirectories().distinct();
+    }
+
+    /**** NotificationService ****/
+
+    public Observable<DeviceResponse> createDevice(Device device) {
+        return mRestService.createDevice(
+                getAccessToken(),
+                device)
+                .concatMap(new Func1<DeviceResponse, Observable<DeviceResponse>>() {
+                    @Override
+                    public Observable<DeviceResponse> call(DeviceResponse deviceResponse) {
+                        Log.i("[DEVICE]", deviceResponse.id);
+                        return Observable.just(deviceResponse);
+                    }
+                });
     }
 
 }

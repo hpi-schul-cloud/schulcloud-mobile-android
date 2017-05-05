@@ -14,8 +14,8 @@ import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.firebase.FirebaseIDService;
 
 import java.util.List;
 
@@ -23,7 +23,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Optional;
 
 /**
  * Created by niklaskiefer on 21.04.17.
@@ -87,6 +86,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
             startService(FileSyncService.getStartIntent(this));
             startService(DirectorySyncService.getStartIntent(this));
         }
+
+        startService(FirebaseIDService.getStartIntent(this));
     }
 
     @Override

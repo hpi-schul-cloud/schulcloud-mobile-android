@@ -1,12 +1,14 @@
 package org.schulcloud.mobile.data.remote;
 
-import java.util.List;
-
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
-import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.Credentials;
+import org.schulcloud.mobile.data.model.requestBodies.Device;
+import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -19,10 +21,10 @@ import rx.Observable;
 public interface RestService {
 
     @GET("users?$limit=-1")
-    Observable<List<User>> getUsers();
+    Observable<List<User>> getUsers(@Header("Authorization") String accessToken);
 
     @GET("users/{userId}")
-    Observable<CurrentUser> getUser(@Path("userId") String userId);
+    Observable<CurrentUser> getUser(@Header("Authorization") String accessToken, @Path("userId") String userId);
 
     @POST("authentication")
     Observable<AccessToken> signIn(@Body Credentials credentials);
@@ -30,4 +32,7 @@ public interface RestService {
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
     Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("storageContext") String storageContext);
+
+    @POST("notification/devices")
+    Observable<DeviceResponse> createDevice(@Header("Authorization") String accessToken, @Body Device device);
 }

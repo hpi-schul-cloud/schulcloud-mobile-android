@@ -10,11 +10,8 @@ import android.os.IBinder;
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.File;
-import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

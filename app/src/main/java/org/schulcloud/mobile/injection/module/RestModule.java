@@ -24,6 +24,7 @@ public class RestModule {
     Gson provideGson() {
         return new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .setLenient()
                 .create();
     }
 

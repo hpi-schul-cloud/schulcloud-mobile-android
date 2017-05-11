@@ -19,15 +19,15 @@ import rx.Observable;
 public interface RestService {
 
     @GET("users?$limit=-1")
-    Observable<List<User>> getUsers();
+    Observable<List<User>> getUsers(@Header("Authorization") String accessToken);
 
     @GET("users/{userId}")
-    Observable<CurrentUser> getUser(@Path("userId") String userId);
+    Observable<CurrentUser> getUser(@Header("Authorization") String accessToken, @Path("userId") String userId);
 
     @POST("authentication")
     Observable<AccessToken> signIn(@Body Credentials credentials);
 
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
-    Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("storageContext") String storageContext);
+    Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String storageContext);
 }

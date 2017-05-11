@@ -42,7 +42,7 @@ public class DataManager {
     /**** User ****/
 
     public Observable<User> syncUsers() {
-        return mRestService.getUsers()
+        return mRestService.getUsers(getAccessToken())
                 .concatMap(new Func1<List<User>, Observable<User>>() {
                     @Override
                     public Observable<User> call(List<User> users) {
@@ -76,7 +76,7 @@ public class DataManager {
     }
 
     public Observable<CurrentUser> syncCurrentUser(String userId) {
-        return mRestService.getUser(userId).concatMap(new Func1<CurrentUser, Observable<CurrentUser>>() {
+        return mRestService.getUser(getAccessToken(), userId).concatMap(new Func1<CurrentUser, Observable<CurrentUser>>() {
             @Override
             public Observable<CurrentUser> call(CurrentUser currentUser) {
                 return mDatabaseHelper.setCurrentUser(currentUser);

@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.data;
 
+import android.util.Log;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
@@ -8,6 +9,8 @@ import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
+import org.schulcloud.mobile.data.model.requestBodies.Device;
+import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.JWTUtil;
@@ -132,6 +135,21 @@ public class DataManager {
 
     public Observable<List<Directory>> getDirectories() {
         return mDatabaseHelper.getDirectories().distinct();
+    }
+
+    /**** NotificationService ****/
+
+    public Observable<DeviceResponse> createDevice(Device device) {
+        return mRestService.createDevice(
+                getAccessToken(),
+                device)
+                .concatMap(new Func1<DeviceResponse, Observable<DeviceResponse>>() {
+                    @Override
+                    public Observable<DeviceResponse> call(DeviceResponse deviceResponse) {
+                        Log.i("[DEVICE]", deviceResponse.id);
+                        return Observable.just(deviceResponse);
+                    }
+                });
     }
 
 }

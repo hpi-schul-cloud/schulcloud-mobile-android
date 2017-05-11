@@ -4,6 +4,8 @@ import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
+import org.schulcloud.mobile.data.model.requestBodies.Device;
+import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 
 import java.util.List;
@@ -30,4 +32,7 @@ public interface RestService {
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
     Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String storageContext);
+
+    @POST("notification/devices")
+    Observable<DeviceResponse> createDevice(@Header("Authorization") String accessToken, @Body Device device);
 }

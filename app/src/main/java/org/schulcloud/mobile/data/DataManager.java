@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.data;
 
 import android.util.Log;
-
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;

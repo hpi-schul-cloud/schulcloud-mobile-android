@@ -31,7 +31,7 @@ public interface RestService {
 
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
-    Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("storageContext") String storageContext);
+    Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String storageContext);
 
     @POST("notification/devices")
     Observable<DeviceResponse> createDevice(@Header("Authorization") String accessToken, @Body Device device);

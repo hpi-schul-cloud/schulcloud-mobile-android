@@ -13,6 +13,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
 
 import java.util.Collections;
@@ -61,6 +62,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mRecyclerView.setAdapter(mUsersAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
+        mMainPresenter.checkSignedIn();
+
         mMainPresenter.loadUsers();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
@@ -95,4 +98,9 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void goToSignIn() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        this.startActivity(intent);
+    }
 }

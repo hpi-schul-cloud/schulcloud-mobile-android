@@ -21,6 +21,11 @@ public class PreferencesHelper {
         mPref = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
+    /**
+     * saves a accessToken to the shared prefs
+     * @param accessToken {AccessToken} - the accessToken which will be saved
+     * @return the saved accessToken
+     */
     public String saveAccessToken(AccessToken accessToken) {
         SharedPreferences.Editor editor = mPref.edit();
         // todo: save pref-keys in strings.xml or constant
@@ -32,6 +37,11 @@ public class PreferencesHelper {
         return null;
     }
 
+    /**
+     * saves a userId to the shared prefs
+     * @param userId {String} - the userId which will be saved
+     * @return the saved userId
+     */
     public String saveCurrentUserId(String userId) {
         SharedPreferences.Editor editor = mPref.edit();
         // todo: save pref-keys in strings.xml or constant
@@ -64,6 +74,14 @@ public class PreferencesHelper {
 
     public void clear() {
         mPref.edit().clear().apply();
+    }
+
+    /**
+     * clears a pref for a given key
+     * @param key {String} - the key of the param which will be deleted
+     */
+    public void clear(String key) {
+        mPref.edit().remove(key).apply();
     }
 
 }

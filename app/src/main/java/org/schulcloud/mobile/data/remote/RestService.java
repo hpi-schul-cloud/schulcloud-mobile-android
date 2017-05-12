@@ -2,6 +2,7 @@ package org.schulcloud.mobile.data.remote;
 
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
@@ -30,4 +31,7 @@ public interface RestService {
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
     Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String storageContext);
+
+    @GET("calendar?all=true")
+    Observable<List<Event>> getEvents(@Header("Authorization") String accessToken);
 }

@@ -41,6 +41,6 @@ public interface RestService {
     @GET("calendar?all=true")
     Observable<List<Event>> getEvents(@Header("Authorization") String accessToken);
 
-    @GET("notification/devices/{deviceId}")
-    Observable<List<Device>> getDevices(@Header("Authorization") String accessToken);
+    @GET("notification/devices/{userId}")
+    Observable<List<Device>> getDevices(@Header("Authorization") String accessToken, @Path("userId") String userId);
 }

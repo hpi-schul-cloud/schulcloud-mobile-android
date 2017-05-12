@@ -111,7 +111,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         if (devices.isEmpty()) {
                             // TODO: Show something
                         } else {
-                            // TODO: Show something
+                            getMvpView().showDevices(devices);
                         }
                     }
                 });

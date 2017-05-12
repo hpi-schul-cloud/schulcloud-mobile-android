@@ -157,7 +157,7 @@ public class DataManager {
     }
 
     public Observable<Device> syncDevices() {
-        return mRestService.getDevices(getAccessToken())
+        return mRestService.getDevices(getAccessToken(), getCurrentUserId())
                 .concatMap(new Func1<List<Device>, Observable<Device>>() {
                     @Override
                     public Observable<Device> call(List<Device> devices) {

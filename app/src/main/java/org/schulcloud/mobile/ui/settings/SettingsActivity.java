@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,8 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         ButterKnife.bind(this);
 
 
+        devices_recycler_view.setAdapter(mDevicesAdapter);
+        devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
         mSettingsPresenter.attachView(this);
         mSettingsPresenter.checkSignedIn();
 
@@ -77,7 +80,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(EventSyncService.getStartIntent(this));
             startService(DeviceSyncService.getStartIntent(this));
-
         }
 
         btn_create_device.setOnClickListener(view -> mSettingsPresenter.registerDevice());

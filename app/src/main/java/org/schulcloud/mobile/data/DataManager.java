@@ -1,11 +1,13 @@
 package org.schulcloud.mobile.data;
 
+import android.os.Debug;
 import android.util.Log;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Directory;
+import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
@@ -21,6 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 @Singleton
@@ -151,5 +154,32 @@ public class DataManager {
                     }
                 });
     }
+
+    /**** Events ****/
+
+    public Observable<Event> syncEvents() {
+        // clear old events
+        mDatabaseHelper.clearTable(Event.class);
+
+        return mRestService.getEvents(
+                getAccessToken())
+                .concatMap(new Func1<List<Event>, Observable<Event>>() {
+                    @Override
+                    public Observable<Event> call(List<Event> events) {
+                        System.out.println(events);
+                        return mDatabaseHelper.setEvents(events);
+                    }
+                }).doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        System.err.println(throwable.getStackTrace());
+                    }
+                });
+    }
+
+    public Observable<List<Event>> getEvents() {
+        return mDatabaseHelper.getEvents().distinct();
+    }
+
 
 }

@@ -48,10 +48,19 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".data.sync.EventSyncService" />
+
+        <receiver
+            android:name=".data.sync.EventSyncService$SyncOnConnectionAvailable"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.signin.SignInActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".ui.files.FileActivity"
             android:label="@string/app_name">
@@ -74,9 +83,11 @@
             android:name=".util.firebase.FirebaseIDService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".ui.settings.SettingsActivity"></activity>
     </application>
 
 </manifest>

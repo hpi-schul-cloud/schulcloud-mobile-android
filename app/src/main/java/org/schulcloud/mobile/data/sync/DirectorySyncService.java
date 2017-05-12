@@ -42,7 +42,7 @@ public class DirectorySyncService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        Timber.i("Starting sync...");
+        Timber.i("Starting directory sync...");
 
         if (!NetworkUtil.isNetworkConnected(this)) {
             Timber.i("Sync canceled, connection not available");

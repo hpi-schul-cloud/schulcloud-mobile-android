@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.settings;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
@@ -25,6 +26,7 @@ import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.files.FilesAdapter;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
+import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.firebase.FirebaseIDService;
 
@@ -108,9 +110,30 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         PermissionsUtil.checkPermissions(CALENDAR_PERMISSION_CALLBACK_ID, this, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
         CalendarContentUtil calendarContentUtil = new CalendarContentUtil(this);
 
-        // todo: get all calendars and prompt for connecting calendar
         Set<String> calendars = calendarContentUtil.getCalendars();
+        CharSequence[] calendarValues = calendars.toArray(new CharSequence[calendars.size()]);
 
-        System.out.println(calendars);
+        // saves selected calendar index on dialog prompting
+        final Integer[] chosenValueIndex = new Integer[1];
+
+        DialogFactory.createSingleSelectDialog(
+                this,
+                calendarValues,
+                R.string.choose_calendar)
+                .setItems(calendarValues, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        chosenValueIndex[0] = i;
+                    }
+                })
+                .setPositiveButton(R.string.dialog_action_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.out.println(calendarValues[chosenValueIndex[0]]);
+
+                        // todo: send all events to calendar (via presenter)
+                    }
+                })
+                .show();
     }
 }

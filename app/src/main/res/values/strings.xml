@@ -13,4 +13,5 @@
     <string name="error_files_fetch">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
     <string name="drawer_open">Öffnen</string>
     <string name="drawer_close">Schließen</string>
+    <string name="add_to_calendar">Termine zum Gerät hinzufügen</string>
 </resources>

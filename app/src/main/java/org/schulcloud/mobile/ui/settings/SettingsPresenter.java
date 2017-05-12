@@ -7,6 +7,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         if (events.isEmpty()) {
                             getMvpView().showEventsEmpty();
                         } else {
-                            // todo: start connecting
+                            getMvpView().connectToCalendar();
                         }
                     }
                 });

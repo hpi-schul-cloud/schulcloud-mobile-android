@@ -9,7 +9,8 @@ import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
-import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.Directory;
+import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
 
@@ -20,18 +21,18 @@ import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class FileSyncService extends Service {
+public class EventSyncService extends Service {
 
     @Inject
     DataManager mDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
-        return new Intent(context, FileSyncService.class);
+        return new Intent(context, EventSyncService.class);
     }
 
     public static boolean isRunning(Context context) {
-        return AndroidComponentUtil.isServiceRunning(context, FileSyncService.class);
+        return AndroidComponentUtil.isServiceRunning(context, EventSyncService.class);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class FileSyncService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
-        Timber.i("Starting file sync...");
+        Timber.i("Starting event sync...");
 
         if (!NetworkUtil.isNetworkConnected(this)) {
             Timber.i("Sync canceled, connection not available");
@@ -53,9 +54,9 @@ public class FileSyncService extends Service {
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
 
-        mSubscription = mDataManager.syncFiles()
+        mSubscription = mDataManager.syncEvents()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<File>() {
+                .subscribe(new Observer<Event>() {
                     @Override
                     public void onCompleted() {
 
@@ -67,7 +68,7 @@ public class FileSyncService extends Service {
                     }
 
                     @Override
-                    public void onNext(File file) {
+                    public void onNext(Event event) {
 
                     }
                 });

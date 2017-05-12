@@ -14,9 +14,13 @@ import org.schulcloud.mobile.data.model.requestBodies.Device;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
+
 public class FirebaseIDService extends FirebaseInstanceIdService {
     @Inject
     DataManager mDataManager;
+    private Subscription mSubscription;
+
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, FirebaseIDService.class);
@@ -55,13 +59,16 @@ public class FirebaseIDService extends FirebaseInstanceIdService {
      */
     private void sendRegistrationToServer(String token) {
         // Add custom implementation, as needed.
+
+        // TODO: Move later to Settings Activity and discard this service
         PreferencesHelper helper = new PreferencesHelper(this.getBaseContext());
         if (helper.getMessagingToken().equals("null")) {
-            helper.saveMessagingToken(token);
             Log.d(TAG, "sending registration to Server");
-            Device device = new Device("firebase", "mobile", "test", helper.getCurrentUserId(), token, "android");
+            Device device = new Device("firebase", "mobile", android.os.Build.MODEL + " ("+ android.os.Build.PRODUCT + ")", helper.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
 
-            mDataManager.createDevice(device);
+            if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
+            mSubscription = mDataManager.createDevice(device, token)
+                    .subscribe();
         } else {
             Log.d(TAG, "device already registered");
         }

@@ -139,7 +139,7 @@ public class DataManager {
 
     /**** NotificationService ****/
 
-    public Observable<DeviceResponse> createDevice(Device device) {
+    public Observable<DeviceResponse> createDevice(Device device, String token) {
         return mRestService.createDevice(
                 getAccessToken(),
                 device)
@@ -147,6 +147,7 @@ public class DataManager {
                     @Override
                     public Observable<DeviceResponse> call(DeviceResponse deviceResponse) {
                         Log.i("[DEVICE]", deviceResponse.id);
+                        mPreferencesHelper.saveMessagingToken(token);
                         return Observable.just(deviceResponse);
                     }
                 });

@@ -2,6 +2,7 @@ package org.schulcloud.mobile.data.local;
 
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
@@ -195,5 +196,33 @@ public class DatabaseHelper {
         return realm.where(Event.class).findAllAsync().asObservable()
                 .filter(events -> events.isLoaded())
                 .map(events -> realm.copyFromRealm(events));
+    }
+
+    /**** NotificationService ****/
+
+    public Observable<Device> setDevices(final Collection<Device> newDevices) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newDevices));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Device>> getDevices() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Device.class).findAllAsync().asObservable()
+                .filter(devices -> devices.isLoaded())
+                .map(devices -> realm.copyFromRealm(devices));
     }
 }

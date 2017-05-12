@@ -1,17 +1,17 @@
 package org.schulcloud.mobile.data;
 
-import android.os.Debug;
 import android.util.Log;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
-import org.schulcloud.mobile.data.model.requestBodies.Device;
+import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.remote.RestService;
@@ -142,10 +142,10 @@ public class DataManager {
 
     /**** NotificationService ****/
 
-    public Observable<DeviceResponse> createDevice(Device device, String token) {
+    public Observable<DeviceResponse> createDevice(DeviceRequest deviceRequest, String token) {
         return mRestService.createDevice(
                 getAccessToken(),
-                device)
+                deviceRequest)
                 .concatMap(new Func1<DeviceResponse, Observable<DeviceResponse>>() {
                     @Override
                     public Observable<DeviceResponse> call(DeviceResponse deviceResponse) {
@@ -154,6 +154,20 @@ public class DataManager {
                         return Observable.just(deviceResponse);
                     }
                 });
+    }
+
+    public Observable<Device> syncDevices() {
+        return mRestService.getDevices(getAccessToken())
+                .concatMap(new Func1<List<Device>, Observable<Device>>() {
+                    @Override
+                    public Observable<Device> call(List<Device> devices) {
+                        return mDatabaseHelper.setDevices(devices);
+                    }
+                });
+    }
+
+    public Observable<List<Device>> getDevices() {
+        return mDatabaseHelper.getDevices().distinct();
     }
 
     /**** Events ****/

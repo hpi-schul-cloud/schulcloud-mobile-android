@@ -84,7 +84,6 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(FileSyncService.getStartIntent(this));
             startService(DirectorySyncService.getStartIntent(this));
-            //startService(FirebaseIDService.getStartIntent(this));
         }
     }
 

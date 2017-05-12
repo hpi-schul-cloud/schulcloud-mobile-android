@@ -57,7 +57,7 @@ android {
             versionNameSuffix " Debug"
             debuggable true
 
-            buildConfigField "String", "URL_ENDPOINT", "\"https://schul-cloud.org:8080/\""
+            buildConfigField "String", "URL_ENDPOINT", "\"https://schulcloud.org:8080\""
         }
     }
 
@@ -135,6 +135,11 @@ dependencies {
     apt daggerCompiler
     testApt daggerCompiler
     androidTestApt daggerCompiler
+
+    // GMS Google and Firebase
+    apply plugin: 'com.google.gms.google-services'
+    compile 'com.google.firebase:firebase-core:9.6.1'
+    compile 'com.google.firebase:firebase-messaging:9.6.1'
 
     // Instrumentation test dependencies
     androidTestCompile jUnit

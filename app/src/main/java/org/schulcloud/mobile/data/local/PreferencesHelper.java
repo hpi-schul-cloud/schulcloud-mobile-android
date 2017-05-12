@@ -53,12 +53,24 @@ public class PreferencesHelper {
         return null;
     }
 
+    public String saveMessagingToken(String tokenId) {
+        SharedPreferences.Editor editor = mPref.edit();
+
+        editor.putString("messagingToken" , tokenId);
+        if (editor.commit()) {
+            return tokenId;
+        }
+
+        return null;
+    }
+
     public String getAccessToken() {
         return mPref.getString("jwt", "null");
     }
     public String getCurrentUserId() {
         return mPref.getString("currentUser", "null");
     }
+    public String getMessagingToken() { return mPref.getString("messagingToken", "null"); }
 
     public void clear() {
         mPref.edit().clear().apply();

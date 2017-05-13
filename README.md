@@ -41,7 +41,7 @@ Please feel free to help us with the ongoing development of this app. See open i
 
 1. Unit Tests goes into the `src/test/` directory, e.g. Model Tests
 1. Instrumented Tests goes into the `src/androidTest/` directory, e.g. Activity Tests
-1. Common Tests goes into the `src/commendTest/` directory, e.g. Util Tests
+1. Common Tests goes into the `src/commonTest/` directory, e.g. Util Tests
 
 ## Store links
 

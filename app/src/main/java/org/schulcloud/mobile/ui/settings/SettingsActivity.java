@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
@@ -30,6 +31,7 @@ import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.firebase.FirebaseIDService;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -105,7 +107,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     }
 
     @Override
-    public void connectToCalendar() {
+    public void connectToCalendar(List<Event> events) {
         // grant calendar permission, powered sdk version 23
         PermissionsUtil.checkPermissions(CALENDAR_PERMISSION_CALLBACK_ID, this, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
         CalendarContentUtil calendarContentUtil = new CalendarContentUtil(this);
@@ -120,18 +122,12 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                 this,
                 calendarValues,
                 R.string.choose_calendar)
-                .setItems(calendarValues, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        chosenValueIndex[0] = i;
-                    }
-                })
-                .setPositiveButton(R.string.dialog_action_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setItems(calendarValues, (dialogInterface, i) -> chosenValueIndex[0] = i) // update choice
+                .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> { // handle choice
+                    if (chosenValueIndex[0] != null && chosenValueIndex[0] > 0) {
                         System.out.println(calendarValues[chosenValueIndex[0]]);
-
                         // todo: send all events to calendar (via presenter)
+
                     }
                 })
                 .show();

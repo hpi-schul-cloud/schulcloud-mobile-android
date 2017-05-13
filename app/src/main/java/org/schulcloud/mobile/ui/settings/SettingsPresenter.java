@@ -57,7 +57,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         if (events.isEmpty()) {
                             getMvpView().showEventsEmpty();
                         } else {
-                            getMvpView().connectToCalendar();
+                            getMvpView().connectToCalendar(events);
                         }
                     }
                 });

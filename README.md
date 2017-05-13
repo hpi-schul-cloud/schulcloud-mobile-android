@@ -5,6 +5,18 @@ Schul-Cloud Android Application
 
 The official Android App for [Schul-Cloud](https://schul-cloud.org/).
 
+**Table of Contents**
+
+- [Setup](#setup)
+- [Development](#development)
+- [Version History](#version-history)
+- [Contribution](#how-to-name-your-branch)
+- [Architecture](#architecture)
+- [Testing](#testing)
+- [Store links](#store-links)
+- [Troubleshooting](#troubleshooting)
+
+
 ## Setup
 
 Clone git repository:
@@ -28,6 +40,13 @@ Please feel free to help us with the ongoing development of this app. See open i
 1. Take the last part of the url of your Trello ticket or GitHub Issue(e.g. "24-create-setup-instructions-in-readme")
 2. Name the branch "trelloid" (e.g. "24-create-setup-instructions-in-readme")
 
+## Architecture
+
+We follow the [MVP pattern](https://antonioleiva.com/mvp-android/) :heart:
+
+![architecture_diagram](https://cloud.githubusercontent.com/assets/9433996/26027704/e473e598-3812-11e7-9545-bbe25ba0caf9.png)
+
+Thanks to [ribot](https://github.com/ribot) for designing the project structure. Read more [here](https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md).
 
 ## Testing
 

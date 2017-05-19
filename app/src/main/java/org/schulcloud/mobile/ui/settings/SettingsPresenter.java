@@ -11,6 +11,7 @@ import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
 import java.util.List;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -37,7 +38,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
-    public void addEventsToLocalCalendar() {
+    public void loadEvents() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getEvents()
@@ -61,6 +62,15 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         }
                     }
                 });
+    }
+
+    public void writeEventsToLocalCalendar(Integer calendarId, List<Event> events, CalendarContentUtil calendarContentUtil) {
+        for (Event event : events) {
+            // syncing by deleting first and writing again
+            calendarContentUtil.deleteEventByUid(event._id);
+            calendarContentUtil.createEvent(calendarId, event);
+        }
+
     }
 
 

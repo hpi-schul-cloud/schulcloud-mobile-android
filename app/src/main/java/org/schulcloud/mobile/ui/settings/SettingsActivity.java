@@ -2,34 +2,24 @@ package org.schulcloud.mobile.ui.settings;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Event;
-import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
-import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.files.DirectoriesAdapter;
 import org.schulcloud.mobile.ui.files.FileActivity;
-import org.schulcloud.mobile.ui.files.FilesAdapter;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
-import org.schulcloud.mobile.util.firebase.FirebaseIDService;
 
 import java.util.List;
 import java.util.Set;
@@ -44,7 +34,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "org.schulcloud.mobile.ui.files.EventActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
-    private static final Integer CALENDAR_PERMISSION_CALLBACK_ID = 42;
+    public static final Integer CALENDAR_PERMISSION_CALLBACK_ID = 42;
 
     @Inject
     SettingsPresenter mSettingsPresenter;
@@ -83,7 +73,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
             startService(EventSyncService.getStartIntent(this));
         }
 
-        btn_add_calendar.setOnClickListener(view -> mSettingsPresenter.addEventsToLocalCalendar());
+        btn_add_calendar.setOnClickListener(view -> mSettingsPresenter.loadEvents());
     }
 
     @Override
@@ -125,8 +115,9 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                 .setItems(calendarValues, (dialogInterface, i) -> chosenValueIndex[0] = i) // update choice
                 .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> { // handle choice
                     if (chosenValueIndex[0] != null && chosenValueIndex[0] > 0) {
-                        System.out.println(calendarValues[chosenValueIndex[0]]);
-                        // todo: send all events to calendar (via presenter)
+                        Log.i("[CALENDAR CHOSEN]: ", calendarValues[chosenValueIndex[0]].toString());
+                        // send all events to calendar
+                        mSettingsPresenter.writeEventsToLocalCalendar(chosenValueIndex[0], events, calendarContentUtil);
 
                     }
                 })

@@ -22,9 +22,7 @@
             android:id="@+id/mdImage"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:clickable="false"
-            android:cropToPadding="false"
-            android:scaleType="centerCrop"
+            android:textSize="@dimen/fa_icon_big"
             tools:ignore="ContentDescription" />
 
         <LinearLayout

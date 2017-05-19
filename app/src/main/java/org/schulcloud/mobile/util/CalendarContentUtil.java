@@ -30,6 +30,7 @@ public class CalendarContentUtil {
     };
 
     public static final Uri CALENDAR_URI = Uri.parse("content://com.android.calendar/calendars");
+    public static final String RECURRENT_TYPE = "rrule";
 
     private ContentResolver contentResolver;
     private Set<String> calendars = new HashSet<String>();
@@ -60,7 +61,14 @@ public class CalendarContentUtil {
         return calendars;
     }
 
-    public long createEvent(Integer calendarId, Event event) {
+    /**
+     *
+     * @param calendarId {Integer} - the id of the calendar in which the event will be inserted
+     * @param event {Event} - a new event
+     * @param recurringRule {String} - a rule for recurring events, e.g. "FREQ=DAILY;COUNT=20;BYDAY=MO,TU,WE,TH,FR;WKST=MO"
+     * @return {long} - the created event it
+     */
+    public long createEvent(Integer calendarId, Event event, String recurringRule) {
         ContentValues values = new ContentValues();
         values.put(Events.DTSTART, event.start);
         values.put(Events.DTEND, event.end);
@@ -69,6 +77,10 @@ public class CalendarContentUtil {
         values.put(Events.CALENDAR_ID, calendarId);
         values.put(Events.EVENT_TIMEZONE, "Germany/Berlin");
         values.put(Events.UID_2445, event._id);
+
+        if (recurringRule != null) {
+            values.put(Events.RRULE, recurringRule);
+        }
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             PermissionsUtil.checkPermissions(CALENDAR_PERMISSION_CALLBACK_ID, (Activity) this.context, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
@@ -81,6 +93,7 @@ public class CalendarContentUtil {
         // get the event ID that is the last element in the Uri
         return Long.parseLong(uri.getLastPathSegment());
     }
+
 
     public Integer deleteEventByUid(String uid) {
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {

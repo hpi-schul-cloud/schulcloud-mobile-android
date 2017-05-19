@@ -194,7 +194,6 @@ public class DataManager {
                 .concatMap(new Func1<List<Event>, Observable<Event>>() {
                     @Override
                     public Observable<Event> call(List<Event> events) {
-                        System.out.println(events);
                         return mDatabaseHelper.setEvents(events);
                     }
                 }).doOnError(new Action1<Throwable>() {

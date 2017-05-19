@@ -13,4 +13,9 @@
     <string name="error_files_fetch">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
     <string name="drawer_open">Öffnen</string>
     <string name="drawer_close">Schließen</string>
+    <string name="add_to_calendar">Schul-Cloud Termine synchronisieren</string>
+    <string name="choose_calendar">Kalender auf dem Gerät auswählen</string>
+    <string name="sync_calendar_successful">Synchronisieren des Kalenders war erfolgreich!</string>
+    <string name="setting_section_calendar">Kalender</string>
+    <string name="setting_section_notifications">Benachrichtigungen</string>
 </resources>

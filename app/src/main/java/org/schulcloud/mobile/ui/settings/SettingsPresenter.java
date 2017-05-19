@@ -7,12 +7,17 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.model.jsonApi.Included;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.util.CalendarContentUtil;
+import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,7 +46,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
-    public void addEventsToLocalCalendar() {
+    /**
+     * fetching events from local db
+     */
+    public void loadEvents() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getEvents()
@@ -61,10 +69,62 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         if (events.isEmpty()) {
                             getMvpView().showEventsEmpty();
                         } else {
-                            // todo: start connecting
+                            getMvpView().connectToCalendar(events);
                         }
                     }
                 });
+    }
+
+    /**
+     * Syncs given Events to local calendar
+     * @param calendarId {Integer} - the calendar in which the events will be inserted
+     * @param events {List<Event>} - the events which will be inserted into the calendar
+     * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil for handling the local calendar storage
+     */
+    public void writeEventsToLocalCalendar(Integer calendarId, List<Event> events, CalendarContentUtil calendarContentUtil) {
+        for (Event event : events) {
+            // syncing by deleting first and writing again
+            calendarContentUtil.deleteEventByUid(event._id);
+
+            String recurringRule = null;
+
+            // handle recurrent events
+            try {
+                Included includedInformation = event.included.get(0);
+                if (includedInformation.getType().equals(CalendarContentUtil.RECURRENT_TYPE)) {
+                    StringBuilder builder = new StringBuilder();
+
+                    // count days/weeks from startDate to untilDate
+                    Date startDate = new Date(Long.parseLong(event.start));
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date untilDate = dateFormat.parse(includedInformation.getAttributes().getUntil());
+                    Integer betweenDates = 0;
+                    switch(includedInformation.getAttributes().getFreq()) {
+                        case "WEEKLY": betweenDates = DaysBetweenUtil.weeksBetween(startDate, untilDate); break;
+                        case "DAILY": betweenDates = DaysBetweenUtil.daysBetween(startDate, untilDate); break;
+                        default: break;
+                    }
+
+                    builder
+                            .append("FREQ=")
+                            .append(includedInformation.getAttributes().getFreq())
+                            .append(";")
+                            .append("COUNT=")
+                            .append(betweenDates)
+                            .append(";")
+                            .append("WKST=")
+                            .append(includedInformation.getAttributes().getWkst());
+
+                    recurringRule = builder.toString();
+                }
+            } catch (Exception e ) {
+                // do nothing when its not a recurrent event
+            }
+
+            calendarContentUtil.createEvent(calendarId, event, recurringRule);
+        }
+
+        getMvpView().showSyncToCalendarSuccessful();
     }
 
 

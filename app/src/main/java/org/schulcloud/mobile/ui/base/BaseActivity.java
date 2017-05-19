@@ -106,7 +106,7 @@ public class BaseActivity extends AppCompatActivity {
 
         mDrawer.post(() -> mDrawerToggle.syncState());
 
-        TextView username = (TextView) findViewById(R.id.user);
+        TextView username = (TextView) findViewById(R.id.mdHeaderTitle);
         username.setText(mPreferencesHelper.getCurrentUsername());
 
         // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is

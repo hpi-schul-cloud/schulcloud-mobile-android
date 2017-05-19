@@ -53,6 +53,18 @@ public class PreferencesHelper {
         return null;
     }
 
+    public String saveCurrentUsername(String username) {
+        SharedPreferences.Editor editor = mPref.edit();
+
+        editor.putString("username", username);
+
+        if (editor.commit()) {
+            return username;
+        }
+
+        return null;
+    }
+
     public String saveMessagingToken(String tokenId) {
         SharedPreferences.Editor editor = mPref.edit();
 
@@ -70,6 +82,7 @@ public class PreferencesHelper {
     public String getCurrentUserId() {
         return mPref.getString("currentUser", "null");
     }
+    public String getCurrentUsername() { return mPref.getString("username", "null"); }
     public String getMessagingToken() { return mPref.getString("messagingToken", "null"); }
 
     public void clear() {

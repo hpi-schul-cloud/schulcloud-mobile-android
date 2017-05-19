@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
+
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Device;
 
 import java.util.ArrayList;
@@ -19,10 +22,15 @@ import butterknife.ButterKnife;
 
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesViewHolder>{
     private List<Device> mDevices;
+    private DataManager mDataManager;
 
     @Inject
-    public DevicesAdapter() {
+    SettingsPresenter mSettingsPresenter;
+
+    @Inject
+    public DevicesAdapter(DataManager dataManager) {
         mDevices = new ArrayList<>();
+        mDataManager = dataManager;
     }
 
     public void setDevices(List<Device> devices) {
@@ -32,7 +40,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
     @Override
     public DevicesAdapter.DevicesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_file, parent, false);
+                .inflate(R.layout.item_device, parent, false);
         return new DevicesAdapter.DevicesViewHolder(itemView);
     }
 
@@ -40,6 +48,12 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
     public void onBindViewHolder(DevicesAdapter.DevicesViewHolder holder, int position) {
         Device device = mDevices.get(position);
         holder.nameTextView.setText(device.name);
+        holder.tokenText.setText(device.token);
+
+        if (mDataManager.getPreferencesHelper().getMessagingToken().equals(holder.tokenText.getText().toString())) {
+            holder.awesomeTextView.setFontAwesomeIcon("fa_trash");
+            holder.awesomeTextView.setOnClickListener(v -> mSettingsPresenter.deleteDevice(device));
+        }
     }
 
     @Override
@@ -49,7 +63,9 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
 
     class DevicesViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.device_item_icon) AwesomeTextView awesomeTextView;
         @BindView(R.id.text_name) TextView nameTextView;
+        @BindView(R.id.token) TextView tokenText;
 
         public DevicesViewHolder(View itemView) {
             super(itemView);

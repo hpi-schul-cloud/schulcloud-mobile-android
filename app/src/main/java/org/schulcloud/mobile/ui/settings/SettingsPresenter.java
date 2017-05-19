@@ -8,6 +8,7 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
+import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -70,10 +72,14 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         super.isAlreadySignedIn(mDataManager);
     }
 
+    public String getFireBaseToken() {
+        return FirebaseInstanceId.getInstance().getToken();
+    }
+
     public void registerDevice() {
 
         if (mDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
-            String token = FirebaseInstanceId.getInstance().getToken();
+            String token = getFireBaseToken();
             Log.d("FirebaseID", "Refreshed token: " + token);
 
             Log.d("FirebaseID", "sending registration to Server");
@@ -82,12 +88,21 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
             if (mSubscription != null && !mSubscription.isUnsubscribed())
                 mSubscription.unsubscribe();
             mSubscription = mDataManager.createDevice(deviceRequest, token)
-                    .subscribe();
-        }
-    }
+                    .subscribe(new Subscriber<DeviceResponse>() {
+                        @Override
+                        public void onCompleted() {
+                            getMvpView().reload();
+                        }
 
-    public void unregisterDevice() {
-        // TODO: To be implemented
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(DeviceResponse device) {
+                        }
+                    });
+        }
     }
 
     public void loadDevices() {
@@ -115,6 +130,30 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         }
                     }
                 });
+    }
+
+    public void deleteDevice(Device device) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
+            mSubscription.unsubscribe();
+        mSubscription = mDataManager.deleteDevice(device.token)
+                .subscribe(
+                        new Subscriber<Response<Void>> () {
+            @Override
+            public void onCompleted () {
+                getMvpView().reload();
+                mDataManager.getPreferencesHelper().clear("messagingToken");
+            }
+
+            @Override
+            public void onError (Throwable e) {
+
+            }
+
+            @Override
+            public void onNext (Response<Void> empty) {
+
+            }
+        });
     }
 
 }

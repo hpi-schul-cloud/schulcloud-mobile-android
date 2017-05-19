@@ -15,6 +15,7 @@ import java.util.List;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -48,4 +49,7 @@ public interface RestService {
 
     @POST("notification/callback")
     Observable<Response<Void>> sendCallback(@Header("Authorization") String accessToken, @Body CallbackRequest callbackRequest);
+
+    @DELETE("notification/devices/{id}")
+    Observable<Response<Void>> deleteDevice(@Header("Authorization") String accessToken, @Path("id") String id);
 }

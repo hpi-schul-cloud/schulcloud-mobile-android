@@ -160,6 +160,8 @@ public class DataManager {
     }
 
     public Observable<Device> syncDevices() {
+        mDatabaseHelper.clearTable(Device.class);
+
         return mRestService.getDevices(getAccessToken())
                 .concatMap(new Func1<List<Device>, Observable<Device>>() {
                     @Override
@@ -175,6 +177,10 @@ public class DataManager {
 
     public Observable<Response<Void>> sendCallback(CallbackRequest callbackRequest) {
         return mRestService.sendCallback(getAccessToken(), callbackRequest);
+    }
+
+    public Observable<Response<Void>> deleteDevice(String deviceId) {
+        return mRestService.deleteDevice(getAccessToken(), deviceId);
     }
 
     /**** Events ****/

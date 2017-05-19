@@ -10,4 +10,6 @@ public interface SettingsMvpView extends MvpView {
 
     void showDevices(List<Device> devices);
 
+    void reload();
+
 }

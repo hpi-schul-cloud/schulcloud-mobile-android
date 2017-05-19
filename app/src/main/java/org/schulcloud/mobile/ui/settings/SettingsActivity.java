@@ -111,4 +111,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         mDevicesAdapter.setDevices(devices);
         mDevicesAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void reload() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        this.startActivity(intent);
+        finish();
+    }
 }

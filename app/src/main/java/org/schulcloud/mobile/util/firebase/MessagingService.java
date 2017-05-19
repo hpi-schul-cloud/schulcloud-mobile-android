@@ -12,10 +12,27 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.SchulCloudApplication;
+import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.ui.files.FileActivity;
+
+import javax.inject.Inject;
+
+import rx.Subscription;
 
 public class MessagingService extends FirebaseMessagingService {
     private static final String TAG = "FCM Service";
+
+    @Inject
+    DataManager mDataManager;
+    private Subscription mSubscription;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        SchulCloudApplication.get(this).getComponent().inject(this);
+    }
 
     /**
      * Handles the FCM Message here
@@ -26,8 +43,24 @@ public class MessagingService extends FirebaseMessagingService {
         JsonParser parser = new JsonParser();
         JsonObject message =  parser.parse(remoteMessage.getData().get("news")).getAsJsonObject();
         sendNotification(message.get("title").getAsString(), message.get("body").getAsString());
+        String notificationId = parser.parse((remoteMessage.getData()).get("notificationId")).getAsString();
+        sendCallback(notificationId);
 
         // TODO: Implement Callback.
+    }
+
+
+    /**
+     * Method to send a callback for a received message.
+     * @param notificationId id which identifies the notification.
+     */
+    private void sendCallback(String notificationId) {
+        CallbackRequest callbackRequest = new CallbackRequest(notificationId, "received");
+
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
+            mSubscription.unsubscribe();
+        mSubscription = mDataManager.sendCallback(callbackRequest)
+                .subscribe();
     }
 
     /**

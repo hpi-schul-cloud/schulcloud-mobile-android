@@ -2,24 +2,27 @@ package org.schulcloud.mobile.ui.settings;
 
 import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
-import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.jsonApi.Included;
+import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
+import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.inject.Inject;
 
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -127,6 +130,90 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     public void checkSignedIn() {
         super.isAlreadySignedIn(mDataManager);
+    }
+
+    public String getFireBaseToken() {
+        return FirebaseInstanceId.getInstance().getToken();
+    }
+
+    public void registerDevice() {
+
+        if (mDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
+            String token = getFireBaseToken();
+            Log.d("FirebaseID", "Refreshed token: " + token);
+
+            Log.d("FirebaseID", "sending registration to Server");
+            DeviceRequest deviceRequest = new DeviceRequest("firebase", "mobile", android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")", mDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
+
+            if (mSubscription != null && !mSubscription.isUnsubscribed())
+                mSubscription.unsubscribe();
+            mSubscription = mDataManager.createDevice(deviceRequest, token)
+                    .subscribe(new Subscriber<DeviceResponse>() {
+                        @Override
+                        public void onCompleted() {
+                            getMvpView().reload();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(DeviceResponse device) {
+                        }
+                    });
+        }
+    }
+
+    public void loadDevices() {
+        checkViewAttached();
+        RxUtil.unsubscribe(mSubscription);
+        mSubscription = mDataManager.getDevices()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Device>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "There was an error loading the users.");
+                        //TODO: Show error
+                    }
+
+                    @Override
+                    public void onNext(List<Device> devices) {
+                        if (devices.isEmpty()) {
+                            // TODO: Show something
+                        } else {
+                            getMvpView().showDevices(devices);
+                        }
+                    }
+                });
+    }
+
+    public void deleteDevice(Device device) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed())
+            mSubscription.unsubscribe();
+        mSubscription = mDataManager.deleteDevice(device.token)
+                .subscribe(
+                        new Subscriber<Response<Void>> () {
+            @Override
+            public void onCompleted () {
+                getMvpView().reload();
+                mDataManager.getPreferencesHelper().clear("messagingToken");
+            }
+
+            @Override
+            public void onError (Throwable e) {
+
+            }
+
+            @Override
+            public void onNext (Response<Void> empty) {
+
+            }
+        });
     }
 
 }

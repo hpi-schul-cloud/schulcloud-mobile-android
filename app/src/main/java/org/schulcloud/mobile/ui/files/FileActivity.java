@@ -16,7 +16,6 @@ import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
-import org.schulcloud.mobile.util.firebase.FirebaseIDService;
 
 import java.util.List;
 
@@ -86,8 +85,6 @@ public class FileActivity extends BaseActivity implements FileMvpView {
             startService(FileSyncService.getStartIntent(this));
             startService(DirectorySyncService.getStartIntent(this));
         }
-
-        startService(FirebaseIDService.getStartIntent(this));
     }
 
     @Override

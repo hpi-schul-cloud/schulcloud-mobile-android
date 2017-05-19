@@ -16,6 +16,7 @@ import org.schulcloud.mobile.injection.ApplicationContext;
 import org.schulcloud.mobile.injection.module.ApplicationModule;
 import org.schulcloud.mobile.injection.module.RestModule;
 import org.schulcloud.mobile.util.RxEventBus;
+import org.schulcloud.mobile.util.firebase.MessagingService;
 
 import javax.inject.Singleton;
 
@@ -31,6 +32,7 @@ public interface ApplicationComponent {
     void inject(DirectorySyncService directorySyncService);
     void inject(EventSyncService eventSyncService);
     void inject(DeviceSyncService deviceSyncService);
+    void inject(MessagingService messagingService);
 
     @ApplicationContext Context context();
     Application application();

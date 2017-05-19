@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data;
 
 import android.util.Log;
+
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
@@ -10,6 +11,7 @@ import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
@@ -22,6 +24,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import retrofit2.Response;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -157,7 +160,7 @@ public class DataManager {
     }
 
     public Observable<Device> syncDevices() {
-        return mRestService.getDevices(getAccessToken(), getCurrentUserId())
+        return mRestService.getDevices(getAccessToken())
                 .concatMap(new Func1<List<Device>, Observable<Device>>() {
                     @Override
                     public Observable<Device> call(List<Device> devices) {
@@ -168,6 +171,10 @@ public class DataManager {
 
     public Observable<List<Device>> getDevices() {
         return mDatabaseHelper.getDevices().distinct();
+    }
+
+    public Observable<Response<Void>> sendCallback(CallbackRequest callbackRequest) {
+        return mRestService.sendCallback(getAccessToken(), callbackRequest);
     }
 
     /**** Events ****/

@@ -8,6 +8,7 @@ import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
+import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.injection.ApplicationContext;
@@ -28,6 +29,7 @@ public interface ApplicationComponent {
     void inject(UserSyncService userSyncService);
     void inject(FileSyncService fileSyncService);
     void inject(DirectorySyncService directorySyncService);
+    void inject(EventSyncService eventSyncService);
     void inject(FirebaseIDService firebaseIDService);
 
 

@@ -118,7 +118,6 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_VERSION"
     compile "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
     compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP_VERSION"
-    compile 'com.beardedhen:androidbootstrap:2.3.0'
 
     compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
         transitive = true;
@@ -138,8 +137,6 @@ dependencies {
 
     // GMS Google and Firebase
     apply plugin: 'com.google.gms.google-services'
-    compile 'com.google.firebase:firebase-core:9.6.1'
-    compile 'com.google.firebase:firebase-messaging:9.6.1'
 
     // Instrumentation test dependencies
     androidTestCompile jUnit
@@ -167,6 +164,9 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-core:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-integration:$HAMCREST_VERSION"
+    compile 'com.beardedhen:androidbootstrap:2.3.0'
+    compile 'com.google.firebase:firebase-core:9.6.1'
+    compile 'com.google.firebase:firebase-messaging:9.6.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'

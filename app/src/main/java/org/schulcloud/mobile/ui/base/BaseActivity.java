@@ -23,6 +23,7 @@ import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -44,6 +45,7 @@ public class BaseActivity extends AppCompatActivity {
             "About",
             "Impressum",
             "Kontakt",
+            "Einstellungen",
             "Ausloggen",
     };
 
@@ -52,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
             FontAwesome.FA_COMPASS,
             FontAwesome.FA_INFO,
             FontAwesome.FA_CONTAO,
+            FontAwesome.FA_COGS,
             FontAwesome.FA_SIGN_OUT
     };
 
@@ -134,7 +137,10 @@ public class BaseActivity extends AppCompatActivity {
             case 3: // impressum
                 c = BaseActivity.class;
                 break;
-            case 4: // logout
+            case 4: // settings
+                c = SettingsActivity.class;
+                break;
+            case 5: // logout
                 // delete accessToken and currentUser
                 mPreferencesHelper.clear("jwt");
                 mPreferencesHelper.clear("currentUser");

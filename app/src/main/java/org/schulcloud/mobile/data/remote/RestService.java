@@ -2,6 +2,7 @@ package org.schulcloud.mobile.data.remote;
 
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.Device;
@@ -35,4 +36,7 @@ public interface RestService {
 
     @POST("notification/devices")
     Observable<DeviceResponse> createDevice(@Header("Authorization") String accessToken, @Body Device device);
+
+    @GET("calendar?all=true")
+    Observable<List<Event>> getEvents(@Header("Authorization") String accessToken);
 }

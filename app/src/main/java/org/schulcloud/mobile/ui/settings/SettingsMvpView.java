@@ -8,4 +8,5 @@ import java.util.List;
 public interface SettingsMvpView extends MvpView {
     void showEventsEmpty();
     void connectToCalendar(List<Event> events);
+    void showSyncToCalendarSuccessful();
 }

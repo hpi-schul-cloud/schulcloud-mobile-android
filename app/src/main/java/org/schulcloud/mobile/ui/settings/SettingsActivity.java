@@ -116,11 +116,16 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                 .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> { // handle choice
                     if (chosenValueIndex[0] != null && chosenValueIndex[0] > 0) {
                         Log.i("[CALENDAR CHOSEN]: ", calendarValues[chosenValueIndex[0]].toString());
+                        
                         // send all events to calendar
                         mSettingsPresenter.writeEventsToLocalCalendar(chosenValueIndex[0], events, calendarContentUtil);
-
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void showSyncToCalendarSuccessful() {
+        Toast.makeText(this, R.string.sync_calendar_successful, Toast.LENGTH_LONG).show();
     }
 }

@@ -41,6 +41,10 @@ public class CalendarContentUtil {
         this.contentResolver = ctx.getContentResolver();
     }
 
+    /**
+     * fetching all calendars from local android calendar db
+     * @return a set of all calendars
+     */
     public Set<String> getCalendars() {
         // Fetch a list of all calendars sync'd with the device and their display names
         Cursor cursor = contentResolver.query(CALENDAR_URI, FIELDS, null, null, null);
@@ -94,7 +98,11 @@ public class CalendarContentUtil {
         return Long.parseLong(uri.getLastPathSegment());
     }
 
-
+    /**
+     * deletes a event in the local android event db for a given uid (the _id property of the event-model)
+     * @param uid {String} - a uid of a event which will be deleted
+     * @return {Integer} - the id of the deleted event
+     */
     public Integer deleteEventByUid(String uid) {
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             PermissionsUtil.checkPermissions(CALENDAR_PERMISSION_CALLBACK_ID, (Activity) this.context, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);

@@ -43,6 +43,9 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         if (mSubscription != null) mSubscription.unsubscribe();
     }
 
+    /**
+     * fetching events from local db
+     */
     public void loadEvents() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
@@ -69,6 +72,12 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 });
     }
 
+    /**
+     * Syncs given Events to local calendar
+     * @param calendarId {Integer} - the calendar in which the events will be inserted
+     * @param events {List<Event>} - the events which will be inserted into the calendar
+     * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil for handling the local calendar storage
+     */
     public void writeEventsToLocalCalendar(Integer calendarId, List<Event> events, CalendarContentUtil calendarContentUtil) {
         for (Event event : events) {
             // syncing by deleting first and writing again
@@ -112,6 +121,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
             calendarContentUtil.createEvent(calendarId, event, recurringRule);
         }
 
+        getMvpView().showSyncToCalendarSuccessful();
     }
 
 

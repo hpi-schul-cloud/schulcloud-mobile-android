@@ -54,7 +54,8 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         activityComponent().inject(this);
         //setContentView(R.layout.activity_main);
 
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater =
+                (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_main, null, false);
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mRecyclerView.setAdapter(mUsersAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
-        mMainPresenter.checkSignedIn();
+        mMainPresenter.checkSignedIn(this);
 
         mMainPresenter.loadUsers();
 

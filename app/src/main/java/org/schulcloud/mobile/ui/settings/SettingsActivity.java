@@ -79,7 +79,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
         mSettingsPresenter.attachView(this);
-        mSettingsPresenter.checkSignedIn();
+        mSettingsPresenter.checkSignedIn(this);
 
         mSettingsPresenter.loadDevices();
 
@@ -128,7 +128,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @Override
     public void connectToCalendar(List<Event> events) {
         // grant calendar permission, powered sdk version 23
-        PermissionsUtil.checkPermissions(CALENDAR_PERMISSION_CALLBACK_ID, this, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
+        PermissionsUtil.checkPermissions(
+                CALENDAR_PERMISSION_CALLBACK_ID,
+                this,
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR);
         CalendarContentUtil calendarContentUtil = new CalendarContentUtil(this);
 
         Set<String> calendars = calendarContentUtil.getCalendars();

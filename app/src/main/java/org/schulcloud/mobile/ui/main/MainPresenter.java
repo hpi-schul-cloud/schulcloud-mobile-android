@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.ui.main;
 
+import android.content.Context;
+
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
@@ -60,8 +62,8 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                 });
     }
 
-    public void checkSignedIn() {
-        super.isAlreadySignedIn(mDataManager);
+    public void checkSignedIn(Context context) {
+        super.isAlreadySignedIn(mDataManager, context);
     }
 
 }

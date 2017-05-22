@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.ui.files;
 
+import android.content.Context;
+
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -71,8 +73,8 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         });
     }
 
-    public void checkSignedIn() {
-        super.isAlreadySignedIn(mDataManager);
+    public void checkSignedIn(Context context) {
+        super.isAlreadySignedIn(mDataManager, context);
     }
 }
 

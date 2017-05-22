@@ -106,15 +106,14 @@ public class DataManager {
     /**** FileStorage ****/
 
     public Observable<File> syncFiles() {
-        // clear old files
-        mDatabaseHelper.clearTable(File.class);
-
         return mRestService.getFiles(
                 getAccessToken(),
                 "users/" + getCurrentUserId())
                 .concatMap(new Func1<FilesResponse, Observable<File>>() {
                     @Override
                     public Observable<File> call(FilesResponse filesResponse) {
+                        // clear old files
+                        mDatabaseHelper.clearTable(File.class);
                         return mDatabaseHelper.setFiles(filesResponse.files);
                     }
                 });
@@ -125,8 +124,6 @@ public class DataManager {
     }
 
     public Observable<Directory> syncDirectories() {
-        // clear old files
-        mDatabaseHelper.clearTable(Directory.class);
 
         return mRestService.getFiles(
                 getAccessToken(),
@@ -134,6 +131,8 @@ public class DataManager {
                 .concatMap(new Func1<FilesResponse, Observable<Directory>>() {
                     @Override
                     public Observable<Directory> call(FilesResponse filesResponse) {
+                        // clear old directories
+                        mDatabaseHelper.clearTable(Directory.class);
                         return mDatabaseHelper.setDirectories(filesResponse.directories);
                     }
                 });
@@ -161,12 +160,12 @@ public class DataManager {
     }
 
     public Observable<Device> syncDevices() {
-        mDatabaseHelper.clearTable(Device.class);
-
         return mRestService.getDevices(getAccessToken())
                 .concatMap(new Func1<List<Device>, Observable<Device>>() {
                     @Override
                     public Observable<Device> call(List<Device> devices) {
+                        // clear old devices
+                        mDatabaseHelper.clearTable(Device.class);
                         return mDatabaseHelper.setDevices(devices);
                     }
                 });
@@ -187,14 +186,13 @@ public class DataManager {
     /**** Events ****/
 
     public Observable<Event> syncEvents() {
-        // clear old events
-        mDatabaseHelper.clearTable(Event.class);
-
         return mRestService.getEvents(
                 getAccessToken())
                 .concatMap(new Func1<List<Event>, Observable<Event>>() {
                     @Override
                     public Observable<Event> call(List<Event> events) {
+                        // clear old events
+                        mDatabaseHelper.clearTable(Event.class);
                         return mDatabaseHelper.setEvents(events);
                     }
                 }).doOnError(new Action1<Throwable>() {

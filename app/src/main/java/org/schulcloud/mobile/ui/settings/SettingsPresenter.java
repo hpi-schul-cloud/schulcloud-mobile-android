@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.settings;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -134,8 +135,8 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
 
-    public void checkSignedIn() {
-        super.isAlreadySignedIn(mDataManager);
+    public void checkSignedIn(Context context) {
+        super.isAlreadySignedIn(mDataManager, context);
     }
 
     public String getFireBaseToken() {

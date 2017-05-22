@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">Schul-Cloud Mobile</string>
+    <string name="app_name">Schul-Cloud</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="title_files">Dateien</string>
+    <string name="title_settings">Einstellungen</string>
 
     <string name="dialog_action_ok">OK</string>
     <string name="dialog_action_cancel">Abbrechen</string>

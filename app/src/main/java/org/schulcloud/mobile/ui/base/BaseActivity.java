@@ -40,7 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     protected DrawerLayout mDrawer;
     protected ListView mDrawerList;
     protected ActionBarDrawerToggle mDrawerToggle;
-    private Toolbar mToolbar;
+    public Toolbar mToolbar;
     // todo: maybe move this to DataManager
     private PreferencesHelper mPreferencesHelper;
     // Curently just nonsense Data and Logos, change here for the actual list

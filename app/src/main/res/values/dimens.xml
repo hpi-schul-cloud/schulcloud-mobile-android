@@ -9,6 +9,7 @@
     <dimen name="text_large_body">18sp</dimen>
     <dimen name="text_body">16sp</dimen>
     <dimen name="text_small_body">14sp</dimen>
+    <dimen name="text_very_small_body">10sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fa_icon_big">32sp</dimen>
 

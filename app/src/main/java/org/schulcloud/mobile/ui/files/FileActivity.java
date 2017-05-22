@@ -66,6 +66,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_files, null, false);
         mDrawer.addView(contentView, 0);
+        mToolbar.setTitle(R.string.title_files);
         ButterKnife.bind(this);
 
         fileRecyclerView.setAdapter(mFilesAdapter);

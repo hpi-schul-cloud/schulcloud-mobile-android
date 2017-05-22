@@ -11,13 +11,14 @@ import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
+import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.test.common.TestComponentRule;
+import org.schulcloud.mobile.test.common.TestDataFactory;
+import org.schulcloud.mobile.ui.main.MainActivity;
 
 import java.util.List;
 
-import org.schulcloud.mobile.data.model.User;
-import org.schulcloud.mobile.test.common.TestDataFactory;
-import org.schulcloud.mobile.test.common.TestComponentRule;
-import org.schulcloud.mobile.ui.main.MainActivity;
 import rx.Observable;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -51,9 +52,14 @@ public class MainActivityTest {
 
     @Test
     public void listOfUsersShows() {
+        final String FAKE_USER_ID = "fakeUserId";
         List<User> testDataUsers = TestDataFactory.makeListUsers(20);
         when(component.getMockDataManager().getUsers())
                 .thenReturn(Observable.just(testDataUsers));
+        when(component.getMockDataManager().getCurrentUserId())
+                .thenReturn(FAKE_USER_ID);
+        when(component.getMockDataManager().syncCurrentUser(FAKE_USER_ID))
+                .thenReturn(Observable.just(new CurrentUser()));
 
         main.launchActivity(null);
 

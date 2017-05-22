@@ -26,6 +26,7 @@ import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
+import org.schulcloud.mobile.util.NetworkUtil;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -75,6 +76,11 @@ public class BaseActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        if (!NetworkUtil.isNetworkConnected(this.getBaseContext())) {
+            TextView offline = (TextView) findViewById(R.id.offlineBadge);
+            offline.setVisibility(View.VISIBLE);
+        }
 
         // Idea found on StackOverflow
         // http://stackoverflow.com/questions/21405958/how-to-display-navigation-drawer-in-all-activities

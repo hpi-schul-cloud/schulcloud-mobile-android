@@ -17,4 +17,6 @@ public interface FileMvpView extends MvpView {
     void showLoadingFileFromServerError();
 
     void showFile(String url, String mimeType);
+
+    void reloadFiles();
 }

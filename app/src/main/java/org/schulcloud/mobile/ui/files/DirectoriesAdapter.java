@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.files;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Directory;
 
 import java.util.ArrayList;
@@ -20,6 +22,11 @@ import butterknife.ButterKnife;
 
 public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.DirectoriesViewHolder> {
     private List<Directory> mDirectories;
+
+    @Inject
+    FilePresenter mFilesPresenter;
+    @Inject
+    DataManager dataManager;
 
     @Inject
     public DirectoriesAdapter() {
@@ -41,6 +48,16 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
     public void onBindViewHolder(DirectoriesViewHolder holder, int position) {
         Directory directory = mDirectories.get(position);
         holder.nameTextView.setText(directory.name);
+        holder.cardView.setOnClickListener(v -> {
+            String path = dataManager.getCurrentStorageContext() + directory.name;
+
+            // remove leading slash
+            if (path.indexOf("/") == 0) {
+                path = path.substring(1);
+            }
+
+            mFilesPresenter.goIntoDirectory(path);
+        });
     }
 
     @Override
@@ -52,6 +69,8 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
 
         @BindView(R.id.text_name)
         TextView nameTextView;
+        @BindView(R.id.card_view)
+        CardView cardView;
 
 
         public DirectoriesViewHolder(View itemView) {

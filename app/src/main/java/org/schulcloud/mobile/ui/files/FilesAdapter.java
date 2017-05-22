@@ -25,12 +25,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     @Inject
     FilePresenter mFilesPresenter;
     private List<File> mFiles;
-    private DataManager mDataManager;
 
     @Inject
-    public FilesAdapter(DataManager dataManager) {
+    public FilesAdapter() {
         mFiles = new ArrayList<>();
-        mDataManager = dataManager;
     }
 
     public void setFiles(List<File> files) {

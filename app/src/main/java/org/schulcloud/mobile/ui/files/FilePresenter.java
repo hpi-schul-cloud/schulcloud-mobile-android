@@ -152,6 +152,15 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 });
     }
 
+    /**
+     * Opens a directory by fetching files for new storageContext
+     * @param dirName {String} - the directory's name for which the files will be fetched
+     */
+    public void goIntoDirectory(String dirName) {
+        mDataManager.setCurrentStorageContext(dirName);
+        getMvpView().reloadFiles();
+    }
+
     public void checkSignedIn(Context context) {
         super.isAlreadySignedIn(mDataManager, context);
     }

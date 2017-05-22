@@ -15,6 +15,7 @@ import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
 
@@ -124,6 +125,13 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), mimeType);
         startActivity(intent);
+    }
+
+    @Override
+    public void reloadFiles() {
+        Intent intent = new Intent(this, FileActivity.class);
+        this.startActivity(intent);
+        finish();
     }
 
     @Override

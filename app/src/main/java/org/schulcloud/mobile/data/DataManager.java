@@ -21,7 +21,9 @@ import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.JWTUtil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -108,10 +110,9 @@ public class DataManager {
 
     /**** FileStorage ****/
 
-    public Observable<File> syncFiles() {
-        return mRestService.getFiles(
-                getAccessToken(),
-                "users/" + getCurrentUserId())
+    public Observable<File> syncFiles(String path) {
+        // "users/" + getCurrentUserId()
+        return mRestService.getFiles(getAccessToken(), path)
                 .concatMap(new Func1<FilesResponse, Observable<File>>() {
                     @Override
                     public Observable<File> call(FilesResponse filesResponse) {
@@ -123,27 +124,49 @@ public class DataManager {
     }
 
     public Observable<List<File>> getFiles() {
-        return mDatabaseHelper.getFiles().distinct();
+        return mDatabaseHelper.getFiles().distinct().concatMap(files -> {
+            List<File> filteredFiles = new ArrayList<File>();
+            String currentContext = getCurrentStorageContext();
+            // remove last trailing slash
+            if (!currentContext.equals("/") && currentContext.endsWith("/")) {
+                currentContext = currentContext.substring(0, currentContext.length() - 1);
+            }
+
+            for (File f : files) {
+                if (f.path.equals(currentContext)) filteredFiles.add(f);
+            }
+            return Observable.just(filteredFiles);
+        });
     }
 
-    public Observable<Directory> syncDirectories() {
-
-        return mRestService.getFiles(
-                getAccessToken(),
-                "users/" + getCurrentUserId())
+    public Observable<Directory> syncDirectories(String path) {
+        return mRestService.getFiles(getAccessToken(), path)
                 .concatMap(new Func1<FilesResponse, Observable<Directory>>() {
                     @Override
                     public Observable<Directory> call(FilesResponse filesResponse) {
                         // clear old directories
                         mDatabaseHelper.clearTable(Directory.class);
-                        return mDatabaseHelper.setDirectories(filesResponse.directories);
+
+                        List<Directory> improvedDirs = new ArrayList<Directory>();
+                        for(Directory d : filesResponse.directories) {
+                            d.path = getCurrentStorageContext();
+                            improvedDirs.add(d);
+                        }
+
+                        return mDatabaseHelper.setDirectories(improvedDirs);
                     }
                 });
 
     }
 
     public Observable<List<Directory>> getDirectories() {
-        return mDatabaseHelper.getDirectories().distinct();
+        return mDatabaseHelper.getDirectories().distinct().concatMap(directories -> {
+            List<Directory> filteredDirectories = new ArrayList<Directory>();
+            for (Directory d : directories) {
+                if (d.path.equals(getCurrentStorageContext())) filteredDirectories.add(d);
+            }
+            return Observable.just(filteredDirectories);
+        });
     }
 
     public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
@@ -152,6 +175,15 @@ public class DataManager {
 
     public Observable<ResponseBody> downloadFile(String url) {
         return mRestService.downloadFile(url);
+    }
+
+    public String getCurrentStorageContext() {
+        String storageContext = mPreferencesHelper.getCurrentStorageContext();
+        return storageContext.equals("null") ? "/" : "/" + storageContext + "/";
+    }
+
+    public void setCurrentStorageContext(String newStorageContext) {
+        mPreferencesHelper.saveCurrentStorageContext(newStorageContext);
     }
 
     /**** NotificationService ****/

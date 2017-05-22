@@ -238,12 +238,7 @@ public class DataManager {
                         mDatabaseHelper.clearTable(Event.class);
                         return mDatabaseHelper.setEvents(events);
                     }
-                }).doOnError(new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        System.err.println(throwable.getStackTrace());
-                    }
-                });
+                }).doOnError(throwable -> System.err.println(throwable.getStackTrace()));
     }
 
     public Observable<List<Event>> getEvents() {

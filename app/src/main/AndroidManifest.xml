@@ -75,7 +75,7 @@
             android:label="@string/app_name"></activity>
         <activity
             android:name=".ui.files.FileActivity"
-            android:label="@string/app_name">
+            android:label="@string/title_files">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -92,7 +92,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.settings.SettingsActivity"></activity>
+        <activity android:name=".ui.settings.SettingsActivity"
+            android:label="@string/title_settings">
+        </activity>
     </application>
 
 </manifest>

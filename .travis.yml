@@ -2,36 +2,48 @@ sudo: required
 language: android
 android:
   components:
-    - platform-tools
-    - tools
-    - build-tools-25.0.3
-    - android-25
-    - extra-android-m2repository
-    - extra-google-m2repository
-    - extra-android-support
-    - extra-google-google_play_services
-
+  - platform-tools
+  - tools
+  - build-tools-25.0.3
+  - android-25
+  - extra-android-m2repository
+  - extra-google-m2repository
+  - extra-android-support
+  - extra-google-google_play_services
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 before_install:
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-
+- mkdir "$ANDROID_HOME/licenses" || true
+- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+- chmod +x gradlew
+- export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
+- export JAVA_HOME=$JAVA8_HOME
+- chmod +x .travis/upload-apk.sh
 install:
-  - chmod a+x .travis/install-git-crypt
-  - ./.travis/install-git-crypt
-
+- chmod a+x .travis/install-git-crypt
+- "./.travis/install-git-crypt"
 before_script:
-  - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a --skin 480x800
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
-  - sleep 10
-  - adb shell settings put global window_animation_scale 0
-  - adb shell settings put global transition_animation_scale 0
-  - adb shell settings put global animator_duration_scale 0
-  - adb shell input keyevent 82
-
+- echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a --skin
+  480x800
+- emulator -avd test -no-audio -no-window &
+- android-wait-for-emulator
+- sleep 10
+- adb shell settings put global window_animation_scale 0
+- adb shell settings put global transition_animation_scale 0
+- adb shell settings put global animator_duration_scale 0
+- adb shell input keyevent 82
+after_success:
+#- "./.travis/upload-apk.sh"
 script:
-   - ./gradlew assembleDebug testDebugUnitTest connectedDebugAndroidTest
+- "./gradlew assembleDebug testDebugUnitTest connectedDebugAndroidTest"
+deploy:
+  provider: releases
+  api_key:
+    secure: p9rg9bXlJuv+GcriFxTKIA6K0cKugPgC5Rb012M6l23gEUkMzutZWH+gDrCO0wk6NgPRP/Mg1U0K4NcySg+j/UWGNlplb9zs7Z1D2ehIhbjkrhmVRheAntsqdtxib6oSZUb8gcHj75c6Rbsfiq3dqhRN9p+q/FiSnkKHcFSYc7Pg4NjLuT/xVRzF3gNMFzSn2H/qP5kBB8UInXvMoMBsTczPo6gimNEGFCbv2Laym/wJoZn63qHFCsPs7shtS0x9xCfuYd8WL0uKxPIxxpDQkxcKHgRu4UHdsVK3HkmUqEYNa15tne8io717yG0fUSI3JiyTAsP0uqdBYOkDkOiui2BdOG3azh+40Pyk4GjNDFFOOcGNSao0kcQ7P94YjLUOmsSAxhp5j5u8OZr1VH2TRj0ms931C3YdkqZtlHengSI83g152HCQ6pIZj/02zR3eZ2ZoaHrveNwKp9Guuez2NAiGxqO7VqFPn7mQGk8KRwGBQhNEYWJIlWZHMtBFxPZullzYrHZ1KlRak9Dz4DOPqnxG0LMd/0bu96qGad1wv1RpoSj6ObCmkVJ7OGKam0jMc9icKf7Rv2yQYidnkl5KD7M/pXmpwbkd83DcqX+eMv1zyejlKbvbvLdwhTcvsHvxJu5ZVxfY0qvEBrW3/hvX+4A/4IcoIqxCiwjJAEc1ieo=
+  file: "$TRAVIS_BUILD_DIR/app/build/outputs/apk/app-debug.apk"
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: schul-cloud/schulcloud-mobile-android
+    branch: upload_apk

@@ -1,6 +1,9 @@
 package org.schulcloud.mobile.ui.base;
 
+import android.content.Context;
+
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.util.NetworkUtil;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,7 +45,7 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
     /**
      * Checks whether there is already a logged-in user, if not so go to sign-in screen
      */
-    public void isAlreadySignedIn(DataManager dataManager) {
+    public void isAlreadySignedIn(DataManager dataManager, Context context) {
         // 1. try to get currentUser from prefs
         String currentUserId = dataManager.getCurrentUserId();
 
@@ -52,21 +55,23 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
             return;
         }
 
-        // 2. if there is a valid jwt in the storage
-        mSubscription = dataManager.syncCurrentUser(currentUserId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe
-                        (// onNext
-                                currentUser -> {
-                                },
-                                // onError, check failed
-                                error -> {
-                                    Timber.e(error, "There was an error while fetching currentUser.");
-                                    getMvpView().goToSignIn();
-                                },
-                                // onCompleted, check success -> stay in current activity
-                                () -> {
-                                });
+        // 2. if there is a valid jwt in the storage (just online)
+        if (NetworkUtil.isNetworkConnected(context)) {
+            mSubscription = dataManager.syncCurrentUser(currentUserId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe
+                            (       // onNext
+                                    currentUser -> {
+                                    },
+                                    // onError, check failed
+                                    error -> {
+                                        Timber.e(error, "There was an error while fetching currentUser.");
+                                        getMvpView().goToSignIn();
+                                    },
+                                    // onCompleted, check success -> stay in current activity
+                                    () -> {
+                                    });
+        }
 
     }
 

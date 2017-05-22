@@ -8,18 +8,49 @@ public class SignedUrlResponse {
     public SignedUrlResponseHeader header;
 
 
-    private class SignedUrlResponseHeader {
+    public class SignedUrlResponseHeader {
         @SerializedName("Content-Type")
-        public String contentType;
+        private String contentType;
 
         @SerializedName("x-amz-meta-path")
-        public String metaPath;
+        private String metaPath;
 
         @SerializedName("x-amz-meta-name")
-        public String metaName;
+        private String metaName;
 
         @SerializedName("x-amz-meta-thumbnail")
-        public String metaThumbnail;
+        private String metaThumbnail;
 
+        public String getContentType() {
+            return contentType;
+        }
+
+        public void setContentType(String contentType) {
+            this.contentType = contentType;
+        }
+
+        public String getMetaPath() {
+            return metaPath;
+        }
+
+        public void setMetaPath(String metaPath) {
+            this.metaPath = metaPath;
+        }
+
+        public String getMetaName() {
+            return metaName;
+        }
+
+        public void setMetaName(String metaName) {
+            this.metaName = metaName;
+        }
+
+        public String getMetaThumbnail() {
+            return metaThumbnail;
+        }
+
+        public void setMetaThumbnail(String metaThumbnail) {
+            this.metaThumbnail = metaThumbnail;
+        }
     }
 }

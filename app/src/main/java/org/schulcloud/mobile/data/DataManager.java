@@ -26,6 +26,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
 import rx.functions.Action1;
@@ -147,6 +148,10 @@ public class DataManager {
 
     public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
         return mRestService.generateSignedUrl(this.getAccessToken(), signedUrlRequest);
+    }
+
+    public Observable<ResponseBody> downloadFile(String url) {
+        return mRestService.downloadFile(url);
     }
 
     /**** NotificationService ****/

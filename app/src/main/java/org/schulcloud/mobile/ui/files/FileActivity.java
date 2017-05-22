@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -116,6 +117,13 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     public void showLoadingFileFromServerError() {
         DialogFactory.createGenericErrorDialog(this, R.string.error_file_load)
                 .show();
+    }
+
+    @Override
+    public void showFile(String url, String mimeType) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), mimeType);
+        startActivity(intent);
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -23,6 +24,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 public interface RestService {
@@ -42,6 +44,9 @@ public interface RestService {
 
     @POST("fileStorage/signedUrl")
     Observable<SignedUrlResponse> generateSignedUrl(@Header("Authorization") String accessToken, @Body SignedUrlRequest signedUrlRequest);
+
+    @GET
+    Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
     @POST("notification/devices")
     Observable<DeviceResponse> createDevice(@Header("Authorization") String accessToken, @Body DeviceRequest deviceRequest);

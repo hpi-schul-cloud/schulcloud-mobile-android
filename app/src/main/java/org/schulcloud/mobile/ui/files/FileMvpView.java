@@ -13,4 +13,6 @@ public interface FileMvpView extends MvpView {
     void showDirectories(List<Directory> directories);
 
     void showError();
+
+    void showLoadingFileFromServerError();
 }

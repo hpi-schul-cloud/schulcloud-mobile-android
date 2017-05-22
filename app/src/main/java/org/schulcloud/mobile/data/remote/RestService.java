@@ -8,8 +8,10 @@ import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
+import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 
 import java.util.List;
 
@@ -37,6 +39,9 @@ public interface RestService {
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
     Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String storageContext);
+
+    @POST("fileStorage/signedUrl")
+    Observable<SignedUrlResponse> generateSignedUrl(@Header("Authorization") String accessToken, @Body SignedUrlRequest signedUrlRequest);
 
     @POST("notification/devices")
     Observable<DeviceResponse> createDevice(@Header("Authorization") String accessToken, @Body DeviceRequest deviceRequest);

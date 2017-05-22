@@ -1,13 +1,18 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -17,6 +22,9 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     private final DataManager mDataManager;
     private Subscription fileSubscription;
     private Subscription directorySubscription;
+    private Subscription fileGetterSubscription;
+
+    private final String GET_OBJECT_ACTION = "getObject";
 
     @Inject
     public FilePresenter(DataManager dataManager) {
@@ -66,10 +74,33 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         },
                         // onError
                         error -> {
-                            Timber.e(error, "There was an error loading the files.");
+                            Timber.e(error, "There was an error loading the directories.");
                             getMvpView().showError();
                         },
                         () -> {
+                        });
+    }
+
+    public void loadFileFromServer(File file) {
+        if (fileGetterSubscription != null && !fileGetterSubscription.isUnsubscribed())
+            fileGetterSubscription.unsubscribe();
+
+        fileGetterSubscription = mDataManager.getFileUrl(new SignedUrlRequest(
+                this.GET_OBJECT_ACTION, // action
+                file.key + "/" + file.name, // path
+                file.type // fileType
+        )).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (signedUrlResponse) -> {
+                            Log.d("Fetched file url", signedUrlResponse.url);
+                            System.out.println(signedUrlResponse);
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error loading file from Server.");
+                            getMvpView().showLoadingFileFromServerError();
+                        },
+                        () -> {
+
                         });
     }
 

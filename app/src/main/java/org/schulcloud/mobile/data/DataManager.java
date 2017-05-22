@@ -14,8 +14,10 @@ import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
+import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.JWTUtil;
 
@@ -141,6 +143,10 @@ public class DataManager {
 
     public Observable<List<Directory>> getDirectories() {
         return mDatabaseHelper.getDirectories().distinct();
+    }
+
+    public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
+        return mRestService.generateSignedUrl(this.getAccessToken(), signedUrlRequest);
     }
 
     /**** NotificationService ****/

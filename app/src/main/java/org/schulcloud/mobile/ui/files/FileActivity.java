@@ -113,6 +113,12 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     }
 
     @Override
+    public void showLoadingFileFromServerError() {
+        DialogFactory.createGenericErrorDialog(this, R.string.error_file_load)
+                .show();
+    }
+
+    @Override
     public void goToSignIn() {
         Intent intent = new Intent(this, SignInActivity.class);
         this.startActivity(intent);

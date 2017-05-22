@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.ui.settings.SettingsPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> {
+
+    @Inject
+    FilePresenter mFilesPresenter;
     private List<File> mFiles;
 
     @Inject
@@ -40,6 +44,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     public void onBindViewHolder(FilesAdapter.FilesViewHolder holder, int position) {
         File file = mFiles.get(position);
         holder.nameTextView.setText(file.name);
+        holder.nameTextView.setOnClickListener(v -> {
+            File file1 = mFiles.get(position);
+            mFilesPresenter.loadFileFromServer(file1);
+        });
     }
 
     @Override

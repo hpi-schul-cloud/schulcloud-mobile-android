@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.test.common.TestDataFactory;
 import org.schulcloud.mobile.ui.settings.SettingsMvpView;
@@ -78,6 +79,26 @@ public class SettingsPresenterTest {
         mSettingsPresenter.loadEvents();
         verify(mMockSettingsMvpView, never()).showEventsEmpty();
         verify(mMockSettingsMvpView, never()).connectToCalendar(anyListOf(Event.class));
+    }
+
+    @Test
+    public void loadDevices() {
+        List<Device> devices = TestDataFactory.makeListDevices(10);
+        doReturn(Observable.just(devices))
+                .when(mMockDataManager)
+                .getDevices();
+
+        mSettingsPresenter.loadDevices();
+        verify(mMockSettingsMvpView).showDevices(devices);
+    }
+
+    @Test
+    public void loadDevicesFails() {
+        doReturn(Observable.error(new RuntimeException()))
+                .when(mMockDataManager)
+                .getDevices();
+
+        mSettingsPresenter.loadDevices();
     }
 
 }

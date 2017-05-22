@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.test.common;
 
+import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.User;
 
@@ -46,6 +47,21 @@ public class TestDataFactory {
             events.add(makeEvent(String.valueOf(i)));
         }
         return events;
+    }
+
+
+    public static Device makeDevice(String uniqueSuffix) {
+        Device d = new Device();
+
+        return d;
+    }
+
+    public static List<Device> makeListDevices(int number) {
+        List <Device> devices = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            devices.add(makeDevice(String.valueOf(i)));
+        }
+        return devices;
     }
 
 }

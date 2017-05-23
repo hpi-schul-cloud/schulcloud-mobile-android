@@ -135,6 +135,7 @@ public class BaseActivity extends AppCompatActivity {
         Class c;
         switch (pos) {
             case 1: // files
+                mPreferencesHelper.clear("storageContext");
                 c = FileActivity.class;
                 break;
             case 2:  // users

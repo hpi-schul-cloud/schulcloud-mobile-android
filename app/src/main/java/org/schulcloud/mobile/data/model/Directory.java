@@ -8,4 +8,5 @@ import io.realm.annotations.RealmClass;
 public class Directory implements RealmModel {
     @PrimaryKey
     public String name;
+    public String path;
 }

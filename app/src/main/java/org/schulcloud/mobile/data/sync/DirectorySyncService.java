@@ -53,7 +53,12 @@ public class DirectorySyncService extends Service {
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
 
-        mSubscription = mDataManager.syncDirectories()
+        // generate correct storageContext/path
+
+        // maybe refactor it when we also support course/class folders
+        String path = "users/" + mDataManager.getCurrentUserId() + mDataManager.getCurrentStorageContext();
+
+        mSubscription = mDataManager.syncDirectories(path)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Directory>() {
                     @Override

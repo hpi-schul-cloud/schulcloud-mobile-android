@@ -57,7 +57,7 @@ android {
             versionNameSuffix " Debug"
             debuggable true
 
-            buildConfigField "String", "URL_ENDPOINT", "\"https://schulcloud.org:8080\""
+            buildConfigField "String", "URL_ENDPOINT", "\"https://schul.tech:3030\""
         }
     }
 

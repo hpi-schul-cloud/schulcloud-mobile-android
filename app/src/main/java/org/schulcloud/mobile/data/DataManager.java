@@ -10,6 +10,7 @@ import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
@@ -207,5 +208,21 @@ public class DataManager {
         return mDatabaseHelper.getEvents().distinct();
     }
 
+    /**** Homework ****/
 
+    public Observable<Homework> syncHomework() {
+        return mRestService.getHomework(getAccessToken())
+                .concatMap(new Func1<List<Homework>, Observable<Homework>>() {
+                    @Override
+                    public Observable<Homework> call(List<Homework> homeworks) {
+                        // clear old devices
+                        mDatabaseHelper.clearTable(Homework.class);
+                        return mDatabaseHelper.setHomework(homeworks);
+                    }
+                });
+    }
+
+    public Observable<List<Homework>> getHomework() {
+        return mDatabaseHelper.getHomework().distinct();
+    }
 }

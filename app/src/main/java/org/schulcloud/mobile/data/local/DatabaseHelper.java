@@ -6,6 +6,7 @@ import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.User;
 
 import java.util.Collection;
@@ -223,5 +224,33 @@ public class DatabaseHelper {
         return realm.where(Device.class).findAllAsync().asObservable()
                 .filter(devices -> devices.isLoaded())
                 .map(devices -> realm.copyFromRealm(devices));
+    }
+
+    /**** Homework ****/
+
+    public Observable<Homework> setHomework(final Collection<Homework> newHomework) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newHomework));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Homework>> getHomework() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Homework.class).findAllAsync().asObservable()
+                .filter(homework -> homework.isLoaded())
+                .map(homework -> realm.copyFromRealm(homework));
     }
 }

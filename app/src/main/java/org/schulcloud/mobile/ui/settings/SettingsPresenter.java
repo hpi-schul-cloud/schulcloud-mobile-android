@@ -202,6 +202,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     public void deleteDevice(Device device) {
         if (mSubscription != null && !mSubscription.isUnsubscribed())
             mSubscription.unsubscribe();
+        checkViewAttached();
         mSubscription = mDataManager.deleteDevice(device.token)
                 .subscribe(
                         new Subscriber<Response<Void>>() {

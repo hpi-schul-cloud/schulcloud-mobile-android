@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
 
@@ -66,6 +68,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_files, null, false);
         mDrawer.addView(contentView, 0);
+        mToolbar.setTitle(R.string.title_files);
         ButterKnife.bind(this);
 
         fileRecyclerView.setAdapter(mFilesAdapter);
@@ -110,6 +113,26 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     public void showError() {
         DialogFactory.createGenericErrorDialog(this, getString(R.string.error_files_fetch))
                 .show();
+    }
+
+    @Override
+    public void showLoadingFileFromServerError() {
+        DialogFactory.createGenericErrorDialog(this, R.string.error_file_load)
+                .show();
+    }
+
+    @Override
+    public void showFile(String url, String mimeType) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), mimeType);
+        startActivity(intent);
+    }
+
+    @Override
+    public void reloadFiles() {
+        Intent intent = new Intent(this, FileActivity.class);
+        this.startActivity(intent);
+        finish();
     }
 
     @Override

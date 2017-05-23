@@ -2,8 +2,11 @@ package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,6 +52,9 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     @BindView(R.id.files_recycler_view)
     RecyclerView fileRecyclerView;
 
+    @BindView(R.id.files_upload)
+    FloatingActionButton fileUploadButton;
+
 
     /**
      * Return an Intent to start this Activity.
@@ -78,6 +84,12 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
         directoriesRecyclerView.setAdapter(mDirectoriesAdapter);
         directoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        fileUploadButton.setBackgroundTintList(ColorStateList.valueOf(
+                getResources().getColor(R.color.hpiRed)));
+        fileUploadButton.setOnClickListener(v -> {
+            mFilePresenter.openFileChooser();
+        });
 
         mFilePresenter.attachView(this);
         mFilePresenter.checkSignedIn(this);

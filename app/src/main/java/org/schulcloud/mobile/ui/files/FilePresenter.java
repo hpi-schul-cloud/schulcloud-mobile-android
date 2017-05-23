@@ -138,22 +138,23 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
         fileDownloadSubscription = mDataManager.downloadFile(url)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(
+                        (responseBody) -> {
+                            getMvpView().saveFile(responseBody, fileName);
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error loading file from Server.");
+                            getMvpView().showLoadingFileFromServerError();
+                        },
+                        () -> {
 
-                    }
+                        });
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        getMvpView().saveFile(responseBody, fileName);
-                    }
-                });
+    public void openFileChooser() {
+        // todo: show file chooser
+        // todo: generate uploadLink for chosen file
+        // todo: push file to server
     }
 
     /**

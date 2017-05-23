@@ -1,10 +1,12 @@
 package org.schulcloud.mobile.test.common;
 
+import org.schulcloud.mobile.data.model.Device;
+import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.schulcloud.mobile.data.model.User;
 
 /**
  * Factory class that makes instances of data models with random field values.
@@ -32,4 +34,34 @@ public class TestDataFactory {
         }
         return users;
     }
+
+    public static Event makeEvent(String uniqueSuffix) {
+        Event e = new Event();
+
+        return e;
+    }
+
+    public static List<Event> makeListEvents(int number) {
+        List <Event> events = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            events.add(makeEvent(String.valueOf(i)));
+        }
+        return events;
+    }
+
+
+    public static Device makeDevice(String uniqueSuffix) {
+        Device d = new Device();
+
+        return d;
+    }
+
+    public static List<Device> makeListDevices(int number) {
+        List <Device> devices = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            devices.add(makeDevice(String.valueOf(i)));
+        }
+        return devices;
+    }
+
 }

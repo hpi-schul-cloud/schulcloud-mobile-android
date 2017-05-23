@@ -9,6 +9,7 @@ import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.util.FileSavingUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
@@ -90,8 +91,9 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     /**
      * loads a file from the schul-cloud server
      * @param file {File} - the db-saved file
+     * @param download {Boolean} - whether to download the file or not
      */
-    public void loadFileFromServer(File file) {
+    public void loadFileFromServer(File file, Boolean download) {
         checkViewAttached();
 
         if (fileGetterSubscription != null && !fileGetterSubscription.isUnsubscribed())
@@ -105,11 +107,14 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 .subscribe(
                         (signedUrlResponse) -> {
                             Log.d("Fetched file url", signedUrlResponse.url);
-                            getMvpView().showFile(
-                                    signedUrlResponse.url,
-                                    signedUrlResponse.header.getContentType());
 
-                            //downloadFile(signedUrlResponse.url);
+                            if (download) {
+                                downloadFile(signedUrlResponse.url, file.name);
+                            } else {
+                                getMvpView().showFile(
+                                        signedUrlResponse.url,
+                                        signedUrlResponse.header.getContentType());
+                            }
                         },
                         error -> {
                             Timber.e(error, "There was an error loading file from Server.");
@@ -123,13 +128,13 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     /**
      * Downloads a file from a given url
      * @param url {String} - the remote url from which the file will be downloaded
+     * @param fileName {String} - the name of the downloaded file
      */
-    public void downloadFile(String url) {
+    public void downloadFile(String url, String fileName) {
         checkViewAttached();
 
         if (fileDownloadSubscription != null && !fileDownloadSubscription.isUnsubscribed())
             fileDownloadSubscription.unsubscribe();
-
 
         fileDownloadSubscription = mDataManager.downloadFile(url)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -146,8 +151,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-                        System.out.println(responseBody);
-                        // todo: save to local storage
+                        getMvpView().saveFile(responseBody, fileName);
                     }
                 });
     }

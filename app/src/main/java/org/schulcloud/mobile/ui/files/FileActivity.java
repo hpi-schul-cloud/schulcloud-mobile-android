@@ -18,6 +18,7 @@ import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.FileSavingUtil;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 
 
 public class FileActivity extends BaseActivity implements FileMvpView {
@@ -133,6 +135,11 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         Intent intent = new Intent(this, FileActivity.class);
         this.startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void saveFile(ResponseBody body, String fileName) {
+        FileSavingUtil.writeResponseBodyToDisk(body, fileName, this);
     }
 
     @Override

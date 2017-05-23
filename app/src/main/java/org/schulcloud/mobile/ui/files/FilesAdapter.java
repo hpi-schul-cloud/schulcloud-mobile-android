@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
+
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.File;
@@ -47,8 +49,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         File file = mFiles.get(position);
         holder.nameTextView.setText(file.name);
         holder.cardView.setOnClickListener(v -> {
-            File file1 = mFiles.get(position);
-            mFilesPresenter.loadFileFromServer(file1);
+            mFilesPresenter.loadFileFromServer(file, false);
+        });
+        holder.downloadIcon.setOnClickListener(v -> {
+            mFilesPresenter.loadFileFromServer(file, true);
         });
     }
 
@@ -63,6 +67,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         TextView nameTextView;
         @BindView(R.id.card_view)
         CardView cardView;
+        @BindView(R.id.file_download_icon)
+        AwesomeTextView downloadIcon;
 
         public FilesViewHolder(View itemView) {
             super(itemView);

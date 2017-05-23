@@ -22,4 +22,7 @@
     <string name="sync_calendar_successful">Synchronisieren des Kalenders war erfolgreich!</string>
     <string name="setting_section_calendar">Kalender</string>
     <string name="setting_section_notifications">Benachrichtigungen</string>
+    <string name="file_save_success">Datei %1$s wurde erfolgreich in Downloads gespeichert!</string>
+    <string name="file_save_failed">Download fehlgeschlagen</string>
+
 </resources>

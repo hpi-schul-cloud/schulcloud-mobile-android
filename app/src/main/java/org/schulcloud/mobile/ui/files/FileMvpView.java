@@ -13,4 +13,10 @@ public interface FileMvpView extends MvpView {
     void showDirectories(List<Directory> directories);
 
     void showError();
+
+    void showLoadingFileFromServerError();
+
+    void showFile(String url, String mimeType);
+
+    void reloadFiles();
 }

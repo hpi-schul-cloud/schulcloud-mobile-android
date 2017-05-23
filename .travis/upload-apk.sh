@@ -13,7 +13,7 @@ if [ "$TRAVIS_BRANCH" = "$BRANCH" ]; then
       git config --global user.email $EMAIL
       git config --global user.name $USERNAME
 	    
-      git remote add origin https://langleu:$GITHUB_API_KEY@github.com/schul-cloud/schulcloud-mobile-android.git
+      git remote set-url origin https://langleu:$GITHUB_API_KEY@github.com/schul-cloud/schulcloud-mobile-android.git
 
       # Add tag and push to master.
       git tag -a v${TRAVIS_BUILD_NUMBER} -m "Travis build $TRAVIS_BUILD_NUMBER pushed a tag."

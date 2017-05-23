@@ -53,7 +53,12 @@ public class FileSyncService extends Service {
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
 
-        mSubscription = mDataManager.syncFiles()
+        // generate correct storageContext/path
+
+        // maybe refactor it when we also support course/class folders
+        String path = "users/" + mDataManager.getCurrentUserId() + mDataManager.getCurrentStorageContext();
+
+        mSubscription = mDataManager.syncFiles(path)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<File>() {
                     @Override

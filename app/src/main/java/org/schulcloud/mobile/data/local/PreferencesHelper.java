@@ -21,6 +21,8 @@ public class PreferencesHelper {
         mPref = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
+    // ##### Setter
+
     /**
      * saves a accessToken to the shared prefs
      *
@@ -78,6 +80,19 @@ public class PreferencesHelper {
         return null;
     }
 
+    public String saveCurrentStorageContext(String path) {
+        SharedPreferences.Editor editor = mPref.edit();
+
+        editor.putString("storageContext", path);
+        if (editor.commit()) {
+            return path;
+        }
+
+        return null;
+    }
+
+    // ##### Getter
+
     public String getAccessToken() {
         return mPref.getString("jwt", "null");
     }
@@ -93,6 +108,13 @@ public class PreferencesHelper {
     public String getCurrentUsername() {
         return mPref.getString("username", "null");
     }
+
+    public String getCurrentStorageContext() {
+        return mPref.getString("storageContext", "null");
+    }
+
+
+    // ##### Clearing
 
     public void clear() {
         mPref.edit().clear().apply();

@@ -8,7 +8,7 @@ public class SignedUrlResponse {
     public SignedUrlResponseHeader header;
 
 
-    public class SignedUrlResponseHeader {
+    public static class SignedUrlResponseHeader {
         @SerializedName("Content-Type")
         private String contentType;
 
@@ -20,6 +20,10 @@ public class SignedUrlResponse {
 
         @SerializedName("x-amz-meta-thumbnail")
         private String metaThumbnail;
+
+        public SignedUrlResponseHeader() {
+
+        }
 
         public String getContentType() {
             return contentType;

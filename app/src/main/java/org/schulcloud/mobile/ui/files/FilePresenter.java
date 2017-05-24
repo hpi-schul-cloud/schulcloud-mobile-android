@@ -1,17 +1,22 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
+import android.support.annotation.MainThread;
 import android.util.Log;
+
+import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -22,8 +27,11 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     private Subscription directorySubscription;
     private Subscription fileGetterSubscription;
     private Subscription fileDownloadSubscription;
+    private Subscription fileUploadSubscription;
+    private Subscription fileStartUploadSubscription;
 
     private final String GET_OBJECT_ACTION = "getObject";
+    private final String PUT_OBJECT_ACTION = "putObject";
 
     @Inject
     public FilePresenter(DataManager dataManager) {
@@ -154,6 +162,72 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     public void goIntoDirectory(String dirName) {
         mDataManager.setCurrentStorageContext(dirName);
         getMvpView().reloadFiles();
+    }
+
+    /**
+     * uploads a local file to server
+     * @param fileToUpload {File} - the file which will be uploaded
+     */
+    public void uploadFileToServer(java.io.File fileToUpload) {
+        checkViewAttached();
+
+        if (fileUploadSubscription != null && !fileUploadSubscription.isUnsubscribed())
+            fileUploadSubscription.unsubscribe();
+
+        // todo: refactor later on when there are class and course folders
+        String uploadPath = new StringBuilder()
+                .append("users")
+                .append(java.io.File.separator)
+                .append(mDataManager.getCurrentUserId())
+                .append(mDataManager.getCurrentStorageContext())
+                .append(fileToUpload.getName())
+                .toString();
+
+        SignedUrlRequest signedUrlRequest = new SignedUrlRequest(
+                this.PUT_OBJECT_ACTION,
+                uploadPath,
+                FileUtils.getMimeType(fileToUpload));
+
+        fileUploadSubscription = mDataManager.getFileUrl(signedUrlRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (signedUrlResponse) -> {
+                            startUploading(fileToUpload, signedUrlResponse);
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error uploading file from Server.");
+                            getMvpView().showUploadFileError();
+                        },
+                        () -> {
+
+                        });
+    }
+
+    /**
+     * starts a upload progress to the given url
+     * @param file {File} - the file which will be uploaded
+     * @param signedUrlResponse {SignedUrlResponse} - contains information about the uploaded file
+     */
+    public void startUploading(java.io.File file, SignedUrlResponse signedUrlResponse) {
+        checkViewAttached();
+
+        if (fileStartUploadSubscription != null && !fileStartUploadSubscription.isUnsubscribed())
+            fileStartUploadSubscription.unsubscribe();
+
+        fileStartUploadSubscription = mDataManager.uploadFile(file, signedUrlResponse)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (responseBody) -> {
+                            getMvpView().reloadFiles();
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error uploading file from Server.");
+                            getMvpView().showUploadFileError();
+                        },
+                        () -> {
+
+                        });
+
     }
 
     public void checkSignedIn(Context context) {

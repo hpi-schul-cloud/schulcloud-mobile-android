@@ -20,6 +20,8 @@ public interface FileMvpView extends MvpView {
 
     void showFile(String url, String mimeType);
 
+    void showUploadFileError();
+
     void reloadFiles();
 
     void saveFile(ResponseBody body, String fileName);

@@ -74,28 +74,10 @@ public class InternalFilesUtil {
     /**
      * Gets a file from a given uri to the devices content db
      * @param contentPath {Uri} - the contentUri which references the file in the content db
+     * @return a file representing the file on the device
      */
-    public void getFileFromContentPath(Uri contentPath) {
-        File file = FileUtils.getFile(context, contentPath);
-        System.out.println(file);
-        /**System.out.println(contentPath);
-        String pathName = "tmp/" + contentPath.getPath();
-
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-
-        try {
-            inputStream = context.getContentResolver().openInputStream(contentPath);
-            File file = new File(pathName);
-                    OutputStream outputStream = new FileOutputStream(file);
-            IOUtils.copy(inputStream, outputStream);
-
-            outputStream.close();
-            inputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }**/
+    public File getFileFromContentPath(Uri contentPath) {
+        return FileUtils.getFile(context, contentPath);
     }
 
 }

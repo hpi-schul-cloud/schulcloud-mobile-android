@@ -15,6 +15,7 @@
     <string name="error_sign_in">Falscher Nutzername oder Passwort</string>
     <string name="error_files_fetch">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
     <string name="error_file_load">Für dieses Dateiformat befindet sich keine App auf deinem Gerät.</string>
+    <string name="error_file_upload">Beim Hochladen der Datei ist etwas schiefgelaufen.</string>
     <string name="drawer_open">Öffnen</string>
     <string name="drawer_close">Schließen</string>
     <string name="add_to_calendar">Schul-Cloud Termine synchronisieren</string>

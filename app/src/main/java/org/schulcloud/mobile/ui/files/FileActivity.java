@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.ipaulpro.afilechooser.utils.FileUtils;
+
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
@@ -125,7 +127,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         switch (requestCode) {
             case FILE_CHOOSE_RESULT_ACTION:
                 if (data != null) {
-                    filesUtil.getFileFromContentPath(data.getData());
+                    java.io.File file = filesUtil.getFileFromContentPath(data.getData());
+                    mFilePresenter.uploadFileToServer(file);
                 }
                 break;
 
@@ -166,6 +169,12 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), mimeType);
         startActivity(intent);
+    }
+
+    @Override
+    public void showUploadFileError() {
+        DialogFactory.createGenericErrorDialog(this, R.string.error_file_upload)
+                .show();
     }
 
     @Override

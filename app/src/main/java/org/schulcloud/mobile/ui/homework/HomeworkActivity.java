@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
@@ -99,7 +98,6 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
     public void showHomeworkEmpty() {
         mHomeworkAdapter.setHomework(Collections.emptyList());
         mHomeworkAdapter.notifyDataSetChanged();
-        Toast.makeText(this, "Momentan gibt es keine Hausaufgaben mehr...", Toast.LENGTH_LONG).show();
     }
 
     @Override

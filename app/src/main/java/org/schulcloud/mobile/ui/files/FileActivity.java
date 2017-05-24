@@ -199,8 +199,6 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
             // show file chooser
             this.filesUtil.openFileChooser(FILE_CHOOSE_RESULT_ACTION);
-            // todo: generate uploadLink for chosen file
-            // todo: push file to server
         }
     }
 

@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -13,8 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.ipaulpro.afilechooser.utils.FileUtils;
-
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
@@ -24,7 +21,6 @@ import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.InternalFilesUtil;
-import org.schulcloud.mobile.util.PermissionsUtil;
 
 import java.util.List;
 
@@ -34,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 
-import static org.schulcloud.mobile.util.PermissionsUtil.*;
+import static org.schulcloud.mobile.util.PermissionsUtil.checkPermissions;
 
 
 public class FileActivity extends BaseActivity implements FileMvpView {
@@ -186,7 +182,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void saveFile(ResponseBody body, String fileName) {
-        if(checkPermissions(
+        if (checkPermissions(
                 FILE_WRITER_PERMISSION_CALLBACK_ID,
                 this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -196,7 +192,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void startFileChoosing() {
-        if(checkPermissions(
+        if (checkPermissions(
                 FILE_READER_PERMISSION_CALLBACK_ID,
                 this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {

@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
-import android.support.annotation.MainThread;
 import android.util.Log;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
@@ -16,22 +15,20 @@ import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 @ConfigPersistent
 public class FilePresenter extends BasePresenter<FileMvpView> {
+    private final String GET_OBJECT_ACTION = "getObject";
+    private final String PUT_OBJECT_ACTION = "putObject";
     private Subscription fileSubscription;
     private Subscription directorySubscription;
     private Subscription fileGetterSubscription;
     private Subscription fileDownloadSubscription;
     private Subscription fileUploadSubscription;
     private Subscription fileStartUploadSubscription;
-
-    private final String GET_OBJECT_ACTION = "getObject";
-    private final String PUT_OBJECT_ACTION = "putObject";
 
     @Inject
     public FilePresenter(DataManager dataManager) {
@@ -93,7 +90,8 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * loads a file from the schul-cloud server
-     * @param file {File} - the db-saved file
+     *
+     * @param file     {File} - the db-saved file
      * @param download {Boolean} - whether to download the file or not
      */
     public void loadFileFromServer(File file, Boolean download) {
@@ -130,7 +128,8 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * Downloads a file from a given url
-     * @param url {String} - the remote url from which the file will be downloaded
+     *
+     * @param url      {String} - the remote url from which the file will be downloaded
      * @param fileName {String} - the name of the downloaded file
      */
     public void downloadFile(String url, String fileName) {
@@ -157,6 +156,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * Opens a directory by fetching files for new storageContext
+     *
      * @param dirName {String} - the directory's name for which the files will be fetched
      */
     public void goIntoDirectory(String dirName) {
@@ -166,6 +166,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * uploads a local file to server
+     *
      * @param fileToUpload {File} - the file which will be uploaded
      */
     public void uploadFileToServer(java.io.File fileToUpload) {
@@ -205,7 +206,8 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * starts a upload progress to the given url
-     * @param file {File} - the file which will be uploaded
+     *
+     * @param file              {File} - the file which will be uploaded
      * @param signedUrlResponse {SignedUrlResponse} - contains information about the uploaded file
      */
     public void startUploading(java.io.File file, SignedUrlResponse signedUrlResponse) {

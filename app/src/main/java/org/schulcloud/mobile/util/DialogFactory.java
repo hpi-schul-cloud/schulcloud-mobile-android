@@ -3,12 +3,27 @@ package org.schulcloud.mobile.util;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
+import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 
 public final class DialogFactory {
+
+    public static Dialog createSimpleOkErrorDialogMultiLine(Context context, String title, String message) {
+        TextView textView = new TextView(context);
+        textView.setTextColor(Color.parseColor("#000000"));
+        textView.setTextSize(16);
+        textView.setPadding(10, 5, 0, 0);
+        textView.setText(title);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
+                .setCustomTitle(textView)
+                .setMessage(message)
+                .setNeutralButton(R.string.dialog_action_ok, null);
+        return  alertDialog.create();
+    }
 
     public static Dialog createSimpleOkErrorDialog(Context context, String title, String message) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)

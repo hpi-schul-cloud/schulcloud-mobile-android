@@ -11,6 +11,8 @@ public interface HomeworkMvpView extends MvpView {
 
     void showHomeworkEmpty();
 
+    void showHomeworkDialog(String course, String title, String message);
+
     void showError();
 
 }

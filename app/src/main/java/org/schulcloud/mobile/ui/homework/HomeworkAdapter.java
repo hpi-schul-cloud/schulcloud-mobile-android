@@ -32,6 +32,9 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     private List<Homework> mHomework;
 
     @Inject
+    HomeworkPresenter mHomeworkPresenter;
+
+    @Inject
     public HomeworkAdapter() {
         mHomework = new ArrayList<>();
     }
@@ -81,6 +84,10 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         if (untilDate != null)
             holder.dueDate.setText(dateFormatDeux.format(untilDate));
+
+        String course = homework.courseId != null ? homework.courseId.name : "";
+
+        holder.cardView.setOnClickListener(v -> mHomeworkPresenter.showHomeworkDetail(course, homework.name, homework.description));
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -59,6 +60,7 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
         //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_homework, null, false);
         mDrawer.addView(contentView, 0);
+        getSupportActionBar().setTitle(R.string.title_homework);
         ButterKnife.bind(this);
 
 
@@ -98,6 +100,12 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
     public void showHomeworkEmpty() {
         mHomeworkAdapter.setHomework(Collections.emptyList());
         mHomeworkAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showHomeworkDialog(String course, String title, String message) {
+        DialogFactory.createSimpleOkErrorDialogMultiLine(this, course != "" ? "[" + course + "] " + title : "" + title, Html.fromHtml(message).toString())
+                .show();
     }
 
     @Override

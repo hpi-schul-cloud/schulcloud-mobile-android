@@ -123,6 +123,8 @@ dependencies {
         transitive = true;
     }
 
+    compile 'andhradroid.dev:aFilechooser:1.0.1'
+
     compile "org.parceler:parceler-api:$PARCELER_VERSION"
     apt "org.parceler:parceler:$PARCELER_VERSION"
 

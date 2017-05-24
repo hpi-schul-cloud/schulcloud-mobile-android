@@ -1,9 +1,10 @@
 package org.schulcloud.mobile.ui.files;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,10 +19,10 @@ import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
-import org.schulcloud.mobile.util.FileSavingUtil;
+import org.schulcloud.mobile.util.InternalFilesUtil;
+import org.schulcloud.mobile.util.PermissionsUtil;
 
 import java.util.List;
 
@@ -31,11 +32,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 
+import static org.schulcloud.mobile.util.PermissionsUtil.*;
+
 
 public class FileActivity extends BaseActivity implements FileMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "org.schulcloud.mobile.ui.files.FileActivity.EXTRA_TRIGGER_SYNC_FLAG";
+
+    private static final int FILE_CHOOSE_RESULT_ACTION = 2017;
+    private static final int FILE_READER_PERMISSION_CALLBACK_ID = 44;
+    private static final int FILE_WRITER_PERMISSION_CALLBACK_ID = 43;
 
     @Inject
     FilePresenter mFilePresenter;
@@ -54,6 +61,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @BindView(R.id.files_upload)
     FloatingActionButton fileUploadButton;
+
+    private InternalFilesUtil filesUtil;
 
 
     /**
@@ -88,7 +97,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         fileUploadButton.setBackgroundTintList(ColorStateList.valueOf(
                 getResources().getColor(R.color.hpiRed)));
         fileUploadButton.setOnClickListener(v -> {
-            mFilePresenter.openFileChooser();
+            this.startFileChoosing();
         });
 
         mFilePresenter.attachView(this);
@@ -101,12 +110,29 @@ public class FileActivity extends BaseActivity implements FileMvpView {
             startService(FileSyncService.getStartIntent(this));
             startService(DirectorySyncService.getStartIntent(this));
         }
+
+        filesUtil = new InternalFilesUtil(this);
     }
 
     @Override
     protected void onDestroy() {
         mFilePresenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_CHOOSE_RESULT_ACTION:
+                if (data != null) {
+                    filesUtil.getFileFromContentPath(data.getData());
+                }
+                break;
+
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     /***** MVP View methods implementation *****/
@@ -151,7 +177,26 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void saveFile(ResponseBody body, String fileName) {
-        FileSavingUtil.writeResponseBodyToDisk(body, fileName, this);
+        if(checkPermissions(
+                FILE_WRITER_PERMISSION_CALLBACK_ID,
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            this.filesUtil.writeResponseBodyToDisk(body, fileName);
+        }
+    }
+
+    @Override
+    public void startFileChoosing() {
+        if(checkPermissions(
+                FILE_READER_PERMISSION_CALLBACK_ID,
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            // show file chooser
+            this.filesUtil.openFileChooser(FILE_CHOOSE_RESULT_ACTION);
+            // todo: generate uploadLink for chosen file
+            // todo: push file to server
+        }
     }
 
     @Override

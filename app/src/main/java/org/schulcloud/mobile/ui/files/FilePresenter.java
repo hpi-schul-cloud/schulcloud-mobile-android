@@ -6,19 +6,14 @@ import android.util.Log;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
-import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
-import org.schulcloud.mobile.util.FileSavingUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import timber.log.Timber;
 
 @ConfigPersistent
@@ -151,11 +146,6 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         });
     }
 
-    public void openFileChooser() {
-        // todo: show file chooser
-        // todo: generate uploadLink for chosen file
-        // todo: push file to server
-    }
 
     /**
      * Opens a directory by fetching files for new storageContext

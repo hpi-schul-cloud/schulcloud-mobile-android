@@ -23,4 +23,6 @@ public interface FileMvpView extends MvpView {
     void reloadFiles();
 
     void saveFile(ResponseBody body, String fileName);
+
+    void startFileChoosing();
 }

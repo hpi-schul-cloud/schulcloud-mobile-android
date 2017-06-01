@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -61,6 +62,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     FloatingActionButton fileUploadButton;
 
     private InternalFilesUtil filesUtil;
+    private ProgressDialog uploadProgressDialog;
+    private ProgressDialog downloadProgressDialog;
 
 
     /**
@@ -162,6 +165,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void showFile(String url, String mimeType) {
+        if (downloadProgressDialog.isShowing()) downloadProgressDialog.cancel();
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), mimeType);
         startActivity(intent);
@@ -175,6 +180,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void reloadFiles() {
+        if (uploadProgressDialog.isShowing()) uploadProgressDialog.cancel();
+
         Intent intent = new Intent(this, FileActivity.class);
         this.startActivity(intent);
         finish();
@@ -182,6 +189,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void saveFile(ResponseBody body, String fileName) {
+        if (downloadProgressDialog.isShowing()) downloadProgressDialog.cancel();
+
         if (checkPermissions(
                 FILE_WRITER_PERMISSION_CALLBACK_ID,
                 this,
@@ -197,9 +206,20 @@ public class FileActivity extends BaseActivity implements FileMvpView {
                 this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
+
+            uploadProgressDialog = DialogFactory.createProgressDialog(this, R.string.file_upload_progress);
+            uploadProgressDialog.show();
+
             // show file chooser
             this.filesUtil.openFileChooser(FILE_CHOOSE_RESULT_ACTION);
         }
+    }
+
+    @Override
+    public void startDownloading(File file, Boolean download) {
+        downloadProgressDialog = DialogFactory.createProgressDialog(this, R.string.file_download_progress);
+        downloadProgressDialog.show();
+        mFilePresenter.loadFileFromServer(file, download);
     }
 
     @Override

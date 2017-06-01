@@ -205,6 +205,16 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     }
 
     /**
+     * initiates a download task
+     *
+     * @param file     {File} - the file which will be uploaded
+     * @param download {Boolean} - whether to download on hard disk
+     */
+    public void startDownloading(File file, Boolean download) {
+        getMvpView().startDownloading(file, download);
+    }
+
+    /**
      * starts a upload progress to the given url
      *
      * @param file              {File} - the file which will be uploaded

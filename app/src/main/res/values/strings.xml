@@ -25,5 +25,6 @@
     <string name="setting_section_notifications">Benachrichtigungen</string>
     <string name="file_save_success">Datei %1$s wurde erfolgreich in Downloads gespeichert!</string>
     <string name="file_save_failed">Download fehlgeschlagen</string>
-
+    <string name="file_upload_progress">Datei wird zum Server hochgeladen...</string>
+    <string name="file_download_progress">Datei wird vom Server heruntergeladen...</string>
 </resources>

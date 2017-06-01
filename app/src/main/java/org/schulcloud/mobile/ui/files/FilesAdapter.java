@@ -47,10 +47,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         File file = mFiles.get(position);
         holder.nameTextView.setText(file.name);
         holder.cardView.setOnClickListener(v -> {
-            mFilesPresenter.loadFileFromServer(file, false);
+            mFilesPresenter.startDownloading(file, false);
         });
         holder.downloadIcon.setOnClickListener(v -> {
-            mFilesPresenter.loadFileFromServer(file, true);
+            mFilesPresenter.startDownloading(file, true);
         });
     }
 

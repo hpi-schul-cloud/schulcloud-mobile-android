@@ -27,4 +27,6 @@ public interface FileMvpView extends MvpView {
     void saveFile(ResponseBody body, String fileName);
 
     void startFileChoosing();
+
+    void startDownloading(File file, Boolean download);
 }

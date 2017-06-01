@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
@@ -143,6 +144,12 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     public void showFiles(List<File> files) {
         mFilesAdapter.setFiles(files);
         mFilesAdapter.notifyDataSetChanged();
+
+        // adjust height of recycler view (bugfix for nested scrolling)
+        ViewGroup.LayoutParams params = fileRecyclerView.getLayoutParams();
+        params.height = 250 * mFilesAdapter.getItemCount();
+        fileRecyclerView.setLayoutParams(params);
+        fileRecyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -165,7 +172,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void showFile(String url, String mimeType) {
-        if (downloadProgressDialog.isShowing()) downloadProgressDialog.cancel();
+        if (downloadProgressDialog != null && downloadProgressDialog.isShowing()) downloadProgressDialog.cancel();
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), mimeType);
@@ -180,7 +187,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void reloadFiles() {
-        if (uploadProgressDialog.isShowing()) uploadProgressDialog.cancel();
+        if (uploadProgressDialog != null && uploadProgressDialog.isShowing()) uploadProgressDialog.cancel();
 
         Intent intent = new Intent(this, FileActivity.class);
         this.startActivity(intent);
@@ -189,7 +196,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     @Override
     public void saveFile(ResponseBody body, String fileName) {
-        if (downloadProgressDialog.isShowing()) downloadProgressDialog.cancel();
+        if (downloadProgressDialog != null && downloadProgressDialog.isShowing()) downloadProgressDialog.cancel();
 
         if (checkPermissions(
                 FILE_WRITER_PERMISSION_CALLBACK_ID,

@@ -12,6 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="25dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
@@ -29,10 +30,10 @@
                 android:id="@+id/files_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
                 android:scrollbars="vertical"/>
         </LinearLayout>
     </ScrollView>

@@ -68,6 +68,18 @@ android {
         androidTest {
             java.srcDir commonTestDir
         }
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/files',
+                            'src/main/res/layouts/main',
+                            'src/main/res/layouts/navigationDrawer',
+                            'src/main/res/layouts/settings',
+                            'src/main/res/layouts/signIn',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
     }
 
     //Needed because of this https://github.com/square/okio/issues/58

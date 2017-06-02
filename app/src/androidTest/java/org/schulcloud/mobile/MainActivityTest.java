@@ -6,6 +6,7 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -51,6 +52,7 @@ public class MainActivityTest {
     public final TestRule chain = RuleChain.outerRule(component).around(main);
 
     @Test
+    @Ignore("This test will be ignored")
     public void listOfUsersShows() {
         final String FAKE_USER_ID = "fakeUserId";
         List<User> testDataUsers = TestDataFactory.makeListUsers(20);

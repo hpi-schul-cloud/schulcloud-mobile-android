@@ -16,6 +16,8 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
+/** @Deprecated, maybe use later for dashboard **/
+@Deprecated
 @ConfigPersistent
 public class MainPresenter extends BasePresenter<MainMvpView> {
 
@@ -48,15 +50,14 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the users.");
-                        getMvpView().showError();
                     }
 
                     @Override
                     public void onNext(List<User> users) {
                         if (users.isEmpty()) {
-                            getMvpView().showUsersEmpty();
+
                         } else {
-                            getMvpView().showUsers(users);
+
                         }
                     }
                 });

@@ -1,18 +1,20 @@
 package org.schulcloud.mobile.ui.homework;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
+import org.schulcloud.mobile.data.sync.SubmissionSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.DialogFactory;
 
@@ -73,6 +75,7 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(HomeworkSyncService.getStartIntent(this));
+            startService(SubmissionSyncService.getStartIntent(this));
         }
     }
 
@@ -103,9 +106,16 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
     }
 
     @Override
-    public void showHomeworkDialog(String course, String title, String message) {
-        DialogFactory.createSimpleOkErrorDialogMultiLine(this, course != "" ? "[" + course + "] " + title : "" + title, Html.fromHtml(message).toString())
-                .show();
+    public void showHomeworkDialog(String homeworkId) {
+        DetailedHomeworkFragment frag = new DetailedHomeworkFragment();
+        Bundle args = new Bundle();
+        args.putString("homeworkId", homeworkId);
+        frag.setArguments(args);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.overlay_fragment_container, frag)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

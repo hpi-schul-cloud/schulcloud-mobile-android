@@ -11,6 +11,7 @@ import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
@@ -24,7 +25,6 @@ import org.schulcloud.mobile.util.JWTUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -32,7 +32,6 @@ import javax.inject.Singleton;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 @Singleton
@@ -262,5 +261,27 @@ public class DataManager {
 
     public Observable<List<Homework>> getHomework() {
         return mDatabaseHelper.getHomework().distinct();
+    }
+
+    public Homework getHomeworkForId(String homeworkId) {
+        return mDatabaseHelper.getHomeworkForId(homeworkId);
+    }
+
+    /**** Submissions ****/
+
+    public Observable<Submission> syncSubmissions() {
+        return mRestService.getSubmissions(getAccessToken())
+                .concatMap(new Func1<List<Submission>, Observable<Submission>>() {
+                    @Override
+                    public Observable<Submission> call(List<Submission> submissions) {
+                        // clear old devices
+                        mDatabaseHelper.clearTable(Submission.class);
+                        return mDatabaseHelper.setSubmissions(submissions);
+                    }
+                });
+    }
+
+    public Observable<List<Submission>> getSubmissions() {
+        return mDatabaseHelper.getSubmissions().distinct();
     }
 }

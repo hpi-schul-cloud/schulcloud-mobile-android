@@ -87,7 +87,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
         String course = homework.courseId != null ? homework.courseId.name : "";
 
-        holder.cardView.setOnClickListener(v -> mHomeworkPresenter.showHomeworkDetail(course, homework.name, homework.description));
+        holder.cardView.setOnClickListener(v -> mHomeworkPresenter.showHomeworkDetail(homework._id));
     }
 
     @Override

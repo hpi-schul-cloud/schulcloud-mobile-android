@@ -66,8 +66,8 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
         super.isAlreadySignedIn(mDataManager, context);
     }
 
-    public void showHomeworkDetail(String course, String title, String message) {
-        getMvpView().showHomeworkDialog(course, title, message);
+    public void showHomeworkDetail(String homeworkId) {
+        getMvpView().showHomeworkDialog(homeworkId);
     }
 
 }

@@ -5,12 +5,8 @@ import org.schulcloud.mobile.ui.base.MvpView;
 
 import java.util.List;
 
+/** @Deprecated , maybe use later for Dashboard **/
+@Deprecated
 public interface MainMvpView extends MvpView {
-
-    void showUsers(List<User> users);
-
-    void showUsersEmpty();
-
-    void showError();
 
 }

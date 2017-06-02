@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/** @Deprecated, maybe use later for Dashboard **/
+@Deprecated
 public class MainActivity extends BaseActivity implements MainMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
@@ -31,8 +33,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     @Inject
     MainPresenter mMainPresenter;
-    @Inject
-    UsersAdapter mUsersAdapter;
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -62,9 +62,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         mDrawer.addView(contentView, 0);
         ButterKnife.bind(this);
 
-
-        mRecyclerView.setAdapter(mUsersAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainPresenter.attachView(this);
         mMainPresenter.checkSignedIn(this);
 
@@ -82,25 +79,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     /***** MVP View methods implementation *****/
-
-    @Override
-    public void showUsers(List<User> users) {
-        mUsersAdapter.setUsers(users);
-        mUsersAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_sign_in))
-                .show();
-    }
-
-    @Override
-    public void showUsersEmpty() {
-        mUsersAdapter.setUsers(Collections.emptyList());
-        mUsersAdapter.notifyDataSetChanged();
-        Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void goToSignIn() {

@@ -23,4 +23,6 @@
     <string name="sync_calendar_successful">Synchronisieren des Kalenders war erfolgreich!</string>
     <string name="setting_section_calendar">Kalender</string>
     <string name="setting_section_notifications">Benachrichtigungen</string>
+    <string name="mail_to_subject">Schul-Cloud Anfrage</string>
+    <string name="mail_to_mail">schul-cloud@hpi.de</string>
 </resources>

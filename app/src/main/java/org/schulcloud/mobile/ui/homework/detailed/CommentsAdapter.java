@@ -29,7 +29,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         mComment = new ArrayList<>();
     }
 
-    public void setHomework(List<Comment> comment) {
+    public void setSubmissions(List<Comment> comment) {
         mComment = comment;
     }
 

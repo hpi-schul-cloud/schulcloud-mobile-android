@@ -99,9 +99,6 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
             homeworkDueDate.setText(dateFormatDeux.format(untilDate));
 
         String course = homework.courseId != null ? homework.courseId.name : "";
-
-        //homeworkName.setText(homework.name);
-        //homeworkDescription.setText(Html.fromHtml(homework.description));
     }
 
     @Override
@@ -111,17 +108,12 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
 
     @Override
     public void showSubmission(Submission submission) {
-        mCommentsAdapter.setHomework(submission.comments);
+        mCommentsAdapter.setSubmissions(submission.comments);
         mCommentsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showHomeworkDialog(String course, String title, String message) {
-
-    }
-
-    @Override
     public void goToSignIn() {
-
+        // Necessary in fragment?
     }
 }

@@ -31,12 +31,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/bootstrap_alert_paddings"
+        android:paddingTop="@dimen/bootstrap_alert_paddings"
         android:text="Kommentare"
         android:textColor="@color/hpiRed"
         android:textSize="@dimen/text_title"
-        android:layout_below="@+id/homeworkDue"
-        android:layout_alignRight="@+id/homeworkDescription"
-        android:layout_alignEnd="@+id/homeworkDescription" />
+        android:layout_below="@+id/homeworkDue"/>
 
     <TextView
         android:id="@+id/homeworkDescription"
@@ -52,18 +51,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="167dp" />
+        android:layout_alignBaseline="@+id/homeworkDuePlaceholder"
+        android:layout_alignBottom="@+id/homeworkDuePlaceholder"
+        android:layout_toRightOf="@+id/homeworkDuePlaceholder"
+        android:layout_toEndOf="@+id/homeworkDuePlaceholder" />
 
     <TextView
         android:id="@+id/homeworkDuePlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/homeworkDue"
-        android:layout_toLeftOf="@+id/homeworkDue"
-        android:layout_toStartOf="@+id/homeworkDue"
-        android:text="Abgabe bis: " />
+        android:text="Abgabe bis: "
+        android:layout_below="@+id/homeworkDescription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

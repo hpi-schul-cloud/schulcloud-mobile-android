@@ -5,6 +5,7 @@ import android.content.Context;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
@@ -40,4 +41,9 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
         getMvpView().showHomeworkDialog(course, title, message);
     }
 
+    public void loadComments(String homeworkId) {
+        checkViewAttached();
+        RxUtil.unsubscribe(mSubscription);
+        getMvpView().showSubmission(mDataManager.getSubmissionForId(homeworkId));
+    }
 }

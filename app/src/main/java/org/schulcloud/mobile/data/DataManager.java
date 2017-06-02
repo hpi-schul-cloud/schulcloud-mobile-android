@@ -284,4 +284,8 @@ public class DataManager {
     public Observable<List<Submission>> getSubmissions() {
         return mDatabaseHelper.getSubmissions().distinct();
     }
+
+    public Submission getSubmissionForId(String homeworkId) {
+        return mDatabaseHelper.getSubmissionForId(homeworkId);
+    }
 }

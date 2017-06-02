@@ -2,6 +2,8 @@ package org.schulcloud.mobile.ui.homework.detailed;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.ui.base.BaseFragment;
 
 import java.text.ParseException;
@@ -31,6 +34,9 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
     @Inject
     DetailedHomeworkPresenter mDetailedHomeworkPresenter;
 
+    @Inject
+    CommentsAdapter mCommentsAdapter;
+
     @BindView(R.id.homeworkName)
     TextView homeworkName;
 
@@ -40,6 +46,9 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
     @BindView(R.id.homeworkDue)
     TextView homeworkDueDate;
 
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,6 +57,9 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
         ButterKnife.bind(this, view);
         Bundle args = getArguments();
         homeworkId = args.getString("homeworkId");
+
+        mRecyclerView.setAdapter(mCommentsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mDetailedHomeworkPresenter.attachView(this);
         mDetailedHomeworkPresenter.loadHomework(homeworkId);
@@ -80,6 +92,9 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
             homeworkName.setText(homework.name);
         homeworkDescription.setText(Html.fromHtml(homework.description));
 
+        if (homework.restricted == null)
+            mDetailedHomeworkPresenter.loadComments(homeworkId);
+
         if (untilDate != null)
             homeworkDueDate.setText(dateFormatDeux.format(untilDate));
 
@@ -92,6 +107,12 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
     @Override
     public void showError() {
 
+    }
+
+    @Override
+    public void showSubmission(Submission submission) {
+        mCommentsAdapter.setHomework(submission.comments);
+        mCommentsAdapter.notifyDataSetChanged();
     }
 
     @Override

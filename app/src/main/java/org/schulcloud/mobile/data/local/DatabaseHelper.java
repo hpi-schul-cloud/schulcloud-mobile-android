@@ -286,4 +286,9 @@ public class DatabaseHelper {
                 .filter(submission -> submission.isLoaded())
                 .map(submission -> realm.copyFromRealm(submission));
     }
+
+    public Submission getSubmissionForId(String homeworkId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Submission.class).equalTo("homeworkId", homeworkId).findFirst();
+    }
 }

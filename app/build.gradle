@@ -3,8 +3,7 @@ apply from: '../config/quality/quality.gradle'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'realm-android'
-//TODO uncomment line below after adding fabric api secret and key to fabric.properties
-//apply plugin: 'io.fabric'
+apply plugin: 'io.fabric'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -69,6 +68,18 @@ android {
         androidTest {
             java.srcDir commonTestDir
         }
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/files',
+                            'src/main/res/layouts/main',
+                            'src/main/res/layouts/navigationDrawer',
+                            'src/main/res/layouts/settings',
+                            'src/main/res/layouts/signIn',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
     }
 
     //Needed because of this https://github.com/square/okio/issues/58
@@ -119,7 +130,7 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"
     compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP_VERSION"
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
 

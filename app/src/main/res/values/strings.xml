@@ -27,4 +27,6 @@
     <string name="file_save_failed">Download fehlgeschlagen</string>
     <string name="file_upload_progress">Datei wird zum Server hochgeladen...</string>
     <string name="file_download_progress">Datei wird vom Server heruntergeladen...</string>
+    <string name="mail_to_subject">Schul-Cloud Anfrage</string>
+    <string name="mail_to_mail">schul-cloud@hpi.de</string>
 </resources>

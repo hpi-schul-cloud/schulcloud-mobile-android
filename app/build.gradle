@@ -71,6 +71,7 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res/layouts/homework',
                             'src/main/res/layouts/files',
                             'src/main/res/layouts/main',
                             'src/main/res/layouts/navigationDrawer',

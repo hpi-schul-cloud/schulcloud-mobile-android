@@ -77,7 +77,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         holder.descriptionTextView.setText(Html.fromHtml(homework.description));
 
         if (homework.restricted != null)
-            holder.colorView.setFontAwesomeIcon(FontAwesome.FA_LOCK);
+            holder.private_homework.setFontAwesomeIcon(FontAwesome.FA_LOCK);
 
         if (homework.courseId != null && homework.courseId.color != null)
             holder.colorView.setBackgroundColor(Color.parseColor(homework.courseId.color));
@@ -103,6 +103,8 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         TextView descriptionTextView;
         @BindView(R.id.view_hex_color)
         AwesomeTextView colorView;
+        @BindView(R.id.private_homework)
+        AwesomeTextView private_homework;
         @BindView(R.id.card_view)
         CardView cardView;
         @BindView(R.id.text_dueDate)

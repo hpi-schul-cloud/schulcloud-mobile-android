@@ -8,13 +8,17 @@ import android.support.v4.content.ContextCompat;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class PermissionsUtil {
-    public static void checkPermissions(int callbackId, Activity context, String... permissionsId) {
+    public static boolean checkPermissions(int callbackId, Activity context, String... permissionsId) {
         boolean permissions = true;
         for (String p : permissionsId) {
             permissions = permissions && ContextCompat.checkSelfPermission(context, p) == PERMISSION_GRANTED;
         }
 
-        if (!permissions)
+        if (!permissions) {
             ActivityCompat.requestPermissions(context, permissionsId, callbackId);
+            return false;
+        }
+
+        return true;
     }
 }

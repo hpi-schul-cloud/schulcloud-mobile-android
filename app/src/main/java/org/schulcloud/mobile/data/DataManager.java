@@ -29,6 +29,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
@@ -175,6 +177,18 @@ public class DataManager {
 
     public Observable<ResponseBody> downloadFile(String url) {
         return mRestService.downloadFile(url);
+    }
+
+    public Observable<ResponseBody> uploadFile(java.io.File file, SignedUrlResponse signedUrlResponse) {
+        RequestBody requestBody  = RequestBody.create(MediaType.parse("file/*"), file);
+        return mRestService.uploadFile(
+                signedUrlResponse.url,
+                signedUrlResponse.header.getContentType(),
+                signedUrlResponse.header.getMetaPath(),
+                signedUrlResponse.header.getMetaName(),
+                signedUrlResponse.header.getMetaThumbnail(),
+                requestBody
+        );
     }
 
     public String getCurrentStorageContext() {

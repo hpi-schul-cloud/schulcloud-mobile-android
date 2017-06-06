@@ -13,7 +13,7 @@
                                     card_view:cardCornerRadius="2dp">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
 
@@ -34,6 +34,17 @@
             android:layout_toRightOf="@id/file_item_icon"
             android:textSize="@dimen/text_body"
             tools:text="Datei"/>
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/file_download_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:textSize="@dimen/fa_icon_medium"
+            app:fontAwesomeIcon="fa_download"
+            android:textColor="@color/gray"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

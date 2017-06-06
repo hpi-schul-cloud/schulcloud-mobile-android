@@ -21,12 +21,11 @@ import butterknife.ButterKnife;
 
 
 public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.DirectoriesViewHolder> {
-    private List<Directory> mDirectories;
-
     @Inject
     FilePresenter mFilesPresenter;
     @Inject
     DataManager dataManager;
+    private List<Directory> mDirectories;
 
     @Inject
     public DirectoriesAdapter() {

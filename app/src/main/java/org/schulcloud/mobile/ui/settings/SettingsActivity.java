@@ -73,7 +73,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         //inflate your activity layout here!
         View contentView = inflater.inflate(R.layout.activity_settings, null, false);
         mDrawer.addView(contentView, 0);
-        mToolbar.setTitle(R.string.title_settings);
+        getSupportActionBar().setTitle(R.string.title_settings);
         ButterKnife.bind(this);
 
 

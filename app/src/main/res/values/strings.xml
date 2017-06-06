@@ -16,6 +16,7 @@
     <string name="error_sign_in">Falscher Nutzername oder Passwort</string>
     <string name="error_files_fetch">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
     <string name="error_file_load">Für dieses Dateiformat befindet sich keine App auf deinem Gerät.</string>
+    <string name="error_file_upload">Beim Hochladen der Datei ist etwas schiefgelaufen.</string>
     <string name="drawer_open">Öffnen</string>
     <string name="drawer_close">Schließen</string>
     <string name="add_to_calendar">Schul-Cloud Termine synchronisieren</string>
@@ -23,6 +24,10 @@
     <string name="sync_calendar_successful">Synchronisieren des Kalenders war erfolgreich!</string>
     <string name="setting_section_calendar">Kalender</string>
     <string name="setting_section_notifications">Benachrichtigungen</string>
+    <string name="file_save_success">Datei %1$s wurde erfolgreich in Downloads gespeichert!</string>
+    <string name="file_save_failed">Download fehlgeschlagen</string>
+    <string name="file_upload_progress">Datei wird zum Server hochgeladen...</string>
+    <string name="file_download_progress">Datei wird vom Server heruntergeladen...</string>
     <string name="mail_to_subject">Schul-Cloud Anfrage</string>
     <string name="mail_to_mail">schul-cloud@hpi.de</string>
 </resources>

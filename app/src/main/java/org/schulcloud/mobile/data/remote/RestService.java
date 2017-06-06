@@ -4,6 +4,8 @@ import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
@@ -62,4 +64,10 @@ public interface RestService {
 
     @DELETE("notification/devices/{id}")
     Observable<Response<Void>> deleteDevice(@Header("Authorization") String accessToken, @Path("id") String id);
+
+    @GET("homework?$limit=-1&$populate=courseId")
+    Observable<List<Homework>> getHomework(@Header("Authorization") String accessToken);
+
+    @GET("submissions?$limit=-1&$populate=comments")
+    Observable<List<Submission>> getSubmissions(@Header("Authorization") String accessToken);
 }

@@ -2,6 +2,7 @@ package org.schulcloud.mobile.test.common;
 
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.User;
 
 import java.util.ArrayList;
@@ -33,6 +34,20 @@ public class TestDataFactory {
             users.add(makeUser(String.valueOf(i)));
         }
         return users;
+    }
+
+    public static Homework makeHomework(String uniqueSuffix) {
+        Homework h = new Homework();
+
+        return h;
+    }
+
+    public static List<Homework> makeListHomework(int number) {
+        List <Homework> homeworks = new ArrayList<>();
+        for (int i = 0; i < number; i++) {
+            homeworks.add(makeHomework(String.valueOf(i)));
+        }
+        return homeworks;
     }
 
     public static Event makeEvent(String uniqueSuffix) {

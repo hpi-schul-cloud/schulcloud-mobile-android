@@ -27,17 +27,6 @@
         android:textSize="@dimen/text_title" />
 
     <TextView
-        android:id="@+id/Kommentare"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/bootstrap_alert_paddings"
-        android:paddingTop="@dimen/bootstrap_alert_paddings"
-        android:text="Kommentare"
-        android:textColor="@color/hpiRed"
-        android:textSize="@dimen/text_title"
-        android:layout_below="@+id/homeworkDue"/>
-
-    <TextView
         android:id="@+id/homeworkDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,6 +54,53 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nonPrivate"
+        android:layout_below="@+id/homeworkDue">
+
+    <TextView
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bootstrap_alert_paddings"
+        android:paddingTop="@dimen/bootstrap_alert_paddings"
+        android:text="Kommentare"
+        android:textColor="@color/hpiRed"
+        android:textSize="@dimen/text_title"
+        android:layout_below="@+id/gradeComment"/>
+
+    <TextView
+        android:id="@+id/gradeSector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bootstrap_alert_paddings"
+        android:paddingTop="@dimen/bootstrap_alert_paddings"
+        android:text="Benotung"
+        android:textColor="@color/hpiRed"
+        android:textSize="@dimen/text_title" />
+
+    <TextView
+        android:id="@+id/gradePart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note: "
+        android:layout_below="@+id/gradeSector" />
+
+    <TextView
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gradeSector"
+        android:layout_toRightOf="@id/gradePart"/>
+
+    <TextView
+        android:id="@+id/gradeComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gradePart" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -73,7 +109,8 @@
         android:paddingBottom="6dp"
         android:paddingTop="6dp"
         android:scrollbars="vertical"
-        android:layout_below="@+id/Kommentare" />
+        android:layout_below="@+id/comments" />
 
+    </RelativeLayout>
 </RelativeLayout>
 </RelativeLayout>

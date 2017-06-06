@@ -8,6 +8,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
@@ -39,15 +40,18 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
 
     @BindView(R.id.homeworkName)
     TextView homeworkName;
-
     @BindView(R.id.homeworkDescription)
     TextView homeworkDescription;
-
     @BindView(R.id.homeworkDue)
     TextView homeworkDueDate;
-
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.grade)
+    TextView grade;
+    @BindView(R.id.gradeComment)
+    TextView gradeComment;
+    @BindView(R.id.nonPrivate)
+    RelativeLayout nonPrivate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +98,8 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
 
         if (homework.restricted == null)
             mDetailedHomeworkPresenter.loadComments(homeworkId);
+        else
+            nonPrivate.setVisibility(View.GONE);
 
         if (untilDate != null)
             homeworkDueDate.setText(dateFormatDeux.format(untilDate));
@@ -108,6 +114,11 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
 
     @Override
     public void showSubmission(Submission submission) {
+        if (submission.grade != null)
+            grade.setText(Integer.toString(submission.grade));
+        if (submission.gradeComment != null)
+            gradeComment.setText(Html.fromHtml(submission.gradeComment));
+
         mCommentsAdapter.setSubmissions(submission.comments);
         mCommentsAdapter.notifyDataSetChanged();
     }

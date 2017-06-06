@@ -10,6 +10,8 @@ import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
@@ -23,7 +25,6 @@ import org.schulcloud.mobile.util.JWTUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,7 +34,6 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 @Singleton
@@ -259,5 +259,47 @@ public class DataManager {
         return mDatabaseHelper.getEvents().distinct();
     }
 
+    /**** Homework ****/
 
+    public Observable<Homework> syncHomework() {
+        return mRestService.getHomework(getAccessToken())
+                .concatMap(new Func1<List<Homework>, Observable<Homework>>() {
+                    @Override
+                    public Observable<Homework> call(List<Homework> homeworks) {
+                        // clear old devices
+                        mDatabaseHelper.clearTable(Homework.class);
+                        return mDatabaseHelper.setHomework(homeworks);
+                    }
+                });
+    }
+
+    public Observable<List<Homework>> getHomework() {
+        return mDatabaseHelper.getHomework().distinct();
+    }
+
+    public Homework getHomeworkForId(String homeworkId) {
+        return mDatabaseHelper.getHomeworkForId(homeworkId);
+    }
+
+    /**** Submissions ****/
+
+    public Observable<Submission> syncSubmissions() {
+        return mRestService.getSubmissions(getAccessToken())
+                .concatMap(new Func1<List<Submission>, Observable<Submission>>() {
+                    @Override
+                    public Observable<Submission> call(List<Submission> submissions) {
+                        // clear old devices
+                        mDatabaseHelper.clearTable(Submission.class);
+                        return mDatabaseHelper.setSubmissions(submissions);
+                    }
+                });
+    }
+
+    public Observable<List<Submission>> getSubmissions() {
+        return mDatabaseHelper.getSubmissions().distinct();
+    }
+
+    public Submission getSubmissionForId(String homeworkId) {
+        return mDatabaseHelper.getSubmissionForId(homeworkId);
+    }
 }

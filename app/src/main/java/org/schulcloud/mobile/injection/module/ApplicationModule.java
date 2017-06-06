@@ -38,7 +38,8 @@ public class ApplicationModule {
     @Singleton
     RealmConfiguration provideRealmConfiguration(@ApplicationContext Context context) {
         Realm.init(context);
-        RealmConfiguration.Builder builder = new RealmConfiguration.Builder();
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder().
+                deleteRealmIfMigrationNeeded();
         builder.name("default.realm");
         return builder.build();
     }

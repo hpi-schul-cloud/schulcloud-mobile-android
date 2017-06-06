@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="70dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/bootstrap_alert_paddings"
+    android:paddingRight="@dimen/bootstrap_alert_paddings"
+    android:background="@color/gray">
+
+    <TextView
+        android:id="@+id/homeworkName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="HomeworkName"
+        android:paddingBottom="@dimen/bootstrap_alert_paddings"
+        android:textColor="@color/hpiRed"
+        android:textSize="@dimen/text_title" />
+
+    <TextView
+        android:id="@+id/homeworkDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HomeworkDescription"
+        android:layout_below="@+id/homeworkName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/homeworkDue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_alignBaseline="@+id/homeworkDuePlaceholder"
+        android:layout_alignBottom="@+id/homeworkDuePlaceholder"
+        android:layout_toRightOf="@+id/homeworkDuePlaceholder"
+        android:layout_toEndOf="@+id/homeworkDuePlaceholder" />
+
+    <TextView
+        android:id="@+id/homeworkDuePlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Abgabe bis: "
+        android:layout_below="@+id/homeworkDescription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nonPrivate"
+        android:layout_below="@+id/homeworkDue">
+
+    <TextView
+        android:id="@+id/comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bootstrap_alert_paddings"
+        android:paddingTop="@dimen/bootstrap_alert_paddings"
+        android:text="Kommentare"
+        android:textColor="@color/hpiRed"
+        android:textSize="@dimen/text_title"
+        android:layout_below="@+id/gradeComment"/>
+
+    <TextView
+        android:id="@+id/gradeSector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bootstrap_alert_paddings"
+        android:paddingTop="@dimen/bootstrap_alert_paddings"
+        android:text="Benotung"
+        android:textColor="@color/hpiRed"
+        android:textSize="@dimen/text_title" />
+
+    <TextView
+        android:id="@+id/gradePart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note: "
+        android:layout_below="@+id/gradeSector" />
+
+    <TextView
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gradeSector"
+        android:layout_toRightOf="@id/gradePart"/>
+
+    <TextView
+        android:id="@+id/gradeComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gradePart" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/comments" />
+
+    </RelativeLayout>
+</RelativeLayout>
+</RelativeLayout>

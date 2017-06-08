@@ -29,4 +29,6 @@ public interface FileMvpView extends MvpView {
     void startFileChoosing();
 
     void startDownloading(File file, Boolean download);
+
+    void showFileDeleteError();
 }

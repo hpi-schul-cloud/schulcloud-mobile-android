@@ -42,9 +42,21 @@
             android:textSize="@dimen/fa_icon_medium"
             app:fontAwesomeIcon="fa_download"
             android:textColor="@color/gray"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="35dp"/>
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/file_delete_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:textSize="@dimen/fa_icon_medium"
+            app:fontAwesomeIcon="fa_trash_o"
+            android:textColor="@color/gray"
+            android:layout_toLeftOf="@id/file_download_icon"
+            android:layout_marginRight="@dimen/bootstrap_alert_paddings"
+            android:layout_marginTop="35dp"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

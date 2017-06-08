@@ -29,6 +29,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     private Subscription fileDownloadSubscription;
     private Subscription fileUploadSubscription;
     private Subscription fileStartUploadSubscription;
+    private Subscription fileDeleteSubscription;
 
     @Inject
     public FilePresenter(DataManager dataManager) {
@@ -235,6 +236,28 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         error -> {
                             Timber.e(error, "There was an error uploading file from Server.");
                             getMvpView().showUploadFileError();
+                        },
+                        () -> {
+
+                        });
+
+    }
+
+    public void deleteFile(String path) {
+        checkViewAttached();
+
+        if (fileDeleteSubscription != null && !fileDeleteSubscription.isUnsubscribed())
+            fileDeleteSubscription.unsubscribe();
+
+        fileStartUploadSubscription = mDataManager.deleteFile(path)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (responseBody) -> {
+                            getMvpView().reloadFiles();
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error deleting file from Server.");
+                            getMvpView().showFileDeleteError();
                         },
                         () -> {
 

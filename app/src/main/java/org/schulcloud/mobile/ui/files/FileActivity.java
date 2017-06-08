@@ -147,7 +147,7 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
         // adjust height of recycler view (bugfix for nested scrolling)
         ViewGroup.LayoutParams params = fileRecyclerView.getLayoutParams();
-        params.height = 250 * mFilesAdapter.getItemCount();
+        params.height = 250 * mFilesAdapter.getItemCount() + 200;
         fileRecyclerView.setLayoutParams(params);
         fileRecyclerView.setNestedScrollingEnabled(false);
     }
@@ -227,6 +227,12 @@ public class FileActivity extends BaseActivity implements FileMvpView {
         downloadProgressDialog = DialogFactory.createProgressDialog(this, R.string.file_download_progress);
         downloadProgressDialog.show();
         mFilePresenter.loadFileFromServer(file, download);
+    }
+
+    @Override
+    public void showFileDeleteError() {
+        DialogFactory.createGenericErrorDialog(this, R.string.error_file_delete)
+                .show();
     }
 
     @Override

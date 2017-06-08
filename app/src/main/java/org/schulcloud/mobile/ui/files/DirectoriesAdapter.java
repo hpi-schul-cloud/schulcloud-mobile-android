@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
+
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Directory;
@@ -47,15 +49,23 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
     public void onBindViewHolder(DirectoriesViewHolder holder, int position) {
         Directory directory = mDirectories.get(position);
         holder.nameTextView.setText(directory.name);
+
+        String path = dataManager.getCurrentStorageContext() + directory.name;
+
+        // remove leading slash
+        if (path.indexOf("/") == 0) {
+            path = path.substring(1);
+        }
+
+        // has to be final for lambda expressions
+        String finalPath = path;
+
         holder.cardView.setOnClickListener(v -> {
-            String path = dataManager.getCurrentStorageContext() + directory.name;
-
-            // remove leading slash
-            if (path.indexOf("/") == 0) {
-                path = path.substring(1);
-            }
-
-            mFilesPresenter.goIntoDirectory(path);
+            mFilesPresenter.goIntoDirectory(finalPath);
+        });
+        holder.deleteDirectory.setOnClickListener(v -> {
+            // refactor it when we also support course/class files
+            mFilesPresenter.deleteDirectory("users/" + dataManager.getCurrentUserId() + "/" + finalPath + "/");
         });
     }
 
@@ -70,6 +80,8 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
         TextView nameTextView;
         @BindView(R.id.card_view)
         CardView cardView;
+        @BindView(R.id.directory_delete_icon)
+        AwesomeTextView deleteDirectory;
 
 
         public DirectoriesViewHolder(View itemView) {

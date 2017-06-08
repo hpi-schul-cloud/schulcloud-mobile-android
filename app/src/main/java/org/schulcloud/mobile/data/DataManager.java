@@ -172,6 +172,10 @@ public class DataManager {
         });
     }
 
+    public Observable<ResponseBody> deleteDirectory(String path) {
+        return mRestService.deleteDirectory(this.getAccessToken(), path);
+    }
+
     public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
         return mRestService.generateSignedUrl(this.getAccessToken(), signedUrlRequest);
     }

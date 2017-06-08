@@ -55,6 +55,9 @@ public interface RestService {
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
+    @DELETE("fileStorage/directories")
+    Observable<ResponseBody> deleteDirectory(@Header("Authorization") String accessToken, @Query("path") String path);
+
     @PUT
     Observable<ResponseBody> uploadFile(
             @Url String fileUrl,

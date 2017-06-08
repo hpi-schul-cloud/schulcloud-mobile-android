@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
+
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
@@ -191,8 +193,15 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     @Override
     public void reloadFiles() {
         if (uploadProgressDialog != null && uploadProgressDialog.isShowing()) uploadProgressDialog.cancel();
-        finish();
-        this.startActivity(getIntent());
+
+        stopService(FileSyncService.getStartIntent(this));
+        stopService(DirectorySyncService.getStartIntent(this));
+
+        startService(FileSyncService.getStartIntent(this));
+        startService(DirectorySyncService.getStartIntent(this));
+
+        mFilePresenter.loadFiles();
+        mFilePresenter.loadDirectories();
     }
 
     @Override
@@ -261,13 +270,17 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     }
 
     public void showFileDeleteSuccess() {
-        Toast.makeText(this, R.string.file_delete_success, Toast.LENGTH_SHORT).show();
+        DialogFactory.createSuperToast(this,
+                getResources().getString(R.string.file_delete_success),
+                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
         this.reloadFiles();
     }
 
     @Override
     public void showDirectoryDeleteSuccess() {
-        Toast.makeText(this, R.string.directory_delete_success, Toast.LENGTH_SHORT).show();
+        DialogFactory.createSuperToast(this,
+                getResources().getString(R.string.directory_delete_success),
+                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
         this.reloadFiles();
     }
 

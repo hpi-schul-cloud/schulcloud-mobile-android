@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.schulcloud.mobile.R;
@@ -49,13 +50,19 @@ public class InternalFilesUtil {
             outputStream.write(body.bytes());
             outputStream.close();
 
-            String message = context.getString(R.string.file_save_success, fileName);
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            DialogFactory.createSuperToast(context,
+                    context.getString(R.string.file_save_success, fileName),
+                    PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN))
+                    .show();
 
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(context, R.string.file_save_failed, Toast.LENGTH_LONG).show();
+            DialogFactory.createSuperToast(context,
+                    context.getResources().getString(R.string.file_save_failed),
+                    PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_RED))
+                    .show();
+
             return false;
         }
     }

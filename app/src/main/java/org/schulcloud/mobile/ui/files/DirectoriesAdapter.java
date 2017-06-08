@@ -65,7 +65,7 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
         });
         holder.deleteDirectory.setOnClickListener(v -> {
             // refactor it when we also support course/class files
-            mFilesPresenter.deleteDirectory("users/" + dataManager.getCurrentUserId() + "/" + finalPath + "/");
+            mFilesPresenter.startDirectoryDeleting("users/" + dataManager.getCurrentUserId() + "/" + finalPath + "/", directory.name);
         });
     }
 

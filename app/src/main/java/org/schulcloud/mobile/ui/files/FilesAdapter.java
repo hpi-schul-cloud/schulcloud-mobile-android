@@ -53,7 +53,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
             mFilesPresenter.startDownloading(file, true);
         });
         holder.deleteIcon.setOnClickListener(v -> {
-            mFilesPresenter.deleteFile(file.key);
+            mFilesPresenter.startFileDeleting(file.key, file.name);
         });
     }
 

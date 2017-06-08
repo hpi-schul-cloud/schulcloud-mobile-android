@@ -8,11 +8,14 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
@@ -188,10 +191,8 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     @Override
     public void reloadFiles() {
         if (uploadProgressDialog != null && uploadProgressDialog.isShowing()) uploadProgressDialog.cancel();
-
-        Intent intent = new Intent(this, FileActivity.class);
-        this.startActivity(intent);
         finish();
+        this.startActivity(getIntent());
     }
 
     @Override
@@ -230,9 +231,44 @@ public class FileActivity extends BaseActivity implements FileMvpView {
     }
 
     @Override
+    public void startFileDeleting(String path, String fileName) {
+        DialogFactory.createSimpleOkCancelDialog(
+                this,
+                this.getResources().getString(R.string.delete_dialog_title),
+                this.getResources().getString(R.string.file_delete_request, fileName))
+                .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> {
+                    mFilePresenter.deleteFile(path);
+                })
+                .show();
+    }
+
+    @Override
     public void showFileDeleteError() {
         DialogFactory.createGenericErrorDialog(this, R.string.error_file_delete)
                 .show();
+    }
+
+    @Override
+    public void startDirectoryDeleting(String path, String dirName) {
+        DialogFactory.createSimpleOkCancelDialog(
+                this,
+                this.getResources().getString(R.string.delete_dialog_title),
+                this.getResources().getString(R.string.file_delete_request, dirName))
+                .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> {
+                    mFilePresenter.deleteDirectory(path);
+                })
+                .show();
+    }
+
+    public void showFileDeleteSuccess() {
+        Toast.makeText(this, R.string.file_delete_success, Toast.LENGTH_SHORT).show();
+        this.reloadFiles();
+    }
+
+    @Override
+    public void showDirectoryDeleteSuccess() {
+        Toast.makeText(this, R.string.directory_delete_success, Toast.LENGTH_SHORT).show();
+        this.reloadFiles();
     }
 
     @Override

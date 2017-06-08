@@ -262,7 +262,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (responseBody) -> {
-                            getMvpView().reloadFiles();
+                            getMvpView().showFileDeleteSuccess();
                         },
                         error -> {
                             Timber.e(error, "There was an error deleting file from Server.");
@@ -288,7 +288,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (responseBody) -> {
-                            getMvpView().reloadFiles();
+                            getMvpView().showDirectoryDeleteSuccess();
                         },
                         error -> {
                             Timber.e(error, "There was an error deleting file from Server.");
@@ -298,6 +298,14 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
                         });
 
+    }
+
+    public void startDirectoryDeleting(String path, String dirName) {
+        getMvpView().startDirectoryDeleting(path, dirName);
+    }
+
+    public void startFileDeleting(String path, String fileName) {
+        getMvpView().startFileDeleting(path, fileName);
     }
 
     public void checkSignedIn(Context context) {

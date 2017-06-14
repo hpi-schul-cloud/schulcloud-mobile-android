@@ -12,6 +12,7 @@ The official Android App for [Schul-Cloud](https://schul-cloud.org/).
 - [Version History](#version-history)
 - [Contribution](#how-to-name-your-branch)
 - [Architecture](#architecture)
+- [Bug reporting](#bug-reporting)
 - [Testing](#testing)
 - [Store links](#store-links)
 - [Troubleshooting](#troubleshooting)
@@ -47,6 +48,11 @@ We follow the [MVP pattern](https://antonioleiva.com/mvp-android/) :heart:
 ![architecture_diagram](https://cloud.githubusercontent.com/assets/9433996/26027704/e473e598-3812-11e7-9545-bbe25ba0caf9.png)
 
 Thanks to [ribot](https://github.com/ribot) for designing the project structure. Read more [here](https://github.com/ribot/android-guidelines/blob/master/architecture_guidelines/android_architecture.md).
+
+
+## Bug reporting 
+
+We use [fabric.io](https://fabric.io) with [crashlytics](https://fabric.io/kits/android/crashlytics) for repoting bugs. When the App crashes on a device, a Trello-bug-ticket is automatically added. When you still find bugs in the App, please open a new [issue](https://github.com/schul-cloud/schulcloud-mobile-android/issues/new).
 
 ## Testing
 

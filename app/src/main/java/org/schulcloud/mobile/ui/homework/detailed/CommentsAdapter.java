@@ -51,7 +51,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
         holder.nameTextView.setText(comment.comment);
 
-        if (!comment.author.equals(mUserId))
+        if (comment.author == null || !comment.author.equals(mUserId))
             holder.teacherIndicator.setFontAwesomeIcon("fa-graduation-cap");
         else
             holder.teacherIndicator.setFontAwesomeIcon("fa-user");

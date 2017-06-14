@@ -2,6 +2,7 @@ package org.schulcloud.mobile.data;
 
 import android.util.Log;
 
+import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
@@ -171,6 +172,10 @@ public class DataManager {
         });
     }
 
+    public Observable<ResponseBody> deleteDirectory(String path) {
+        return mRestService.deleteDirectory(this.getAccessToken(), path);
+    }
+
     public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
         return mRestService.generateSignedUrl(this.getAccessToken(), signedUrlRequest);
     }
@@ -189,6 +194,10 @@ public class DataManager {
                 signedUrlResponse.header.getMetaThumbnail(),
                 requestBody
         );
+    }
+
+    public Observable<ResponseBody> deleteFile(String path) {
+        return mRestService.deleteFile(this.getAccessToken(), path);
     }
 
     public String getCurrentStorageContext() {

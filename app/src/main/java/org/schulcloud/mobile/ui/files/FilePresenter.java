@@ -29,6 +29,8 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     private Subscription fileDownloadSubscription;
     private Subscription fileUploadSubscription;
     private Subscription fileStartUploadSubscription;
+    private Subscription fileDeleteSubscription;
+    private Subscription directoryDeleteSubscription;
 
     @Inject
     public FilePresenter(DataManager dataManager) {
@@ -47,6 +49,10 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         if (directorySubscription != null) directorySubscription.unsubscribe();
         if (fileGetterSubscription != null) fileGetterSubscription.unsubscribe();
         if (fileDownloadSubscription != null) fileDownloadSubscription.unsubscribe();
+        if (fileUploadSubscription != null) fileUploadSubscription.unsubscribe();
+        if (fileStartUploadSubscription != null) fileStartUploadSubscription.unsubscribe();
+        if (fileDeleteSubscription != null) fileDeleteSubscription.unsubscribe();
+        if (directoryDeleteSubscription != null) directoryDeleteSubscription.unsubscribe();
 
     }
 
@@ -240,6 +246,66 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
                         });
 
+    }
+
+    /**
+     * deletes a file from the server
+     * @param path {String} - the key/path to the file
+     */
+    public void deleteFile(String path) {
+        checkViewAttached();
+
+        if (fileDeleteSubscription != null && !fileDeleteSubscription.isUnsubscribed())
+            fileDeleteSubscription.unsubscribe();
+
+        fileDeleteSubscription = mDataManager.deleteFile(path)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (responseBody) -> {
+                            getMvpView().showFileDeleteSuccess();
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error deleting file from Server.");
+                            getMvpView().showFileDeleteError();
+                        },
+                        () -> {
+
+                        });
+
+    }
+
+    /**
+     * deletes a directory from the server
+     * @param path {String} - the key/path to the directory
+     */
+    public void deleteDirectory(String path) {
+        checkViewAttached();
+
+        if (directoryDeleteSubscription != null && !directoryDeleteSubscription.isUnsubscribed())
+            directoryDeleteSubscription.unsubscribe();
+
+        directoryDeleteSubscription = mDataManager.deleteDirectory(path)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (responseBody) -> {
+                            getMvpView().showDirectoryDeleteSuccess();
+                        },
+                        error -> {
+                            Timber.e(error, "There was an error deleting file from Server.");
+                            getMvpView().showFileDeleteError();
+                        },
+                        () -> {
+
+                        });
+
+    }
+
+    public void startDirectoryDeleting(String path, String dirName) {
+        getMvpView().startDirectoryDeleting(path, dirName);
+    }
+
+    public void startFileDeleting(String path, String fileName) {
+        getMvpView().startFileDeleting(path, fileName);
     }
 
     public void checkSignedIn(Context context) {

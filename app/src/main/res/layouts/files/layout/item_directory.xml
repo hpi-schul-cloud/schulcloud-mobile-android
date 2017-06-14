@@ -37,6 +37,18 @@
             android:textColor="@color/hpiRed"
             android:textSize="@dimen/text_body"
             tools:text="Directory"/>
+
+        <com.beardedhen.androidbootstrap.AwesomeTextView
+            android:id="@+id/directory_delete_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:textColor="@color/hpiRed"
+            app:bootstrapBrand="danger"
+            android:textSize="@dimen/fa_icon_medium"
+            app:fontAwesomeIcon="fa_trash_o"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

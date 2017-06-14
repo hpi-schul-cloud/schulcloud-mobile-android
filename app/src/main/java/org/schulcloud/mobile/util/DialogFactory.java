@@ -8,6 +8,11 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.widget.TextView;
 
+import com.github.johnpersano.supertoasts.library.Style;
+import com.github.johnpersano.supertoasts.library.SuperActivityToast;
+import com.github.johnpersano.supertoasts.library.SuperToast;
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
+
 import org.schulcloud.mobile.R;
 
 public final class DialogFactory {
@@ -33,6 +38,15 @@ public final class DialogFactory {
         return alertDialog.create();
     }
 
+    public static AlertDialog.Builder createSimpleOkCancelDialog(Context context, String title, String message) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
+                .setTitle(title)
+                .setMessage(message)
+                .setNegativeButton(R.string.dialog_action_cancel, null)
+                .setPositiveButton(R.string.dialog_action_ok, null);
+        return alertDialog;
+    }
+
     public static Dialog createSimpleOkErrorDialog(Context context,
                                                    @StringRes int titleResource,
                                                    @StringRes int messageResource) {
@@ -54,7 +68,9 @@ public final class DialogFactory {
         return createGenericErrorDialog(context, context.getString(messageResource));
     }
 
-    public static AlertDialog.Builder createSingleSelectDialog(Context context, CharSequence[] singleChoiceItems, @StringRes int messageResource) {
+    public static AlertDialog.Builder createSingleSelectDialog(Context context,
+                                                               CharSequence[] singleChoiceItems,
+                                                               @StringRes int messageResource) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setSingleChoiceItems(singleChoiceItems, 0, null);
         alertDialog.setNegativeButton(R.string.dialog_action_cancel, null);
@@ -72,6 +88,18 @@ public final class DialogFactory {
     public static ProgressDialog createProgressDialog(Context context,
                                                       @StringRes int messageResource) {
         return createProgressDialog(context, context.getString(messageResource));
+    }
+
+
+    public static SuperToast createSuperToast(Context context, String message, Integer color) {
+        return SuperActivityToast.create(context, new Style(), Style.TYPE_BUTTON)
+                .setButtonIconResource(R.mipmap.ic_launcher)
+                .setProgressBarColor(Color.WHITE)
+                .setText(message)
+                .setDuration(Style.DURATION_SHORT)
+                .setFrame(Style.FRAME_LOLLIPOP)
+                .setColor(color)
+                .setAnimations(Style.ANIMATIONS_POP);
     }
 
 }

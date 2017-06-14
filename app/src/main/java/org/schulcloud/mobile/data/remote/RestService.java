@@ -44,13 +44,19 @@ public interface RestService {
 
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")
-    Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String storageContext);
+    Observable<FilesResponse> getFiles(@Header("Authorization") String accessToken, @Query("path") String path);
+
+    @DELETE("fileStorage")
+    Observable<ResponseBody> deleteFile(@Header("Authorization") String accessToken, @Query("path") String path);
 
     @POST("fileStorage/signedUrl")
     Observable<SignedUrlResponse> generateSignedUrl(@Header("Authorization") String accessToken, @Body SignedUrlRequest signedUrlRequest);
 
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
+
+    @DELETE("fileStorage/directories")
+    Observable<ResponseBody> deleteDirectory(@Header("Authorization") String accessToken, @Query("path") String path);
 
     @PUT
     Observable<ResponseBody> uploadFile(

@@ -52,6 +52,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         holder.downloadIcon.setOnClickListener(v -> {
             mFilesPresenter.startDownloading(file, true);
         });
+        holder.deleteIcon.setOnClickListener(v -> {
+            mFilesPresenter.startFileDeleting(file.key, file.name);
+        });
     }
 
     @Override
@@ -67,6 +70,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         CardView cardView;
         @BindView(R.id.file_download_icon)
         AwesomeTextView downloadIcon;
+        @BindView(R.id.file_delete_icon)
+        AwesomeTextView deleteIcon;
 
         public FilesViewHolder(View itemView) {
             super(itemView);

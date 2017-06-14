@@ -29,4 +29,14 @@ public interface FileMvpView extends MvpView {
     void startFileChoosing();
 
     void startDownloading(File file, Boolean download);
+
+    void startFileDeleting(String path, String fileName);
+
+    void startDirectoryDeleting(String path, String dirName);
+
+    void showFileDeleteSuccess();
+
+    void showDirectoryDeleteSuccess();
+
+    void showFileDeleteError();
 }

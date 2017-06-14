@@ -10,5 +10,5 @@ public interface DetailedHomeworkMvpView extends MvpView {
 
     void showError();
 
-    void showSubmission(Submission submission);
+    void showSubmission(Submission submission, String userId);
 }

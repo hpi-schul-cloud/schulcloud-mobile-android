@@ -76,7 +76,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             holder.nameTextView.setText(homework.name);
         holder.descriptionTextView.setText(Html.fromHtml(homework.description));
 
-        if (homework.restricted != null)
+        if (homework.restricted != null && homework.restricted)
             holder.private_homework.setFontAwesomeIcon(FontAwesome.FA_LOCK);
 
         if (homework.courseId != null && homework.courseId.color != null)

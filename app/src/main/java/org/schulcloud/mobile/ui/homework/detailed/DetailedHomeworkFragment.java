@@ -96,7 +96,7 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
             homeworkName.setText(homework.name);
         homeworkDescription.setText(Html.fromHtml(homework.description));
 
-        if (homework.restricted == null)
+        if (homework.restricted == null || !homework.restricted)
             mDetailedHomeworkPresenter.loadComments(homeworkId);
         else
             nonPrivate.setVisibility(View.GONE);
@@ -113,13 +113,14 @@ public class DetailedHomeworkFragment extends BaseFragment implements DetailedHo
     }
 
     @Override
-    public void showSubmission(Submission submission) {
+    public void showSubmission(Submission submission, String userId) {
         if (submission.grade != null)
             grade.setText(Integer.toString(submission.grade));
         if (submission.gradeComment != null)
             gradeComment.setText(Html.fromHtml(submission.gradeComment));
 
         mCommentsAdapter.setSubmissions(submission.comments);
+        mCommentsAdapter.setUserId(userId);
         mCommentsAdapter.notifyDataSetChanged();
     }
 

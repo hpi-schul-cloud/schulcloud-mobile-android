@@ -56,6 +56,6 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
             comment.comment = "Derzeit keine Kommentare";
             submission.comments.add(comment);
         }
-        getMvpView().showSubmission(submission);
+        getMvpView().showSubmission(submission, mDataManager.getCurrentUserId());
     }
 }

@@ -2,10 +2,10 @@ package org.schulcloud.mobile.data;
 
 import android.util.Log;
 
-import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
@@ -18,6 +18,7 @@ import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.CourseResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
@@ -35,6 +36,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 @Singleton
@@ -311,4 +313,32 @@ public class DataManager {
     public Submission getSubmissionForId(String homeworkId) {
         return mDatabaseHelper.getSubmissionForId(homeworkId);
     }
+
+    /**** Courses ****/
+
+    public Observable<Course> syncCourses() {
+        return mRestService.getCourses(getAccessToken())
+                .concatMap(new Func1<CourseResponse, Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call(CourseResponse courses) {
+                        mDatabaseHelper.clearTable(Course.class);
+                        return mDatabaseHelper.setCourses(courses.data);
+                    }
+                })
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d("CoursesSync", throwable.toString());
+                    }
+                });
+    }
+
+    public Observable<List<Course>> getCourses() {
+        return mDatabaseHelper.getCourses().distinct();
+    }
+
+    public Course getCourseForId(String courseId) {
+        return mDatabaseHelper.getCourseForId(courseId);
+    }
+
 }

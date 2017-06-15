@@ -11,6 +11,7 @@ import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.CourseResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
@@ -88,4 +89,7 @@ public interface RestService {
 
     @GET("submissions?$limit=-1&$populate=comments")
     Observable<List<Submission>> getSubmissions(@Header("Authorization") String accessToken);
+
+    @GET("courses?$populate[0]=teacherIds&$populate[1]=userIds&$populate[2]=substitutionIds")
+    Observable<CourseResponse> getCourses(@Header("Authorization") String accessToken);
 }

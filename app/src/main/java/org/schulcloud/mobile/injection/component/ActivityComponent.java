@@ -4,6 +4,8 @@ import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.base.BaseFragment;
+import org.schulcloud.mobile.ui.courses.CourseActivity;
+import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkActivity;
 import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
@@ -35,4 +37,8 @@ public interface ActivityComponent {
     void inject(HomeworkActivity homeworkActivity);
 
     void inject(DetailedHomeworkFragment detailedHomeworkFragment);
+
+    void inject(CourseActivity courseActivity);
+
+    void inject (DetailedCourseFragment detailedCourseFragment);
 }

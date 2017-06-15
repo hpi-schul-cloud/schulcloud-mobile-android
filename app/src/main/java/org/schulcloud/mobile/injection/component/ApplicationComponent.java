@@ -7,6 +7,7 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.remote.RestService;
+import org.schulcloud.mobile.data.sync.CourseSyncService;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
@@ -44,6 +45,8 @@ public interface ApplicationComponent {
     void inject(HomeworkSyncService homeworkSyncService);
 
     void inject(SubmissionSyncService submissionSyncService);
+
+    void inject(CourseSyncService courseSyncService);
 
     @ApplicationContext
     Context context();

@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.local;
 
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
@@ -290,5 +291,38 @@ public class DatabaseHelper {
     public Submission getSubmissionForId(String homeworkId) {
         final Realm realm = mRealmProvider.get();
         return realm.where(Submission.class).equalTo("homeworkId", homeworkId).findFirst();
+    }
+
+    /**** Courses ****/
+
+    public Observable<Course> setCourses(final Collection<Course> newCourse) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newCourse));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Course>> getCourses() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Course.class).findAllAsync().asObservable()
+                .filter(course -> course.isLoaded())
+                .map(course -> realm.copyFromRealm(course));
+    }
+
+    public Course getCourseForId(String courseId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Course.class).equalTo("_id", courseId).findFirst();
     }
 }

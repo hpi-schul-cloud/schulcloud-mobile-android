@@ -114,14 +114,22 @@ public class DataManager {
     /**** FileStorage ****/
 
     public Observable<File> syncFiles(String path) {
-        // "users/" + getCurrentUserId()
         return mRestService.getFiles(getAccessToken(), path)
                 .concatMap(new Func1<FilesResponse, Observable<File>>() {
                     @Override
                     public Observable<File> call(FilesResponse filesResponse) {
                         // clear old files
                         mDatabaseHelper.clearTable(File.class);
-                        return mDatabaseHelper.setFiles(filesResponse.files);
+
+                        List<File> files = new ArrayList<>();
+
+                        // set fullPath for every file
+                        for (File file : filesResponse.files) {
+                            file.fullPath = file.key.substring(0, file.key.lastIndexOf(java.io.File.separator));
+                            files.add(file);
+                        }
+
+                        return mDatabaseHelper.setFiles(files);
                     }
                 });
     }
@@ -136,7 +144,7 @@ public class DataManager {
             }
 
             for (File f : files) {
-                if (f.path.equals(currentContext)) filteredFiles.add(f);
+                if (f.fullPath.equals(currentContext)) filteredFiles.add(f);
             }
             return Observable.just(filteredFiles);
         });
@@ -202,7 +210,8 @@ public class DataManager {
 
     public String getCurrentStorageContext() {
         String storageContext = mPreferencesHelper.getCurrentStorageContext();
-        return storageContext.equals("null") ? "/" : "/" + storageContext + "/";
+        // personal files are default
+        return storageContext.equals("null") ? "users/" + this.getCurrentUserId() + "/" : storageContext + "/";
     }
 
     public void setCurrentStorageContext(String newStorageContext) {

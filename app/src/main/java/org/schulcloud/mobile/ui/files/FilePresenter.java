@@ -183,9 +183,6 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
         // todo: refactor later on when there are class and course folders
         String uploadPath = new StringBuilder()
-                .append("users")
-                .append(java.io.File.separator)
-                .append(mDataManager.getCurrentUserId())
                 .append(mDataManager.getCurrentStorageContext())
                 .append(fileToUpload.getName())
                 .toString();

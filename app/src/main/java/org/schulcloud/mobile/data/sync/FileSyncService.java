@@ -55,8 +55,7 @@ public class FileSyncService extends Service {
 
         // generate correct storageContext/path
 
-        // maybe refactor it when we also support course/class folders
-        String path = "users/" + mDataManager.getCurrentUserId() + mDataManager.getCurrentStorageContext();
+        String path = mDataManager.getCurrentStorageContext();
 
         mSubscription = mDataManager.syncFiles(path)
                 .subscribeOn(Schedulers.io())

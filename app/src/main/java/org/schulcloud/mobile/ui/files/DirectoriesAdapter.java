@@ -13,6 +13,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Directory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
         Directory directory = mDirectories.get(position);
         holder.nameTextView.setText(directory.name);
 
-        String path = dataManager.getCurrentStorageContext() + directory.name;
+        String path = directory.path + directory.name;
 
         // remove leading slash
         if (path.indexOf("/") == 0) {
@@ -65,7 +66,7 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
         });
         holder.deleteDirectory.setOnClickListener(v -> {
             // refactor it when we also support course/class files
-            mFilesPresenter.startDirectoryDeleting("users/" + dataManager.getCurrentUserId() + "/" + finalPath + "/", directory.name);
+            mFilesPresenter.startDirectoryDeleting(finalPath, directory.name);
         });
     }
 

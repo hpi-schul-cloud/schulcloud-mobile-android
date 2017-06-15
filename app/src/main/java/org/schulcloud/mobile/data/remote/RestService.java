@@ -83,7 +83,7 @@ public interface RestService {
     @DELETE("notification/devices/{id}")
     Observable<Response<Void>> deleteDevice(@Header("Authorization") String accessToken, @Path("id") String id);
 
-    @GET("homework?$limit=-1&$populate=courseId")
+    @GET("homework?$limit=-1&$populate=courseId&$sort=dueDate:-1")
     Observable<List<Homework>> getHomework(@Header("Authorization") String accessToken);
 
     @GET("submissions?$limit=-1&$populate=comments")

@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.courses.detailed;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Topic;
+import org.schulcloud.mobile.ui.homework.HomeworkPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
         mTopic = new ArrayList<>();
     }
 
-    public void setSubmissions(List<Topic> topics) {
+    public void setTopics(List<Topic> topics) {
         mTopic = topics;
     }
 
@@ -46,6 +48,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
         Topic topic = mTopic.get(position);
 
         holder.nameTextView.setText(topic.name);
+
+        holder.cardView.setOnClickListener(v -> mDetailedCoursePresenter.showTopicDetail(topic._id));
     }
 
     @Override
@@ -57,6 +61,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
 
         @BindView(R.id.text_name)
         TextView nameTextView;
+        @BindView(R.id.card_view)
+        CardView cardView;
 
         public TopicsViewHolder(View itemView) {
             super(itemView);

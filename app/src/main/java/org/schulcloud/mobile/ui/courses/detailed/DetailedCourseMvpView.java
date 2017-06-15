@@ -12,5 +12,7 @@ public interface DetailedCourseMvpView extends MvpView {
 
     void showTopics(List<Topic> topics);
 
+    void showTopicFragment(String topicId);
+
     void showError();
 }

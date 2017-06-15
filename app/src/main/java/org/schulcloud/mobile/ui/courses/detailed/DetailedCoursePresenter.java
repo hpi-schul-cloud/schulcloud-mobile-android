@@ -56,4 +56,8 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
                         () -> {
                         });
     };
+
+    public void showTopicDetail(String topicId) {
+        getMvpView().showTopicFragment(topicId);
+    }
 }

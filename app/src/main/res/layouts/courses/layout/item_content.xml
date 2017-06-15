@@ -23,9 +23,15 @@
                 android:id="@+id/text_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
+                android:layout_marginBottom="@dimen/bootstrap_alert_paddings"
                 android:textSize="@dimen/text_body"
+                />
+
+            <TextView
+                android:id="@+id/text_description"
+                android:layout_width="match_parent"
+                android:layout_below="@id/text_name"
+                android:layout_height="wrap_content"
                 />
 
         </RelativeLayout>

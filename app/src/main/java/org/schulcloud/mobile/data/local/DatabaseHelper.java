@@ -354,4 +354,9 @@ public class DatabaseHelper {
                 .filter(topic -> topic.isLoaded())
                 .map(topic -> realm.copyFromRealm(topic));
     }
+
+    public Topic getContents(String topicId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Topic.class).equalTo("_id", topicId).findFirst();
+    }
 }

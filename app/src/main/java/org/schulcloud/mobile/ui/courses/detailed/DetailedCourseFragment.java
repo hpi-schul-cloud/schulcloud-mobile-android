@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.courses.detailed;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,8 +73,21 @@ public class DetailedCourseFragment extends BaseFragment implements DetailedCour
 
     @Override
     public void showTopics(List<Topic> topics) {
-        mTopicsAdapter.setSubmissions(topics);
+        mTopicsAdapter.setTopics(topics);
         mTopicsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showTopicFragment(String topicId) {
+        TopicFragment frag = new TopicFragment();
+        Bundle args = new Bundle();
+        args.putString("topicId", topicId);
+        frag.setArguments(args);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.overlay_fragment_container, frag)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

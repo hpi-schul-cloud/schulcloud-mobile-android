@@ -41,6 +41,16 @@
             </intent-filter>
         </receiver>
 
+        <service android:name=".data.sync.TopicSyncService"/>
+
+        <receiver
+            android:name=".data.sync.TopicSyncService$SyncOnConnectionAvailable"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
         <service android:name=".data.sync.UserSyncService"/>
 
         <receiver

@@ -9,6 +9,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 
 import java.util.Collection;
@@ -324,5 +325,33 @@ public class DatabaseHelper {
     public Course getCourseForId(String courseId) {
         final Realm realm = mRealmProvider.get();
         return realm.where(Course.class).equalTo("_id", courseId).findFirst();
+    }
+
+    /**** Topics ****/
+
+    public Observable<Topic> setTopics(final Collection<Topic> newTopic) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newTopic));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Topic>> getTopics() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Topic.class).findAllAsync().asObservable()
+                .filter(topic -> topic.isLoaded())
+                .map(topic -> realm.copyFromRealm(topic));
     }
 }

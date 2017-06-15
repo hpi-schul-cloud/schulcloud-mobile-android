@@ -13,12 +13,13 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
-import org.schulcloud.mobile.data.model.responseBodies.CourseResponse;
+import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
@@ -318,9 +319,9 @@ public class DataManager {
 
     public Observable<Course> syncCourses() {
         return mRestService.getCourses(getAccessToken())
-                .concatMap(new Func1<CourseResponse, Observable<Course>>() {
+                .concatMap(new Func1<FeathersResponse<Course>, Observable<Course>>() {
                     @Override
-                    public Observable<Course> call(CourseResponse courses) {
+                    public Observable<Course> call(FeathersResponse<Course> courses) {
                         mDatabaseHelper.clearTable(Course.class);
                         return mDatabaseHelper.setCourses(courses.data);
                     }
@@ -341,4 +342,26 @@ public class DataManager {
         return mDatabaseHelper.getCourseForId(courseId);
     }
 
+    /**** Topics ****/
+
+    public Observable<Topic> syncTopics(String courseId) {
+        return mRestService.getTopics(getAccessToken(), courseId)
+                .concatMap(new Func1<FeathersResponse<Topic>, Observable<Topic>>() {
+                    @Override
+                    public Observable<Topic> call(FeathersResponse<Topic> topics) {
+                        mDatabaseHelper.clearTable(Topic.class);
+                        return mDatabaseHelper.setTopics(topics.data);
+                    }
+                })
+                .doOnError(new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d("TopicsSync", throwable.toString());
+                    }
+                });
+    }
+
+    public Observable<List<Topic>> getTopics() {
+        return mDatabaseHelper.getTopics().distinct();
+    }
 }

@@ -1,6 +1,9 @@
 package org.schulcloud.mobile.ui.courses.detailed;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +11,11 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Course;
+import org.schulcloud.mobile.data.model.Topic;
+import org.schulcloud.mobile.data.sync.TopicSyncService;
 import org.schulcloud.mobile.ui.base.BaseFragment;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,10 +33,12 @@ public class DetailedCourseFragment extends BaseFragment implements DetailedCour
     DetailedCoursePresenter mDetailedCoursePresenter;
 
     @Inject
-    CommentsAdapter mCommentsAdapter;
+    TopicsAdapter mTopicsAdapter;
 
     @BindView(R.id.courseName)
     TextView courseName;
+    @BindView(R.id.topicRecycler)
+    RecyclerView mRecyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,8 +49,16 @@ public class DetailedCourseFragment extends BaseFragment implements DetailedCour
         Bundle args = getArguments();
         courseId = args.getString("courseId");
 
+        mRecyclerView.setAdapter(mTopicsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         mDetailedCoursePresenter.attachView(this);
         mDetailedCoursePresenter.loadCourse(courseId);
+        mDetailedCoursePresenter.loadTopics();
+
+        Intent intent = new Intent(getActivity(),TopicSyncService.class);
+        intent.putExtra("courseId", courseId);
+        getActivity().startService(intent);
 
         return view;
     }
@@ -51,6 +68,12 @@ public class DetailedCourseFragment extends BaseFragment implements DetailedCour
     @Override
     public void showCourse(Course course) {
         courseName.setText(course.name);
+    }
+
+    @Override
+    public void showTopics(List<Topic> topics) {
+        mTopicsAdapter.setSubmissions(topics);
+        mTopicsAdapter.notifyDataSetChanged();
     }
 
     @Override

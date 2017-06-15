@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary_dark</item>
+        <item name="android:typeface">serif</item>
         <item name="drawerArrowStyle">@style/BarStyle</item>
     </style>
 

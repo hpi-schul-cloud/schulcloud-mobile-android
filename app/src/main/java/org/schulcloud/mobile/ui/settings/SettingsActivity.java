@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
@@ -42,10 +45,13 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     SettingsPresenter mSettingsPresenter;
 
     @Inject
+    PreferencesHelper mPreferencesHelper;
+
+    @Inject
     DevicesAdapter mDevicesAdapter;
 
-    @BindView(R.id.btn_add_calendar)
-    BootstrapButton btn_add_calendar;
+    @BindView(R.id.switch_calendar)
+    SwitchCompat switch_calendar;
 
     @BindView(R.id.btn_create_device)
     BootstrapButton btn_create_device;
@@ -90,7 +96,12 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         }
 
         btn_create_device.setOnClickListener(view -> mSettingsPresenter.registerDevice());
-        btn_add_calendar.setOnClickListener(view -> mSettingsPresenter.loadEvents());
+
+        switch_calendar.setChecked(mPreferencesHelper.getCalendarSyncEnabled());
+        switch_calendar.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mPreferencesHelper.saveCalendarSyncEnabled(!mPreferencesHelper.getCalendarSyncEnabled());
+            if (isChecked) mSettingsPresenter.loadEvents();
+        });
     }
 
     @Override

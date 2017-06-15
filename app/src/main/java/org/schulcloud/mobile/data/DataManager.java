@@ -65,7 +65,7 @@ public class DataManager {
                     public Observable<User> call(List<User> users) {
                         return mDatabaseHelper.setUsers(users);
                     }
-                });
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<User>> getUsers() {
@@ -99,7 +99,7 @@ public class DataManager {
                 mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
                 return mDatabaseHelper.setCurrentUser(currentUser);
             }
-        });
+        }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<CurrentUser> getCurrentUser() {
@@ -131,7 +131,7 @@ public class DataManager {
 
                         return mDatabaseHelper.setFiles(files);
                     }
-                });
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<File>> getFiles() {
@@ -166,7 +166,7 @@ public class DataManager {
 
                         return mDatabaseHelper.setDirectories(improvedDirs);
                     }
-                });
+                }).doOnError(Throwable::printStackTrace);
 
     }
 
@@ -243,7 +243,7 @@ public class DataManager {
                         mDatabaseHelper.clearTable(Device.class);
                         return mDatabaseHelper.setDevices(devices);
                     }
-                });
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<Device>> getDevices() {
@@ -270,7 +270,7 @@ public class DataManager {
                         mDatabaseHelper.clearTable(Event.class);
                         return mDatabaseHelper.setEvents(events);
                     }
-                }).doOnError(throwable -> System.err.println(throwable.getStackTrace()));
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<Event>> getEvents() {
@@ -288,7 +288,7 @@ public class DataManager {
                         mDatabaseHelper.clearTable(Homework.class);
                         return mDatabaseHelper.setHomework(homeworks);
                     }
-                });
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<Homework>> getHomework() {
@@ -310,7 +310,7 @@ public class DataManager {
                         mDatabaseHelper.clearTable(Submission.class);
                         return mDatabaseHelper.setSubmissions(submissions);
                     }
-                });
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<Submission>> getSubmissions() {

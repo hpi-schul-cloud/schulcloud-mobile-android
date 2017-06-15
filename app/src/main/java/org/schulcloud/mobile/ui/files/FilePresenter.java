@@ -183,9 +183,6 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
         // todo: refactor later on when there are class and course folders
         String uploadPath = new StringBuilder()
-                .append("users")
-                .append(java.io.File.separator)
-                .append(mDataManager.getCurrentUserId())
                 .append(mDataManager.getCurrentStorageContext())
                 .append(fileToUpload.getName())
                 .toString();
@@ -310,6 +307,25 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     public void checkSignedIn(Context context) {
         super.isAlreadySignedIn(mDataManager, context);
+    }
+
+    /**
+     * checks the current storage path and steps back if it's a root directory
+     */
+    public void stepOneDirectoryBack() {
+        String currentPath = mDataManager.getCurrentStorageContext();
+
+        // remove last slash
+        if (currentPath.lastIndexOf(java.io.File.separator) == (currentPath.length() - 1)) {
+            currentPath = currentPath.substring(0, currentPath.length() - 1);
+        }
+
+        // first to parts are meta
+        if (currentPath.split(java.io.File.separator).length > 2) {
+            currentPath = currentPath.substring(0, currentPath.lastIndexOf(java.io.File.separator));
+            mDataManager.setCurrentStorageContext(currentPath);
+            getMvpView().reloadFiles();
+        }
     }
 }
 

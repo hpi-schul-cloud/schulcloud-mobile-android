@@ -143,6 +143,11 @@ public class FileActivity extends BaseActivity implements FileMvpView {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        mFilePresenter.stepOneDirectoryBack();
+    }
+
     /***** MVP View methods implementation *****/
 
     @Override

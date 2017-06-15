@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.data.model;
 
+import org.parceler.Transient;
+
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
@@ -13,6 +15,9 @@ public class File implements RealmModel {
     public String size;
     public String type;
     public String thumbnail;
+
+    @Transient
+    public String fullPath;
 
     // public Date lastModified;
 }

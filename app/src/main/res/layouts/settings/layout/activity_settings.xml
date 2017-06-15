@@ -31,26 +31,25 @@
                 android:textColor="@color/hpiRed"
                 android:textSize="@dimen/text_title"/>
 
-            <!--<com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/btn_add_calendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/switch_calendar"
-                android:layout_centerHorizontal="true"
-                android:text="@string/add_to_calendar"
-                app:bootstrapSize="lg"
-                app:buttonMode="regular"
-                app:roundedCorners="true"
-                app:showOutline="false"/>-->
-
             <android.support.v7.widget.SwitchCompat
-                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/settings_calendar"
                 android:id="@+id/switch_calendar"
                 android:textColorLink="@color/hpiRed"
                 android:text="@string/add_to_calendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/name_local_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/bootstrap_alert_paddings"
+                android:text="Calendar-Name"
+                android:layout_alignBaseline="@+id/switch_calendar"
+                android:layout_alignBottom="@+id/switch_calendar"
+                android:layout_toRightOf="@+id/switch_calendar"
+                android:layout_toEndOf="@+id/switch_calendar"/>
+
         </RelativeLayout>
 
         <!-- Notifications -->
@@ -60,7 +59,8 @@
             android:layout_below="@id/section_calendar"
             android:paddingLeft="@dimen/bootstrap_alert_paddings"
             android:paddingRight="@dimen/bootstrap_alert_paddings"
-            android:paddingTop="@dimen/bootstrap_alert_paddings">
+            android:paddingTop="@dimen/bootstrap_alert_paddings"
+            android:id="@+id/relativeLayout">
 
             <TextView
                 android:id="@+id/settings_notifications"
@@ -100,6 +100,5 @@
                 android:scrollbars="vertical"/>
 
         </RelativeLayout>
-
     </RelativeLayout>
 </ScrollView>

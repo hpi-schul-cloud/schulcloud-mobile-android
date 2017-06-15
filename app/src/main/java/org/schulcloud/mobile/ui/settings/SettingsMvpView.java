@@ -13,7 +13,7 @@ public interface SettingsMvpView extends MvpView {
 
     void reload();
 
-    void connectToCalendar(List<Event> events);
+    void connectToCalendar(List<Event> events, Boolean promptForCalendar);
 
     void showSyncToCalendarSuccessful();
 }

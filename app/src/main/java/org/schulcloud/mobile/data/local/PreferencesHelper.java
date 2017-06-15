@@ -102,6 +102,17 @@ public class PreferencesHelper {
         return null;
     }
 
+    public String saveCalendarSyncName(String calendarName) {
+        SharedPreferences.Editor editor = mPref.edit();
+
+        editor.putString("calendarSyncName", calendarName);
+        if (editor.commit()) {
+            return calendarName;
+        }
+
+        return null;
+    }
+
     // ##### Getter
 
     public String getAccessToken() {
@@ -128,6 +139,9 @@ public class PreferencesHelper {
         return mPref.getBoolean("calendarSyncEnabled", false);
     }
 
+    public String getCalendarSyncName() {
+        return mPref.getString("calendarSyncName", "null");
+    }
 
     // ##### Clearing
 

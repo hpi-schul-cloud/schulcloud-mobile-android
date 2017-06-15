@@ -62,6 +62,7 @@ public class TopicFragment extends BaseFragment implements TopicMvpView {
     @Override
     public void showContent(List<Contents> contents) {
         mContentAdapter.setContent(contents);
+        mContentAdapter.setContext(getActivity());
         mContentAdapter.notifyDataSetChanged();
     }
 

@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.courses.detailed;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Contents;
+import org.schulcloud.mobile.util.PicassoImageGetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     private List<Contents> mContent;
     private String mUserId;
+    private Context mContext;
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
@@ -35,6 +38,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         mContent = content;
     }
 
+    public void setContext(Context context) { mContext = context; }
+
     @Override
     public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -47,8 +52,10 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         Contents contents = mContent.get(position);
         holder.nameTextView.setText(contents.title);
 
+        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext);
+
         if (contents.component.equals("text"))
-            holder.descriptionTextView.setText(Html.fromHtml(contents.content.text));
+            holder.descriptionTextView.setText(Html.fromHtml(contents.content.text, imageGetter, null));
         else
             holder.descriptionTextView.setText(contents.component + " wird zurzeit nicht unterstüzt.");
     }

@@ -78,10 +78,11 @@ public class DetailedCourseFragment extends BaseFragment implements DetailedCour
     }
 
     @Override
-    public void showTopicFragment(String topicId) {
+    public void showTopicFragment(String topicId, String topicName) {
         TopicFragment frag = new TopicFragment();
         Bundle args = new Bundle();
         args.putString("topicId", topicId);
+        args.putString("topicName", topicName);
         frag.setArguments(args);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()

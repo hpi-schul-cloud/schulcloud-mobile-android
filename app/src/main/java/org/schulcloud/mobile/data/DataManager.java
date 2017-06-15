@@ -326,7 +326,7 @@ public class DataManager {
                         return mDatabaseHelper.setCourses(courses.data);
                     }
                 })
-                .doOnError(throwable -> Log.d("CoursesSync", throwable.toString()));
+                .doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<Course>> getCourses() {
@@ -348,7 +348,7 @@ public class DataManager {
                         return mDatabaseHelper.setTopics(topics.data);
                     }
                 })
-                .doOnError(throwable -> Log.d("TopicsSync", throwable.toString()));
+                .doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<Topic>> getTopics() {

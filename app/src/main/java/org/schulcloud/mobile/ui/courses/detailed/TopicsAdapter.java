@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Topic;
-import org.schulcloud.mobile.ui.homework.HomeworkPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
 
         holder.nameTextView.setText(topic.name);
 
-        holder.cardView.setOnClickListener(v -> mDetailedCoursePresenter.showTopicDetail(topic._id));
+        holder.cardView.setOnClickListener(v -> mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
     }
 
     @Override

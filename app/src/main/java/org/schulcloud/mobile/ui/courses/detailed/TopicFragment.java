@@ -46,6 +46,8 @@ public class TopicFragment extends BaseFragment implements TopicMvpView {
         Bundle args = getArguments();
         topicId = args.getString("topicId");
 
+        topicName.setText(args.getString("topicName"));
+
         mRecyclerView.setAdapter(mContentAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

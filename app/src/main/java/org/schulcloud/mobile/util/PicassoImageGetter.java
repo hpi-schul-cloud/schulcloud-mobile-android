@@ -9,32 +9,59 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.widget.TextView;
 
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.schulcloud.mobile.R;
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class PicassoImageGetter implements Html.ImageGetter {
 
     private TextView textView = null;
     private Context context = null;
+    private String accessToken = null;
 
     public PicassoImageGetter() {
 
     }
 
-    public PicassoImageGetter(TextView target, Context context) {
+    public PicassoImageGetter(TextView target, Context context, String accessToken) {
         textView = target;
         this.context = context;
+        this.accessToken = accessToken;
     }
 
     @Override
     public Drawable getDrawable(String source) {
         BitmapDrawablePlaceHolder drawable = new BitmapDrawablePlaceHolder();
-        Picasso.with(context)
-                .load(source)
-                .placeholder(R.drawable.selector_button_standard)
-                .into(drawable);
+
+        if (!source.contains("http://") && !source.contains("https://"))
+            source = "https://schul-cloud.org" + source;
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        final Request original = chain.request();
+
+                        final Request authorized = original.newBuilder()
+                                .addHeader("Cookie", "jwt=" + accessToken)
+                                .build();
+
+                        return chain.proceed(authorized);
+                    }
+                })
+                .build();
+
+        Picasso picasso = new Picasso.Builder(context)
+                .downloader(new OkHttp3Downloader(okHttpClient))
+                .build();
+        picasso.load(source).into(drawable);
         return drawable;
     }
 

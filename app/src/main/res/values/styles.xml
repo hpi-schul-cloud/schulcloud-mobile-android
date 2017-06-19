@@ -3,7 +3,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/hpiRed</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/hpiRed</item>
+        <item name="colorAccent">@color/primary_dark</item>
+        <item name="android:typeface">serif</item>
         <item name="drawerArrowStyle">@style/BarStyle</item>
     </style>
 

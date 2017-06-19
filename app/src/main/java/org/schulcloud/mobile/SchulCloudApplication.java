@@ -8,6 +8,7 @@ import com.crashlytics.android.Crashlytics;
 import org.schulcloud.mobile.injection.component.ApplicationComponent;
 import org.schulcloud.mobile.injection.component.DaggerApplicationComponent;
 import org.schulcloud.mobile.injection.module.ApplicationModule;
+import org.schulcloud.mobile.util.TypefaceUtil;
 
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -28,6 +29,9 @@ public class SchulCloudApplication extends Application {
             Timber.plant(new Timber.DebugTree());
             Fabric.with(this, new Crashlytics());
         }
+
+        // override font
+        TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "fonts/ptsans.ttf");
     }
 
     public ApplicationComponent getComponent() {

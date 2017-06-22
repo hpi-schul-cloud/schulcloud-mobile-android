@@ -4,7 +4,7 @@
                 android:id="@+id/start_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@color/backgroundStart"
+                android:background="@color/gray"
                 android:clipToPadding="false"
                 android:fillViewport="false"
                 android:fitsSystemWindows="true">

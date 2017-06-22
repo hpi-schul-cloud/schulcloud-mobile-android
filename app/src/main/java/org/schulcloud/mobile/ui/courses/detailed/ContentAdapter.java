@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.util.PicassoImageGetter;
 
@@ -28,6 +29,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
+
+    @Inject
+    DataManager mDataManger;
 
     @Inject
     public ContentAdapter() {
@@ -52,7 +56,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         Contents contents = mContent.get(position);
         holder.nameTextView.setText(contents.title);
 
-        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext);
+        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext, mDataManger.getAccessToken());
 
         if (contents.component.equals("text"))
             holder.descriptionTextView.setText(Html.fromHtml(contents.content.text, imageGetter, null));

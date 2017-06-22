@@ -7,12 +7,14 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.remote.RestService;
+import org.schulcloud.mobile.data.sync.CourseSyncService;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.data.sync.SubmissionSyncService;
+import org.schulcloud.mobile.data.sync.TopicSyncService;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.injection.ApplicationContext;
 import org.schulcloud.mobile.injection.module.ApplicationModule;
@@ -44,6 +46,10 @@ public interface ApplicationComponent {
     void inject(HomeworkSyncService homeworkSyncService);
 
     void inject(SubmissionSyncService submissionSyncService);
+
+    void inject(CourseSyncService courseSyncService);
+
+    void inject(TopicSyncService topicSyncService);
 
     @ApplicationContext
     Context context();

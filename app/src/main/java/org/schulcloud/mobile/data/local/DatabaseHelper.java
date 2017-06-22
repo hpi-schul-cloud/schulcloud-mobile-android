@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.local;
 
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
@@ -8,6 +9,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 
 import java.util.Collection;
@@ -290,5 +292,71 @@ public class DatabaseHelper {
     public Submission getSubmissionForId(String homeworkId) {
         final Realm realm = mRealmProvider.get();
         return realm.where(Submission.class).equalTo("homeworkId", homeworkId).findFirst();
+    }
+
+    /**** Courses ****/
+
+    public Observable<Course> setCourses(final Collection<Course> newCourse) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newCourse));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Course>> getCourses() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Course.class).findAllAsync().asObservable()
+                .filter(course -> course.isLoaded())
+                .map(course -> realm.copyFromRealm(course));
+    }
+
+    public Course getCourseForId(String courseId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Course.class).equalTo("_id", courseId).findFirst();
+    }
+
+    /**** Topics ****/
+
+    public Observable<Topic> setTopics(final Collection<Topic> newTopic) {
+        return Observable.create(subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            Realm realm = null;
+
+            try {
+                realm = mRealmProvider.get();
+                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newTopic));
+            } catch (Exception e) {
+                Timber.e(e, "There was an error while adding in Realm.");
+                subscriber.onError(e);
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        });
+    }
+
+    public Observable<List<Topic>> getTopics() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Topic.class).findAllAsync().asObservable()
+                .filter(topic -> topic.isLoaded())
+                .map(topic -> realm.copyFromRealm(topic));
+    }
+
+    public Topic getContents(String topicId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Topic.class).equalTo("_id", topicId).findFirst();
     }
 }

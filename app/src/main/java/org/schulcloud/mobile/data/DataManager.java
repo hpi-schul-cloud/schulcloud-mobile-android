@@ -2,10 +2,11 @@ package org.schulcloud.mobile.data;
 
 import android.util.Log;
 
-import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Contents;
+import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
@@ -13,12 +14,14 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
+import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
@@ -319,5 +322,49 @@ public class DataManager {
 
     public Submission getSubmissionForId(String homeworkId) {
         return mDatabaseHelper.getSubmissionForId(homeworkId);
+    }
+
+    /**** Courses ****/
+
+    public Observable<Course> syncCourses() {
+        return mRestService.getCourses(getAccessToken())
+                .concatMap(new Func1<FeathersResponse<Course>, Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call(FeathersResponse<Course> courses) {
+                        mDatabaseHelper.clearTable(Course.class);
+                        return mDatabaseHelper.setCourses(courses.data);
+                    }
+                })
+                .doOnError(Throwable::printStackTrace);
+    }
+
+    public Observable<List<Course>> getCourses() {
+        return mDatabaseHelper.getCourses().distinct();
+    }
+
+    public Course getCourseForId(String courseId) {
+        return mDatabaseHelper.getCourseForId(courseId);
+    }
+
+    /**** Topics ****/
+
+    public Observable<Topic> syncTopics(String courseId) {
+        return mRestService.getTopics(getAccessToken(), courseId)
+                .concatMap(new Func1<FeathersResponse<Topic>, Observable<Topic>>() {
+                    @Override
+                    public Observable<Topic> call(FeathersResponse<Topic> topics) {
+                        mDatabaseHelper.clearTable(Topic.class);
+                        return mDatabaseHelper.setTopics(topics.data);
+                    }
+                })
+                .doOnError(Throwable::printStackTrace);
+    }
+
+    public Observable<List<Topic>> getTopics() {
+        return mDatabaseHelper.getTopics().distinct();
+    }
+
+    public List<Contents> getContents(String topicId) {
+        return mDatabaseHelper.getContents(topicId).contents;
     }
 }

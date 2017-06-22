@@ -73,6 +73,7 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res/layouts/courses',
                             'src/main/res/layouts/homework',
                             'src/main/res/layouts/files',
                             'src/main/res/layouts/main',
@@ -146,6 +147,10 @@ dependencies {
 
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
     apt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
+
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     compile "com.google.dagger:dagger:$DAGGER_VERSION"
     //Required by Dagger2

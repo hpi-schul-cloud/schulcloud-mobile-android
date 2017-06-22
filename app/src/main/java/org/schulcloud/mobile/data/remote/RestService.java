@@ -64,7 +64,7 @@ public interface RestService {
     @PUT
     Observable<ResponseBody> uploadFile(
             @Url String fileUrl,
-            @Header("Contents-Type") String contentType,
+            @Header("Content-Type") String contentType,
             @Header("x-amz-meta-path") String metaPath,
             @Header("x-amz-meta-name") String metaName,
             @Header("x-amz-meta-thumbnail") String metaThumbnai,

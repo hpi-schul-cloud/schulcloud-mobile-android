@@ -9,7 +9,7 @@ public class SignedUrlResponse {
 
 
     public static class SignedUrlResponseHeader {
-        @SerializedName("Contents-Type")
+        @SerializedName("Content-Type")
         private String contentType;
 
         @SerializedName("x-amz-meta-path")

@@ -6,14 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
@@ -42,16 +46,22 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     SettingsPresenter mSettingsPresenter;
 
     @Inject
+    PreferencesHelper mPreferencesHelper;
+
+    @Inject
     DevicesAdapter mDevicesAdapter;
 
-    @BindView(R.id.btn_add_calendar)
-    BootstrapButton btn_add_calendar;
+    @BindView(R.id.switch_calendar)
+    SwitchCompat switch_calendar;
 
     @BindView(R.id.btn_create_device)
     BootstrapButton btn_create_device;
 
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
+
+    @BindView(R.id.name_local_calendar)
+    TextView name_local_calendar;
 
     /**
      * Return an Intent to start this Activity.
@@ -82,6 +92,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         mSettingsPresenter.attachView(this);
         mSettingsPresenter.checkSignedIn(this);
 
+        if (mPreferencesHelper.getCalendarSyncEnabled()) mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadDevices();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
@@ -90,7 +101,22 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         }
 
         btn_create_device.setOnClickListener(view -> mSettingsPresenter.registerDevice());
-        btn_add_calendar.setOnClickListener(view -> mSettingsPresenter.loadEvents());
+
+        initializeCalendarSwitch(
+                mPreferencesHelper.getCalendarSyncEnabled(),
+                mPreferencesHelper.getCalendarSyncName());
+
+        switch_calendar.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) mSettingsPresenter.loadEvents(true);
+            mPreferencesHelper.saveCalendarSyncEnabled(isChecked);
+            initializeCalendarSwitch(isChecked, mPreferencesHelper.getCalendarSyncName());
+        });
+    }
+
+    private void initializeCalendarSwitch(Boolean isChecked, String calendarName) {
+        switch_calendar.setChecked(isChecked);
+        name_local_calendar.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
+        name_local_calendar.setText(calendarName.equals("null") ? "" : calendarName);
     }
 
     @Override
@@ -110,7 +136,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
 
     @Override
     public void showEventsEmpty() {
-        Toast.makeText(this, R.string.empty_events, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, R.string.empty_events, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -127,7 +153,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     }
 
     @Override
-    public void connectToCalendar(List<Event> events) {
+    public void connectToCalendar(List<Event> events, Boolean promptForCalendar) {
         // grant calendar permission, powered sdk version 23
         PermissionsUtil.checkPermissions(
                 CALENDAR_PERMISSION_CALLBACK_ID,
@@ -142,24 +168,44 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         // saves selected calendar index on dialog prompting
         final Integer[] chosenValueIndex = new Integer[1];
 
-        DialogFactory.createSingleSelectDialog(
-                this,
-                calendarValues,
-                R.string.choose_calendar)
-                .setItems(calendarValues, (dialogInterface, i) -> chosenValueIndex[0] = i) // update choice
-                .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> { // handle choice
-                    if (chosenValueIndex[0] != null && chosenValueIndex[0] > 0) {
-                        Log.i("[CALENDAR CHOSEN]: ", calendarValues[chosenValueIndex[0]].toString());
+        if (promptForCalendar) {
+            DialogFactory.createSingleSelectDialog(
+                    this,
+                    calendarValues,
+                    R.string.choose_calendar)
+                    .setItems(calendarValues, (dialogInterface, i) -> chosenValueIndex[0] = i) // update choice
+                    .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) -> { // handle choice
+                        if (chosenValueIndex[0] != null && chosenValueIndex[0] > 0) {
 
-                        // send all events to calendar
-                        mSettingsPresenter.writeEventsToLocalCalendar(chosenValueIndex[0], events, calendarContentUtil);
-                    }
-                })
-                .show();
+                            String calendarName = calendarValues[chosenValueIndex[0]].toString();
+                            Log.i("[CALENDAR CHOSEN]: ", calendarName);
+                            mPreferencesHelper.saveCalendarSyncName(calendarName);
+
+                            // send all events to calendar
+                            mSettingsPresenter.writeEventsToLocalCalendar(
+                                    calendarName,
+                                    events,
+                                    calendarContentUtil,
+                                    promptForCalendar);
+                        }
+                    })
+                    .show();
+        } else {
+            mSettingsPresenter.writeEventsToLocalCalendar(
+                    mPreferencesHelper.getCalendarSyncName(),
+                    events,
+                    calendarContentUtil,
+                    promptForCalendar);
+        }
+
     }
 
     @Override
     public void showSyncToCalendarSuccessful() {
-        Toast.makeText(this, R.string.sync_calendar_successful, Toast.LENGTH_LONG).show();
+        DialogFactory.createSuperToast(
+                this,
+                getResources().getString(R.string.sync_calendar_successful),
+                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN))
+                .show();
     }
 }

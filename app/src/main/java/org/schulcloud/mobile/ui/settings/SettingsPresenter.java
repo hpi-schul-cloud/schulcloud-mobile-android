@@ -25,11 +25,14 @@ import javax.inject.Inject;
 
 import retrofit2.Response;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 @ConfigPersistent
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
+
+    private Subscription eventSubscription;
 
     @Inject
     public SettingsPresenter(DataManager dataManager) {
@@ -45,15 +48,17 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     public void detachView() {
         super.detachView();
         if (mSubscription != null) mSubscription.unsubscribe();
+        if (eventSubscription != null) eventSubscription.unsubscribe();
     }
 
     /**
      * fetching events from local db
+     * @param promptForCalendar {Boolean} - whether to open a calendar-choose-dialog
      */
-    public void loadEvents() {
+    public void loadEvents(Boolean promptForCalendar) {
         checkViewAttached();
-        RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getEvents()
+        RxUtil.unsubscribe(eventSubscription);
+        eventSubscription = mDataManager.getEvents()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Event>>() {
                     @Override
@@ -70,7 +75,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         if (events.isEmpty()) {
                             getMvpView().showEventsEmpty();
                         } else {
-                            getMvpView().connectToCalendar(events);
+                            getMvpView().connectToCalendar(events, promptForCalendar);
                         }
                     }
                 });
@@ -79,11 +84,12 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     /**
      * Syncs given Events to local calendar
      *
-     * @param calendarId          {Integer} - the calendar in which the events will be inserted
+     * @param calendarName          {String} - the calendar in which the events will be inserted
      * @param events              {List<Event>} - the events which will be inserted into the calendar
      * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil for handling the local calendar storage
+     * @param showToast             {Boolean} - whether to show a toast after writing
      */
-    public void writeEventsToLocalCalendar(Integer calendarId, List<Event> events, CalendarContentUtil calendarContentUtil) {
+    public void writeEventsToLocalCalendar(String calendarName, List<Event> events, CalendarContentUtil calendarContentUtil, Boolean showToast) {
         for (Event event : events) {
             // syncing by deleting first and writing again
             calendarContentUtil.deleteEventByUid(event._id);
@@ -128,10 +134,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 // do nothing when its not a recurrent event
             }
 
-            calendarContentUtil.createEvent(calendarId, event, recurringRule);
+            calendarContentUtil.createEvent(calendarName, event, recurringRule);
         }
 
-        getMvpView().showSyncToCalendarSuccessful();
+        if (showToast) getMvpView().showSyncToCalendarSuccessful();
     }
 
 

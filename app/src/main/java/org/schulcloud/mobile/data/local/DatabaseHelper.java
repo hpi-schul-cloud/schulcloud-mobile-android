@@ -13,11 +13,17 @@ import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.util.Pair;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -206,6 +212,54 @@ public class DatabaseHelper {
                 .map(events -> realm.copyFromRealm(events));
     }
 
+    public List<Event> getEventsForDay() {
+        final Realm realm = mRealmProvider.get();
+        Collection<Event> events = realm.where(Event.class).findAll();
+
+        int weekday = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
+        Log.d("Weekday", Integer.toString(weekday));
+
+        List<Event> eventsForWeekday = new ArrayList<>();
+
+        for (Event event : events) {
+            if (event.included.size() > 0) {
+                if (getNumberForWeekday(event.included.first().getAttributes().getWkst()) == weekday) {
+                    eventsForWeekday.add(event);
+                }
+            }
+        }
+
+        Collections.sort(eventsForWeekday, new Comparator<Event>() {
+            @Override
+            public int compare(Event o1, Event o2) {
+                return o1.start.compareTo(o2.start);
+            }
+        });
+
+        return eventsForWeekday;
+    }
+
+    public int getNumberForWeekday(String weekday) {
+        switch (weekday) {
+            case "SU":
+                return 1;
+            case "MO":
+                return 2;
+            case "TU":
+                return 3;
+            case "WE":
+                return 4;
+            case "TH":
+                return 5;
+            case "FR":
+                return 6;
+            case "SA":
+                return 7;
+            default:
+                return -1;
+        }
+    }
+
     /**** NotificationService ****/
 
     public Observable<Device> setDevices(final Collection<Device> newDevices) {
@@ -267,15 +321,22 @@ public class DatabaseHelper {
         return realm.where(Homework.class).equalTo("_id", homeworkId).findFirst();
     }
 
-    public String getOpenHomeworks() {
+    public Pair<String, String> getOpenHomeworks() {
         final Realm realm = mRealmProvider.get();
         Collection<Homework> homeworks = realm.where(Homework.class).findAll();
 
+        Date nextDueDate = null;
         int amount = 0;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+        Calendar calendar = new GregorianCalendar(9999, 12, 31, 23, 59);
+        try {
+            nextDueDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         for (Homework homework : homeworks) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
             Date untilDate = null;
             try {
                 untilDate = dateFormat.parse(homework.dueDate);
@@ -283,14 +344,15 @@ public class DatabaseHelper {
                 e.printStackTrace();
             }
 
-            Log.d("Amount", untilDate.toString());
-
             if (untilDate.after(new Date())) {
                 amount++;
+
+                if (untilDate.before(nextDueDate))
+                    nextDueDate = untilDate;
             }
         }
 
-        return Integer.toString(amount);
+        return new Pair<String, String>(Integer.toString(amount), dateFormat.format(nextDueDate));
     }
 
     /**** Submissions ****/

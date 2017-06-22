@@ -26,6 +26,7 @@ import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.JWTUtil;
+import org.schulcloud.mobile.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,6 +281,10 @@ public class DataManager {
         return mDatabaseHelper.getEvents().distinct();
     }
 
+    public List<Event> getEventsForDay() {
+        return mDatabaseHelper.getEventsForDay();
+    }
+
     /**** Homework ****/
 
     public Observable<Homework> syncHomework() {
@@ -302,7 +307,7 @@ public class DataManager {
         return mDatabaseHelper.getHomeworkForId(homeworkId);
     }
 
-    public String getOpenHomeworks() {
+    public Pair<String, String> getOpenHomeworks() {
         return mDatabaseHelper.getOpenHomeworks();
     }
 

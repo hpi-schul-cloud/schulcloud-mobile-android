@@ -34,4 +34,6 @@ public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
     public void showHomeworks() {
         getMvpView().showOpenHomeworks(mDataManager.getOpenHomeworks());
     }
+
+    public void showEvents() { getMvpView().showEvents(mDataManager.getEventsForDay()); }
 }

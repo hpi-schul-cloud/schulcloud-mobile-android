@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingLeft="@dimen/bootstrap_alert_paddings"
+    android:paddingRight="@dimen/bootstrap_alert_paddings"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/calendar"
+        android:layout_marginTop="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,6 +19,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/events"
+        android:clipToPadding="false"
+        android:paddingBottom="6dp"
+        android:scrollbars="vertical"
         android:layout_below="@id/calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -36,7 +41,7 @@
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/cardView"
+        android:id="@+id/cardViewHomework"
         android:layout_below="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,10 +56,16 @@
             android:layout_height="wrap_content"
             android:padding="10dp">
 
-            <com.beardedhen.androidbootstrap.AwesomeTextView
+            <TextView
                 android:id="@+id/openTasks"
                 android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:textColor="@color/hpiRed"
+                android:textSize="36dp"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
             <TextView
                 android:id="@+id/openTasksText"
@@ -68,7 +79,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/openTasksText"
                 android:layout_toRightOf="@id/openTasks"
-                android:text="Nächste fällig ..."
+                android:text="Nächste fällig "
+                android:id="@+id/dueTillText"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/openTasksText"
+                android:layout_toRightOf="@id/dueTillText"
+                android:text="..."
                 android:id="@+id/dueTill"/>
 
         </RelativeLayout>

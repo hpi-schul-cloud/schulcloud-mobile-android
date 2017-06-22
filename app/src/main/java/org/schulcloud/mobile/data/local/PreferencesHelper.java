@@ -91,6 +91,28 @@ public class PreferencesHelper {
         return null;
     }
 
+    public Boolean saveCalendarSyncEnabled(Boolean isEnabled) {
+        SharedPreferences.Editor editor = mPref.edit();
+
+        editor.putBoolean("calendarSyncEnabled", isEnabled);
+        if (editor.commit()) {
+            return isEnabled;
+        }
+
+        return null;
+    }
+
+    public String saveCalendarSyncName(String calendarName) {
+        SharedPreferences.Editor editor = mPref.edit();
+
+        editor.putString("calendarSyncName", calendarName);
+        if (editor.commit()) {
+            return calendarName;
+        }
+
+        return null;
+    }
+
     // ##### Getter
 
     public String getAccessToken() {
@@ -113,6 +135,13 @@ public class PreferencesHelper {
         return mPref.getString("storageContext", "null");
     }
 
+    public Boolean getCalendarSyncEnabled() {
+        return mPref.getBoolean("calendarSyncEnabled", false);
+    }
+
+    public String getCalendarSyncName() {
+        return mPref.getString("calendarSyncName", "null");
+    }
 
     // ##### Clearing
 

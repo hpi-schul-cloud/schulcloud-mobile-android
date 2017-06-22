@@ -22,6 +22,7 @@ import static org.schulcloud.mobile.ui.settings.SettingsActivity.CALENDAR_PERMIS
 
 public class CalendarContentUtil {
     public static final String[] FIELDS = {
+            CalendarContract.Calendars._ID,
             CalendarContract.Calendars.NAME,
             CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
             CalendarContract.Calendars.CALENDAR_COLOR,
@@ -66,18 +67,18 @@ public class CalendarContentUtil {
     }
 
     /**
-     * @param calendarId    {Integer} - the id of the calendar in which the event will be inserted
      * @param event         {Event} - a new event
      * @param recurringRule {String} - a rule for recurring events, e.g. "FREQ=DAILY;COUNT=20;BYDAY=MO,TU,WE,TH,FR;WKST=MO"
      * @return {long} - the created event it
      */
-    public long createEvent(Integer calendarId, Event event, String recurringRule) {
+    public long createEvent(String calendarName, Event event, String recurringRule) {
+
         ContentValues values = new ContentValues();
         values.put(Events.DTSTART, event.start);
         values.put(Events.DTEND, event.end);
         values.put(Events.TITLE, event.title);
         values.put(Events.DESCRIPTION, event.summary);
-        values.put(Events.CALENDAR_ID, calendarId);
+        values.put(Events.CALENDAR_ID, getCalendarIdForName(calendarName));
         values.put(Events.EVENT_TIMEZONE, "Germany/Berlin");
         values.put(Events.UID_2445, event._id);
 
@@ -95,6 +96,23 @@ public class CalendarContentUtil {
 
         // get the event ID that is the last element in the Uri
         return Long.parseLong(uri.getLastPathSegment());
+    }
+
+    public String getCalendarIdForName(String calendarName) {
+        String selection = "(" + CalendarContract.Calendars.NAME + " = ?)";
+        String[] selectionArgs = new String[] {calendarName};
+        Cursor cursor = contentResolver.query(CALENDAR_URI, FIELDS, selection, selectionArgs, null);
+
+        try {
+            if (cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    String id = cursor.getString(0);
+                    return id;
+                }
+            }
+        } catch (AssertionError ex) { /*TODO: log exception and bail*/ }
+
+        return "";
     }
 
     /**

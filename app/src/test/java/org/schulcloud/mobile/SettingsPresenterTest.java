@@ -20,7 +20,9 @@ import java.util.List;
 
 import rx.Observable;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.doReturn;
@@ -54,8 +56,8 @@ public class SettingsPresenterTest {
                 .when(mMockDataManager)
                 .getEvents();
 
-        mSettingsPresenter.loadEvents();
-        verify(mMockSettingsMvpView).connectToCalendar(events);
+        mSettingsPresenter.loadEvents(false);
+        verify(mMockSettingsMvpView).connectToCalendar(events, false);
         verify(mMockSettingsMvpView, never()).showEventsEmpty();
     }
 
@@ -65,9 +67,9 @@ public class SettingsPresenterTest {
                 .when(mMockDataManager)
                 .getEvents();
 
-        mSettingsPresenter.loadEvents();
+        mSettingsPresenter.loadEvents(false);
         verify(mMockSettingsMvpView).showEventsEmpty();
-        verify(mMockSettingsMvpView, never()).connectToCalendar(anyListOf(Event.class));
+        verify(mMockSettingsMvpView, never()).connectToCalendar(anyListOf(Event.class), eq(false));
     }
 
     @Test
@@ -76,9 +78,9 @@ public class SettingsPresenterTest {
                 .when(mMockDataManager)
                 .getEvents();
 
-        mSettingsPresenter.loadEvents();
+        mSettingsPresenter.loadEvents(false);
         verify(mMockSettingsMvpView, never()).showEventsEmpty();
-        verify(mMockSettingsMvpView, never()).connectToCalendar(anyListOf(Event.class));
+        verify(mMockSettingsMvpView, never()).connectToCalendar(anyListOf(Event.class), eq(false));
     }
 
     @Test

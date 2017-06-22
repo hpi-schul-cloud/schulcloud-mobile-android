@@ -80,6 +80,7 @@ android {
                             'src/main/res/layouts/navigationDrawer',
                             'src/main/res/layouts/settings',
                             'src/main/res/layouts/signIn',
+                            'src/main/res/layouts/start',
                             'src/main/res/layouts',
                             'src/main/res'
                     ]

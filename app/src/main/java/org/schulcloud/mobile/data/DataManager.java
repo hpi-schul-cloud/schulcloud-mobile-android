@@ -302,6 +302,10 @@ public class DataManager {
         return mDatabaseHelper.getHomeworkForId(homeworkId);
     }
 
+    public String getOpenHomeworks() {
+        return mDatabaseHelper.getOpenHomeworks();
+    }
+
     /**** Submissions ****/
 
     public Observable<Submission> syncSubmissions() {

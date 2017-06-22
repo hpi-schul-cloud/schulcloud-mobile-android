@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.data.local;
 
+import android.util.Log;
+
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -12,7 +14,10 @@ import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -260,6 +265,32 @@ public class DatabaseHelper {
     public Homework getHomeworkForId(String homeworkId) {
         final Realm realm = mRealmProvider.get();
         return realm.where(Homework.class).equalTo("_id", homeworkId).findFirst();
+    }
+
+    public String getOpenHomeworks() {
+        final Realm realm = mRealmProvider.get();
+        Collection<Homework> homeworks = realm.where(Homework.class).findAll();
+
+        int amount = 0;
+
+        for (Homework homework : homeworks) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+            Date untilDate = null;
+            try {
+                untilDate = dateFormat.parse(homework.dueDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("Amount", untilDate.toString());
+
+            if (untilDate.after(new Date())) {
+                amount++;
+            }
+        }
+
+        return Integer.toString(amount);
     }
 
     /**** Submissions ****/

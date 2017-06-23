@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
@@ -12,6 +13,7 @@ import org.schulcloud.mobile.data.model.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -50,6 +52,25 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         //return DateFormat.getTimeInstance(DateFormat.SHORT, Locale.GERMAN).format(millis);
     }
 
+    private int determineProgress(String start, String end) {
+        String startTime[] = start.split(":");
+        String endTime[] = end.split(":");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+
+        String currentTime[] = millisToDate(calendar.getTimeInMillis()).split(":");
+
+        int startT  = Integer.parseInt(startTime[0]) * 60 + Integer.parseInt(startTime[1]);
+        int endT  = Integer.parseInt(endTime[0]) * 60 + Integer.parseInt(endTime[1]);
+        int currentT = Integer.parseInt(currentTime[0]) * 60 + Integer.parseInt(currentTime[1]);
+
+        if (currentT > endT)
+                return -1;
+        else
+            return Math.round(100 - 100 / ((endT - startT) / (endT - currentT)));
+    }
+
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
         Event event = mEvent.get(position);
@@ -65,6 +86,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             holder.cardView.setOnClickListener(v -> {
                 mDashboardPresenter.showCourse(courseId);
             });
+        }
+
+        int progress = determineProgress(millisToDate(Long.parseLong(event.start)), millisToDate(Long.parseLong(event.start)));
+
+        if (progress != -1) {
+            holder.progressBar.setVisibility(View.VISIBLE);
+            holder.progressBar.setProgress(progress);
         }
     }
 
@@ -83,6 +111,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         TextView startDate;
         @BindView(R.id.card_view)
         CardView cardView;
+        @BindView(R.id.progressBar)
+        ProgressBar progressBar;
 
         public EventViewHolder(View itemView) {
             super(itemView);

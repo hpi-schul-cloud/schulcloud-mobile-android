@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.dashboard;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         holder.title.setText(event.title);
         holder.startDate.setText(millisToDate(Long.parseLong(event.start)));
+
+        if (!event.xScCourseId.equals(null)) {
+            String courseId = event.xScCourseId;
+            holder.cardView.setOnClickListener(v -> {
+                mDashboardPresenter.showCourse(courseId);
+            });
+        }
     }
 
     @Override
@@ -73,6 +81,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         TextView summary;
         @BindView(R.id.startDate)
         TextView startDate;
+        @BindView(R.id.card_view)
+        CardView cardView;
 
         public EventViewHolder(View itemView) {
             super(itemView);

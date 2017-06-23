@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.dashboard;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.sync.CourseSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.Pair;
@@ -74,6 +77,7 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
         mDashboardPresenter.showEvents();
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
+            startService(CourseSyncService.getStartIntent(this));
             startService(HomeworkSyncService.getStartIntent(this));
             startService(EventSyncService.getStartIntent(this));
         }
@@ -108,5 +112,18 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
     public void showEvents(List<Event> eventsForDay) {
         mEventsAdapter.setEvents(eventsForDay);
         mEventsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCourse(String courseId) {
+        DetailedCourseFragment frag = new DetailedCourseFragment();
+        Bundle args = new Bundle();
+        args.putString("courseId", courseId);
+        frag.setArguments(args);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.overlay_fragment_container, frag)
+                .addToBackStack(null)
+                .commit();
     }
 }

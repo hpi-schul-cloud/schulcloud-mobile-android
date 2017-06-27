@@ -74,6 +74,7 @@ android {
             res.srcDirs =
                     [
                             'src/main/res/layouts/courses',
+                            'src/main/res/layouts/dashboard',
                             'src/main/res/layouts/homework',
                             'src/main/res/layouts/files',
                             'src/main/res/layouts/main',

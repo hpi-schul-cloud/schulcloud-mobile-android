@@ -14,6 +14,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.files.FileActivity;
 
 import butterknife.BindView;
@@ -57,7 +58,7 @@ public class StartActivity extends BaseActivity implements StartMvpView {
         Handler handler = new Handler();
         Context context = this;
         handler.postDelayed(() -> {
-            Intent intent = new Intent(context, FileActivity.class);
+            Intent intent = new Intent(context, DashboardActivity.class);
             context.startActivity(intent);
             finish();
         }, 500);

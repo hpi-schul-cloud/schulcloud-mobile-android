@@ -24,6 +24,7 @@ import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.courses.CourseActivity;
+import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.homework.HomeworkActivity;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
@@ -47,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
     private PreferencesHelper mPreferencesHelper;
     // Curently just nonsense Data and Logos, change here for the actual list
     private String[] layers = {
+            "Dashboard",
             "Meine Dateien",
             "Meine Fächer",
             "Hausaufgaben",
@@ -56,6 +58,7 @@ public class BaseActivity extends AppCompatActivity {
             "Ausloggen",
     };
     private String[] resources = {
+            FontAwesome.FA_TH_LARGE,
             FontAwesome.FA_FILE,
             FontAwesome.FA_GRADUATION_CAP,
             FontAwesome.FA_TASKS,
@@ -138,17 +141,20 @@ public class BaseActivity extends AppCompatActivity {
     private void openActivityForPos(int pos) {
         Class c;
         switch (pos) {
-            case 1: // files
+            case 1: // Dashboard
+                c = DashboardActivity.class;
+                break;
+            case 2: // files
                 mPreferencesHelper.clear("storageContext");
                 c = FileActivity.class;
                 break;
-            case 2: // homework
+            case 3: // Course
                 c = CourseActivity.class;
                 break;
-            case 3: // homework
+            case 4: // homework
                 c = HomeworkActivity.class;
                 break;
-            case 4: // contact
+            case 5: // contact
                 Intent mailIntent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse("mailto:" +
                         getResources().getString(R.string.mail_to_mail) +
@@ -157,15 +163,15 @@ public class BaseActivity extends AppCompatActivity {
                 mailIntent.setData(data);
                 startActivity(mailIntent);
                 return;
-            case 5: // settings
+            case 6: // settings
                 c = SettingsActivity.class;
                 break;
-            case 6: // impressum
+            case 7: // impressum
                 c = BaseActivity.class;
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://hpi.de/impressum.html"));
                 startActivity(browserIntent);
                 return;
-            case 7: // logout
+            case 8: // logout
                 // delete accessToken and currentUser
                 mPreferencesHelper.clear("jwt");
                 mPreferencesHelper.clear("currentUser");

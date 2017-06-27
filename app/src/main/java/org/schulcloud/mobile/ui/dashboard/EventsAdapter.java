@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.dashboard;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,15 +62,20 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         String currentTime[] = millisToDate(calendar.getTimeInMillis()).split(":");
 
-        int startT  = Integer.parseInt(startTime[0]) * 60 + Integer.parseInt(startTime[1]);
-        int endT  = Integer.parseInt(endTime[0]) * 60 + Integer.parseInt(endTime[1]);
-        int currentT = Integer.parseInt(currentTime[0]) * 60 + Integer.parseInt(currentTime[1]);
+        float startT  = Integer.parseInt(startTime[0]) * 60 + Integer.parseInt(startTime[1]);
+        float endT  = Integer.parseInt(endTime[0]) * 60 + Integer.parseInt(endTime[1]);
+        float currentT = Integer.parseInt(currentTime[0]) * 60 + Integer.parseInt(currentTime[1]);
 
-        if (currentT > endT)
+        if (currentT > endT) {
+            return -1;
+        } else {
+            try {
+                return Math.round(100 - 100 / ((endT - startT) / (endT - currentT)));
+            } catch (ArithmeticException e) {
                 return -1;
-        else
-            return Math.round(100 - 100 / ((endT - startT) / (endT - currentT)));
-    }
+            }
+        }
+        }
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
@@ -79,18 +85,21 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             holder.summary.setText(event.summary);
 
         holder.title.setText(event.title);
-        holder.startDate.setText(millisToDate(Long.parseLong(event.start)));
+        if (event.type != null && !event.type.equals("template"))
+            holder.startDate.setText(millisToDate(Long.parseLong(event.start)) + "/" + millisToDate(Long.parseLong(event.end)));
 
-        if (!event.xScCourseId.equals(null)) {
+        if (event.xScCourseId != null) {
             String courseId = event.xScCourseId;
             holder.cardView.setOnClickListener(v -> {
                 mDashboardPresenter.showCourse(courseId);
             });
         }
 
-        int progress = determineProgress(millisToDate(Long.parseLong(event.start)), millisToDate(Long.parseLong(event.start)));
+        int progress = determineProgress(millisToDate(Long.parseLong(event.start)), millisToDate(Long.parseLong(event.end)));
 
-        if (progress != -1) {
+        Log.d("Times", String.valueOf(progress));
+
+        if (progress != -1 && progress >= 0) {
             holder.progressBar.setVisibility(View.VISIBLE);
             holder.progressBar.setProgress(progress);
         }

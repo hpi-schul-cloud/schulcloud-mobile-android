@@ -100,7 +100,10 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
     @Override
     public void showOpenHomeworks(Pair<String, String> openHomeworks) {
         openTasks.setText(openHomeworks.getFirst());
-        dueTillDate.setText(openHomeworks.getSecond());
+        if (openHomeworks.getSecond().equals("10000-01-31T23:59"))
+            dueTillDate.setText("...");
+        else
+            dueTillDate.setText(openHomeworks.getSecond());
         cardViewHomework.setOnClickListener(v -> {
             Intent intent = new Intent(this, HomeworkActivity.class);
             this.startActivity(intent);

@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,8 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
     TextView dueTillDate;
     @BindView(R.id.cardViewHomework)
     CardView cardViewHomework;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
 
     public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
         Intent intent = new Intent(context, DashboardActivity.class);
@@ -81,6 +84,16 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
             startService(HomeworkSyncService.getStartIntent(this));
             startService(EventSyncService.getStartIntent(this));
         }
+
+        swipeRefresh.setOnRefreshListener(
+                () -> {
+                    mDashboardPresenter.showHomeworks();
+                    mDashboardPresenter.showEvents();
+
+                    swipeRefresh.setRefreshing(false);
+                }
+        );
+
     }
 
     @Override

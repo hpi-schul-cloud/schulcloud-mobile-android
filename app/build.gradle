@@ -51,7 +51,7 @@ android {
             ext.betaDistributionReleaseNotesFilePath =
                     file('../crashlytics_release_notes.txt').absolutePath
 
-            buildConfigField "String", "URL_ENDPOINT", "\"https://schul.tech:3030\""
+            buildConfigField "String", "URL_ENDPOINT", "\"https://schul-cloud.org:8080\""
         }
 
         debug {

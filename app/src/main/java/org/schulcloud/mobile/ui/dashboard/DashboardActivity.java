@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -85,12 +86,21 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
             startService(EventSyncService.getStartIntent(this));
         }
 
+        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.hpiRed), getResources().getColor(R.color.hpiOrange), getResources().getColor(R.color.hpiYellow));
+
         swipeRefresh.setOnRefreshListener(
                 () -> {
-                    mDashboardPresenter.showHomeworks();
-                    mDashboardPresenter.showEvents();
+                    startService(CourseSyncService.getStartIntent(this));
+                    startService(HomeworkSyncService.getStartIntent(this));
+                    startService(EventSyncService.getStartIntent(this));
 
-                    swipeRefresh.setRefreshing(false);
+                    Handler handler = new Handler();
+                    handler.postDelayed(() -> {
+                        mDashboardPresenter.showHomeworks();
+                        mDashboardPresenter.showEvents();
+
+                        swipeRefresh.setRefreshing(false);
+                    }, 3000);
                 }
         );
 

@@ -4,6 +4,8 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,6 +39,9 @@ public class CourseActivity extends BaseActivity implements CourseMvpView {
 
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
 
     /**
      * Return an Intent to start this Activity.
@@ -75,6 +80,21 @@ public class CourseActivity extends BaseActivity implements CourseMvpView {
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             startService(CourseSyncService.getStartIntent(this));
         }
+
+        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.hpiRed), getResources().getColor(R.color.hpiOrange), getResources().getColor(R.color.hpiYellow));
+
+        swipeRefresh.setOnRefreshListener(
+                () -> {
+                    startService(CourseSyncService.getStartIntent(this));
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(() -> {
+                        mCoursePresenter.loadCourses();
+
+                        swipeRefresh.setRefreshing(false);
+                    }, 3000);
+                }
+        );
     }
 
     @Override

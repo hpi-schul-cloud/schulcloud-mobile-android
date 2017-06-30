@@ -5,6 +5,7 @@
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefresh"
+        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,7 +26,6 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="70dp"
                     android:paddingBottom="@dimen/bootstrap_alert_paddings"
                     android:text="Heutige Stunden"
                     android:textColor="@color/hpiRed"

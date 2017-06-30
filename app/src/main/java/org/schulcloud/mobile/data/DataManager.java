@@ -25,7 +25,7 @@ import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
-import org.schulcloud.mobile.util.JWTUtil;
+import org.schulcloud.mobile.util.crypt.JWTUtil;
 import org.schulcloud.mobile.util.Pair;
 
 import java.util.ArrayList;

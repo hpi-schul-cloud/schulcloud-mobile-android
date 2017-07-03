@@ -60,4 +60,9 @@
             android:tint="@android:color/white"
             app:rippleColor="@android:color/white" />
     </android.support.v4.widget.SwipeRefreshLayout>
+    
+    <FrameLayout
+        android:id="@+id/overlay_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

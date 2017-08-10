@@ -16,6 +16,7 @@ import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.AddHomeworkRequest;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
@@ -97,12 +98,18 @@ public class DataManager {
                     }
                 });
     }
+    public void signOut()
+    {
+        mDatabaseHelper.clearAll();
+        mPreferencesHelper.clear();
+    }
 
     public Observable<CurrentUser> syncCurrentUser(String userId) {
         return mRestService.getUser(getAccessToken(), userId).concatMap(new Func1<CurrentUser, Observable<CurrentUser>>() {
             @Override
             public Observable<CurrentUser> call(CurrentUser currentUser) {
                 mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
+                mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
                 return mDatabaseHelper.setCurrentUser(currentUser);
             }
         }).doOnError(Throwable::printStackTrace);
@@ -311,6 +318,10 @@ public class DataManager {
 
     public Pair<String, String> getOpenHomeworks() {
         return mDatabaseHelper.getOpenHomeworks();
+    }
+
+    public Observable<Homework> addHomework(AddHomeworkRequest addHomeworkRequest) {
+        return mRestService.addHomework(getAccessToken(), addHomeworkRequest);
     }
 
     /**** Submissions ****/

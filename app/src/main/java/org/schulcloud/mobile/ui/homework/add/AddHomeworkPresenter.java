@@ -57,7 +57,7 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
         mCourses = new ArrayList<>();
         mCourses.add(null);
         List<String> names = new ArrayList<>();
-        names.add("Keine Zuordnung");
+        names.add(null);
 
         RxUtil.unsubscribe(mCoursesSubscription);
         mCoursesSubscription = mDataManager.getCourses()

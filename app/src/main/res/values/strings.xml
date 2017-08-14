@@ -14,6 +14,7 @@
 
     <string name="homework_name">Titel</string>
     <string name="homework_course">Kurs:</string>
+    <string name="homework_course_none">Keine Zuordnung</string>
     <string name="homework_private">Private Aufgabe (nur für mich sichtbar)</string>
     <string name="homework_description">Aufgabenstellung</string>
     <string name="homework_processingTime">Bearbeitungszeit:</string>

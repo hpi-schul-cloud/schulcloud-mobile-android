@@ -22,6 +22,7 @@ import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
@@ -98,8 +99,7 @@ public class DataManager {
                     }
                 });
     }
-    public void signOut()
-    {
+    public void signOut() {
         mDatabaseHelper.clearAll();
         mPreferencesHelper.clear();
     }
@@ -320,7 +320,7 @@ public class DataManager {
         return mDatabaseHelper.getOpenHomeworks();
     }
 
-    public Observable<Homework> addHomework(AddHomeworkRequest addHomeworkRequest) {
+    public Observable<AddHomeworkResponse> addHomework(AddHomeworkRequest addHomeworkRequest) {
         return mRestService.addHomework(getAccessToken(), addHomeworkRequest);
     }
 

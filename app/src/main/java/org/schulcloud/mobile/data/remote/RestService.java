@@ -15,6 +15,7 @@ import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
@@ -93,7 +94,7 @@ public interface RestService {
     Observable<List<Homework>> getHomework(@Header("Authorization") String accessToken);
 
     @POST("homework")
-    Observable<Homework> addHomework(@Header("Authorization") String accessToken, @Body AddHomeworkRequest addHomeworkRequest);
+    Observable<AddHomeworkResponse> addHomework(@Header("Authorization") String accessToken, @Body AddHomeworkRequest addHomeworkRequest);
 
     @GET("submissions?$limit=-1&$populate=comments")
     Observable<List<Submission>> getSubmissions(@Header("Authorization") String accessToken);

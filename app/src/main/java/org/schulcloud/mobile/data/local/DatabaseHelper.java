@@ -48,8 +48,7 @@ public class DatabaseHelper {
         final Realm realm = mRealmProvider.get();
         realm.executeTransaction(realm1 -> realm1.delete(table));
     }
-    public void clearAll()
-    {
+    public void clearAll() {
         mRealmProvider.get().executeTransaction(realm -> realm.deleteAll());
     }
 

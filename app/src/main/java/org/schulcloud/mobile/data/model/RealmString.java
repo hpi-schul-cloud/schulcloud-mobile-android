@@ -4,24 +4,19 @@ import io.realm.RealmModel;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class RealmString implements RealmModel
-{
+public class RealmString implements RealmModel {
     public String value;
 
-    public RealmString()
-    {
+    public RealmString() {
     }
-    public RealmString(String value)
-    {
+    public RealmString(String value) {
         this.value = value;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 }

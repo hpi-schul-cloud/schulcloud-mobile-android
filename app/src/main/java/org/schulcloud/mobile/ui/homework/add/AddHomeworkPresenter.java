@@ -6,6 +6,7 @@ import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.requestBodies.AddHomeworkRequest;
+import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -24,8 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 @ConfigPersistent
-public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView>
-{
+public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
     private PreferencesHelper mPreferencesHelper;
 
     private Subscription mCoursesSubscription;
@@ -36,8 +36,7 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView>
     private DateFormat mDateFormat;
 
     @Inject
-    public AddHomeworkPresenter(DataManager dataManager, PreferencesHelper preferencesHelper)
-    {
+    public AddHomeworkPresenter(DataManager dataManager, PreferencesHelper preferencesHelper) {
         mDataManager = dataManager;
         mPreferencesHelper = preferencesHelper;
 
@@ -45,16 +44,14 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView>
     }
 
     @Override
-    public void detachView()
-    {
+    public void detachView() {
         super.detachView();
         RxUtil.unsubscribe(mSubscription);
         RxUtil.unsubscribe(mCoursesSubscription);
         RxUtil.unsubscribe(mCurrentUserSubscription);
     }
 
-    public void loadData()
-    {
+    public void loadData() {
         checkViewAttached();
 
         mCourses = new ArrayList<>();
@@ -90,47 +87,42 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView>
 
     public void addHomework(String name, int courseIndex, boolean isPrivate,
                             String description, Calendar availableDate,
-                            Calendar dueDate, boolean publicSubmissions)
-    {
+                            Calendar dueDate, boolean publicSubmissions) {
         if (name.isEmpty())
             getMvpView().showNameEmpty();
         else if (!dueDate.after(availableDate))
             getMvpView().showInvalidDates();
-        else
-        {
+        else {
+            Course course = mCourses.get(courseIndex);
             AddHomeworkRequest addHomeworkRequest = new AddHomeworkRequest(
                     mPreferencesHelper.getCurrentSchoolId(),
                     mPreferencesHelper.getCurrentUserId(),
                     name,
-                    mCourses.get(courseIndex),
-                    isPrivate,
+                    course == null ? null : course._id,
                     description,
                     mDateFormat.format(availableDate.getTime()),
                     mDateFormat.format(dueDate.getTime()),
-                    publicSubmissions);
+                    publicSubmissions,
+                    isPrivate);
 
             checkViewAttached();
             RxUtil.unsubscribe(mSubscription);
             mSubscription = mDataManager.addHomework(addHomeworkRequest)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<Homework>()
-                    {
+                    .subscribe(new Subscriber<AddHomeworkResponse>() {
                         @Override
-                        public void onCompleted()
-                        {
+                        public void onCompleted() {
                             getMvpView().showHomeworkSaved();
                         }
 
                         @Override
-                        public void onError(Throwable e)
-                        {
+                        public void onError(Throwable e) {
                             getMvpView().showSaveError();
                         }
 
                         @Override
-                        public void onNext(Homework homework)
-                        {
-                            getMvpView().addHomeworkToList(homework);
+                        public void onNext(AddHomeworkResponse homework) {
+                            getMvpView().reloadHomeworkList();
                         }
                     });
         }

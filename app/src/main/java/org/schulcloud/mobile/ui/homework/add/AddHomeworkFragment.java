@@ -18,6 +18,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.ui.base.BaseFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkActivity;
 
@@ -33,8 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpView
-{
+public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpView {
     @Inject
     AddHomeworkPresenter mAddHomeworkPresenter;
 
@@ -62,8 +62,7 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         activityComponent().inject(this);
         View view = inflater.inflate(R.layout.fragment_add_homework, container, false);
         ButterKnife.bind(this, view);
@@ -91,22 +90,18 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
         return view;
     }
     @Override
-    public void onDetach()
-    {
+    public void onDetach() {
         mAddHomeworkPresenter.detachView();
         super.onDetach();
     }
-    private void initDateButton(Calendar calendar, TextView button)
-    {
+    private void initDateButton(Calendar calendar, TextView button) {
         button.setText(mDateFormat.format(calendar.getTime()));
         button.setOnClickListener((v) ->
         {
-            try
-            {
+            try {
                 calendar.setTime(mDateFormat.parse(button.getText().toString()));
             }
-            catch (ParseException e)
-            {
+            catch (ParseException e) {
                 Timber.e(e, "There was an error loading the courses.");
             }
             new DatePickerDialog(getActivity(),
@@ -133,23 +128,22 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
     }
 
     @Override
-    public void setCourses(List<String> courses)
-    {
+    public void setCourses(List<String> courses) {
+        for (int i = 0; i < courses.size(); i++)
+            if (courses.get(i) == null)
+                courses.set(i, getString(R.string.homework_course_none));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courses);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCourse.setAdapter(adapter);
         mCourse.setEnabled(true);
     }
     @Override
-    public void setCanCreatePublic(boolean canCreatePublic)
-    {
-        if (canCreatePublic)
-        {
+    public void setCanCreatePublic(boolean canCreatePublic) {
+        if (canCreatePublic) {
             mIsPrivate.setEnabled(true);
             mPublicSubmissions.setVisibility(View.VISIBLE);
         }
-        else
-        {
+        else {
             mIsPrivate.setEnabled(false);
             mIsPrivate.setChecked(true);
             mPublicSubmissions.setVisibility(View.GONE);
@@ -157,39 +151,32 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
         }
     }
     @Override
-    public void showHomeworkSaved()
-    {
+    public void showHomeworkSaved() {
         getActivity().getFragmentManager().beginTransaction().remove(this).commit();
         Toast.makeText(getActivity(), R.string.homework_addHomework_saved, Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void addHomeworkToList(Homework homework)
-    {
-        ((HomeworkActivity) getActivity()).mHomeworkPresenter.addHomework(homework);
+    public void reloadHomeworkList() {
+        getActivity().startService(HomeworkSyncService.getStartIntent(getActivity()));
     }
     @Override
-    public void showCourseLoadingError()
-    {
+    public void showCourseLoadingError() {
         mCourse.setEnabled(false);
         Toast.makeText(getActivity(), R.string.homework_addHomework_error_loadingCourses, Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void showSaveError()
-    {
+    public void showSaveError() {
         Toast.makeText(getActivity(), R.string.homework_addHomework_error_saving, Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void showNameEmpty()
-    {
+    public void showNameEmpty() {
         Toast.makeText(getActivity(), R.string.homework_addHomework_error_titleEmpty, Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void showInvalidDates()
-    {
+    public void showInvalidDates() {
         Toast.makeText(getActivity(), R.string.homework_addHomework_error_datesInvalid, Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void goToSignIn()
-    {
+    public void goToSignIn() {
     }
 }

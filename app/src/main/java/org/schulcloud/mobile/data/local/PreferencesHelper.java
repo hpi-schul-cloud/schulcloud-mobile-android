@@ -141,8 +141,7 @@ public class PreferencesHelper {
         return mPref.getString("username", "null");
     }
 
-    public String getCurrentSchoolId()
-    {
+    public String getCurrentSchoolId() {
         return mPref.getString("currentSchool", "null");
     }
 

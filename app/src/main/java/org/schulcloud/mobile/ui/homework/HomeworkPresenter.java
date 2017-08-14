@@ -8,11 +8,9 @@ import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,7 +18,6 @@ import timber.log.Timber;
 
 @ConfigPersistent
 public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
-    private List<Homework> mHomeworks;
 
     @Inject
     public HomeworkPresenter(DataManager dataManager) {
@@ -56,7 +53,6 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
                     @Override
                     public void onNext(List<Homework> homeworks) {
-                        HomeworkPresenter.this.mHomeworks = homeworks;
                         if (homeworks.isEmpty()) {
                             getMvpView().showHomeworkEmpty();
                         } else {
@@ -64,14 +60,6 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
                         }
                     }
                 });
-    }
-    public void addHomework(Homework homework)
-    {
-        if (mHomeworks == null)
-            mHomeworks = new ArrayList<>(1);
-        mHomeworks.add(homework);
-        if (isViewAttached())
-            getMvpView().showHomework(mHomeworks);
     }
 
     public void checkSignedIn(Context context) {

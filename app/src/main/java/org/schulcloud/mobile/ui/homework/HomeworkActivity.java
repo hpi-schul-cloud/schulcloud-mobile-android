@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
-import com.beardedhen.androidbootstrap.font.FontAwesome;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
@@ -116,10 +116,9 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
         });
     }
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        mFabAddHomeworkIcon.setTextColor(0xFFFFFFFF);
+        mFabAddHomeworkIcon.setTextColor(ContextCompat.getColor(this, R.color.white));
     }
     @Override
     protected void onDestroy() {

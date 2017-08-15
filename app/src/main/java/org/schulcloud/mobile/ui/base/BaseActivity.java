@@ -20,6 +20,7 @@ import com.beardedhen.androidbootstrap.font.FontAwesome;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
+import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
@@ -36,6 +37,8 @@ import org.schulcloud.mobile.util.NetworkUtil;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.inject.Inject;
+
 import timber.log.Timber;
 
 public class BaseActivity extends AppCompatActivity {
@@ -49,6 +52,8 @@ public class BaseActivity extends AppCompatActivity {
     public Toolbar mToolbar;
     // todo: maybe move this to DataManager
     private PreferencesHelper mPreferencesHelper;
+    @Inject
+    DataManager mDataManager;
     // Curently just nonsense Data and Logos, change here for the actual list
     private String[] layers = {
             "Dashboard",
@@ -190,9 +195,8 @@ public class BaseActivity extends AppCompatActivity {
                 mDrawer.closeDrawer(Gravity.LEFT);
                 return;
             case 9: // logout
-                // delete accessToken and currentUser
-                mPreferencesHelper.clear("jwt");
-                mPreferencesHelper.clear("currentUser");
+                // clear all local user data
+                mDataManager.signOut();
                 c = SignInActivity.class;
                 break;
             default:

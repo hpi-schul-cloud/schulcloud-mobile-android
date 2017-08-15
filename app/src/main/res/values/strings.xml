@@ -12,6 +12,21 @@
     <string name="dialog_action_cancel">Abbrechen</string>
     <string name="dialog_error_title">Sorry</string>
 
+    <string name="homework_name">Titel</string>
+    <string name="homework_course">Kurs:</string>
+    <string name="homework_course_none">Keine Zuordnung</string>
+    <string name="homework_private">Private Aufgabe (nur für mich sichtbar)</string>
+    <string name="homework_description">Aufgabenstellung</string>
+    <string name="homework_processingTime">Bearbeitungszeit:</string>
+    <string name="homework_dateDash">&#8211;</string>
+    <string name="homework_publicSubmissions">Schülerabgaben untereinander sichtbar</string>
+    <string name="homework_addHomework_saved">Die Hausaufgabe wurde gespeichert</string>
+    <string name="homework_addHomework_error_saving">Es gab einen Fehler beim Speichern der Hausaufgabe. Bitte versuchen Sie es erneut</string>
+    <string name="homework_addHomework_error_loadingCourses">Es gab einen Fehler beim Laden der Kurse</string>
+    <string name="homework_addHomework_error_titleEmpty">Der Titel darf nicht leer sein</string>
+    <string name="homework_addHomework_error_datesInvalid">Die Datumsangaben sind ungültig</string>
+    <string name="button_add">Hinzufügen</string>
+
     <string name="empty_ribots">Momentan gibt es keine User.</string>
     <string name="empty_events">Keine Events gefunden.</string>
     <string name="error_sign_in">Falscher Nutzername oder Passwort</string>

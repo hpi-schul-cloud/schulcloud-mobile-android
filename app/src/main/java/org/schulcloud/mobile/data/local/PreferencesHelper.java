@@ -70,6 +70,15 @@ public class PreferencesHelper {
         return null;
     }
 
+    public String saveCurrentSchoolId(String schoolId) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putString("currentSchool", schoolId);
+
+        if (editor.commit())
+            return schoolId;
+        return null;
+    }
+
     public String saveMessagingToken(String tokenId) {
         SharedPreferences.Editor editor = mPref.edit();
 
@@ -130,6 +139,10 @@ public class PreferencesHelper {
 
     public String getCurrentUsername() {
         return mPref.getString("username", "null");
+    }
+
+    public String getCurrentSchoolId() {
+        return mPref.getString("currentSchool", "null");
     }
 
     public String getCurrentStorageContext() {

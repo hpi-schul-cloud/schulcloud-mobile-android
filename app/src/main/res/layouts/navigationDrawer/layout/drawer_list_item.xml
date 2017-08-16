@@ -15,7 +15,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center_vertical"
-        android:textSize="@dimen/fa_icon_big"
+        android:textSize="@dimen/fa_icon_medium"
         tools:ignore="ContentDescription"/>
 
     <TextView

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<item-->
+        <!--android:id="@+id/main_navigation_dashboard"-->
+        <!--android:title="@string/main_navigation_dashboard"-->
+        <!--android:visible="false" />-->
+
+    <item
+        android:id="@+id/main_navigation_courses"
+        android:icon="@drawable/ic_student_light_24dp"
+        android:title="@string/main_navigation_courses" />
+
+    <item
+        android:id="@+id/main_navigation_files"
+        android:icon="@drawable/ic_file_light_24dp"
+        android:title="@string/main_navigation_files" />
+
+    <!--<item-->
+        <!--android:id="@+id/main_navigation_materials"-->
+        <!--android:title="@string/main_navigation_materials"-->
+        <!--android:visible="false" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/main_navigation_administration"-->
+        <!--android:title="@string/main_navigation_administration"-->
+        <!--android:visible="false" />-->
+
+</menu>

@@ -7,6 +7,14 @@
     <string name="base_drawer_close">Schließen</string>
     <string name="base_offline">(offline)</string>
 
+    <!--Main-->
+    <string name="main_action_settings">@string/settings_title</string>
+    <string name="main_navigation_dashboard">@string/settings_title</string>
+    <string name="main_navigation_courses">@string/courses_title</string>
+    <string name="main_navigation_files">@string/files_title</string>
+    <string name="main_navigation_materials">Materialien</string>
+    <string name="main_navigation_administration">Verwaltung</string>
+
     <!--Login-->
     <string name="login_login">Login</string>
     <string name="login_title">Login</string>

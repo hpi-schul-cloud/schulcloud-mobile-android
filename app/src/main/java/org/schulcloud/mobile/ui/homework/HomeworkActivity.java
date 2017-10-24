@@ -109,7 +109,7 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
 
         mFabAddHomework.setOnClickListener((view) -> {
             AddHomeworkFragment frag = new AddHomeworkFragment();
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.overlay_fragment_container, frag)
                     .addToBackStack(null)
                     .commit();
@@ -153,8 +153,7 @@ public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
         Bundle args = new Bundle();
         args.putString(DetailedHomeworkFragment.ARGUMENT_HOMEWORK_ID, homeworkId);
         frag.setArguments(args);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.overlay_fragment_container, frag)
                 .addToBackStack(null)
                 .commit();

@@ -152,7 +152,7 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
     }
     @Override
     public void showHomeworkSaved() {
-        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         Toast.makeText(getActivity(), R.string.homework_addHomework_saved, Toast.LENGTH_SHORT).show();
     }
     @Override

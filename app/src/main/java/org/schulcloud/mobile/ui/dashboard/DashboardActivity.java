@@ -146,8 +146,7 @@ public class DashboardActivity extends BaseActivity implements DashboardMvpView 
         Bundle args = new Bundle();
         args.putString(DetailedCourseFragment.ARGUMENT_COURSE_ID, courseId);
         frag.setArguments(args);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.overlay_fragment_container, frag)
                 .addToBackStack(null)
                 .commit();

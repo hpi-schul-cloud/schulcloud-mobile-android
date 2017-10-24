@@ -16,6 +16,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.files.FileActivity;
+import org.schulcloud.mobile.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,7 +59,7 @@ public class StartActivity extends BaseActivity implements StartMvpView {
         Handler handler = new Handler();
         Context context = this;
         handler.postDelayed(() -> {
-            Intent intent = new Intent(context, DashboardActivity.class);
+            Intent intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
             finish();
         }, 500);

@@ -84,8 +84,7 @@ public class DetailedCourseFragment extends BaseFragment implements DetailedCour
         args.putString(TopicFragment.ARGUMENT_TOPIC_ID, topicId);
         args.putString(TopicFragment.ARGUMENT_TOPIC_NAME, topicName);
         frag.setArguments(args);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
+        getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.overlay_fragment_container, frag)
                 .addToBackStack(null)
                 .commit();

@@ -12,4 +12,8 @@
     <color name="backgroundStart">#f9e5e5</color>
     
     <color name="homework_over">#c3c1c1</color>
+
+    <!--Material-->
+    <color name="material_control_normal">#80FFFFFF</color>
+    <color name="material_control_activated">#FFFFFFFF</color>
 </resources>

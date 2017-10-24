@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class CourseActivity extends BaseActivity implements CourseMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.courses.CourseActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject
     CoursePresenter mCoursePresenter;

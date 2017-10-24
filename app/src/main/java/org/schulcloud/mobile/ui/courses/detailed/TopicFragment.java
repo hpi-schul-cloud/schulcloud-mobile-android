@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class TopicFragment extends BaseFragment implements TopicMvpView {
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.courses.detailed.TopicFragment.EXTRA_TRIGGER_SYNC_FLAG";
     public static final String ARGUMENT_TOPIC_ID = "topicId";
     public static final String ARGUMENT_TOPIC_NAME = "topicName";
 

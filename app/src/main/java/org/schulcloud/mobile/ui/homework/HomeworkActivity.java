@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
 public class HomeworkActivity extends BaseActivity implements HomeworkMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.homework.HomeworkActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject
     public HomeworkPresenter mHomeworkPresenter;

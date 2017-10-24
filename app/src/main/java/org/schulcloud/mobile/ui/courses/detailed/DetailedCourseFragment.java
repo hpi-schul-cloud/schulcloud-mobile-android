@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 
 public class DetailedCourseFragment extends BaseFragment implements DetailedCourseMvpView {
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment.EXTRA_TRIGGER_SYNC_FLAG";
     public static final String ARGUMENT_COURSE_ID = "courseId";
 
     private String courseId = null;

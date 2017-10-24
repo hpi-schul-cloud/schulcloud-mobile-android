@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 public class DashboardActivity extends BaseActivity implements DashboardMvpView {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.dashboard.DashboardActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject
     DashboardPresenter mDashboardPresenter;

@@ -13,7 +13,6 @@ import org.schulcloud.mobile.ui.homework.HomeworkActivity;
 import org.schulcloud.mobile.ui.files.FileActivity;
 import org.schulcloud.mobile.ui.homework.add.AddHomeworkFragment;
 import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
-import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 
@@ -33,8 +32,6 @@ public interface ActivityComponent {
     void inject(SignInActivity signInActivity);
 
     void inject(FileActivity fileActivity);
-
-    void inject(MainActivity mainActivity);
 
     void inject(SettingsActivity settingsActivity);
 

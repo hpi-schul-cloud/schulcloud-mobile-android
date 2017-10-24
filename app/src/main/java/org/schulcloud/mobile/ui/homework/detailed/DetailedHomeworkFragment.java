@@ -29,7 +29,8 @@ import io.realm.RealmList;
 
 public class DetailedHomeworkFragment extends BaseFragment implements DetailedHomeworkMvpView {
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "org.schulcloud.mobile.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment.EXTRA_TRIGGER_SYNC_FLAG";
+
     public static final String ARGUMENT_HOMEWORK_ID = "homeworkId";
 
     private String homeworkId = null;

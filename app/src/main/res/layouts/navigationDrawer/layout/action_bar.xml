@@ -7,9 +7,9 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@color/hpiRed"
     android:elevation="4dp"
-    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:theme="@style/ToolBarStyle">
+    android:theme="@style/AppTheme.AppBarOverlay"
+    app:popupTheme="@style/AppTheme.PopupOverlay"
+    app:theme="@style/AppTheme.AppBarOverlay">
 
     <RelativeLayout
         android:layout_width="75dp"

@@ -14,7 +14,6 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.main.MainActivity;
 
 import butterknife.BindView;
@@ -28,16 +27,6 @@ public class StartActivity extends BaseActivity implements StartMvpView {
     RelativeLayout relativeLayout;
     @BindView(R.id.text_logo)
     TextView logoText;
-
-    /**
-     * Return an Intent to start this Activity.
-     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
-     * only be set to false during testing.
-     */
-    public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
-        Intent intent = new Intent(context, FileFragment.class);
-        return intent;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,11 +87,4 @@ public class StartActivity extends BaseActivity implements StartMvpView {
         cloudIcon.clearAnimation();
         cloudIcon.startAnimation(anim);
     }
-
-    @Override
-    public void goToSignIn() {
-
-    }
-
-
 }

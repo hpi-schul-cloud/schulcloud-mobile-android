@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.courses;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

@@ -30,16 +30,6 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     @BindView(R.id.input_password)
     EditText password;
 
-    /**
-     * Return an Intent to start this Activity.
-     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
-     * only be set to false during testing.
-     */
-    public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, SignInActivity.class);
-        return intent;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

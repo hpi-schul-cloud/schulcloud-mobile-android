@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,12 +13,13 @@ import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
+import org.schulcloud.mobile.ui.signin.SignInActivity;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 import timber.log.Timber;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements MvpView {
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
     private static final LongSparseArray<ConfigPersistentComponent> sComponentsMap = new LongSparseArray<>();
@@ -60,5 +62,10 @@ public class BaseFragment extends Fragment {
 
     public ActivityComponent activityComponent() {
         return mActivityComponent;
+    }
+
+    @Override
+    public void goToSignIn() {
+        startActivity(new Intent(getContext(), SignInActivity.class));
     }
 }

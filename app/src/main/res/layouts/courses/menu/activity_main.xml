@@ -2,12 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.lightyourdog.android.ui.main.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <item
         android:id="@+id/main_action_settings"
         android:icon="@drawable/ic_settings_white_24dp"
         android:title="@string/main_action_settings"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/main_action_logout"
+        android:title="@string/main_action_logout"
+        app:showAsAction="never" />
 
 </menu>

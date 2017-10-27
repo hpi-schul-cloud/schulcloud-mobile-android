@@ -6,7 +6,7 @@ import org.schulcloud.mobile.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
-    void showFragment(@NonNull MainFragment fragment, int tab);
+    void showFragment(@NonNull MainFragment fragment, int oldTabIndex, int newTabIndex);
 
     void finish();
 

@@ -29,7 +29,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.files.FileActivity;
+import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
@@ -75,7 +75,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
      * only be set to false during testing.
      */
     public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
-        Intent intent = new Intent(context, FileActivity.class);
+        Intent intent = new Intent(context, FileFragment.class);
         intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
         return intent;
     }

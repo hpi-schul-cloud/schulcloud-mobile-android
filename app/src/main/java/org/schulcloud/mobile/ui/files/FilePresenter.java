@@ -45,14 +45,22 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        if (fileSubscription != null) fileSubscription.unsubscribe();
-        if (directorySubscription != null) directorySubscription.unsubscribe();
-        if (fileGetterSubscription != null) fileGetterSubscription.unsubscribe();
-        if (fileDownloadSubscription != null) fileDownloadSubscription.unsubscribe();
-        if (fileUploadSubscription != null) fileUploadSubscription.unsubscribe();
-        if (fileStartUploadSubscription != null) fileStartUploadSubscription.unsubscribe();
-        if (fileDeleteSubscription != null) fileDeleteSubscription.unsubscribe();
-        if (directoryDeleteSubscription != null) directoryDeleteSubscription.unsubscribe();
+        if (fileSubscription != null)
+            fileSubscription.unsubscribe();
+        if (directorySubscription != null)
+            directorySubscription.unsubscribe();
+        if (fileGetterSubscription != null)
+            fileGetterSubscription.unsubscribe();
+        if (fileDownloadSubscription != null)
+            fileDownloadSubscription.unsubscribe();
+        if (fileUploadSubscription != null)
+            fileUploadSubscription.unsubscribe();
+        if (fileStartUploadSubscription != null)
+            fileStartUploadSubscription.unsubscribe();
+        if (fileDeleteSubscription != null)
+            fileDeleteSubscription.unsubscribe();
+        if (directoryDeleteSubscription != null)
+            directoryDeleteSubscription.unsubscribe();
 
     }
 
@@ -247,6 +255,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * deletes a file from the server
+     *
      * @param path {String} - the key/path to the file
      */
     public void deleteFile(String path) {
@@ -273,6 +282,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     /**
      * deletes a directory from the server
+     *
      * @param path {String} - the key/path to the directory
      */
     public void deleteDirectory(String path) {
@@ -305,27 +315,26 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         getMvpView().startFileDeleting(path, fileName);
     }
 
-    public void checkSignedIn(Context context) {
-        super.isAlreadySignedIn(mDataManager, context);
-    }
-
     /**
-     * checks the current storage path and steps back if it's a root directory
+     * Checks the current storage path and steps back if it's not a root directory
+     *
+     * @return True if stepping back was successful, false if we are already in the root directory.
      */
-    public void stepOneDirectoryBack() {
+    public boolean stepOneDirectoryBack() {
         String currentPath = mDataManager.getCurrentStorageContext();
 
         // remove last slash
-        if (currentPath.lastIndexOf(java.io.File.separator) == (currentPath.length() - 1)) {
+        if (currentPath.lastIndexOf(java.io.File.separator) == (currentPath.length() - 1))
             currentPath = currentPath.substring(0, currentPath.length() - 1);
-        }
 
-        // first to parts are meta
+        // first two parts are meta
         if (currentPath.split(java.io.File.separator).length > 2) {
             currentPath = currentPath.substring(0, currentPath.lastIndexOf(java.io.File.separator));
             mDataManager.setCurrentStorageContext(currentPath);
             getMvpView().reloadFiles();
+            return true;
         }
+        return false;
     }
 }
 

@@ -9,6 +9,7 @@
 
     <!--Main-->
     <string name="main_action_settings">@string/settings_title</string>
+    <string name="main_action_logout">Logout</string>
     <string name="main_navigation_dashboard">@string/settings_title</string>
     <string name="main_navigation_courses">@string/courses_title</string>
     <string name="main_navigation_files">@string/files_title</string>

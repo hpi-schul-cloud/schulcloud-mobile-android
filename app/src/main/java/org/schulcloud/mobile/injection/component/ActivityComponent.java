@@ -10,9 +10,10 @@ import org.schulcloud.mobile.ui.courses.detailed.TopicFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.feedback.FeedbackDialog;
 import org.schulcloud.mobile.ui.homework.HomeworkActivity;
-import org.schulcloud.mobile.ui.files.FileActivity;
+import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.add.AddHomeworkFragment;
 import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
+import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 
@@ -25,13 +26,15 @@ import dagger.Subcomponent;
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
 
-    void inject(BaseActivity mainActivity);
+    void inject(BaseActivity baseActivity);
 
     void inject(BaseFragment baseFragment);
 
     void inject(SignInActivity signInActivity);
 
-    void inject(FileActivity fileActivity);
+    void inject(MainActivity mainActivity);
+
+    void inject(FileFragment fileFragment);
 
     void inject(SettingsActivity settingsActivity);
 
@@ -43,7 +46,7 @@ public interface ActivityComponent {
 
     void inject(CourseActivity courseActivity);
 
-    void inject (DetailedCourseFragment detailedCourseFragment);
+    void inject(DetailedCourseFragment detailedCourseFragment);
 
     void inject(TopicFragment topicFragment);
 

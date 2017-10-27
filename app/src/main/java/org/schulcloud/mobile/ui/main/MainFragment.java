@@ -1,14 +1,18 @@
 package org.schulcloud.mobile.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.ui.base.BaseFragment;
+import org.schulcloud.mobile.ui.base.MvpView;
+import org.schulcloud.mobile.ui.signin.SignInActivity;
+import org.schulcloud.mobile.util.PermissionsUtil;
 
 /**
  * Base class for any fragment that will be shown inside {@link MainActivity}.
  */
-public abstract class MainFragment extends BaseFragment {
+public abstract class MainFragment extends BaseFragment implements MvpView {
     private MainActivity mMainActivity;
 
     @Override
@@ -29,5 +33,27 @@ public abstract class MainFragment extends BaseFragment {
     @NonNull
     public final MainActivity getMainActivity() {
         return mMainActivity;
+    }
+
+    /**
+     * This method is called when the user presses the back button while this fragment is visible.
+     *
+     * @return True if the back press is handled by the fragment, false otherwise.
+     */
+    public boolean onBackPressed() {
+        return false;
+    }
+
+    public void addFragment(@NonNull MainFragment fragment) {
+        getMainActivity().addFragment(this, fragment);
+    }
+    public void startService(@NonNull Intent service) {
+        getMainActivity().startService(service);
+    }
+    public void stopService(@NonNull Intent name) {
+        getMainActivity().stopService(name);
+    }
+    public boolean checkPermissions(int callbackId, String... permissions) {
+        return PermissionsUtil.checkPermissions(callbackId, getMainActivity(), permissions);
     }
 }

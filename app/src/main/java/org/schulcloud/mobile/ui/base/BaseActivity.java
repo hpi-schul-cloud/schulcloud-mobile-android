@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.ui.base;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v4.util.LongSparseArray;
@@ -30,7 +29,7 @@ import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.ui.courses.CourseActivity;
 import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.feedback.FeedbackDialog;
-import org.schulcloud.mobile.ui.files.FileActivity;
+import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkActivity;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
@@ -42,7 +41,7 @@ import javax.inject.Inject;
 
 import timber.log.Timber;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements MvpView {
 
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
@@ -157,7 +156,7 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             case 2: // files
                 mPreferencesHelper.clear(PreferencesHelper.PREFERENCE_STORAGE_CONTEXT);
-                c = FileActivity.class;
+                c = FileFragment.class;
                 break;
             case 3: // Course
                 c = CourseActivity.class;
@@ -209,5 +208,12 @@ public class BaseActivity extends AppCompatActivity {
 
     public ActivityComponent activityComponent() {
         return mActivityComponent;
+    }
+
+    @Override
+    public void goToSignIn() {
+        mDataManager.signOut();
+        startActivity(new Intent(this, SignInActivity.class));
+        finish();
     }
 }

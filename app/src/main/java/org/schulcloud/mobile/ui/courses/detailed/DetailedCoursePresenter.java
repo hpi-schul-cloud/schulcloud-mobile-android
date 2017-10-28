@@ -19,15 +19,9 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
     }
 
     @Override
-    public void attachView(DetailedCourseMvpView mvpView) {
-        super.attachView(mvpView);
-    }
-
-    @Override
     public void detachView() {
         super.detachView();
-        if (mSubscription != null)
-            mSubscription.unsubscribe();
+        RxUtil.unsubscribe(mSubscription);
     }
 
     /**
@@ -54,8 +48,6 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
                         error -> {
                             Timber.e(error, "There was an error loading the topics.");
                             getMvpView().showError();
-                        },
-                        () -> {
                         });
     }
 

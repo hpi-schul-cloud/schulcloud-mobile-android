@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.ui.courses.detailed;
+package org.schulcloud.mobile.ui.courses.topic;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,14 +30,13 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
 
     @Inject
     TopicPresenter mTopicPresenter;
-
     @Inject
     ContentAdapter mContentAdapter;
 
     @BindView(R.id.topicName)
-    TextView vTopicName;
+    TextView topicName;
     @BindView(R.id.topicRecycler)
-    RecyclerView vRecyclerView;
+    RecyclerView recyclerView;
 
     /**
      * Creates a new instance of this fragment.
@@ -71,10 +70,10 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
         View view = inflater.inflate(R.layout.fragment_topic, container, false);
         ButterKnife.bind(this, view);
 
-        vTopicName.setText(mTopicName);
+        topicName.setText(mTopicName);
 
-        vRecyclerView.setAdapter(mContentAdapter);
-        vRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mContentAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTopicPresenter.attachView(this);
         mTopicPresenter.loadContents(mTopicId);

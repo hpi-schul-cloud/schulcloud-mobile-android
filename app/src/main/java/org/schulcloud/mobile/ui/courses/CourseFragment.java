@@ -36,8 +36,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     CourseAdapter mCourseAdapter;
 
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-
+    RecyclerView recyclerView;
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
@@ -66,9 +65,8 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
 
-        if (getArguments().getBoolean(EXTRA_TRIGGER_SYNC_FLAG, true)) {
+        if (getArguments().getBoolean(EXTRA_TRIGGER_SYNC_FLAG, true))
             startService(CourseSyncService.getStartIntent(getContext()));
-        }
     }
     @Nullable
     @Override
@@ -78,8 +76,8 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
         ButterKnife.bind(this, view);
         setTitle(R.string.courses_title);
 
-        mRecyclerView.setAdapter(mCourseAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mCourseAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
         swipeRefresh.setOnRefreshListener(
@@ -115,8 +113,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
 
     @Override
     public void showError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.courses_loading_error)
-                .show();
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.courses_loading_error).show();
     }
 
     @Override
@@ -126,7 +123,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     }
 
     @Override
-    public void showCourseDialog(String courseId) {
+    public void showCourseDetail(String courseId) {
         addFragment(DetailedCourseFragment.newInstance(courseId));
     }
 }

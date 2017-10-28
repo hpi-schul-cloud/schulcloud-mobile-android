@@ -14,6 +14,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.sync.TopicSyncService;
+import org.schulcloud.mobile.ui.courses.topic.TopicFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.util.DialogFactory;
 
@@ -27,18 +28,17 @@ import butterknife.ButterKnife;
 public class DetailedCourseFragment extends MainFragment implements DetailedCourseMvpView {
     private static final String ARGUMENT_COURSE_ID = "ARGUMENT_COURSE_ID";
 
-    private String courseId = null;
+    private String mCourseId = null;
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
-
     @Inject
     TopicsAdapter mTopicsAdapter;
 
     @BindView(R.id.courseName)
     TextView courseName;
     @BindView(R.id.topicRecycler)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
 
     /**
      * Creates a new instance of this fragment.
@@ -61,9 +61,9 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
 
-        courseId = getArguments().getString(ARGUMENT_COURSE_ID);
+        mCourseId = getArguments().getString(ARGUMENT_COURSE_ID);
 
-        startService(TopicSyncService.getStartIntent(getContext(), courseId));
+        startService(TopicSyncService.getStartIntent(getContext(), mCourseId));
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,11 +71,11 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
         View view = inflater.inflate(R.layout.fragment_detailed_course, container, false);
         ButterKnife.bind(this, view);
 
-        mRecyclerView.setAdapter(mTopicsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mTopicsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mDetailedCoursePresenter.attachView(this);
-        mDetailedCoursePresenter.loadCourse(courseId);
+        mDetailedCoursePresenter.loadCourse(mCourseId);
         mDetailedCoursePresenter.loadTopics();
 
         return view;

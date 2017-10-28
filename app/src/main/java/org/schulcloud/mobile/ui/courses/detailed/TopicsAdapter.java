@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsViewHolder> {
 
     private List<Topic> mTopic;
-    private String mUserId;
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
@@ -48,7 +47,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
 
         holder.nameTextView.setText(topic.name);
 
-        holder.cardView.setOnClickListener(v -> mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
+        holder.cardView.setOnClickListener(
+                v -> mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
     }
 
     @Override

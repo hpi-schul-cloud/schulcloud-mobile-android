@@ -26,12 +26,14 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
     @Override
     public void detachView() {
         super.detachView();
-        if (mSubscription != null) mSubscription.unsubscribe();
+        if (mSubscription != null)
+            mSubscription.unsubscribe();
     }
 
     /**
-     * loads a specific course for a given id.
-     * @param courseId given id for referencing.
+     * Loads a specific course for a given id.
+     *
+     * @param courseId The ID of the course to load.
      */
     public void loadCourse(String courseId) {
         checkViewAttached();
@@ -55,9 +57,9 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
                         },
                         () -> {
                         });
-    };
+    }
 
     public void showTopicDetail(String topicId, String topicName) {
-        getMvpView().showTopicFragment(topicId, topicName);
+        getMvpView().showTopicDetail(topicId, topicName);
     }
 }

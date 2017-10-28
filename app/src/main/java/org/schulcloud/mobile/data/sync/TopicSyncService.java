@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
@@ -22,7 +24,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class TopicSyncService extends Service {
-    public static final String ARGUMENT_COURSE_ID = "courseId";
+    private static final String ARGUMENT_COURSE_ID = "ARGUMENT_COURSE_ID";
 
     @Inject
     DataManager mDataManager;
@@ -30,7 +32,10 @@ public class TopicSyncService extends Service {
 
     private String courseId = null;
 
-    public static Intent getStartIntent(Context context) {
+    public static Intent getStartIntent(@NonNull Context context) {
+        return getStartIntent(context, null);
+    }
+    public static Intent getStartIntent(@NonNull Context context, @Nullable String courseId) {
         return new Intent(context, TopicSyncService.class);
     }
 

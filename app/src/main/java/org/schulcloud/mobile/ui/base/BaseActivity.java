@@ -26,7 +26,7 @@ import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
 import org.schulcloud.mobile.injection.module.ActivityModule;
-import org.schulcloud.mobile.ui.courses.CourseActivity;
+import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.feedback.FeedbackDialog;
 import org.schulcloud.mobile.ui.files.FileFragment;
@@ -159,7 +159,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
                 c = FileFragment.class;
                 break;
             case 3: // Course
-                c = CourseActivity.class;
+                c = CourseFragment.class;
                 break;
             case 4: // homework
                 c = HomeworkActivity.class;

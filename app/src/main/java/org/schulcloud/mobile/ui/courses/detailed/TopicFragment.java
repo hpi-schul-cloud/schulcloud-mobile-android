@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.ui.courses.detailed;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +12,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Contents;
-import org.schulcloud.mobile.ui.base.BaseFragment;
+import org.schulcloud.mobile.ui.main.MainFragment;
 
 import java.util.List;
 
@@ -19,11 +21,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TopicFragment extends BaseFragment implements TopicMvpView {
-    public static final String ARGUMENT_TOPIC_ID = "topicId";
-    public static final String ARGUMENT_TOPIC_NAME = "topicName";
+public class TopicFragment extends MainFragment implements TopicMvpView {
+    private static final String ARGUMENT_TOPIC_ID = "ARGUMENT_TOPIC_ID";
+    private static final String ARGUMENT_TOPIC_NAME = "ARGUMENT_TOPIC_NAME";
 
-    private String topicId = null;
+    private String mTopicId = null;
+    private String mTopicName = null;
 
     @Inject
     TopicPresenter mTopicPresenter;
@@ -32,46 +35,63 @@ public class TopicFragment extends BaseFragment implements TopicMvpView {
     ContentAdapter mContentAdapter;
 
     @BindView(R.id.topicName)
-    TextView topicName;
+    TextView vTopicName;
     @BindView(R.id.topicRecycler)
-    RecyclerView mRecyclerView;
+    RecyclerView vRecyclerView;
+
+    /**
+     * Creates a new instance of this fragment.
+     *
+     * @param topicId   The ID of the topic that should be shown
+     * @param topicName The name of the topic that should be shown
+     * @return The new instance
+     */
+    public static TopicFragment newInstance(@NonNull String topicId, @NonNull String topicName) {
+        TopicFragment topicFragment = new TopicFragment();
+
+        Bundle args = new Bundle();
+        args.putString(ARGUMENT_TOPIC_ID, topicId);
+        args.putString(ARGUMENT_TOPIC_NAME, topicName);
+        topicFragment.setArguments(args);
+
+        return topicFragment;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+
+        mTopicId = getArguments().getString(ARGUMENT_TOPIC_ID);
+        mTopicName = getArguments().getString(ARGUMENT_TOPIC_NAME);
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topic, container, false);
         ButterKnife.bind(this, view);
-        Bundle args = getArguments();
-        topicId = args.getString(ARGUMENT_TOPIC_ID);
 
-        topicName.setText(args.getString(ARGUMENT_TOPIC_NAME));
+        vTopicName.setText(mTopicName);
 
-        mRecyclerView.setAdapter(mContentAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        vRecyclerView.setAdapter(mContentAdapter);
+        vRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTopicPresenter.attachView(this);
-        mTopicPresenter.loadContents(topicId);
+        mTopicPresenter.loadContents(mTopicId);
 
         return view;
     }
+    @Override
+    public void onDestroy() {
+        mTopicPresenter.detachView();
+        super.onDestroy();
+    }
 
     /***** MVP View methods implementation *****/
-
     @Override
     public void showContent(List<Contents> contents) {
         mContentAdapter.setContent(contents);
         mContentAdapter.setContext(getActivity());
         mContentAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showError() {
-
-    }
-
-    @Override
-    public void goToSignIn() {
-        // Necessary in fragment?
     }
 }

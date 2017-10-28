@@ -9,5 +9,4 @@ public interface TopicMvpView extends MvpView {
 
     void showContent(List<Contents> contents);
 
-    void showError();
 }

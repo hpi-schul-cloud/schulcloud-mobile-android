@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
@@ -53,7 +54,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
 
         mMainPresenter.initTabs(
                 new MainFragment[]{
-                        FileFragment.getInstance(),
+                        CourseFragment.getInstance(),
                         FileFragment.getInstance()});
 
         ((BottomNavigationView) findViewById(R.id.navigation)).setOnNavigationItemSelectedListener(

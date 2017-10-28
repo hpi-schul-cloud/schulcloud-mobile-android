@@ -3,10 +3,10 @@ package org.schulcloud.mobile.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import org.schulcloud.mobile.ui.base.BaseFragment;
 import org.schulcloud.mobile.ui.base.MvpView;
-import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.PermissionsUtil;
 
 /**
@@ -44,6 +44,9 @@ public abstract class MainFragment extends BaseFragment implements MvpView {
         return false;
     }
 
+    public void setTitle(@StringRes int titleId){
+        getMainActivity().setTitle(titleId);
+    }
     public void addFragment(@NonNull MainFragment fragment) {
         getMainActivity().addFragment(this, fragment);
     }

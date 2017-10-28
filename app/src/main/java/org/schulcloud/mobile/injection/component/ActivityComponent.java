@@ -4,7 +4,7 @@ import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.base.BaseFragment;
-import org.schulcloud.mobile.ui.courses.CourseActivity;
+import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.TopicFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
@@ -26,31 +26,40 @@ import dagger.Subcomponent;
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
 
+    //    Base
     void inject(BaseActivity baseActivity);
 
     void inject(BaseFragment baseFragment);
 
+    //    Sign in
     void inject(SignInActivity signInActivity);
 
+    //    Main
     void inject(MainActivity mainActivity);
 
+    //    Dashboard
+    void inject(DashboardActivity dashboardActivity);
+
+    //    Course
+    void inject(CourseFragment courseFragment);
+
+    void inject(DetailedCourseFragment detailedCourseFragment);
+
+    void inject(TopicFragment topicFragment);
+
+    //    File
     void inject(FileFragment fileFragment);
 
-    void inject(SettingsActivity settingsActivity);
-
+    //    Homework
     void inject(HomeworkActivity homeworkActivity);
 
     void inject(DetailedHomeworkFragment detailedHomeworkFragment);
 
     void inject(AddHomeworkFragment addHomeworkFragment);
 
-    void inject(CourseActivity courseActivity);
+    //    Settings
+    void inject(SettingsActivity settingsActivity);
 
-    void inject(DetailedCourseFragment detailedCourseFragment);
-
-    void inject(TopicFragment topicFragment);
-
-    void inject(DashboardActivity dashboardActivity);
-
+    //    Feedback
     void inject(FeedbackDialog feedbackDialog);
 }

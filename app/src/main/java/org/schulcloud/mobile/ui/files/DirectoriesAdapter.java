@@ -23,7 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.DirectoriesViewHolder> {
+public class DirectoriesAdapter
+        extends RecyclerView.Adapter<DirectoriesAdapter.DirectoriesViewHolder> {
     @Inject
     FilePresenter mFilesPresenter;
     @Inject
@@ -54,20 +55,17 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
         String path = directory.path + directory.name;
 
         // remove leading slash
-        if (path.indexOf("/") == 0) {
+        if (path.startsWith("/")) {
             path = path.substring(1);
         }
 
         // has to be final for lambda expressions
         String finalPath = path;
 
-        holder.cardView.setOnClickListener(v -> {
-            mFilesPresenter.goIntoDirectory(finalPath);
-        });
-        holder.deleteDirectory.setOnClickListener(v -> {
-            // refactor it when we also support course/class files
-            mFilesPresenter.startDirectoryDeleting(finalPath, directory.name);
-        });
+        holder.cardView.setOnClickListener(v -> mFilesPresenter.goIntoDirectory(finalPath));
+        // TODO: refactor it when we also support course/class files
+        holder.deleteDirectory.setOnClickListener(
+                v -> mFilesPresenter.startDirectoryDeleting(finalPath, directory.name));
     }
 
     @Override
@@ -83,7 +81,6 @@ public class DirectoriesAdapter extends RecyclerView.Adapter<DirectoriesAdapter.
         CardView cardView;
         @BindView(R.id.directory_delete_icon)
         AwesomeTextView deleteDirectory;
-
 
         public DirectoriesViewHolder(View itemView) {
             super(itemView);

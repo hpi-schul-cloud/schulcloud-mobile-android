@@ -7,8 +7,12 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,7 +41,6 @@ import okhttp3.ResponseBody;
 
 
 public class FileFragment extends MainFragment implements FileMvpView {
-
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "org.schulcloud.mobile.ui.files.FileFragment.EXTRA_TRIGGER_SYNC_FLAG";
 
@@ -124,21 +127,19 @@ public class FileFragment extends MainFragment implements FileMvpView {
         directoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         fileUploadButton.setBackgroundTintList(ColorStateList.valueOf(
-                getResources().getColor(R.color.hpiRed)));
-        fileUploadButton.setOnClickListener(v -> {
-            startFileChoosing();
-        });
+                getColor(R.color.hpiRed)));
+        fileUploadButton.setOnClickListener(v -> startFileChoosing());
 
-        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.hpiRed),
-                getResources().getColor(R.color.hpiOrange),
-                getResources().getColor(R.color.hpiYellow));
+        swipeRefresh.setColorSchemeColors(
+                getColor(R.color.hpiRed),
+                getColor(R.color.hpiOrange),
+                getColor(R.color.hpiYellow));
         swipeRefresh.setOnRefreshListener(
                 () -> {
                     startService(FileSyncService.getStartIntent(getContext()));
                     startService(DirectorySyncService.getStartIntent(getContext()));
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(() -> {
+                    new Handler().postDelayed(() -> {
                         mFilePresenter.loadFiles();
                         mFilePresenter.loadDirectories();
 
@@ -149,7 +150,6 @@ public class FileFragment extends MainFragment implements FileMvpView {
 
         return view;
     }
-
     @Override
     public void onDestroy() {
         mFilePresenter.detachView();
@@ -267,7 +267,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
     }
 
     @Override
-    public void startDownloading(File file, Boolean download) {
+    public void startDownloading(File file, boolean download) {
         downloadProgressDialog = DialogFactory.createProgressDialog(getContext(),
                 R.string.files_download_progress);
         downloadProgressDialog.show();
@@ -285,7 +285,6 @@ public class FileFragment extends MainFragment implements FileMvpView {
                 })
                 .show();
     }
-
     @Override
     public void showFileDeleteError() {
         DialogFactory.createGenericErrorDialog(getContext(), R.string.files_delete_error)
@@ -317,5 +316,10 @@ public class FileFragment extends MainFragment implements FileMvpView {
                 getResources().getString(R.string.files_delete_success_directory),
                 PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
         this.reloadFiles();
+    }
+
+    @ColorInt
+    private int getColor(@ColorRes int id) {
+        return ResourcesCompat.getColor(getResources(), id, getContext().getTheme());
     }
 }

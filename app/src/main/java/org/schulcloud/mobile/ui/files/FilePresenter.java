@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.files;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
@@ -21,8 +20,6 @@ import timber.log.Timber;
 
 @ConfigPersistent
 public class FilePresenter extends BasePresenter<FileMvpView> {
-    private final String GET_OBJECT_ACTION = "getObject";
-    private final String PUT_OBJECT_ACTION = "putObject";
     private Subscription fileSubscription;
     private Subscription directorySubscription;
     private Subscription fileGetterSubscription;
@@ -45,23 +42,14 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        if (fileSubscription != null)
-            fileSubscription.unsubscribe();
-        if (directorySubscription != null)
-            directorySubscription.unsubscribe();
-        if (fileGetterSubscription != null)
-            fileGetterSubscription.unsubscribe();
-        if (fileDownloadSubscription != null)
-            fileDownloadSubscription.unsubscribe();
-        if (fileUploadSubscription != null)
-            fileUploadSubscription.unsubscribe();
-        if (fileStartUploadSubscription != null)
-            fileStartUploadSubscription.unsubscribe();
-        if (fileDeleteSubscription != null)
-            fileDeleteSubscription.unsubscribe();
-        if (directoryDeleteSubscription != null)
-            directoryDeleteSubscription.unsubscribe();
-
+        RxUtil.unsubscribe(fileSubscription);
+        RxUtil.unsubscribe(directorySubscription);
+        RxUtil.unsubscribe(fileGetterSubscription);
+        RxUtil.unsubscribe(fileDownloadSubscription);
+        RxUtil.unsubscribe(fileUploadSubscription);
+        RxUtil.unsubscribe(fileStartUploadSubscription);
+        RxUtil.unsubscribe(fileDeleteSubscription);
+        RxUtil.unsubscribe(directoryDeleteSubscription);
     }
 
     public void loadFiles() {
@@ -82,7 +70,6 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         () -> {
                         });
     }
-
     public void loadDirectories() {
         checkViewAttached();
         RxUtil.unsubscribe(directorySubscription);
@@ -110,12 +97,9 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void loadFileFromServer(File file, Boolean download) {
         checkViewAttached();
-
-        if (fileGetterSubscription != null && !fileGetterSubscription.isUnsubscribed())
-            fileGetterSubscription.unsubscribe();
-
+        RxUtil.unsubscribe(fileGetterSubscription);
         fileGetterSubscription = mDataManager.getFileUrl(new SignedUrlRequest(
-                this.GET_OBJECT_ACTION, // action
+                SignedUrlRequest.ACTION_OBJECT_GET, // action
                 file.key, // path
                 file.type // fileType
         )).observeOn(AndroidSchedulers.mainThread())
@@ -148,10 +132,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void downloadFile(String url, String fileName) {
         checkViewAttached();
-
-        if (fileDownloadSubscription != null && !fileDownloadSubscription.isUnsubscribed())
-            fileDownloadSubscription.unsubscribe();
-
+        RxUtil.unsubscribe(fileDownloadSubscription);
         fileDownloadSubscription = mDataManager.downloadFile(url)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -185,18 +166,13 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void uploadFileToServer(java.io.File fileToUpload) {
         checkViewAttached();
-
-        if (fileUploadSubscription != null && !fileUploadSubscription.isUnsubscribed())
-            fileUploadSubscription.unsubscribe();
+        RxUtil.unsubscribe(fileUploadSubscription);
 
         // todo: refactor later on when there are class and course folders
-        String uploadPath = new StringBuilder()
-                .append(mDataManager.getCurrentStorageContext())
-                .append(fileToUpload.getName())
-                .toString();
+        String uploadPath = mDataManager.getCurrentStorageContext() + fileToUpload.getName();
 
         SignedUrlRequest signedUrlRequest = new SignedUrlRequest(
-                this.PUT_OBJECT_ACTION,
+                SignedUrlRequest.ACTION_OBJECT_PUT, // action
                 uploadPath,
                 FileUtils.getMimeType(fileToUpload));
 
@@ -218,13 +194,12 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     /**
      * initiates a download task
      *
-     * @param file     {File} - the file which will be uploaded
+     * @param file     {File} - the file which will be downloaded
      * @param download {Boolean} - whether to download on hard disk
      */
-    public void startDownloading(File file, Boolean download) {
+    public void startDownloading(File file, boolean download) {
         getMvpView().startDownloading(file, download);
     }
-
     /**
      * starts a upload progress to the given url
      *
@@ -233,10 +208,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void startUploading(java.io.File file, SignedUrlResponse signedUrlResponse) {
         checkViewAttached();
-
-        if (fileStartUploadSubscription != null && !fileStartUploadSubscription.isUnsubscribed())
-            fileStartUploadSubscription.unsubscribe();
-
+        RxUtil.unsubscribe(fileStartUploadSubscription);
         fileStartUploadSubscription = mDataManager.uploadFile(file, signedUrlResponse)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -260,10 +232,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void deleteFile(String path) {
         checkViewAttached();
-
-        if (fileDeleteSubscription != null && !fileDeleteSubscription.isUnsubscribed())
-            fileDeleteSubscription.unsubscribe();
-
+        RxUtil.unsubscribe(fileDeleteSubscription);
         fileDeleteSubscription = mDataManager.deleteFile(path)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -279,7 +248,6 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         });
 
     }
-
     /**
      * deletes a directory from the server
      *
@@ -287,10 +255,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void deleteDirectory(String path) {
         checkViewAttached();
-
-        if (directoryDeleteSubscription != null && !directoryDeleteSubscription.isUnsubscribed())
-            directoryDeleteSubscription.unsubscribe();
-
+        RxUtil.unsubscribe(directoryDeleteSubscription);
         directoryDeleteSubscription = mDataManager.deleteDirectory(path)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -310,7 +275,6 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     public void startDirectoryDeleting(String path, String dirName) {
         getMvpView().startDirectoryDeleting(path, dirName);
     }
-
     public void startFileDeleting(String path, String fileName) {
         getMvpView().startFileDeleting(path, fileName);
     }

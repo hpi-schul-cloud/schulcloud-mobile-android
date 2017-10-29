@@ -18,7 +18,6 @@ import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
-import org.schulcloud.mobile.ui.signin.SignInActivity;
 
 import javax.inject.Inject;
 

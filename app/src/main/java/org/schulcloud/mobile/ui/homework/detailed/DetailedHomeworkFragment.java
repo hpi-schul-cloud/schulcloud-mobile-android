@@ -32,13 +32,13 @@ import io.realm.RealmList;
 public class DetailedHomeworkFragment extends MainFragment implements DetailedHomeworkMvpView {
     private static final String ARGUMENT_HOMEWORK_ID = "ARGUMENT_HOMEWORK_ID";
 
-    private String homeworkId = null;
-
     @Inject
     DetailedHomeworkPresenter mDetailedHomeworkPresenter;
 
     @Inject
     CommentsAdapter mCommentsAdapter;
+
+    private String mHomeworkId = null;
 
     @BindView(R.id.homeworkName)
     TextView homeworkName;
@@ -47,7 +47,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
     @BindView(R.id.homeworkDue)
     TextView homeworkDueDate;
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
     @BindView(R.id.grade)
     TextView grade;
     @BindView(R.id.gradeComment)
@@ -58,7 +58,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
     /**
      * Creates a new instance of this fragment.
      *
-     * @param homeworkId The ID of the homework that should be shown.
+     * @param homeworkId The ID of the homework to be shown.
      * @return The new instance
      */
     public static DetailedHomeworkFragment newInstance(@NonNull String homeworkId) {
@@ -76,19 +76,20 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
 
-        homeworkId = getArguments().getString(ARGUMENT_HOMEWORK_ID);
+        mHomeworkId = getArguments().getString(ARGUMENT_HOMEWORK_ID);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detailed_homework, container, false);
         ButterKnife.bind(this, view);
+        setTitle(R.string.homework_homework_title);
 
-        mRecyclerView.setAdapter(mCommentsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mCommentsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mDetailedHomeworkPresenter.attachView(this);
-        mDetailedHomeworkPresenter.loadHomework(homeworkId);
+        mDetailedHomeworkPresenter.loadHomework(mHomeworkId);
 
         return view;
     }
@@ -119,7 +120,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
         homeworkDescription.setText(Html.fromHtml(homework.description));
 
         if (homework.restricted == null || !homework.restricted)
-            mDetailedHomeworkPresenter.loadComments(homeworkId);
+            mDetailedHomeworkPresenter.loadComments(mHomeworkId);
         else
             nonPrivate.setVisibility(View.GONE);
 
@@ -145,7 +146,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
         if (submission.gradeComment != null)
             gradeComment.setText(Html.fromHtml(submission.gradeComment));
 
-        mCommentsAdapter.setSubmissions(submission.comments);
+        mCommentsAdapter.setComments(submission.comments);
         mCommentsAdapter.setUserId(userId);
         mCommentsAdapter.notifyDataSetChanged();
     }

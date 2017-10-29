@@ -1,11 +1,7 @@
 package org.schulcloud.mobile.ui.main;
 
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
-import android.util.SparseArray;
 
-import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 

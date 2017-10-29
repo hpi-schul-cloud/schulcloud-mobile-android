@@ -55,8 +55,9 @@
     <string name="courses_course_loading_error">Leider gab es ein Problem beim Laden des Kurses</string>
 
     <!--Homework-->
-    <string name="homework_title">Hausaufgaben</string>
+    <string name="homework_title">Aufgaben</string>
     <string name="homework_loading_error">Leider gab es ein Problem beim Laden der Hausaufgaben</string>
+    <string name="homework_homework_title">Aufgabe</string>
     <string name="homework_homework_name">Titel</string>
     <string name="homework_homework_name_format">[%1$s] %2$s</string>
     <string name="homework_homework_course">Kurs:</string>
@@ -72,6 +73,7 @@
     <string name="homework_homework_comments">Kommentare</string>
     <string name="homework_homework_comments_none">Derzeit keine Kommentare</string>
     <string name="homework_homework_notSubmitted">Hausaufgabe noch nicht eingereicht</string>
+    <string name="homework_addHomework_title">Aufgabe hinzufügen</string>
     <string name="homework_addHomework_saved">Die Hausaufgabe wurde gespeichert</string>
     <string name="homework_addHomework_error_saving">Es gab einen Fehler beim Speichern der Hausaufgabe. Bitte versuchen Sie es erneut</string>
     <string name="homework_addHomework_error_loadingCourses">Es gab einen Fehler beim Laden der Kurse</string>

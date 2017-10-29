@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.homework.add;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.AppCompatSpinner;
@@ -19,6 +20,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.DialogFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,31 +35,32 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpView {
+
     @Inject
     AddHomeworkPresenter mAddHomeworkPresenter;
 
-    @BindView(R.id.name)
-    TextInputEditText mName;
-    @BindView(R.id.course)
-    AppCompatSpinner mCourse;
-    @BindView(R.id.isPrivate)
-    CheckBox mIsPrivate;
-    @BindView(R.id.description)
-    TextInputEditText mDescription;
-
     private DateFormat mDateFormat;
-    @BindView(R.id.availableDate)
-    TextView mAvailableDate;
     private Calendar mAvailableDateCalendar;
-    @BindView(R.id.dueDate)
-    TextView mDueDate;
     private Calendar mDueDateCalendar;
 
+    @BindView(R.id.name)
+    TextInputEditText name;
+    @BindView(R.id.course)
+    AppCompatSpinner course;
+    @BindView(R.id.isPrivate)
+    CheckBox isPrivate;
+    @BindView(R.id.description)
+    TextInputEditText description;
+    @BindView(R.id.availableDate)
+    TextView availableDate;
+    @BindView(R.id.dueDate)
+    TextView dueDate;
     @BindView(R.id.publicSubmissions)
-    CheckBox mPublicSubmissions;
+    CheckBox publicSubmissions;
     @BindView(R.id.add)
-    BootstrapButton mAdd;
+    BootstrapButton add;
 
+    @NonNull
     public static AddHomeworkFragment getInstance() {
         return new AddHomeworkFragment();
     }
@@ -78,19 +81,20 @@ public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpV
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_homework, container, false);
         ButterKnife.bind(this, view);
+        setTitle(R.string.homework_addHomework_title);
 
-        initDateButton(mAvailableDateCalendar, mAvailableDate);
-        initDateButton(mDueDateCalendar, mDueDate);
+        initDateButton(mAvailableDateCalendar, availableDate);
+        initDateButton(mDueDateCalendar, dueDate);
 
-        mAdd.setOnClickListener(v ->
+        add.setOnClickListener(v ->
                 mAddHomeworkPresenter.addHomework(
-                        mName.getText().toString().trim(),
-                        mCourse.getSelectedItemPosition(),
-                        mIsPrivate.isChecked(),
-                        mDescription.getText().toString().trim(),
+                        name.getText().toString().trim(),
+                        course.getSelectedItemPosition(),
+                        isPrivate.isChecked(),
+                        description.getText().toString().trim(),
                         mAvailableDateCalendar,
                         mDueDateCalendar,
-                        mPublicSubmissions.isChecked()));
+                        publicSubmissions.isChecked()));
 
         mAddHomeworkPresenter.attachView(this);
         mAddHomeworkPresenter.loadData();
@@ -143,50 +147,51 @@ public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpV
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, courses);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCourse.setAdapter(adapter);
-        mCourse.setEnabled(true);
+        course.setAdapter(adapter);
+        course.setEnabled(true);
     }
     @Override
     public void setCanCreatePublic(boolean canCreatePublic) {
         if (canCreatePublic) {
-            mIsPrivate.setEnabled(true);
-            mPublicSubmissions.setVisibility(View.VISIBLE);
+            isPrivate.setEnabled(true);
+            publicSubmissions.setVisibility(View.VISIBLE);
         } else {
-            mIsPrivate.setEnabled(false);
-            mIsPrivate.setChecked(true);
-            mPublicSubmissions.setVisibility(View.GONE);
-            mPublicSubmissions.setChecked(false);
+            isPrivate.setEnabled(false);
+            isPrivate.setChecked(true);
+            publicSubmissions.setVisibility(View.GONE);
+            publicSubmissions.setChecked(false);
         }
     }
+
     @Override
     public void showHomeworkSaved() {
         finish();
-        Toast.makeText(getActivity(), R.string.homework_addHomework_saved,
-                Toast.LENGTH_SHORT).show();
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.homework_addHomework_saved)
+                .show();
     }
     @Override
     public void reloadHomeworkList() {
-        getActivity().startService(HomeworkSyncService.getStartIntent(getActivity()));
+        getActivity().startService(HomeworkSyncService.getStartIntent(getContext()));
     }
     @Override
     public void showCourseLoadingError() {
-        mCourse.setEnabled(false);
-        Toast.makeText(getContext(), R.string.homework_addHomework_error_loadingCourses,
-                Toast.LENGTH_SHORT).show();
+        course.setEnabled(false);
+        DialogFactory.createGenericErrorDialog(getContext(),
+                R.string.homework_addHomework_error_loadingCourses).show();
     }
     @Override
     public void showSaveError() {
-        Toast.makeText(getContext(), R.string.homework_addHomework_error_saving,
-                Toast.LENGTH_SHORT).show();
+        DialogFactory.createGenericErrorDialog(getContext(),
+                R.string.homework_addHomework_error_saving).show();
     }
     @Override
     public void showNameEmpty() {
-        Toast.makeText(getContext(), R.string.homework_addHomework_error_titleEmpty,
-                Toast.LENGTH_SHORT).show();
+        DialogFactory.createGenericErrorDialog(getContext(),
+                R.string.homework_addHomework_error_titleEmpty).show();
     }
     @Override
     public void showInvalidDates() {
-        Toast.makeText(getContext(), R.string.homework_addHomework_error_datesInvalid,
-                Toast.LENGTH_SHORT).show();
+        DialogFactory.createGenericErrorDialog(getContext(),
+                R.string.homework_addHomework_error_datesInvalid).show();
     }
 }

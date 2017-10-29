@@ -16,6 +16,22 @@
         <item name="color">@android:color/white</item>
     </style>
 
+
+    <style name="Content">
+    </style>
+    <style name="Content.Padding">
+        <item name="android:padding">@dimen/content_padding</item>
+    </style>
+    <style name="Content_Title">
+        <item name="android:layout_marginBottom">@dimen/content_title_margin</item>
+        <item name="android:layout_marginLeft">@dimen/content_title_margin</item>
+        <item name="android:layout_marginRight">@dimen/content_title_margin</item>
+        <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
+        <item name="android:textColor">@color/hpiRed</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+
     <style name="Preference.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:padding">@dimen/settings_preference_padding</item>
         <item name="android:background">?attr/selectableItemBackground</item>

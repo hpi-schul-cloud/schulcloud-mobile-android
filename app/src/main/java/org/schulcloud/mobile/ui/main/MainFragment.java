@@ -44,7 +44,7 @@ public abstract class MainFragment extends BaseFragment implements MvpView {
         return false;
     }
 
-    public void setTitle(@StringRes int titleId){
+    public void setTitle(@StringRes int titleId) {
         getMainActivity().setTitle(titleId);
     }
     public void addFragment(@NonNull MainFragment fragment) {

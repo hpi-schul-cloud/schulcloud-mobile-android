@@ -69,6 +69,11 @@
     <dimen name="material_drawer_padding">8dp</dimen>
 
 
+    <dimen name="content_padding">8dp</dimen>
+    <dimen name="content_title_margin">8dp</dimen>
+    <dimen name="content_title_marginTop">16dp</dimen>
+
+
     <!--Material Design-->
     <!--Buttons-->
     <!--Floating Action Button-->

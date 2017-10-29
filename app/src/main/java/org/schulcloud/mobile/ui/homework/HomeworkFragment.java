@@ -2,17 +2,15 @@ package org.schulcloud.mobile.ui.homework;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
@@ -37,17 +35,18 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
 
     @Inject
     public HomeworkPresenter mHomeworkPresenter;
+
     @Inject
     HomeworkAdapter mHomeworkAdapter;
 
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.add_homework)
-    FloatingActionButton mFabAddHomework;
+    FloatingActionButton fabAddHomework;
 
-
+    @NonNull
     public static HomeworkFragment getInstance() {
         return getInstance(true);
     }
@@ -58,6 +57,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
+    @NonNull
     public static HomeworkFragment getInstance(boolean triggerDataSyncOnCreate) {
         HomeworkFragment homeworkFragment = new HomeworkFragment();
 
@@ -86,8 +86,8 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
         ButterKnife.bind(this, view);
         setTitle(R.string.homework_title);
 
-        mRecyclerView.setAdapter(mHomeworkAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mHomeworkAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
@@ -105,7 +105,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
                 }
         );
 
-        mFabAddHomework.setOnClickListener(v -> addFragment(AddHomeworkFragment.getInstance()));
+        fabAddHomework.setOnClickListener(v -> addFragment(AddHomeworkFragment.getInstance()));
 
         mHomeworkPresenter.attachView(this);
         mHomeworkPresenter.loadHomework();
@@ -120,8 +120,8 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showHomework(List<Homework> homeworks) {
-        mHomeworkAdapter.setHomework(homeworks);
+    public void showHomework(List<Homework> homework) {
+        mHomeworkAdapter.setHomework(homework);
         mHomeworkAdapter.setContext(getContext());
         mHomeworkAdapter.notifyDataSetChanged();
     }
@@ -137,7 +137,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
     }
 
     @Override
-    public void showHomeworkDialog(String homeworkId) {
+    public void showHomeworkDetail(String homeworkId) {
         addFragment(DetailedHomeworkFragment.newInstance(homeworkId));
     }
 }

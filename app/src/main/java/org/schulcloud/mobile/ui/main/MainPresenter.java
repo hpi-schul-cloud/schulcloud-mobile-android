@@ -23,16 +23,23 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     @Inject
     public MainPresenter() {}
 
-    public void initTabs(@NonNull MainFragment[] topLevelFragments) {
-        //noinspection unchecked
-        mFragments = (Stack<MainFragment>[]) new Stack[topLevelFragments.length];
-        for (int i = 0; i < topLevelFragments.length; i++) {
-            Stack<MainFragment> stack = new Stack<>();
-            stack.push(topLevelFragments[i]);
-            mFragments[i] = stack;
-        }
+    @Override
+    public void attachView(MainMvpView mvpView) {
+        super.attachView(mvpView);
 
-        showFragment(0, TAB_LEVEL_TOP, false);
+        if (mFragments == null) {
+            MainFragment[] topLevelFragments = getMvpView().getInitialFragments();
+
+            //noinspection unchecked
+            mFragments = (Stack<MainFragment>[]) new Stack[topLevelFragments.length];
+            for (int i = 0; i < topLevelFragments.length; i++) {
+                Stack<MainFragment> stack = new Stack<>();
+                stack.push(topLevelFragments[i]);
+                mFragments[i] = stack;
+            }
+
+            showFragment(0, TAB_LEVEL_TOP, false);
+        }
     }
 
     public void onTabSelected(int tabIndex) {

@@ -1,10 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Schul-Cloud</string>
 
     <!--Base-->
     <string name="base_action_feedback">Feedback geben</string>
-    <string name="base_drawer_open">Öffnen</string>
-    <string name="base_drawer_close">Schließen</string>
     <string name="base_offline">(offline)</string>
 
     <!--Main-->

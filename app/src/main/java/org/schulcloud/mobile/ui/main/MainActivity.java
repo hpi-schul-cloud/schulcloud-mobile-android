@@ -3,13 +3,14 @@ package org.schulcloud.mobile.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
@@ -18,6 +19,7 @@ import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
+import org.schulcloud.mobile.util.NetworkUtil;
 
 import javax.inject.Inject;
 
@@ -48,16 +50,15 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         mMainPresenter.attachView(this);
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
-        mMainPresenter.initTabs(
-                new MainFragment[]{
-                        CourseFragment.getInstance(),
-                        HomeworkFragment.getInstance(),
-                        FileFragment.getInstance()});
+        if (!NetworkUtil.isNetworkConnected(this)) {
+            TextView offline = (TextView) findViewById(R.id.offlineBadge);
+            offline.setVisibility(View.VISIBLE);
+        }
 
         ((BottomNavigationView) findViewById(R.id.navigation)).setOnNavigationItemSelectedListener(
                 item -> {
@@ -109,6 +110,14 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     public void onBackPressed() {
         mMainPresenter.onBackPressed();
+    }
+
+    @Override
+    public MainFragment[] getInitialFragments() {
+        return new MainFragment[]{
+                CourseFragment.getInstance(),
+                HomeworkFragment.getInstance(),
+                FileFragment.getInstance()};
     }
     @Override
     public void showFragment(@NonNull MainFragment fragment, int oldTabIndex, int newTabIndex) {

@@ -3,29 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
+    style="@style/Material.Toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="@color/hpiRed"
-    android:elevation="4dp"
-    android:theme="@style/AppTheme.AppBarOverlay"
-    app:popupTheme="@style/AppTheme.PopupOverlay"
-    app:theme="@style/AppTheme.AppBarOverlay">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="75dp"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/offlineBadge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/base_offline"
-            android:textSize="@dimen/text_small_body"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/offlineBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:text="@string/base_offline"
+        android:textSize="@dimen/text_small_body"
+        android:visibility="invisible" />
 
 </android.support.v7.widget.Toolbar>

@@ -1,4 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/hpiRed</item>
@@ -8,17 +9,16 @@
         <item name="drawerArrowStyle">@style/BarStyle</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="BarStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@android:color/white</item>
     </style>
 
 
-    <style name="Content">
-    </style>
+    <style name="Content"></style>
     <style name="Content.Padding">
         <item name="android:padding">@dimen/content_padding</item>
     </style>
@@ -41,8 +41,7 @@
     <style name="ListItemPreference" parent="Preference.Simple">
         <item name="android:padding">0dp</item>
     </style>
-    <style name="Preference_Wrapper" parent="Preference.Simple">
-    </style>
+    <style name="Preference_Wrapper" parent="Preference.Simple"></style>
 
     <style name="Preference_Title" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:ellipsize">end</item>
@@ -54,7 +53,7 @@
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
-    <!--Material Design-->
+    <!-- Material Design -->
     <style name="Material" />
 
     <!-- List -->
@@ -97,6 +96,17 @@
     </style>
     <style name="Material.ListItem_EndTextBottom" parent="@style/Material.ListItem_EndTextTop">
         <item name="layout_position">endTextBottom</item>
+    </style>
+
+    <!-- Toolbar -->
+    <style name="Material.Toolbar">
+        <item name="android:height">?android:attr/actionBarSize</item>
+        <item name="android:background">@color/hpiRed</item>
+        <item name="android:elevation" tools:targetApi="lollipop">
+            @dimen/material_toolbar_elevation
+        </item>
+        <item name="theme">@style/AppTheme.AppBarOverlay</item>
+        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
     </style>
 
 </resources>

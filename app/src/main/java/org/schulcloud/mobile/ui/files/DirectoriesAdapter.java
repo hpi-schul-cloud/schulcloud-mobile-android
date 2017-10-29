@@ -13,7 +13,6 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Directory;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

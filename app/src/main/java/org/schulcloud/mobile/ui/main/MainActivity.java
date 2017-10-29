@@ -16,6 +16,7 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
+import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 
@@ -32,6 +33,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
 
     //    public static final int TAB_DASHBOARD = R.id.main_navigation_dashboard;
     public static final int TAB_COURSES = R.id.main_navigation_courses;
+    public static final int TAB_HOMEWORK = R.id.main_navigation_homework;
     public static final int TAB_FILES = R.id.main_navigation_files;
     //    public static final int TAB_MATERIALS = R.id.main_navigation_materials;
     //    public static final int TAB_ADMINISTRATION = R.id.main_navigation_administration;
@@ -55,6 +57,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.initTabs(
                 new MainFragment[]{
                         CourseFragment.getInstance(),
+                        HomeworkFragment.getInstance(),
                         FileFragment.getInstance()});
 
         ((BottomNavigationView) findViewById(R.id.navigation)).setOnNavigationItemSelectedListener(
@@ -67,14 +70,19 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         switch (tabId) {
             case TAB_COURSES:
                 return 0;
-            case TAB_FILES:
+            case TAB_HOMEWORK:
                 return 1;
+            case TAB_FILES:
+                return 2;
             default:
                 return 0;
         }
     }
     public void addFragment(@NonNull MainFragment parent, @NonNull MainFragment child) {
         mMainPresenter.addFragment(parent, child);
+    }
+    public void removeFragment(@NonNull MainFragment fragment) {
+        mMainPresenter.removeFragment(fragment);
     }
 
     @Override

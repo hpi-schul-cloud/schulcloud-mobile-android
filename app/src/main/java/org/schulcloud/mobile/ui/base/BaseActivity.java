@@ -30,7 +30,7 @@ import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardActivity;
 import org.schulcloud.mobile.ui.feedback.FeedbackDialog;
 import org.schulcloud.mobile.ui.files.FileFragment;
-import org.schulcloud.mobile.ui.homework.HomeworkActivity;
+import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.util.NetworkUtil;
@@ -162,7 +162,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
                 c = CourseFragment.class;
                 break;
             case 4: // homework
-                c = HomeworkActivity.class;
+                c = HomeworkFragment.class;
                 break;
             case 5: // settings
                 c = SettingsActivity.class;

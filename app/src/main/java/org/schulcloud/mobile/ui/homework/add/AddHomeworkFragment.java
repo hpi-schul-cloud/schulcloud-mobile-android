@@ -17,10 +17,8 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
-import org.schulcloud.mobile.ui.base.BaseFragment;
-import org.schulcloud.mobile.ui.homework.HomeworkActivity;
+import org.schulcloud.mobile.ui.main.MainFragment;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpView {
+public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpView {
     @Inject
     AddHomeworkPresenter mAddHomeworkPresenter;
 
@@ -60,21 +58,28 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
     @BindView(R.id.add)
     BootstrapButton mAdd;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        activityComponent().inject(this);
-        View view = inflater.inflate(R.layout.fragment_add_homework, container, false);
-        ButterKnife.bind(this, view);
+    public static AddHomeworkFragment getInstance() {
+        return new AddHomeworkFragment();
+    }
 
-        mAddHomeworkPresenter.attachView(this);
-        mAddHomeworkPresenter.loadData();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activityComponent().inject(this);
 
         mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mAvailableDateCalendar = Calendar.getInstance();
-        initDateButton(mAvailableDateCalendar, mAvailableDate);
         mDueDateCalendar = Calendar.getInstance();
         mDueDateCalendar.add(Calendar.DATE, 7);
+    }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_add_homework, container, false);
+        ButterKnife.bind(this, view);
+
+        initDateButton(mAvailableDateCalendar, mAvailableDate);
         initDateButton(mDueDateCalendar, mDueDate);
 
         mAdd.setOnClickListener(v ->
@@ -87,6 +92,9 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
                         mDueDateCalendar,
                         mPublicSubmissions.isChecked()));
 
+        mAddHomeworkPresenter.attachView(this);
+        mAddHomeworkPresenter.loadData();
+
         return view;
     }
     @Override
@@ -94,14 +102,14 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
         mAddHomeworkPresenter.detachView();
         super.onDetach();
     }
+
     private void initDateButton(Calendar calendar, TextView button) {
         button.setText(mDateFormat.format(calendar.getTime()));
         button.setOnClickListener((v) ->
         {
             try {
                 calendar.setTime(mDateFormat.parse(button.getText().toString()));
-            }
-            catch (ParseException e) {
+            } catch (ParseException e) {
                 Timber.e(e, "There was an error loading the courses.");
             }
             new DatePickerDialog(getActivity(),
@@ -132,7 +140,8 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
         for (int i = 0; i < courses.size(); i++)
             if (courses.get(i) == null)
                 courses.set(i, getString(R.string.homework_homework_course_none));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, courses);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, courses);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCourse.setAdapter(adapter);
         mCourse.setEnabled(true);
@@ -142,8 +151,7 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
         if (canCreatePublic) {
             mIsPrivate.setEnabled(true);
             mPublicSubmissions.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             mIsPrivate.setEnabled(false);
             mIsPrivate.setChecked(true);
             mPublicSubmissions.setVisibility(View.GONE);
@@ -152,8 +160,9 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
     }
     @Override
     public void showHomeworkSaved() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-        Toast.makeText(getActivity(), R.string.homework_addHomework_saved, Toast.LENGTH_SHORT).show();
+        finish();
+        Toast.makeText(getActivity(), R.string.homework_addHomework_saved,
+                Toast.LENGTH_SHORT).show();
     }
     @Override
     public void reloadHomeworkList() {
@@ -162,21 +171,22 @@ public class AddHomeworkFragment extends BaseFragment implements AddHomeworkMvpV
     @Override
     public void showCourseLoadingError() {
         mCourse.setEnabled(false);
-        Toast.makeText(getActivity(), R.string.homework_addHomework_error_loadingCourses, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.homework_addHomework_error_loadingCourses,
+                Toast.LENGTH_SHORT).show();
     }
     @Override
     public void showSaveError() {
-        Toast.makeText(getActivity(), R.string.homework_addHomework_error_saving, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.homework_addHomework_error_saving,
+                Toast.LENGTH_SHORT).show();
     }
     @Override
     public void showNameEmpty() {
-        Toast.makeText(getActivity(), R.string.homework_addHomework_error_titleEmpty, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.homework_addHomework_error_titleEmpty,
+                Toast.LENGTH_SHORT).show();
     }
     @Override
     public void showInvalidDates() {
-        Toast.makeText(getActivity(), R.string.homework_addHomework_error_datesInvalid, Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    public void goToSignIn() {
+        Toast.makeText(getContext(), R.string.homework_addHomework_error_datesInvalid,
+                Toast.LENGTH_SHORT).show();
     }
 }

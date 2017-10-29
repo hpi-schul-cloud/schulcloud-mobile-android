@@ -50,6 +50,9 @@ public abstract class MainFragment extends BaseFragment implements MvpView {
     public void addFragment(@NonNull MainFragment fragment) {
         getMainActivity().addFragment(this, fragment);
     }
+    public void finish() {
+        getMainActivity().removeFragment(this);
+    }
     public void startService(@NonNull Intent service) {
         getMainActivity().startService(service);
     }

@@ -14,6 +14,7 @@
     <color name="homework_over">#c3c1c1</color>
 
     <!--Material-->
-    <color name="material_control_normal">#80FFFFFF</color>
     <color name="material_control_activated">#FFFFFFFF</color>
+    <color name="material_control_normal">#B3FFFFFF</color>
+    <color name="material_control_disabled">#80FFFFFF</color>
 </resources>

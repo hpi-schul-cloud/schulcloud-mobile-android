@@ -70,6 +70,10 @@
 
 
     <!--Material Design-->
+    <!--Buttons-->
+    <!--Floating Action Button-->
+    <dimen name="material_button_fab_margin">16dp</dimen>
+
     <!--List-->
     <dimen name="material_list_paddingTop">8dp</dimen>
     <!--ListItemLayout-->

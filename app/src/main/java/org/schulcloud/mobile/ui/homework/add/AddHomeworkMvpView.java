@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.homework.add;
 
-import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.ui.base.MvpView;
 
 import java.util.List;

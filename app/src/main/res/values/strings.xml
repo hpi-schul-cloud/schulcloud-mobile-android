@@ -12,6 +12,7 @@
     <string name="main_action_logout">Logout</string>
     <string name="main_navigation_dashboard">@string/settings_title</string>
     <string name="main_navigation_courses">@string/courses_title</string>
+    <string name="main_navigation_homework">@string/homework_title</string>
     <string name="main_navigation_files">@string/files_title</string>
     <string name="main_navigation_materials">Materialien</string>
     <string name="main_navigation_administration">Verwaltung</string>

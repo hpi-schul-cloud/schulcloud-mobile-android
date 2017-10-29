@@ -12,6 +12,11 @@
         android:title="@string/main_navigation_courses" />
 
     <item
+        android:id="@+id/main_navigation_homework"
+        android:icon="@drawable/ic_tasks_white_24dp"
+        android:title="@string/main_navigation_homework" />
+
+    <item
         android:id="@+id/main_navigation_files"
         android:icon="@drawable/ic_file_white_24dp"
         android:title="@string/main_navigation_files" />

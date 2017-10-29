@@ -36,14 +36,14 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
             mFragments[i] = stack;
         }
 
-        showFragment(0, TAB_LEVEL_TOP);
+        showFragment(0, TAB_LEVEL_TOP, false);
     }
 
     public void onTabSelected(int tabIndex) {
         if (tabIndex != mCurrentTabIndex)
-            showFragment(tabIndex, TAB_LEVEL_LAST);
+            showFragment(tabIndex, TAB_LEVEL_LAST, false);
         else // If the user selects the same tab again, navigate back to the first fragment of the stack
-            showFragment(tabIndex, TAB_LEVEL_TOP);
+            showFragment(tabIndex, TAB_LEVEL_TOP, false);
     }
     /**
      * Adds the fragment as the child of parent, and shows it. If parent already has a child (and
@@ -62,22 +62,64 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                     for (int k = 0; k < diff; k++)
                         tabStack.pop();
                     tabStack.push(child);
-                    showFragment(tabIndex, TAB_LEVEL_LAST);
+                    showFragment(tabIndex, TAB_LEVEL_LAST, false);
                     return;
                 }
             }
         }
     }
-    private void showFragment(int tabIndex, int level) {
+    /**
+     * Removes the specified fragment from the hierarchy. Any child fragments will be removed too.
+     *
+     * @param fragment The fragment to be removed.
+     * @return True if the fragment was removed, false otherwise (e.g., the fragment is the top
+     * level fragment).
+     */
+    public boolean removeFragment(@NonNull MainFragment fragment) {
+        if (fragment.equals(mCurrentFragment))
+            return showFragment(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, false);
+
+        int i = mFragments[mCurrentTabIndex].indexOf(fragment);
+        if (i >= 0)
+            return showFragment(mCurrentTabIndex, i, false);
+
+        for (int tabIndex = 0; tabIndex < mFragments.length; tabIndex++) {
+            Stack<MainFragment> tabStack = mFragments[tabIndex];
+            for (int level = 0; level < tabStack.size(); level++) {
+                MainFragment f = tabStack.get(level);
+                if (fragment.equals(f))
+                    while (tabStack.size() > level + 1)
+                        tabStack.pop();
+            }
+        }
+        return true;
+    }
+    /**
+     * Displays the fragment identified by its tab index and level. Child fragments are removed
+     * automatically.
+     *
+     * @param tabIndex     The index of the tab that the fragment belongs to.
+     * @param level        The level of the fragment. {@link #TAB_LEVEL_TOP}, {@link
+     *                     #TAB_LEVEL_LAST} and {@link #TAB_LEVEL_ONE_BACK} are allowed.
+     * @param closeIfEmpty If set to true and the other parameters would lead to the top level
+     *                     fragment being removed, the app will be closed. Handy for back
+     *                     navigation, but not if a fragment tries to remove itself.
+     * @return True if the fragment identified by {@code tabIndex} and {@code level} is now
+     * displayed, false otherwise (e.g., if that would have closed the app and that isn't
+     * permitted).
+     */
+    private boolean showFragment(int tabIndex, int level, boolean closeIfEmpty) {
         Stack<MainFragment> tabStack = mFragments[tabIndex];
         if (level == TAB_LEVEL_LAST)
             level = tabStack.size() - 1;
         else if (level == TAB_LEVEL_ONE_BACK)
             level = tabStack.size() - 2;
 
-        if (level < 0)
+        if (level < 0) {
+            if (!closeIfEmpty)
+                return false;
             getMvpView().finish();
-        else {
+        } else {
             while (tabStack.size() > level + 1)
                 tabStack.pop();
             MainFragment fragment = tabStack.get(level);
@@ -88,10 +130,11 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
             mCurrentTabIndex = tabIndex;
             mCurrentLevel = level;
         }
+        return false;
     }
     public void onBackPressed() {
         if (!mCurrentFragment.onBackPressed())
-            showFragment(mCurrentTabIndex, TAB_LEVEL_ONE_BACK);
+            showFragment(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, true);
     }
 }
 

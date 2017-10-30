@@ -17,24 +17,18 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     }
 
     @Override
-    public void attachView(SignInMvpView mvpView) {
-        super.attachView(mvpView);
-    }
-
-    @Override
     public void detachView() {
         super.detachView();
-        if (mSubscription != null) mSubscription.unsubscribe();
+        RxUtil.unsubscribe(mSubscription);
     }
-
 
     public void signIn(String username, String password) {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
 
         // todo: remove credentials
-        username = username.equals("") ? "schueler@schul-cloud.org" : username;
-        password = password.equals("") ? "schulcloud" : password;
+        username = username.isEmpty() ? "schueler@schul-cloud.org" : username;
+        password = password.isEmpty() ? "schulcloud" : password;
 
         mSubscription = mDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())

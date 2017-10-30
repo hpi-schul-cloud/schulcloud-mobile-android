@@ -40,13 +40,11 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
                 .signIn(username.getText().toString(), password.getText().toString()));
     }
 
-
     @Override
     protected void onDestroy() {
         mSignInPresenter.detachView();
         super.onDestroy();
     }
-
 
     @Override
     public void showSignInSuccessful() {

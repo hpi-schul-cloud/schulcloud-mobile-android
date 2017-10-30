@@ -35,11 +35,12 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
 
     @Inject
     DashboardPresenter mDashboardPresenter;
+
     @Inject
     EventsAdapter mEventsAdapter;
 
     @BindView(R.id.events)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
     @BindView(R.id.openTasks)
     TextView openTasks;
     @BindView(R.id.dueTill)
@@ -88,8 +89,8 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
         ButterKnife.bind(this, view);
         setTitle(R.string.dashboard_title);
 
-        mRecyclerView.setAdapter(mEventsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mEventsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
         swipeRefresh.setOnRefreshListener(
@@ -100,7 +101,7 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
 
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
-                        mDashboardPresenter.showHomeworks();
+                        mDashboardPresenter.showHomework();
                         mDashboardPresenter.showEvents();
 
                         swipeRefresh.setRefreshing(false);
@@ -109,7 +110,7 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
         );
 
         mDashboardPresenter.attachView(this);
-        mDashboardPresenter.showHomeworks();
+        mDashboardPresenter.showHomework();
         mDashboardPresenter.showEvents();
 
         return view;
@@ -122,23 +123,23 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showOpenHomeworks(Pair<String, String> openHomeworks) {
-        openTasks.setText(openHomeworks.getFirst());
-        if (openHomeworks.getSecond().equals("10000-01-31T23:59"))
+    public void showOpenHomework(Pair<String, String> openHomework) {
+        openTasks.setText(openHomework.getFirst());
+        if (openHomework.getSecond().equals("10000-01-31T23:59"))
             dueTillDate.setText("...");
         else
-            dueTillDate.setText(openHomeworks.getSecond());
+            dueTillDate.setText(openHomework.getSecond());
         cardViewHomework.setOnClickListener(v -> addFragment(HomeworkFragment.newInstance()));
     }
-
     @Override
     public void showEvents(List<Event> eventsForDay) {
-        mEventsAdapter.setEvents(getContext(), eventsForDay);
+        mEventsAdapter.setContext(getContext());
+        mEventsAdapter.setEvents(eventsForDay);
         mEventsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showCourse(String courseId) {
+    public void showCourseDetails(String courseId) {
         addFragment(DetailedCourseFragment.newInstance(courseId));
     }
 }

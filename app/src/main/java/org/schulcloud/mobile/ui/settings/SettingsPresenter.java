@@ -14,6 +14,7 @@ import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.jsonApi.Included;
+import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
@@ -115,10 +116,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                     Date untilDate = dateFormat.parse(includedInformation.getAttributes().getUntil());
                     Integer betweenDates = 0;
                     switch (includedInformation.getAttributes().getFreq()) {
-                        case "WEEKLY":
+                        case IncludedAttributes.FREQ_WEEKLY:
                             betweenDates = DaysBetweenUtil.weeksBetween(startDate, untilDate);
                             break;
-                        case "DAILY":
+                        case IncludedAttributes.FREQ_DAILY:
                             betweenDates = DaysBetweenUtil.daysBetween(startDate, untilDate);
                             break;
                         default:

@@ -13,6 +13,8 @@ import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.jsonApi.Included;
+import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
 import org.schulcloud.mobile.util.Pair;
 
 import java.text.ParseException;
@@ -215,7 +217,7 @@ public class DatabaseHelper {
                 .map(events -> realm.copyFromRealm(events));
     }
 
-    public List<Event> getEventsForDay() {
+    public List<Event> getEventsForToday() {
         final Realm realm = mRealmProvider.get();
         Collection<Event> events = realm.where(Event.class).findAll();
 
@@ -223,21 +225,22 @@ public class DatabaseHelper {
         Log.d("Weekday", Integer.toString(weekday));
 
         List<Event> eventsForWeekday = new ArrayList<>();
+        for (Event event : events)
+            if (event.included.size() > 0)
+                for (Included included : event.included) {
+                    String freq = included.getAttributes().getFreq();
+                    if (freq == null)
+                        continue;
 
-        for (Event event : events) {
-            if (event.included.size() > 0) {
-                if (getNumberForWeekday(event.included.first().getAttributes().getWkst()) == weekday) {
-                    eventsForWeekday.add(event);
+                    String wkst = included.getAttributes().getWkst();
+                    if (freq.equals(IncludedAttributes.FREQ_DAILY)
+                            || (freq.equals(IncludedAttributes.FREQ_WEEKLY)
+                            && getNumberForWeekday(wkst) == weekday)) {
+                        eventsForWeekday.add(event);
+                        break;
+                    }
                 }
-            }
-        }
-
-        Collections.sort(eventsForWeekday, new Comparator<Event>() {
-            @Override
-            public int compare(Event o1, Event o2) {
-                return o1.start.compareTo(o2.start);
-            }
-        });
+        Collections.sort(eventsForWeekday, (o1, o2) -> o1.start.compareTo(o2.start));
 
         return eventsForWeekday;
     }

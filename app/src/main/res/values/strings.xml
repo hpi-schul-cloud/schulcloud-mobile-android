@@ -31,6 +31,7 @@
     <string name="dashboard_homework">Aufgaben</string>
     <string name="dashboard_homework_open">offene Aufgaben</string>
     <string name="dashboard_homework_nextDue">Nächste fällig:</string>
+    <string name="dashboard_event_time">%1$tR - %2$tR</string>
 
     <!--Files-->
     <string name="files_title">Dateien</string>

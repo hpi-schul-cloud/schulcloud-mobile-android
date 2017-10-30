@@ -109,4 +109,15 @@
         <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
     </style>
 
+    <!-- Card -->
+    <style name="Material.Card">
+        <item name="contentPadding">@dimen/material_card_padding</item>
+    </style>
+    <style name="Material.Card.Margin">
+        <item name="android:layout_marginTop">@dimen/material_card_marginVertical</item>
+        <item name="android:layout_marginBottom">@dimen/material_card_marginVertical</item>
+        <item name="android:layout_marginLeft">@dimen/material_card_marginHorizontal</item>
+        <item name="android:layout_marginRight">@dimen/material_card_marginHorizontal</item>
+    </style>
+
 </resources>

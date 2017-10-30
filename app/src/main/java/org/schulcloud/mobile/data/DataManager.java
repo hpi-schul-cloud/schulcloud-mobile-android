@@ -290,8 +290,8 @@ public class DataManager {
         return mDatabaseHelper.getEvents().distinct();
     }
 
-    public List<Event> getEventsForDay() {
-        return mDatabaseHelper.getEventsForDay();
+    public List<Event> getEventsForToday() {
+        return mDatabaseHelper.getEventsForToday();
     }
 
     /**** Homework ****/

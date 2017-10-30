@@ -32,12 +32,12 @@
     <dimen name="content_title_marginTop">16dp</dimen>
 
 
-    <!--Material Design-->
-    <!--Buttons-->
+    <!-- Material Design -->
+    <!-- Buttons -->
     <!--Floating Action Button-->
     <dimen name="material_button_fab_margin">16dp</dimen>
 
-    <!--List-->
+    <!-- List -->
     <dimen name="material_list_paddingTop">8dp</dimen>
     <!--ListItemLayout-->
     <dimen name="material_listItemLayout_height">48dp</dimen>
@@ -69,7 +69,12 @@
     <dimen name="material_listItemLayout_endText_width">48dp</dimen>
     <dimen name="material_listItemLayout_endText_textSize">14sp</dimen>
 
-    <!--Toolbar-->
+    <!-- Toolbar -->
     <dimen name="material_toolbar_elevation">4dp</dimen>
+
+    <!-- Card -->
+    <dimen name="material_card_marginHorizontal">12dp</dimen>
+    <dimen name="material_card_marginVertical">6dp</dimen>
+    <dimen name="material_card_padding">10dp</dimen>
 
 </resources>

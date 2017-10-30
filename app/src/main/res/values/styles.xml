@@ -24,11 +24,16 @@
     </style>
     <style name="Content_Title">
         <item name="android:layout_marginBottom">@dimen/content_title_margin</item>
+        <item name="android:textColor">@color/hpiRed</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+    <style name="Content_Title.Margin">
         <item name="android:layout_marginLeft">@dimen/content_title_margin</item>
         <item name="android:layout_marginRight">@dimen/content_title_margin</item>
         <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
-        <item name="android:textColor">@color/hpiRed</item>
-        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+    <style name="Content_Title.MarginTop">
+        <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
     </style>
 
 

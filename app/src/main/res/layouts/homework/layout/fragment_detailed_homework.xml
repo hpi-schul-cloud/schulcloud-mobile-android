@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/homeworkName"
-        style="@style/Content_Title"
+        style="@style/Content_Title.Margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="HomeworkName" />
@@ -74,6 +74,7 @@
 
                 <TextView
                     android:id="@+id/gradeSector"
+                    style="@style/Content_Title.MarginTop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/bootstrap_alert_paddings"

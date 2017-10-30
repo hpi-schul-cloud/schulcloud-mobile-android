@@ -86,6 +86,7 @@
     <string name="settings_title">Einstellungen</string>
     <string name="settings_calendar_title">Kalender</string>
     <string name="settings_calendar_sync">Termine synchronisieren</string>
+    <string name="settings_calendar_sync_calenderChosen">Termine synchronisieren (%1$s)</string>
     <string name="settings_calendar_sync_successful">Synchronisieren des Kalenders war erfolgreich!</string>
     <string name="settings_calendar_choose">Kalender auf dem Gerät auswählen</string>
     <string name="settings_notifications_title">Benachrichtigungen</string>
@@ -127,6 +128,6 @@
 
     <!--General-->
     <string name="general_button_add">Hinzufügen</string>
-    <string name="general_list_separator">, </string>
+    <string name="general_list_separator">,&#032;</string>
 
 </resources>

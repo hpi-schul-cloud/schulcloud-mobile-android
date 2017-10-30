@@ -32,6 +32,7 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
+
     @Inject
     TopicsAdapter mTopicsAdapter;
 
@@ -70,6 +71,7 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detailed_course, container, false);
         ButterKnife.bind(this, view);
+        setTitle(R.string.courses_course_title);
 
         recyclerView.setAdapter(mTopicsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

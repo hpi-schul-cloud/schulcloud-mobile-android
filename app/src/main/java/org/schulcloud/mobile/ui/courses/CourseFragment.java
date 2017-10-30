@@ -32,6 +32,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
 
     @Inject
     CoursePresenter mCoursePresenter;
+
     @Inject
     CourseAdapter mCourseAdapter;
 
@@ -110,7 +111,6 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
         mCourseAdapter.setCourses(courses);
         mCourseAdapter.notifyDataSetChanged();
     }
-
     @Override
     public void showError() {
         DialogFactory.createGenericErrorDialog(getContext(), R.string.courses_loading_error).show();

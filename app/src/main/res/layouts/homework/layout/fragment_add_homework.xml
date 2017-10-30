@@ -33,6 +33,7 @@
 
         <TextView
             android:id="@+id/courseText"
+            style="@style/Content_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -40,9 +41,7 @@
             android:layout_below="@+id/nameWrapper"
             android:layout_marginBottom="@dimen/bootstrap_alert_paddings"
             android:layout_marginTop="@dimen/form_elementSpacing"
-            android:text="@string/homework_homework_course"
-            android:textColor="@color/hpiRed"
-            android:textSize="@dimen/text_title" />
+            android:text="@string/homework_homework_course" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/course"
@@ -83,6 +82,7 @@
 
         <TextView
             android:id="@+id/dateText"
+            style="@style/Content_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -90,9 +90,7 @@
             android:layout_below="@+id/descriptionWrapper"
             android:layout_marginBottom="@dimen/bootstrap_alert_paddings"
             android:layout_marginTop="@dimen/form_elementSpacing"
-            android:text="@string/homework_homework_processingTime"
-            android:textColor="@color/hpiRed"
-            android:textSize="@dimen/text_title" />
+            android:text="@string/homework_homework_processingTime" />
 
         <TextView
             android:id="@+id/availableDate"

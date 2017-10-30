@@ -41,9 +41,7 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         // onNext
-                        topics -> {
-                            getMvpView().showTopics(topics);
-                        },
+                        topics -> getMvpView().showTopics(topics),
                         // onError
                         error -> {
                             Timber.e(error, "There was an error loading the topics.");

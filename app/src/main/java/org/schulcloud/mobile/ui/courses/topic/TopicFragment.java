@@ -30,6 +30,7 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
 
     @Inject
     TopicPresenter mTopicPresenter;
+
     @Inject
     ContentAdapter mContentAdapter;
 
@@ -69,6 +70,7 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_topic, container, false);
         ButterKnife.bind(this, view);
+        setTitle(R.string.courses_topic_title);
 
         topicName.setText(mTopicName);
 

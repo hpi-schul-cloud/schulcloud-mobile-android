@@ -33,7 +33,6 @@
                     android:scrollbars="vertical"
                     tools:listitem="@layout/item_directory" />
 
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/files_recycler_view"
                     android:layout_width="match_parent"
@@ -44,6 +43,7 @@
                     android:paddingTop="6dp"
                     android:scrollbars="vertical"
                     tools:listitem="@layout/item_file" />
+
             </LinearLayout>
 
         </ScrollView>
@@ -55,9 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="21dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_margin="@dimen/material_button_fab_margin"
         android:foregroundTint="@android:color/white"
         android:src="@android:drawable/ic_menu_upload"
         android:tint="@android:color/white"

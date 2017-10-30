@@ -62,26 +62,14 @@
                 android:layout_below="@+id/homeworkDue">
 
                 <TextView
-                    android:id="@+id/comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gradeComment"
-                    android:paddingBottom="@dimen/bootstrap_alert_paddings"
-                    android:paddingTop="@dimen/bootstrap_alert_paddings"
-                    android:text="@string/homework_homework_comments"
-                    android:textColor="@color/hpiRed"
-                    android:textSize="@dimen/text_title" />
-
-                <TextView
                     android:id="@+id/gradeSector"
                     style="@style/Content_Title.MarginTop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/bootstrap_alert_paddings"
-                    android:paddingTop="@dimen/bootstrap_alert_paddings"
-                    android:text="@string/homework_homework_grading"
-                    android:textColor="@color/hpiRed"
-                    android:textSize="@dimen/text_title" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/homework_homework_grading" />
 
                 <TextView
                     android:id="@+id/gradePart"
@@ -105,7 +93,16 @@
                     android:id="@+id/gradeComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/gradePart" />
+                    android:layout_below="@+id/gradePart"
+                    tools:text="Grade comment" />
+
+                <TextView
+                    android:id="@+id/comments"
+                    style="@style/Content_Title.MarginTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/gradeComment"
+                    android:text="@string/homework_homework_comments" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"

@@ -59,15 +59,11 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         // onNext
-                        files -> {
-                            getMvpView().showFiles(files);
-                        },
+                        files -> getMvpView().showFiles(files),
                         // onError
                         error -> {
                             Timber.e(error, "There was an error loading the files.");
                             getMvpView().showError();
-                        },
-                        () -> {
                         });
     }
     public void loadDirectories() {
@@ -77,20 +73,16 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         // onNext
-                        directories -> {
-                            getMvpView().showDirectories(directories);
-                        },
+                        directories -> getMvpView().showDirectories(directories),
                         // onError
                         error -> {
                             Timber.e(error, "There was an error loading the directories.");
                             getMvpView().showError();
-                        },
-                        () -> {
                         });
     }
 
     /**
-     * loads a file from the schul-cloud server
+     * Loads a file from the Schul-Cloud server.
      *
      * @param file     {File} - the db-saved file
      * @param download {Boolean} - whether to download the file or not
@@ -107,25 +99,21 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                         (signedUrlResponse) -> {
                             Log.d("Fetched file url", signedUrlResponse.url);
 
-                            if (download) {
+                            if (download)
                                 downloadFile(signedUrlResponse.url, file.name);
-                            } else {
+                            else
                                 getMvpView().showFile(
                                         signedUrlResponse.url,
                                         signedUrlResponse.header.getContentType());
-                            }
                         },
                         error -> {
                             Timber.e(error, "There was an error loading file from Server.");
                             getMvpView().showLoadingFileFromServerError();
-                        },
-                        () -> {
-
                         });
     }
 
     /**
-     * Downloads a file from a given url
+     * Downloads a file from a given url.
      *
      * @param url      {String} - the remote url from which the file will be downloaded
      * @param fileName {String} - the name of the downloaded file
@@ -136,21 +124,16 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         fileDownloadSubscription = mDataManager.downloadFile(url)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (responseBody) -> {
-                            getMvpView().saveFile(responseBody, fileName);
-                        },
+                        responseBody -> getMvpView().saveFile(responseBody, fileName),
                         error -> {
                             Timber.e(error, "There was an error loading file from Server.");
                             getMvpView().showLoadingFileFromServerError();
-                        },
-                        () -> {
-
                         });
     }
 
 
     /**
-     * Opens a directory by fetching files for new storageContext
+     * Opens a directory by fetching files for new storageContext.
      *
      * @param dirName {String} - the directory's name for which the files will be fetched
      */
@@ -160,7 +143,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     }
 
     /**
-     * uploads a local file to server
+     * Uploads a local file to the server.
      *
      * @param fileToUpload {File} - the file which will be uploaded
      */
@@ -179,20 +162,15 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         fileUploadSubscription = mDataManager.getFileUrl(signedUrlRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (signedUrlResponse) -> {
-                            startUploading(fileToUpload, signedUrlResponse);
-                        },
+                        signedUrlResponse -> startUploading(fileToUpload, signedUrlResponse),
                         error -> {
                             Timber.e(error, "There was an error uploading file from Server.");
                             getMvpView().showUploadFileError();
-                        },
-                        () -> {
-
                         });
     }
 
     /**
-     * initiates a download task
+     * Initiates a download task.
      *
      * @param file     {File} - the file which will be downloaded
      * @param download {Boolean} - whether to download on hard disk
@@ -201,7 +179,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         getMvpView().startDownloading(file, download);
     }
     /**
-     * starts a upload progress to the given url
+     * Starts an upload progress to the given url.
      *
      * @param file              {File} - the file which will be uploaded
      * @param signedUrlResponse {SignedUrlResponse} - contains information about the uploaded file
@@ -212,21 +190,16 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         fileStartUploadSubscription = mDataManager.uploadFile(file, signedUrlResponse)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (responseBody) -> {
-                            getMvpView().reloadFiles();
-                        },
+                        responseBody -> getMvpView().reloadFiles(),
                         error -> {
                             Timber.e(error, "There was an error uploading file from Server.");
                             getMvpView().showUploadFileError();
-                        },
-                        () -> {
-
                         });
 
     }
 
     /**
-     * deletes a file from the server
+     * Deletes a file from the server.
      *
      * @param path {String} - the key/path to the file
      */
@@ -236,20 +209,15 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         fileDeleteSubscription = mDataManager.deleteFile(path)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (responseBody) -> {
-                            getMvpView().showFileDeleteSuccess();
-                        },
+                        responseBody -> getMvpView().showFileDeleteSuccess(),
                         error -> {
                             Timber.e(error, "There was an error deleting file from Server.");
                             getMvpView().showFileDeleteError();
-                        },
-                        () -> {
-
                         });
 
     }
     /**
-     * deletes a directory from the server
+     * Deletes a directory from the server.
      *
      * @param path {String} - the key/path to the directory
      */
@@ -259,15 +227,10 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         directoryDeleteSubscription = mDataManager.deleteDirectory(path)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        (responseBody) -> {
-                            getMvpView().showDirectoryDeleteSuccess();
-                        },
+                        responseBody -> getMvpView().showDirectoryDeleteSuccess(),
                         error -> {
                             Timber.e(error, "There was an error deleting file from Server.");
                             getMvpView().showFileDeleteError();
-                        },
-                        () -> {
-
                         });
 
     }
@@ -280,7 +243,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     }
 
     /**
-     * Checks the current storage path and steps back if it's not a root directory
+     * Checks the current storage path and steps back if it's not a root directory.
      *
      * @return True if stepping back was successful, false if we are already in the root directory.
      */

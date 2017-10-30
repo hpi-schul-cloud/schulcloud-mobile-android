@@ -16,6 +16,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
+import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
 public final class MainActivity extends BaseActivity implements MainMvpView {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    //    public static final int TAB_DASHBOARD = R.id.main_navigation_dashboard;
+    public static final int TAB_DASHBOARD = R.id.main_navigation_dashboard;
     public static final int TAB_COURSES = R.id.main_navigation_courses;
     public static final int TAB_HOMEWORK = R.id.main_navigation_homework;
     public static final int TAB_FILES = R.id.main_navigation_files;
@@ -68,12 +69,14 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
     }
     private int getTabIndexById(@IdRes int tabId) {
         switch (tabId) {
-            case TAB_COURSES:
+            case TAB_DASHBOARD:
                 return 0;
-            case TAB_HOMEWORK:
+            case TAB_COURSES:
                 return 1;
-            case TAB_FILES:
+            case TAB_HOMEWORK:
                 return 2;
+            case TAB_FILES:
+                return 3;
             default:
                 return 0;
         }
@@ -115,9 +118,10 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     public MainFragment[] getInitialFragments() {
         return new MainFragment[]{
-                CourseFragment.getInstance(),
-                HomeworkFragment.getInstance(),
-                FileFragment.getInstance()};
+                DashboardFragment.newInstance(),
+                CourseFragment.newInstance(),
+                HomeworkFragment.newInstance(),
+                FileFragment.newInstance()};
     }
     @Override
     public void showFragment(@NonNull MainFragment fragment, int oldTabIndex, int newTabIndex) {

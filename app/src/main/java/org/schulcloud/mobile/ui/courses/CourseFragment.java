@@ -40,8 +40,8 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
-    public static CourseFragment getInstance() {
-        return getInstance(true);
+    public static CourseFragment newInstance() {
+        return newInstance(true);
     }
     /**
      * Creates a new instance of this fragment.
@@ -50,7 +50,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
-    public static CourseFragment getInstance(boolean triggerDataSyncOnCreate) {
+    public static CourseFragment newInstance(boolean triggerDataSyncOnCreate) {
         CourseFragment courseFragment = new CourseFragment();
 
         Bundle args = new Bundle();

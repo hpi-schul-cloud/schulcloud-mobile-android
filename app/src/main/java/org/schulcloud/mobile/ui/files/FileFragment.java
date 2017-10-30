@@ -73,8 +73,8 @@ public class FileFragment extends MainFragment implements FileMvpView {
     private ProgressDialog uploadProgressDialog;
     private ProgressDialog downloadProgressDialog;
 
-    public static FileFragment getInstance() {
-        return getInstance(true);
+    public static FileFragment newInstance() {
+        return newInstance(true);
     }
     /**
      * Creates a new instance of this fragment.
@@ -83,7 +83,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
-    public static FileFragment getInstance(boolean triggerDataSyncOnCreate) {
+    public static FileFragment newInstance(boolean triggerDataSyncOnCreate) {
         FileFragment fileFragment = new FileFragment();
 
         Bundle args = new Bundle();

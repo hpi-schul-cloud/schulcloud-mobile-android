@@ -47,8 +47,8 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
     FloatingActionButton fabAddHomework;
 
     @NonNull
-    public static HomeworkFragment getInstance() {
-        return getInstance(true);
+    public static HomeworkFragment newInstance() {
+        return newInstance(true);
     }
     /**
      * Creates a new instance of this fragment.
@@ -58,7 +58,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
      * @return The new instance
      */
     @NonNull
-    public static HomeworkFragment getInstance(boolean triggerDataSyncOnCreate) {
+    public static HomeworkFragment newInstance(boolean triggerDataSyncOnCreate) {
         HomeworkFragment homeworkFragment = new HomeworkFragment();
 
         Bundle args = new Bundle();
@@ -105,7 +105,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
                 }
         );
 
-        fabAddHomework.setOnClickListener(v -> addFragment(AddHomeworkFragment.getInstance()));
+        fabAddHomework.setOnClickListener(v -> addFragment(AddHomeworkFragment.newInstance()));
 
         mHomeworkPresenter.attachView(this);
         mHomeworkPresenter.loadHomework();

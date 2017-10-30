@@ -1,7 +1,5 @@
 package org.schulcloud.mobile.ui.dashboard;
 
-import android.content.Context;
-
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.injection.ConfigPersistent;
@@ -27,11 +25,8 @@ public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
     @Override
     public void detachView() {
         super.detachView();
-        if (mSubscription != null) mSubscription.unsubscribe();
-    }
-
-    public void checkSignedIn(Context context) {
-        super.isAlreadySignedIn(mDataManager, context);
+        if (mSubscription != null)
+            mSubscription.unsubscribe();
     }
 
     public void showHomeworks() {

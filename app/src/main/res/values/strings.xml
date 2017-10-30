@@ -9,7 +9,7 @@
     <!--Main-->
     <string name="main_action_settings">@string/settings_title</string>
     <string name="main_action_logout">Logout</string>
-    <string name="main_navigation_dashboard">@string/settings_title</string>
+    <string name="main_navigation_dashboard">@string/dashboard_title</string>
     <string name="main_navigation_courses">@string/courses_title</string>
     <string name="main_navigation_homework">@string/homework_title</string>
     <string name="main_navigation_files">@string/files_title</string>
@@ -25,7 +25,7 @@
     <string name="login_error">Falscher Nutzername oder Passwort</string>
 
     <!--Dashboard-->
-    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_title">Übersicht</string>
     <string name="dashboard_hoursToday">Heutige Stunden</string>
     <string name="dashboard_hours_none">Derzeit keine Stunden</string>
     <string name="dashboard_homework">Aufgaben</string>
@@ -51,7 +51,9 @@
     <string name="courses_title">Kurse</string>
     <string name="courses_content_error_notSupported">%s wird zurzeit nicht unterstüzt.</string>
     <string name="courses_loading_error">Leider gab es ein Problem beim Laden der Kurse</string>
+    <string name="courses_course_title">Kurs</string>
     <string name="courses_course_loading_error">Leider gab es ein Problem beim Laden des Kurses</string>
+    <string name="courses_topic_title">Thema</string>
 
     <!--Homework-->
     <string name="homework_title">Aufgaben</string>

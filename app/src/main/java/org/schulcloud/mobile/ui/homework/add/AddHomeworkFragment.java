@@ -60,7 +60,7 @@ public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpV
     BootstrapButton add;
 
     @NonNull
-    public static AddHomeworkFragment getInstance() {
+    public static AddHomeworkFragment newInstance() {
         return new AddHomeworkFragment();
     }
 

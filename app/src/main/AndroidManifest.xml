@@ -31,22 +31,6 @@
             android:label="@string/app_name">
         </activity>
 
-        <activity
-            android:name=".ui.dashboard.DashboardActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
-                    android:host="schul-cloud.org"
-                    android:pathPrefix="/dashboard/" />
-                <data android:scheme="https"
-                    android:host="schulcloud.org"
-                    android:pathPrefix="/dashboard/" />
-            </intent-filter>
-        </activity>
-
         <service android:name=".data.sync.CourseSyncService"/>
 
         <receiver

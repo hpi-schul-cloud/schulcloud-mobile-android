@@ -26,10 +26,10 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_homework"
+        style="@style/Material.Fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/material_button_fab_margin"
         app:srcCompat="@drawable/ic_add_light_24dp" />
 
 </FrameLayout>

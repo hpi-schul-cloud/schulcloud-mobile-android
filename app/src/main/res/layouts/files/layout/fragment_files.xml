@@ -52,13 +52,10 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/files_upload"
+        style="@style/Material.Fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/material_button_fab_margin"
-        android:foregroundTint="@android:color/white"
-        android:src="@android:drawable/ic_menu_upload"
-        android:tint="@android:color/white"
-        app:rippleColor="@android:color/white" />
+        app:srcCompat="@drawable/ic_upload_light_24dp" />
 
 </FrameLayout>

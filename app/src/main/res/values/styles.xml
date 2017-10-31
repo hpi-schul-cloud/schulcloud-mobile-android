@@ -61,6 +61,13 @@
     <!-- Material Design -->
     <style name="Material" />
 
+    <!-- Buttons -->
+    <!--Floating Action Button-->
+    <style name="Material.Fab">
+        <item name="android:layout_margin">@dimen/material_button_fab_margin</item>
+        <item name="rippleColor">@color/white</item>
+    </style>
+
     <!-- List -->
     <style name="Material.List">
         <item name="android:paddingTop">@dimen/material_list_paddingTop</item>

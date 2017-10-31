@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
@@ -67,8 +68,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         setTitle(R.string.settings_title);
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
@@ -80,7 +80,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         updateCalendarSwitch(
                 mPreferencesHelper.getCalendarSyncEnabled(),
                 mPreferencesHelper.getCalendarSyncName());
-
         switch_calendar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked)
                 mSettingsPresenter.loadEvents(true);
@@ -95,15 +94,16 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
         // About
-        mSettingsPresenter.loadContributors(getResources());
         findViewById(R.id.settings_about_contributors).setOnLongClickListener(v -> {
             ClipboardManager clipboardManager =
                     (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             ClipData clipData = ClipData.newPlainText(
-                    getString(R.string.settings_about_contributors_clipBoardTitle),
+                    getString(R.string.settings_about_contributors_clipBoard_title),
                     TextUtils.join(getString(R.string.general_list_separator),
                             mSettingsPresenter.getContributors()));
             clipboardManager.setPrimaryClip(clipData);
+            Toast.makeText(this, R.string.settings_about_contributors_clipBoard_notification,
+                    Toast.LENGTH_SHORT).show();
             return true;
         });
         findViewById(R.id.about_github).setOnClickListener(v ->
@@ -120,6 +120,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadDevices();
+        mSettingsPresenter.loadContributors(getResources());
     }
     private void updateCalendarSwitch(boolean isChecked, String calendarName) {
         switch_calendar.setChecked(isChecked);

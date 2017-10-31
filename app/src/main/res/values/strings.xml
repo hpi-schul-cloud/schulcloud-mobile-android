@@ -99,7 +99,8 @@
     <string name="settings_notifications_registerDevice">Gerät registrieren</string>
     <string name="settings_about_title">Über</string>
     <string name="settings_about_contributors">Mitwirkende:</string>
-    <string name="settings_about_contributors_clipBoardTitle">Schul-Cloud-Mitwirkende</string>
+    <string name="settings_about_contributors_clipBoard_title">Schul-Cloud-Mitwirkende</string>
+    <string name="settings_about_contributors_clipBoard_notification">In die Zwischenablage kopiert</string>
     <string name="settings_about_openSource">Diese App ist Open Source</string>
     <string name="settings_about_openSource_website">https://github.com/schul-cloud/schulcloud-mobile-android</string>
     <string name="settings_about_contact">Kontakt</string>
@@ -134,6 +135,6 @@
 
     <!--General-->
     <string name="general_button_add">Hinzufügen</string>
-    <string name="general_list_separator">,&#032;</string>
+    <string name="general_list_separator">,&#160;</string>
 
 </resources>

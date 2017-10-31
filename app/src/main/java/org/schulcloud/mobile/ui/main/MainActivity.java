@@ -19,6 +19,7 @@ import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
+import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.util.NetworkUtil;
 
@@ -34,6 +35,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     public static final int TAB_DASHBOARD = R.id.main_navigation_dashboard;
+    public static final int TAB_NEWS = R.id.main_navigation_news;
     public static final int TAB_COURSES = R.id.main_navigation_courses;
     public static final int TAB_HOMEWORK = R.id.main_navigation_homework;
     public static final int TAB_FILES = R.id.main_navigation_files;
@@ -71,12 +73,14 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         switch (tabId) {
             case TAB_DASHBOARD:
                 return 0;
-            case TAB_COURSES:
+            case TAB_NEWS:
                 return 1;
-            case TAB_HOMEWORK:
+            case TAB_COURSES:
                 return 2;
-            case TAB_FILES:
+            case TAB_HOMEWORK:
                 return 3;
+            case TAB_FILES:
+                return 4;
             default:
                 return 0;
         }
@@ -119,6 +123,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
     public MainFragment[] getInitialFragments() {
         return new MainFragment[]{
                 DashboardFragment.newInstance(),
+                NewsFragment.newInstance(),
                 CourseFragment.newInstance(),
                 HomeworkFragment.newInstance(),
                 FileFragment.newInstance()};

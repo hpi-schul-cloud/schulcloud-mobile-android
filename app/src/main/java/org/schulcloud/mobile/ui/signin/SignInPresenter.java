@@ -25,11 +25,6 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     public void signIn(String username, String password) {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-
-        // todo: remove credentials
-        username = username.isEmpty() ? "schueler@schul-cloud.org" : username;
-        password = password.isEmpty() ? "schulcloud" : password;
-
         mSubscription = mDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -45,8 +40,6 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
                         error -> {
                             Timber.e(error, "There was an error signing in.");
                             getMvpView().showSignInFailed();
-                        },
-                        // onCompleted
-                        () -> getMvpView().showSignInSuccessful());
+                        });
     }
 }

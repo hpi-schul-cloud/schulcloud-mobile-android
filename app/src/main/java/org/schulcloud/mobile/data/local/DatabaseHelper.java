@@ -10,6 +10,7 @@ import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
@@ -58,7 +59,8 @@ public class DatabaseHelper {
 
     public Observable<User> setUsers(final Collection<User> newUsers) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -84,7 +86,8 @@ public class DatabaseHelper {
 
     public Observable<AccessToken> setAccessToken(final AccessToken newAccessToken) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -109,7 +112,8 @@ public class DatabaseHelper {
 
     public Observable<CurrentUser> setCurrentUser(final CurrentUser currentUser) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -137,7 +141,8 @@ public class DatabaseHelper {
 
     public Observable<File> setFiles(final Collection<File> files) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -164,7 +169,8 @@ public class DatabaseHelper {
 
     public Observable<Directory> setDirectories(final Collection<Directory> directories) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -192,7 +198,8 @@ public class DatabaseHelper {
     /**** Events ****/
     public Observable<Event> setEvents(final Collection<Event> events) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -270,7 +277,8 @@ public class DatabaseHelper {
 
     public Observable<Device> setDevices(final Collection<Device> newDevices) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -298,7 +306,8 @@ public class DatabaseHelper {
 
     public Observable<Homework> setHomework(final Collection<Homework> newHomework) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -364,7 +373,8 @@ public class DatabaseHelper {
     /**** Submissions ****/
     public Observable<Submission> setSubmissions(final Collection<Submission> newSubmission) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -397,7 +407,8 @@ public class DatabaseHelper {
 
     public Observable<Course> setCourses(final Collection<Course> newCourse) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -430,7 +441,8 @@ public class DatabaseHelper {
 
     public Observable<Topic> setTopics(final Collection<Topic> newTopic) {
         return Observable.create(subscriber -> {
-            if (subscriber.isUnsubscribed()) return;
+            if (subscriber.isUnsubscribed())
+                return;
             Realm realm = null;
 
             try {
@@ -457,5 +469,40 @@ public class DatabaseHelper {
     public Topic getContents(String topicId) {
         final Realm realm = mRealmProvider.get();
         return realm.where(Topic.class).equalTo("_id", topicId).findFirst();
+    }
+
+    /**** News ****/
+    public Observable<List<News>> getNews() {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(News.class).findAllAsync().asObservable()
+                .filter(news -> news.isLoaded())
+                .map(news -> {
+                    List<News> newsList = realm.copyFromRealm(news);
+                    Collections.sort(newsList, (o1, o2) -> o2.createdAt.compareTo(o1.createdAt));
+                    return newsList;
+                });
+    }
+    public News getNewsForId(String newsId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(News.class).equalTo("_id", newsId).findFirst();
+    }
+    public Observable<News> setNews(final Collection<News> newNews) {
+        return Observable.create(
+                subscriber -> {
+                    if (subscriber.isUnsubscribed())
+                        return;
+
+                    Realm realm = null;
+                    try {
+                        realm = mRealmProvider.get();
+                        realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(newNews));
+                    } catch (Exception e) {
+                        Timber.e(e, "There was an error while adding in Realm.");
+                        subscriber.onError(e);
+                    } finally {
+                        if (realm != null)
+                            realm.close();
+                    }
+                });
     }
 }

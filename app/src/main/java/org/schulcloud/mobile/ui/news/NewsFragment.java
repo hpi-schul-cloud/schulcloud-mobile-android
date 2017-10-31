@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.ui.courses;
+package org.schulcloud.mobile.ui.news;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.model.Course;
-import org.schulcloud.mobile.data.sync.CourseSyncService;
-import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
+import org.schulcloud.mobile.data.model.News;
+import org.schulcloud.mobile.data.sync.NewsSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.ViewUtil;
 
@@ -26,21 +26,21 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CourseFragment extends MainFragment implements CourseMvpView {
+public class NewsFragment extends MainFragment implements NewsMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
-    CoursePresenter mCoursePresenter;
+    public NewsPresenter mNewsPresenter;
 
     @Inject
-    CourseAdapter mCourseAdapter;
+    public NewsAdapter mNewsAdapter;
 
     @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
-    public static CourseFragment newInstance() {
+    public static NewsFragment newInstance() {
         return newInstance(true);
     }
     /**
@@ -50,8 +50,8 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
-    public static CourseFragment newInstance(boolean triggerDataSyncOnCreate) {
-        CourseFragment courseFragment = new CourseFragment();
+    public static NewsFragment newInstance(boolean triggerDataSyncOnCreate) {
+        NewsFragment courseFragment = new NewsFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_TRIGGER_SYNC, triggerDataSyncOnCreate);
@@ -66,63 +66,62 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
         activityComponent().inject(this);
 
         if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true))
-            startService(CourseSyncService.getStartIntent(getContext()));
+            startService(NewsSyncService.getStartIntent(getContext()));
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_course, container, false);
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, view);
-        setTitle(R.string.courses_title);
+        setTitle(R.string.news_title);
 
-        recyclerView.setAdapter(mCourseAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(mNewsAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
         swipeRefresh.setOnRefreshListener(
                 () -> {
-                    startService(CourseSyncService.getStartIntent(getContext()));
+                    startService(NewsSyncService.getStartIntent(getContext()));
 
                     Handler handler = new Handler();
                     handler.postDelayed(() -> {
-                        mCoursePresenter.loadCourses();
+                        mNewsPresenter.loadNews();
 
                         swipeRefresh.setRefreshing(false);
                     }, 3000);
                 }
         );
 
-        mCoursePresenter.attachView(this);
-        mCoursePresenter.loadCourses();
+        mNewsPresenter.attachView(this);
+        mNewsPresenter.loadNews();
 
         return view;
     }
     @Override
     public void onDestroy() {
-        mCoursePresenter.detachView();
+        mNewsPresenter.detachView();
         super.onDestroy();
     }
 
-    /***** MVP View methods implementation *****/
     @Override
-    public void showCourses(List<Course> courses) {
-        mCourseAdapter.setCourses(courses);
-        mCourseAdapter.notifyDataSetChanged();
+    public void showNews(List<News> news) {
+        mNewsAdapter.setNews(news);
+        mNewsAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void showNewsEmpty() {
+        mNewsAdapter.setNews(Collections.emptyList());
+        mNewsAdapter.notifyDataSetChanged();
     }
     @Override
     public void showError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.courses_loading_error).show();
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.news_loading_error).show();
     }
 
     @Override
-    public void showCoursesEmpty() {
-        mCourseAdapter.setCourses(Collections.emptyList());
-        mCourseAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showCourseDetail(String courseId) {
-        addFragment(DetailedCourseFragment.newInstance(courseId));
+    public void showNewsDetail(String newsId) {
+        addFragment(DetailedNewsFragment.newInstance(newsId));
     }
 }

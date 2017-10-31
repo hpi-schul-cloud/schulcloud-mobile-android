@@ -90,7 +90,6 @@ public class DataManager {
                 .concatMap(new Func1<AccessToken, Observable<CurrentUser>>() {
                     @Override
                     public Observable<CurrentUser> call(AccessToken accessToken) {
-
                         // save current user data
                         String jwt = mPreferencesHelper.saveAccessToken(accessToken);
                         String currentUser = JWTUtil.decodeToCurrentUser(jwt);

@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.start;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,20 +34,15 @@ public class StartActivity extends BaseActivity implements StartMvpView {
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
 
-        this.showDisplayAnimation();
-
-        //this.goToMain();
+        showDisplayAnimation();
     }
 
     /***** MVP View methods implementation *****/
-
     @Override
     public void goToMain() {
         Handler handler = new Handler();
-        Context context = this;
         handler.postDelayed(() -> {
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
+            startActivity(new Intent(StartActivity.this, MainActivity.class));
             finish();
         }, 500);
     }
@@ -70,7 +64,8 @@ public class StartActivity extends BaseActivity implements StartMvpView {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Animation cloudAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse);
+                Animation cloudAnim = AnimationUtils
+                        .loadAnimation(getApplicationContext(), R.anim.pulse);
                 cloudAnim.reset();
                 cloudIcon.clearAnimation();
                 cloudIcon.startAnimation(cloudAnim);

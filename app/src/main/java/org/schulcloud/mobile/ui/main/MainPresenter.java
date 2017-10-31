@@ -1,7 +1,9 @@
 package org.schulcloud.mobile.ui.main;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -21,7 +23,9 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private int mCurrentLevel;
 
     @Inject
-    public MainPresenter() {}
+    public MainPresenter(DataManager dataManager) {
+        mDataManager = dataManager;
+    }
 
     @Override
     public void attachView(MainMvpView mvpView) {
@@ -40,6 +44,9 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
             showFragment(0, TAB_LEVEL_TOP, false);
         }
+    }
+    public void checkSignedIn(@NonNull Context context) {
+        isAlreadySignedIn(mDataManager, context);
     }
 
     public void onTabSelected(int tabIndex) {

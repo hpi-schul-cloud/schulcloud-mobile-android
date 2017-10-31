@@ -53,6 +53,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
         mMainPresenter.attachView(this);
+        mMainPresenter.checkSignedIn(this);
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);

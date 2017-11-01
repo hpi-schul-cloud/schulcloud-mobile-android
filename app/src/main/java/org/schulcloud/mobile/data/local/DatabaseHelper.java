@@ -248,7 +248,16 @@ public class DatabaseHelper {
                                     break;
                                 }
                             }
-                    Collections.sort(eventsForWeekday, (o1, o2) -> o1.start.compareTo(o2.start));
+
+                            Calendar c = Calendar.getInstance();
+                    Collections.sort(eventsForWeekday, (o1, o2) -> {
+                        c.setTimeInMillis(Long.parseLong(o1.start));
+                        Integer s1 = c.get(Calendar.HOUR_OF_DAY) * 60 + c.get(Calendar.MINUTE);
+                        c.setTimeInMillis(Long.parseLong(o2.start));
+                        Integer s2 = c.get(Calendar.HOUR_OF_DAY) * 60 + c.get(Calendar.MINUTE);
+                        return s1.compareTo(s2);
+                    });
+                    
                     return eventsForWeekday;
                 }).debounce(100, TimeUnit.MILLISECONDS);
     }

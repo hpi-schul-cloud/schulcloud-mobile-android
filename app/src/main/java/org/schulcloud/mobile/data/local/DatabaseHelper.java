@@ -28,12 +28,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import timber.log.Timber;
 
@@ -210,49 +212,47 @@ public class DatabaseHelper {
                 subscriber.onError(e);
             } finally {
                 if (realm != null) {
-                    subscriber.onCompleted();
                     realm.close();
+                    subscriber.onCompleted();
                 }
             }
         });
     }
-
     public Observable<List<Event>> getEvents() {
         final Realm realm = mRealmProvider.get();
         return realm.where(Event.class).findAllAsync().asObservable()
-                .filter(events -> events.isLoaded())
-                .map(events -> realm.copyFromRealm(events));
+                .filter(RealmResults::isLoaded)
+                .map(realm::copyFromRealm);
     }
-
-    public List<Event> getEventsForToday() {
+    public Observable<List<Event>> getEventsForToday() {
         final Realm realm = mRealmProvider.get();
-        Collection<Event> events = realm.where(Event.class).findAll();
+        return realm.where(Event.class).findAllAsync().asObservable()
+                .map(events -> {
+                    List<Event> e = realm.copyFromRealm(events);
+                    int weekday = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
+                    Log.d("Weekday", Integer.toString(weekday));
 
-        int weekday = new GregorianCalendar().get(Calendar.DAY_OF_WEEK);
-        Log.d("Weekday", Integer.toString(weekday));
+                    List<Event> eventsForWeekday = new ArrayList<>();
+                    for (Event event : e)
+                        if (event.included.size() > 0)
+                            for (Included included : event.included) {
+                                String freq = included.getAttributes().getFreq();
+                                if (freq == null)
+                                    continue;
 
-        List<Event> eventsForWeekday = new ArrayList<>();
-        for (Event event : events)
-            if (event.included.size() > 0)
-                for (Included included : event.included) {
-                    String freq = included.getAttributes().getFreq();
-                    if (freq == null)
-                        continue;
-
-                    String wkst = included.getAttributes().getWkst();
-                    if (freq.equals(IncludedAttributes.FREQ_DAILY)
-                            || (freq.equals(IncludedAttributes.FREQ_WEEKLY)
-                            && getNumberForWeekday(wkst) == weekday)) {
-                        eventsForWeekday.add(event);
-                        break;
-                    }
-                }
-        Collections.sort(eventsForWeekday, (o1, o2) -> o1.start.compareTo(o2.start));
-
-        return eventsForWeekday;
+                                String wkst = included.getAttributes().getWkst();
+                                if (freq.equals(IncludedAttributes.FREQ_DAILY)
+                                        || (freq.equals(IncludedAttributes.FREQ_WEEKLY)
+                                        && getNumberForWeekday(wkst) == weekday)) {
+                                    eventsForWeekday.add(event);
+                                    break;
+                                }
+                            }
+                    Collections.sort(eventsForWeekday, (o1, o2) -> o1.start.compareTo(o2.start));
+                    return eventsForWeekday;
+                }).debounce(100, TimeUnit.MILLISECONDS);
     }
-
-    public int getNumberForWeekday(String weekday) {
+    private int getNumberForWeekday(String weekday) {
         switch (weekday) {
             case "SU":
                 return 1;

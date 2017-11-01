@@ -7,6 +7,8 @@ import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+
 @ConfigPersistent
 public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
 
@@ -26,7 +28,11 @@ public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
     }
 
     public void showEvents() {
-        getMvpView().showEvents(mDataManager.getEventsForToday());
+        checkViewAttached();
+        RxUtil.unsubscribe(mSubscription);
+        mSubscription = mDataManager.getEventsForToday()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(events -> getMvpView().showEvents(events));
     }
 
     public void showCourseDetails(String courseId) {

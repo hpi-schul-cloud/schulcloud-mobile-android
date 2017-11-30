@@ -41,14 +41,14 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
 
         mSignInPresenter.attachView(this);
         login.setOnClickListener(v -> mSignInPresenter
-                .signIn(username.getText().toString(), password.getText().toString()));
+                .signIn(username.getText().toString(), password.getText().toString(), false));
 
         demoStudent.setOnClickListener(v -> mSignInPresenter.signIn(
                 getString(R.string.login_demo_student_username),
-                getString(R.string.login_demo_student_password)));
+                getString(R.string.login_demo_student_password), true));
         demoTeacher.setOnClickListener(v -> mSignInPresenter.signIn(
                 getString(R.string.login_demo_teacher_username),
-                getString(R.string.login_demo_teacher_password)));
+                getString(R.string.login_demo_teacher_password), true));
     }
 
     @Override

@@ -88,16 +88,13 @@ public class DataManager {
 
     public Observable<CurrentUser> signIn(String username, String password) {
         return mRestService.signIn(new Credentials(username, password))
-                .concatMap(new Func1<AccessToken, Observable<CurrentUser>>() {
-                    @Override
-                    public Observable<CurrentUser> call(AccessToken accessToken) {
-                        // save current user data
-                        String jwt = mPreferencesHelper.saveAccessToken(accessToken);
-                        String currentUser = JWTUtil.decodeToCurrentUser(jwt);
-                        mPreferencesHelper.saveCurrentUserId(currentUser);
+                .concatMap(accessToken -> {
+                    // save current user data
+                    String jwt = mPreferencesHelper.saveAccessToken(accessToken);
+                    String currentUser = JWTUtil.decodeToCurrentUser(jwt);
+                    mPreferencesHelper.saveCurrentUserId(currentUser);
 
-                        return syncCurrentUser(currentUser);
-                    }
+                    return syncCurrentUser(currentUser);
                 });
     }
     public void signOut() {
@@ -106,14 +103,15 @@ public class DataManager {
     }
 
     public Observable<CurrentUser> syncCurrentUser(String userId) {
-        return mRestService.getUser(getAccessToken(), userId).concatMap(new Func1<CurrentUser, Observable<CurrentUser>>() {
-            @Override
-            public Observable<CurrentUser> call(CurrentUser currentUser) {
-                mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
-                mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
-                return mDatabaseHelper.setCurrentUser(currentUser);
-            }
-        }).doOnError(Throwable::printStackTrace);
+        return mRestService.getUser(getAccessToken(), userId).concatMap(
+                new Func1<CurrentUser, Observable<CurrentUser>>() {
+                    @Override
+                    public Observable<CurrentUser> call(CurrentUser currentUser) {
+                        mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
+                        mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
+                        return mDatabaseHelper.setCurrentUser(currentUser);
+                    }
+                }).doOnError(Throwable::printStackTrace);
     }
 
     public Single<CurrentUser> getCurrentUser() {
@@ -122,6 +120,13 @@ public class DataManager {
 
     public String getCurrentUserId() {
         return mPreferencesHelper.getCurrentUserId();
+    }
+
+    public void setInDemoMode(boolean isInDemoMode) {
+        mPreferencesHelper.saveIsInDemoMode(isInDemoMode);
+    }
+    public Single<Boolean> isInDemoMode() {
+        return Single.just(mPreferencesHelper.isInDemoMode());
     }
 
 
@@ -139,7 +144,8 @@ public class DataManager {
 
                         // set fullPath for every file
                         for (File file : filesResponse.files) {
-                            file.fullPath = file.key.substring(0, file.key.lastIndexOf(java.io.File.separator));
+                            file.fullPath = file.key.substring(0,
+                                    file.key.lastIndexOf(java.io.File.separator));
                             files.add(file);
                         }
 
@@ -173,7 +179,7 @@ public class DataManager {
                         mDatabaseHelper.clearTable(Directory.class);
 
                         List<Directory> improvedDirs = new ArrayList<Directory>();
-                        for(Directory d : filesResponse.directories) {
+                        for (Directory d : filesResponse.directories) {
                             d.path = getCurrentStorageContext();
                             improvedDirs.add(d);
                         }
@@ -207,7 +213,7 @@ public class DataManager {
     }
 
     public Observable<ResponseBody> uploadFile(java.io.File file, SignedUrlResponse signedUrlResponse) {
-        RequestBody requestBody  = RequestBody.create(MediaType.parse("file/*"), file);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("file/*"), file);
         return mRestService.uploadFile(
                 signedUrlResponse.url,
                 signedUrlResponse.header.getContentType(),
@@ -225,7 +231,8 @@ public class DataManager {
     public String getCurrentStorageContext() {
         String storageContext = mPreferencesHelper.getCurrentStorageContext();
         // personal files are default
-        return storageContext.equals("null") ? "users/" + this.getCurrentUserId() + "/" : storageContext + "/";
+        return storageContext.equals(
+                "null") ? "users/" + this.getCurrentUserId() + "/" : storageContext + "/";
     }
 
     public void setCurrentStorageContext(String newStorageContext) {

@@ -44,6 +44,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 @Singleton
@@ -115,8 +116,8 @@ public class DataManager {
         }).doOnError(Throwable::printStackTrace);
     }
 
-    public Observable<CurrentUser> getCurrentUser() {
-        return mDatabaseHelper.getCurrentUser().distinct();
+    public Single<CurrentUser> getCurrentUser() {
+        return mDatabaseHelper.getCurrentUser();
     }
 
     public String getCurrentUserId() {

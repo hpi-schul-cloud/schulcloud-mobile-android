@@ -5,6 +5,7 @@ import android.util.Log;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
@@ -37,6 +38,16 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     @Override
     public void attachView(FileMvpView mvpView) {
         super.attachView(mvpView);
+        mDataManager.getCurrentUser()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(currentUser -> {
+                    getMvpView().showCanCreateFile(
+                            currentUser.hasPermission(CurrentUser.PERMISSION_FILE_CREATE));
+                    getMvpView().showCanDeleteFiles(
+                            currentUser.hasPermission(CurrentUser.PERMISSION_FILE_DELETE));
+                    getMvpView().showCanDeleteDirectories(
+                            currentUser.hasPermission(CurrentUser.PERMISSION_FOLDER_DELETE));
+                });
     }
 
     @Override

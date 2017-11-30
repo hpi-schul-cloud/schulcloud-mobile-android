@@ -12,6 +12,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Directory;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +25,14 @@ import butterknife.ButterKnife;
 
 public class DirectoriesAdapter
         extends RecyclerView.Adapter<DirectoriesAdapter.DirectoriesViewHolder> {
+
     @Inject
     FilePresenter mFilesPresenter;
     @Inject
-    DataManager dataManager;
+    DataManager mDataManager;
+
     private List<Directory> mDirectories;
+    private boolean mCanDeleteDirectories = false;
 
     @Inject
     public DirectoriesAdapter() {
@@ -37,6 +41,10 @@ public class DirectoriesAdapter
 
     public void setDirectories(List<Directory> directories) {
         mDirectories = directories;
+    }
+    public void setCanDeleteDirectories(boolean canDeleteDirectories) {
+        mCanDeleteDirectories = canDeleteDirectories;
+        notifyItemRangeChanged(0, mDirectories.size());
     }
 
     @Override
@@ -63,6 +71,8 @@ public class DirectoriesAdapter
 
         holder.cardView.setOnClickListener(v -> mFilesPresenter.goIntoDirectory(finalPath));
         // TODO: refactor it when we also support course/class files
+
+        ViewUtil.setVisibility(holder.deleteDirectory, mCanDeleteDirectories);
         holder.deleteDirectory.setOnClickListener(
                 v -> mFilesPresenter.startDirectoryDeleting(finalPath, directory.name));
     }

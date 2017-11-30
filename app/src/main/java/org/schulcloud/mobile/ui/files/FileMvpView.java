@@ -10,9 +10,17 @@ import okhttp3.ResponseBody;
 
 
 public interface FileMvpView extends MvpView {
+
     void showFiles(List<File> files);
 
     void showDirectories(List<Directory> directories);
+
+    void showCanCreateFile(boolean canCreateFile);
+
+    void showCanDeleteFiles(boolean canDeleteFiles);
+
+    void showCanDeleteDirectories(boolean canDeleteDirectories);
+
 
     void showError();
 
@@ -39,4 +47,5 @@ public interface FileMvpView extends MvpView {
     void showDirectoryDeleteSuccess();
 
     void showFileDeleteError();
+
 }

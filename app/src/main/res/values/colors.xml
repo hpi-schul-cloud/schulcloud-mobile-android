@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="primary">#222222</color>
     <color name="primary_dark">#000000</color>
     <color name="accent">#FFFFFF</color>
@@ -17,4 +18,7 @@
     <color name="material_control_activated">#FFFFFFFF</color>
     <color name="material_control_normal">#B3FFFFFF</color>
     <color name="material_control_disabled">#80FFFFFF</color>
+
+    <color name="material_divider">#1F000000</color>
+
 </resources>

@@ -1,9 +1,5 @@
 package org.schulcloud.mobile.ui.news.detailed;
 
-import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.model.News;
-import org.schulcloud.mobile.ui.main.MainFragment;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.model.News;
+import org.schulcloud.mobile.ui.main.MainFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,7 +74,7 @@ public class DetailedNewsFragment extends MainFragment implements DetailedNewsMv
     }
 
     @Override
-    public void showNews(News news) {
+    public void showNews(@NonNull News news) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         SimpleDateFormat dateFormatDeux = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date newsDate = null;

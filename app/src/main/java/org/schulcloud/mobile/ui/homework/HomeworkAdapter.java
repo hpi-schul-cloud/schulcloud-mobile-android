@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.homework;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -42,11 +43,12 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         mHomework = new ArrayList<>();
     }
 
-    public void setHomework(List<Homework> homework) {
+    public void setHomework(@NonNull List<Homework> homework) {
         mHomework = homework;
+        notifyDataSetChanged();
     }
 
-    public void setContext(Context context) {
+    public void setContext(@NonNull Context context) {
         mContext = context;
     }
 

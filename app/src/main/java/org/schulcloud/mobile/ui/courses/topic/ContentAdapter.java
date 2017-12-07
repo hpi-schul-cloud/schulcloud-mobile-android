@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.courses.topic;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -39,11 +40,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         mContent = new ArrayList<>();
     }
 
-    public void setContent(List<Contents> content) {
+    public void setContent(@NonNull List<Contents> content) {
         mContent = content;
+        notifyDataSetChanged();
     }
 
-    public void setContext(Context context) { mContext = context; }
+    public void setContext(@NonNull Context context) { mContext = context; }
 
     @Override
     public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -161,9 +162,8 @@ public class FileFragment extends MainFragment implements FileMvpView {
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showFiles(List<File> files) {
+    public void showFiles(@NonNull List<File> files) {
         mFilesAdapter.setFiles(files);
-        mFilesAdapter.notifyDataSetChanged();
 
         // adjust height of recycler view (bugfix for nested scrolling)
         ViewGroup.LayoutParams params = fileRecyclerView.getLayoutParams();
@@ -173,9 +173,8 @@ public class FileFragment extends MainFragment implements FileMvpView {
     }
 
     @Override
-    public void showDirectories(List<Directory> directories) {
+    public void showDirectories(@NonNull List<Directory> directories) {
         mDirectoriesAdapter.setDirectories(directories);
-        mDirectoriesAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -191,7 +190,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
     }
 
     @Override
-    public void showFile(String url, String mimeType) {
+    public void showFile(@NonNull String url, @NonNull String mimeType) {
         if (mDownloadProgressDialog != null && mDownloadProgressDialog.isShowing())
             mDownloadProgressDialog.cancel();
 
@@ -222,7 +221,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
     }
 
     @Override
-    public void saveFile(ResponseBody body, String fileName) {
+    public void saveFile(@NonNull ResponseBody body, @NonNull String fileName) {
         if (mDownloadProgressDialog != null && mDownloadProgressDialog.isShowing())
             mDownloadProgressDialog.cancel();
 
@@ -245,15 +244,16 @@ public class FileFragment extends MainFragment implements FileMvpView {
     }
 
     @Override
-    public void startDownloading(File file, boolean download) {
+    public void startDownloading(@NonNull File file, boolean download) {
         mDownloadProgressDialog = DialogFactory.createProgressDialog(getContext(),
                 R.string.files_download_progress);
         mDownloadProgressDialog.show();
         mFilePresenter.loadFileFromServer(file, download);
     }
 
+    /* File deletion */
     @Override
-    public void startFileDeleting(String path, String fileName) {
+    public void startFileDeleting(@NonNull String path, @NonNull String fileName) {
         DialogFactory.createSimpleOkCancelDialog(
                 getContext(),
                 this.getResources().getString(R.string.files_dialog_delete_title),
@@ -263,13 +263,21 @@ public class FileFragment extends MainFragment implements FileMvpView {
                 .show();
     }
     @Override
+    public void showFileDeleteSuccess() {
+        DialogFactory.createSuperToast(getContext(),
+                getResources().getString(R.string.files_delete_success_file),
+                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
+        reloadFiles();
+    }
+    @Override
     public void showFileDeleteError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_delete_error)
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_delete_error_file)
                 .show();
     }
 
+    /* Directory deletion */
     @Override
-    public void startDirectoryDeleting(String path, String dirName) {
+    public void startDirectoryDeleting(@NonNull String path, @NonNull String dirName) {
         DialogFactory.createSimpleOkCancelDialog(
                 getContext(),
                 this.getResources().getString(R.string.files_dialog_delete_title),
@@ -278,19 +286,16 @@ public class FileFragment extends MainFragment implements FileMvpView {
                         mFilePresenter.deleteDirectory(path))
                 .show();
     }
-
-    public void showFileDeleteSuccess() {
-        DialogFactory.createSuperToast(getContext(),
-                getResources().getString(R.string.files_delete_success_file),
-                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
-        reloadFiles();
-    }
-
     @Override
     public void showDirectoryDeleteSuccess() {
         DialogFactory.createSuperToast(getContext(),
                 getResources().getString(R.string.files_delete_success_directory),
                 PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
         reloadFiles();
+    }
+    @Override
+    public void showDirectoryDeleteError() {
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_delete_error_directory)
+                .show();
     }
 }

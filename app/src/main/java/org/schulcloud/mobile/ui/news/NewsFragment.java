@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.news;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,13 +52,13 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
      * @return The new instance
      */
     public static NewsFragment newInstance(boolean triggerDataSyncOnCreate) {
-        NewsFragment courseFragment = new NewsFragment();
+        NewsFragment newsFragment = new NewsFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_TRIGGER_SYNC, triggerDataSyncOnCreate);
-        courseFragment.setArguments(args);
+        newsFragment.setArguments(args);
 
-        return courseFragment;
+        return newsFragment;
     }
 
     @Override
@@ -79,16 +80,12 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
         mRecyclerView.setAdapter(mNewsAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
-        swipeRefresh.setOnRefreshListener(
-                () -> {
+        swipeRefresh.setOnRefreshListener(() -> {
                     startService(NewsSyncService.getStartIntent(getContext()));
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(() -> {
+                    new Handler().postDelayed(() -> {
                         mNewsPresenter.loadNews();
-
                         swipeRefresh.setRefreshing(false);
                     }, 3000);
                 }
@@ -106,14 +103,12 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
     }
 
     @Override
-    public void showNews(List<News> news) {
+    public void showNews(@NonNull List<News> news) {
         mNewsAdapter.setNews(news);
-        mNewsAdapter.notifyDataSetChanged();
     }
     @Override
     public void showNewsEmpty() {
         mNewsAdapter.setNews(Collections.emptyList());
-        mNewsAdapter.notifyDataSetChanged();
     }
     @Override
     public void showError() {
@@ -121,7 +116,7 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
     }
 
     @Override
-    public void showNewsDetail(String newsId) {
+    public void showNewsDetail(@NonNull String newsId) {
         addFragment(DetailedNewsFragment.newInstance(newsId));
     }
 }

@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.courses;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,8 +34,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         mCourses = new ArrayList<>();
     }
 
-    public void setCourses(List<Course> course) {
+    public void setCourses(@NonNull List<Course> course) {
         mCourses = course;
+        notifyDataSetChanged();
     }
 
     @Override

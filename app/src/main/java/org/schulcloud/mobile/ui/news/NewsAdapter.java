@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.news;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -33,8 +34,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         mNews = new ArrayList<>();
     }
 
-    public void setNews(List<News> news) {
+    public void setNews(@NonNull List<News> news) {
         mNews = news;
+        notifyDataSetChanged();
     }
 
     @Override

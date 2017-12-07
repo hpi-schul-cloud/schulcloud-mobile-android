@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.ui.news;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -7,11 +9,15 @@ import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 @ConfigPersistent
 public class NewsPresenter extends BasePresenter<NewsMvpView> {
+
+    private DataManager mDataManager;
+    private Subscription mSubscription;
 
     @Inject
     public NewsPresenter(DataManager dataManager) {
@@ -19,30 +25,29 @@ public class NewsPresenter extends BasePresenter<NewsMvpView> {
     }
 
     @Override
-    public void detachView() {
-        super.detachView();
+    protected void onViewDetached() {
+        super.onViewDetached();
         RxUtil.unsubscribe(mSubscription);
     }
 
     public void loadNews() {
-        checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         news -> {
                             if (news.isEmpty())
-                                getMvpView().showNewsEmpty();
+                                sendToView(NewsMvpView::showNewsEmpty);
                             else
-                                getMvpView().showNews(news);
+                                sendToView(view -> view.showNews(news));
                         },
                         throwable -> {
                             Timber.e(throwable, "An error occured while loading news");
-                            getMvpView().showError();
+                            sendToView(NewsMvpView::showError);
                         });
     }
 
-    public void showNewsDetail(String newsId) {
-        getMvpView().showNewsDetail(newsId);
+    public void showNewsDetail(@NonNull String newsId) {
+        getViewOrThrow().showNewsDetail(newsId);
     }
 }

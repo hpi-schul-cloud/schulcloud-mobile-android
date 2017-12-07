@@ -29,27 +29,28 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     @Inject
     DashboardPresenter mDashboardPresenter;
 
-    private List<Event> mEvent;
+    private List<Event> mEvents;
     private Context mContext;
 
     @Inject
-    public EventsAdapter() { mEvent = new ArrayList<>(); }
+    public EventsAdapter() { mEvents = new ArrayList<>(); }
 
     public void setContext(@NonNull Context context) {
         mContext = context;
     }
     public void setEvents(@NonNull List<Event> events) {
         if (events.isEmpty()) {
-            mEvent = new ArrayList<>(1);
+            mEvents = new ArrayList<>(1);
             Event e = new Event();
             e.title = mContext.getString(R.string.dashboard_hours_none);
             e.summary = mContext.getString(R.string.dashboard_hours_none);
             e.start = "1514674800000";
             e.end = "1514678400000";
             e.type = Event.TYPE_TEMPLATE;
-            mEvent.add(e);
+            mEvents.add(e);
         } else
-            mEvent = events;
+            mEvents = events;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        Event event = mEvent.get(position);
+        Event event = mEvents.get(position);
 
         if (!event.title.equals(event.summary))
             holder.summary.setText(event.summary);
@@ -98,7 +99,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     @Override
     public int getItemCount() {
-        return mEvent.size();
+        return mEvents.size();
     }
 
     class EventViewHolder extends RecyclerView.ViewHolder {

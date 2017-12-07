@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.settings;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +33,9 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
         mDataManager = dataManager;
     }
 
-    public void setDevices(List<Device> devices) {
+    public void setDevices(@NonNull List<Device> devices) {
         mDevices = devices;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -49,7 +51,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
         holder.nameTextView.setText(device.name);
         holder.tokenText.setText(device.token);
 
-        if (mDataManager.getPreferencesHelper().getMessagingToken().equals(holder.tokenText.getText().toString())) {
+        if (mDataManager.getPreferencesHelper().getMessagingToken()
+                .equals(holder.tokenText.getText().toString())) {
             holder.awesomeTextView.setFontAwesomeIcon("fa_trash");
             holder.awesomeTextView.setOnClickListener(v -> mSettingsPresenter.deleteDevice(device));
         }

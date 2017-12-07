@@ -120,6 +120,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.onBackPressed();
     }
 
+    @NonNull
     @Override
     public MainFragment[] getInitialFragments() {
         return new MainFragment[]{

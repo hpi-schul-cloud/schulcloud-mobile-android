@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.dashboard;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -96,14 +97,12 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
-        swipeRefresh.setOnRefreshListener(
-                () -> {
+        swipeRefresh.setOnRefreshListener(() -> {
                     startService(CourseSyncService.getStartIntent(getContext()));
                     startService(HomeworkSyncService.getStartIntent(getContext()));
                     startService(EventSyncService.getStartIntent(getContext()));
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(() -> {
+                    new Handler().postDelayed(() -> {
                         mDashboardPresenter.showHomework();
                         mDashboardPresenter.showEvents();
 
@@ -126,7 +125,7 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showOpenHomework(Pair<String, String> openHomework) {
+    public void showOpenHomework(@NonNull Pair<String, String> openHomework) {
         Date date = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         SimpleDateFormat simpleDateFormatDeux = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
@@ -143,14 +142,13 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
         cardViewHomework.setOnClickListener(v -> addFragment(HomeworkFragment.newInstance()));
     }
     @Override
-    public void showEvents(List<Event> eventsForDay) {
+    public void showEvents(@NonNull List<Event> eventsForDay) {
         mEventsAdapter.setContext(getContext());
         mEventsAdapter.setEvents(eventsForDay);
-        mEventsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showCourseDetails(String courseId) {
+    public void showCourseDetails(@NonNull String courseId) {
         addFragment(DetailedCourseFragment.newInstance(courseId));
     }
 }

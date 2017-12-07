@@ -96,7 +96,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showHomework(Homework homework) {
+    public void showHomework(@NonNull Homework homework) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         SimpleDateFormat dateFormatDeux = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -131,7 +131,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
     }
 
     @Override
-    public void showSubmission(Submission submission, String userId) {
+    public void showSubmission(@NonNull Submission submission, String userId) {
         if (submission == null) {
             submission = new Submission();
             submission.comment = getString(R.string.homework_homework_notSubmitted);
@@ -148,6 +148,5 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
 
         mCommentsAdapter.setComments(submission.comments);
         mCommentsAdapter.setUserId(userId);
-        mCommentsAdapter.notifyDataSetChanged();
     }
 }

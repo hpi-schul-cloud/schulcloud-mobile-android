@@ -37,9 +37,9 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
                 .subscribe(
                         homework -> {
                             if (homework.isEmpty())
-                                sendToView(view -> view.showHomework(homework));
-                            else
                                 sendToView(HomeworkMvpView::showHomeworkEmpty);
+                            else
+                                sendToView(view -> view.showHomework(homework));
                         },
                         throwable -> {
                             Timber.e(throwable, "There was an error loading the users.");

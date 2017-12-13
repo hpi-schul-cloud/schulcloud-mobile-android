@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Single;
 
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.doReturn;
@@ -38,6 +39,9 @@ public class HomeworkPresenterTest {
     @Before
     public void setUp() {
         mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        doReturn(Single.just(TestDataFactory.makeCurrentUser("", true)))
+                .when(mMockDataManager)
+                .getCurrentUser();
         mHomeworkPresenter.attachView(mMockHomeworkMvpView);
     }
 

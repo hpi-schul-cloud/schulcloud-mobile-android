@@ -8,6 +8,8 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +30,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
@@ -64,8 +67,8 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     // Notifications
     @BindView(R.id.notifications)
     LinearLayout notifications;
-    @BindView(R.id.btn_create_device)
-    BootstrapButton btn_create_device;
+    @BindView(R.id.btn_view_devices)
+    BootstrapButton btn_view_devices;
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
 
@@ -96,7 +99,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         });
 
         // Notifications
-        btn_create_device.setOnClickListener(view -> mSettingsPresenter.registerDevice());
+        btn_view_devices.setOnClickListener(view -> openDevicesFragment());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
@@ -127,7 +130,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         mSettingsPresenter.attachView(this);
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);
-        mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
     }
     private void updateCalendarSwitch(boolean isChecked, String calendarName) {
@@ -218,17 +220,18 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     public void showSupportsNotifications(boolean supportsNotifications) {
         ViewUtil.setVisibility(notifications, supportsNotifications);
     }
-    @Override
-    public void showDevices(@NonNull List<Device> devices) {
-        mDevicesAdapter.setDevices(devices);
-        mDevicesAdapter.notifyDataSetChanged();
-    }
 
     @Override
-    public void reloadDevices() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        this.startActivity(intent);
-        finish();
+    public void openDevicesFragment()
+    {
+        Bundle args = new Bundle();
+        DevicesFragment devicesFragment = new DevicesFragment();
+        devicesFragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.devices,devicesFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     // About
@@ -256,4 +259,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     public void showExternalContent(@NonNull Uri data) {
         startActivity(new Intent(Intent.ACTION_VIEW, data));
     }
+
+
 }

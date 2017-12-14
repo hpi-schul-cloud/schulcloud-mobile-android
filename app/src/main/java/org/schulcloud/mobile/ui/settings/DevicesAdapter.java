@@ -11,6 +11,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Device;
+import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesViewHolder> {
     @Inject
-    SettingsPresenter mSettingsPresenter;
+    DevicesPresenter mDevicesPresenter;
     private List<Device> mDevices;
     private DataManager mDataManager;
 
@@ -51,7 +52,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
 
         if (mDataManager.getPreferencesHelper().getMessagingToken().equals(holder.tokenText.getText().toString())) {
             holder.awesomeTextView.setFontAwesomeIcon("fa_trash");
-            holder.awesomeTextView.setOnClickListener(v -> mSettingsPresenter.deleteDevice(device));
+            holder.awesomeTextView.setOnClickListener(v -> mDevicesPresenter.deleteDevice(device));
         }
     }
 

@@ -17,6 +17,7 @@ import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
+import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 
 import dagger.Subcomponent;
@@ -69,5 +70,7 @@ public interface ActivityComponent {
 
     //    Feedback
     void inject(FeedbackDialog feedbackDialog);
+
+    void inject(DevicesPresenter devicesPresenter);
 
 }

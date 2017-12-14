@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class DevicesFragment extends BaseFragment implements DevicesMvpView {
 
     @Inject
@@ -58,6 +57,15 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
 
     @Override
     public void reloadDevices() {
+    }
+
+    @Override
+    public void showDevicesEmpty() {
+        
+    }
+
+    @Override
+    public void showDevicesError() {
 
     }
 }

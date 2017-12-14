@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -110,7 +111,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         });
 
         // Notifications
-        btn_view_devices.setOnClickListener(view -> showDevices());
+        btn_view_devices.setOnClickListener(view -> openDevicesFragment());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
@@ -240,13 +241,19 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
     // Notifications
     @Override
-        public void showDevices(@NonNull List<Device> devices) {
-    public void showDevices() {
-        DevicesFragment mDevicesFragment = new DevicesFragment();
-        FrameLayout mDevicesLayout = (FrameLayout) findViewById(R.id.swiperefresh);
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+    public void showSupportsNotifications(boolean supportsNotifications) {
+        ViewUtil.setVisibility(notifications, supportsNotifications);
+    }
+
+    @Override
+    public void openDevicesFragment()
+    {
+        Bundle args = new Bundle();
+        DevicesFragment devicesFragment = new DevicesFragment();
+        devicesFragment.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.devices_recycler_view,mDevicesFragment)
+                .add(R.id.devices,devicesFragment)
                 .addToBackStack(null)
                 .commit();
     }
@@ -272,6 +279,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             contributorsWrapper.addView(textView);
         }
     }
+
     @Override
     public void showExternalContent(@NonNull Uri data) {
         startActivity(new Intent(Intent.ACTION_VIEW, data));

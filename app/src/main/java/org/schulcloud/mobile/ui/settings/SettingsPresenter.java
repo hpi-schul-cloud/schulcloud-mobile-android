@@ -132,55 +132,6 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
             getMvpView().showSyncToCalendarSuccessful();
     }
 
-    // Notifications
-    public void registerDevice() {
-        if (mDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
-            String token = FirebaseInstanceId.getInstance().getToken();
-            Log.d("FirebaseID", "Refreshed token: " + token);
-
-            Log.d("FirebaseID", "sending registration to Server");
-            DeviceRequest deviceRequest = new DeviceRequest("firebase", "mobile",
-                    android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")",
-                    mDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
-
-            RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.createDevice(deviceRequest, token)
-                    .subscribe(
-                            deviceResponse -> {},
-                            throwable -> {},
-                            () -> getMvpView().reloadDevices());
-        }
-    }
-    public void loadDevices() {
-        checkViewAttached();
-        RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getDevices()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        devices -> {
-                            if (devices.isEmpty()) {
-                                // TODO: Show something
-                            } else {
-                                getMvpView().showDevices(devices);
-                            }
-                        },
-                        //TODO: Show error
-                        throwable -> Timber.e(throwable, "There was an error loading the users."));
-    }
-    public void deleteDevice(Device device) {
-        RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.deleteDevice(device.token)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        voidResponse -> {},
-                        throwable -> {},
-                        () -> {
-                            getMvpView().reloadDevices();
-                            mDataManager.getPreferencesHelper()
-                                    .clear(PreferencesHelper.PREFERENCE_MESSAGING_TOKEN);
-                        });
-    }
-
     // About
     public void contact(@NonNull String to, @NonNull String subject) {
         getMvpView().showExternalContent(Uri.parse("mailto:" + to + "?subject=" + subject));

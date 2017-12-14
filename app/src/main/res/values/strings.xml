@@ -108,6 +108,7 @@
     <string name="settings_about_contact_mail_subject">Schul-Cloud Anfrage</string>
     <string name="settings_about_imprint">Impressum</string>
     <string name="settings_about_imprint_website">https://hpi.de/impressum.html</string>
+    <string name="settings_notifications_view_devices">Geräte</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

@@ -49,27 +49,15 @@
                 android:text="@string/settings_notifications_title" />
 
             <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/btn_create_device"
+                android:id="@+id/btn_view_devices"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/settings_notifications_registerDevice"
+                android:text="@string/settings_notifications_view_devices"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"
                 app:roundedCorners="true"
                 app:showOutline="false" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/devices_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:scrollbars="vertical"
-                tools:listitem="@layout/item_device" />
 
             <!-- About -->
             <TextView

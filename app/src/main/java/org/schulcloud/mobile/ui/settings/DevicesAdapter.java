@@ -13,6 +13,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.injection.ConfigPersistent;
+import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
     @Inject
     SettingsPresenter mSettingsPresenter;
     private final NotificationDataManager mNotificationDataManager;
+    DevicesPresenter mDevicesPresenter;
     private List<Device> mDevices;
 
     @Inject
@@ -56,7 +58,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
         if (mNotificationDataManager.getPreferencesHelper().getMessagingToken()
                 .equals(holder.tokenText.getText().toString())) {
             holder.awesomeTextView.setFontAwesomeIcon("fa_trash");
-            holder.awesomeTextView.setOnClickListener(v -> mSettingsPresenter.deleteDevice(device));
+            holder.awesomeTextView.setOnClickListener(v -> mDevicesPresenter.deleteDevice(device));
         }
     }
 

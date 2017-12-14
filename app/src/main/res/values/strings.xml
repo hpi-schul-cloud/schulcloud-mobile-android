@@ -139,6 +139,7 @@
     <string name="settings_about_imprint_website">https://schul-cloud.org/impressum</string>
     <string name="settings_about_privacyPolicy">Datenschutzerklärung</string>
     <string name="settings_about_privacyPolicy_website">https://schul-cloud.org/impressum#data_security</string>
+    <string name="settings_notifications_view_devices">Geräte</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

@@ -31,6 +31,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
@@ -70,6 +71,8 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     LinearLayout notifications;
     @BindView(R.id.btn_create_device)
     BootstrapButton btn_create_device;
+    @BindView(R.id.btn_view_devices)
+    BootstrapButton btn_view_devices;
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
 
@@ -102,7 +105,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         });
 
         // Notifications
-        btn_create_device.setOnClickListener(view -> mSettingsPresenter.registerDevice());
+        btn_view_devices.setOnClickListener(view -> mSettingsPresenter.loadDevices());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
@@ -238,7 +241,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     }
     @Override
     public void showDevices(@NonNull List<Device> devices) {
-        mDevicesAdapter.setDevices(devices);
+        DevicesFragment mDevicesFragment = new DevicesFragment();
     }
 
     @Override
@@ -273,4 +276,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     public void showExternalContent(@NonNull Uri data) {
         startActivity(new Intent(Intent.ACTION_VIEW, data));
     }
+
+
 }

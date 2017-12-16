@@ -26,6 +26,7 @@ public interface SettingsMvpView extends MvpView {
     void showDevices(@NonNull List<Device> devices);
 
     void reloadDevices();
+    void showDevices();
 
     // About
     void showContributors(@NonNull String[] contributors);

@@ -15,6 +15,7 @@ import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.test.common.TestDataFactory;
 import org.schulcloud.mobile.ui.settings.SettingsMvpView;
 import org.schulcloud.mobile.ui.settings.SettingsPresenter;
+import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.RxSchedulersOverrideRule;
 
 import java.util.Collections;
@@ -43,6 +44,7 @@ public class SettingsPresenterTest {
     @Mock
     NotificationDataManager mMockNotificationDataManager;
     private SettingsPresenter mSettingsPresenter;
+    private DevicesPresenter mDevicesPresenter;
 
     @Before
     public void setUp() {
@@ -100,7 +102,7 @@ public class SettingsPresenterTest {
                 .when(mMockNotificationDataManager)
                 .getDevices();
 
-        mSettingsPresenter.loadDevices();
+        mDevicesPresenter.loadDevices();
         verify(mMockSettingsMvpView).showDevices(devices);
     }
 

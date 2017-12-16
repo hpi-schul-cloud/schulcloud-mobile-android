@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
+import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
@@ -54,6 +56,9 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
     @Inject
     SettingsPresenter mSettingsPresenter;
+
+    @Inject
+    DevicesPresenter mDevicesPresenter;
 
     @Inject
     PreferencesHelper mPreferencesHelper;
@@ -105,7 +110,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         });
 
         // Notifications
-        btn_view_devices.setOnClickListener(view -> mSettingsPresenter.loadDevices());
+        btn_view_devices.setOnClickListener(view -> showDevices());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
@@ -137,7 +142,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         // Presenter
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);
-        mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
     }
     @Override
@@ -236,19 +240,15 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
     // Notifications
     @Override
-    public void showSupportsNotifications(boolean supportsNotifications) {
-        ViewUtil.setVisibility(notifications, supportsNotifications);
-    }
-    @Override
-    public void showDevices(@NonNull List<Device> devices) {
+        public void showDevices(@NonNull List<Device> devices) {
+    public void showDevices() {
         DevicesFragment mDevicesFragment = new DevicesFragment();
-    }
-
-    @Override
-    public void reloadDevices() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        this.startActivity(intent);
-        finish();
+        FrameLayout mDevicesLayout = (FrameLayout) findViewById(R.id.swiperefresh);
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.devices_recycler_view,mDevicesFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     // About

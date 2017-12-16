@@ -26,8 +26,9 @@ import timber.log.Timber;
 public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
 
     @Inject
-    public DevicesPresenter(UserDataManager userDataManager){
+    public DevicesPresenter(UserDataManager userDataManager, NotificationDataManager notificationDataManager){
         mUserDataManager = userDataManager;
+        mNotificationDataManager = notificationDataManager;
     }
 
     private Subscription mSubscription;

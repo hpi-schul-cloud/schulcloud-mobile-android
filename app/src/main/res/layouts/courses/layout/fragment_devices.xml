@@ -16,6 +16,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="6dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_device">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

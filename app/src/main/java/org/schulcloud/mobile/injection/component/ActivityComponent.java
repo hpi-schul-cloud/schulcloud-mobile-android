@@ -18,6 +18,7 @@ import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
+import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.ui.start.StartActivity;
 
@@ -75,4 +76,5 @@ public interface ActivityComponent {
     //    Devices
     void inject(DevicesFragment devicesFragment);
 
+    //    Devices
 }

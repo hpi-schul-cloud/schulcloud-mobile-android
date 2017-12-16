@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,7 +27,6 @@ import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
@@ -256,6 +254,11 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                 .add(R.id.devices,devicesFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void showDevices() {
+
     }
 
     // About

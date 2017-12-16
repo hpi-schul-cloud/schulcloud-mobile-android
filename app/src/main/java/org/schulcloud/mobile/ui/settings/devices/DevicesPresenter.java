@@ -19,8 +19,10 @@ import timber.log.Timber;
 
 public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
 
-    private Subscription mSubsciption;
-    private DataManager mDataManager;
+    @Inject
+    public DevicesPresenter(DataManager dataManager){
+        mDataManager = dataManager;
+    }
 
     @Override
     public void detachView() {

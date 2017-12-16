@@ -9,12 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,6 +31,7 @@ import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
+import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
@@ -52,6 +53,9 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
 
     @Inject
     SettingsPresenter mSettingsPresenter;
+
+    @Inject
+    DevicesPresenter mDevicesPresenter;
 
     @Inject
     PreferencesHelper mPreferencesHelper;
@@ -232,6 +236,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                 .add(R.id.devices,devicesFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void showDevices() {
+
     }
 
     // About

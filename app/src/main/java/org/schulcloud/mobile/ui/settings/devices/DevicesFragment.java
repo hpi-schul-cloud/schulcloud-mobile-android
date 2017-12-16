@@ -1,8 +1,5 @@
 package org.schulcloud.mobile.ui.settings.devices;
 
-
-import android.content.Intent;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -18,11 +15,12 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.ui.base.BaseFragment;
-import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.ui.settings.DevicesAdapter;
 import org.schulcloud.mobile.util.DialogFactory;
 
 import java.util.Collections;
+import android.widget.Button;
+
 import java.util.List;
 
 import javax.inject.Inject;

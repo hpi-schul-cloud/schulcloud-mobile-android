@@ -11,6 +11,8 @@ import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
 
+import javax.inject.Inject;
+
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -21,8 +23,10 @@ import timber.log.Timber;
 
 public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
 
-    private Subscription mSubsciption;
-    private DataManager mDataManager;
+    @Inject
+    public DevicesPresenter(DataManager dataManager){
+        mDataManager = dataManager;
+    }
 
     @Override
     public void detachView() {

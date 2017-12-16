@@ -7,30 +7,38 @@
     android:id="@id/swiperefresh"
     style="@style/Content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingLeft="40dp"
-    android:paddingRight="40dp"
-    android:paddingTop="40dp"
-    android:paddingBottom="40dp">
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:layout_marginTop="40dp"
+    android:layout_marginBottom="40dp">
 
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/btn_create_device"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/settings_notifications_registerDevice"
-        app:bootstrapSize="lg"
-        app:buttonMode="regular"
-        app:roundedCorners="true"
-        app:showOutline="false" />
-
-    <RecyclerView
-        android:id="@+id/recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:marginTop="10dp"
-        android:paddingBottom="6dp"
-        android:paddingTop="6dp"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/item_device"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:id="@+id/btn_create_device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/settings_notifications_registerDevice"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:roundedCorners="true"
+                app:showOutline="false" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/devices_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/item_device"/>
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.v4.widget.SwipeRefreshLayout>

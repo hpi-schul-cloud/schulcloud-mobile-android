@@ -1,13 +1,17 @@
 package org.schulcloud.mobile.test.common;
 
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.RealmString;
 import org.schulcloud.mobile.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import io.realm.RealmList;
 
 /**
  * Factory class that makes instances of data models with random field values.
@@ -25,6 +29,18 @@ public class TestDataFactory {
         u.setLastName(uniqueSuffix);
         u.setEmail(uniqueSuffix);
         u.setFirstName(uniqueSuffix);
+        return u;
+    }
+    public static CurrentUser makeCurrentUser(String uniqueSuffix,
+            boolean permissionHomeworkCreate) {
+        CurrentUser u = new CurrentUser();
+        u.set_id(randomUuid());
+        u.setLastName(uniqueSuffix);
+        u.setEmail(uniqueSuffix);
+        u.setFirstName(uniqueSuffix);
+        if (permissionHomeworkCreate)
+            u.setPermissions(
+                    new RealmList<>(new RealmString(CurrentUser.PERMISSION_HOMEWORK_CREATE)));
         return u;
     }
 

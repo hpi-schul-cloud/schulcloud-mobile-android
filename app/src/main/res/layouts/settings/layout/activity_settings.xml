@@ -25,51 +25,67 @@
             android:orientation="vertical">
 
             <!-- Calendar -->
-            <TextView
-                android:id="@+id/settings_calendar"
-                style="@style/Content_Title.Margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_calendar_title" />
-
-            <Switch
-                android:id="@+id/switch_calendar"
-                style="@style/Material.ListItem.Simple"
+            <LinearLayout
+                android:id="@+id/calendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_calendar_sync"
-                android:textColorLink="@color/hpiRed" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/settings_calendar"
+                    style="@style/Content_Title.Margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_calendar_title" />
+
+                <Switch
+                    android:id="@+id/switch_calendar"
+                    style="@style/Material.ListItem.Simple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_calendar_sync"
+                    android:textColorLink="@color/hpiRed" />
+
+            </LinearLayout>
 
             <!-- Notifications -->
-            <TextView
-                android:id="@+id/settings_notifications"
-                style="@style/Content_Title.Margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_notifications_title" />
-
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/btn_create_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/settings_notifications_registerDevice"
-                app:bootstrapSize="lg"
-                app:buttonMode="regular"
-                app:roundedCorners="true"
-                app:showOutline="false" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/devices_recycler_view"
+            <LinearLayout
+                android:id="@+id/notifications"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp"
-                android:scrollbars="vertical"
-                tools:listitem="@layout/item_device" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/settings_notifications"
+                    style="@style/Content_Title.Margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_notifications_title" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btn_create_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/settings_notifications_registerDevice"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:roundedCorners="true"
+                    app:showOutline="false" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/devices_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="6dp"
+                    android:scrollbars="vertical"
+                    tools:listitem="@layout/item_device" />
+
+            </LinearLayout>
 
             <!-- About -->
             <TextView

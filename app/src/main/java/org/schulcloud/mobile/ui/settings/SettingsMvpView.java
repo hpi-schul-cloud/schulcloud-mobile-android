@@ -12,6 +12,8 @@ import java.util.List;
 public interface SettingsMvpView extends MvpView {
 
     // Calender
+    void showSupportsCalendar(boolean supportsCalendar);
+
     void showEventsEmpty();
 
     void connectToCalendar(@NonNull List<Event> events, boolean promptForCalendar);
@@ -19,6 +21,8 @@ public interface SettingsMvpView extends MvpView {
     void showSyncToCalendarSuccessful();
 
     // Notifications
+    void showSupportsNotifications(boolean supportsNotifications);
+
     void showDevices(@NonNull List<Device> devices);
 
     void reloadDevices();

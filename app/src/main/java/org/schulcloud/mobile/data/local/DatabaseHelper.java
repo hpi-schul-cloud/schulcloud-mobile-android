@@ -37,6 +37,7 @@ import javax.inject.Singleton;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import rx.Observable;
+import rx.Single;
 import timber.log.Timber;
 
 @Singleton
@@ -133,9 +134,9 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<CurrentUser> getCurrentUser() {
+    public Single<CurrentUser> getCurrentUser() {
         final Realm realm = mRealmProvider.get();
-        return Observable.just(realm.where(CurrentUser.class).findFirst());
+        return Single.just(realm.where(CurrentUser.class).findFirst());
     }
 
 

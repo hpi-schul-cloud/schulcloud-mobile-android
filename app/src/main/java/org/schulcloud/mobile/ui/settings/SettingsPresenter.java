@@ -47,6 +47,16 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     @Override
+    protected void onViewAttached(@NonNull SettingsMvpView view) {
+        super.onViewAttached(view);
+        mDataManager.isInDemoMode()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isInDemoMode -> {
+                    sendToView(v -> v.showSupportsCalendar(!isInDemoMode));
+                    sendToView(v -> v.showSupportsNotifications(!isInDemoMode));
+                });
+    }
+    @Override
     protected void onViewDetached() {
         super.onViewDetached();
         RxUtil.unsubscribe(mEventsSubscription);

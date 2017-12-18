@@ -28,10 +28,11 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
         RxUtil.unsubscribe(mSubscription);
     }
 
-    public void signIn(@NonNull String username, @NonNull String password) {
+    public void signIn(@NonNull String username, @NonNull String password, boolean demoMode) {
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnCompleted(() -> mDataManager.setInDemoMode(demoMode))
                 .subscribe(
                         accessToken -> {},
                         throwable -> {

@@ -12,6 +12,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     @Inject
     FilePresenter mFilesPresenter;
+
     private List<File> mFiles;
+    private boolean mCanDeleteFiles;
 
     @Inject
     public FilesAdapter() {
@@ -35,6 +38,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     public void setFiles(@NonNull List<File> files) {
         mFiles = files;
         notifyDataSetChanged();
+    }
+    public void setCanDeleteFiles(boolean canDeleteFiles) {
+        mCanDeleteFiles = canDeleteFiles;
+        notifyItemRangeChanged(0, mFiles.size());
     }
 
     @Override
@@ -50,6 +57,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         holder.nameTextView.setText(file.name);
         holder.cardView.setOnClickListener(v -> mFilesPresenter.startDownloading(file, false));
         holder.downloadIcon.setOnClickListener(v -> mFilesPresenter.startDownloading(file, true));
+
+        ViewUtil.setVisibility(holder.deleteIcon, mCanDeleteFiles);
         holder.deleteIcon.setOnClickListener(
                 v -> mFilesPresenter.startFileDeleting(file.key, file.name));
     }

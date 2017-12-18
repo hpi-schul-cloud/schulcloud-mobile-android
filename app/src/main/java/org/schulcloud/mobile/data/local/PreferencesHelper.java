@@ -21,6 +21,7 @@ public class PreferencesHelper {
     public static final String PREFERENCE_STORAGE_CONTEXT = "storageContext";
     public static final String PREFERENCE_CALENDAR_SYNC_ENABLED = "calendarSyncEnabled";
     public static final String PREFERENCE_CALENDAR_SYNC_NAME = "calendarSyncName";
+    public static final String PREFERENCE_IS_IN_DEMO_MODE = "IS_IN_DEMO_MODE";
 
     private final ObscuredSharedPreferences mPref;
 
@@ -122,6 +123,12 @@ public class PreferencesHelper {
         return null;
     }
 
+    public boolean saveIsInDemoMode(boolean isInDemoMode) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putBoolean(PREFERENCE_IS_IN_DEMO_MODE, isInDemoMode);
+        return editor.commit();
+    }
+
     // ##### Getter
 
     public String getAccessToken() {
@@ -154,6 +161,10 @@ public class PreferencesHelper {
 
     public String getCalendarSyncName() {
         return mPref.getString(PREFERENCE_CALENDAR_SYNC_NAME, "null");
+    }
+
+    public boolean isInDemoMode() {
+        return mPref.getBoolean(PREFERENCE_IS_IN_DEMO_MODE, false);
     }
 
     // ##### Clearing

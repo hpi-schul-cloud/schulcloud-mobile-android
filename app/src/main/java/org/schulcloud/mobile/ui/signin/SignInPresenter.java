@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.ui.signin;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -22,11 +24,12 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
         RxUtil.unsubscribe(mSubscription);
     }
 
-    public void signIn(String username, String password) {
+    public void signIn(@NonNull String username, @NonNull String password, boolean demoMode) {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnCompleted(() -> mDataManager.setInDemoMode(demoMode))
                 .subscribe(
                         accessToken -> {},
                         throwable -> {

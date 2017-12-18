@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.homework;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -22,6 +23,15 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
         mDataManager = dataManager;
     }
 
+    @Override
+    public void attachView(HomeworkMvpView mvpView) {
+        super.attachView(mvpView);
+        mDataManager.getCurrentUser()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(currentUser ->
+                        getMvpView().showCanCreateHomework(
+                                currentUser.hasPermission(CurrentUser.PERMISSION_HOMEWORK_CREATE)));
+    }
     @Override
     public void detachView() {
         super.detachView();

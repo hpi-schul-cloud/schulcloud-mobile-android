@@ -31,6 +31,7 @@ import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,8 +55,15 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @Inject
     DevicesAdapter mDevicesAdapter;
 
+    // Calendar
+    @BindView(R.id.calendar)
+    LinearLayout calendar;
     @BindView(R.id.switch_calendar)
     Switch switch_calendar;
+
+    // Notifications
+    @BindView(R.id.notifications)
+    LinearLayout notifications;
     @BindView(R.id.btn_create_device)
     BootstrapButton btn_create_device;
     @BindView(R.id.devices_recycler_view)
@@ -137,8 +145,13 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         super.onDestroy();
     }
 
+
     /***** MVP View methods implementation *****/
     // Calender
+    @Override
+    public void showSupportsCalendar(boolean supportsCalendar) {
+        ViewUtil.setVisibility(calendar, supportsCalendar);
+    }
     @Override
     public void showEventsEmpty() {
         //Toast.makeText(this, R.string.empty_events, Toast.LENGTH_LONG).show();
@@ -201,6 +214,10 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     }
 
     // Notifications
+    @Override
+    public void showSupportsNotifications(boolean supportsNotifications) {
+        ViewUtil.setVisibility(notifications, supportsNotifications);
+    }
     @Override
     public void showDevices(@NonNull List<Device> devices) {
         mDevicesAdapter.setDevices(devices);

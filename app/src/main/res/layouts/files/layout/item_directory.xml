@@ -47,9 +47,11 @@
             android:background="?android:attr/selectableItemBackground"
             android:textColor="@color/hpiRed"
             android:textSize="@dimen/fa_icon_medium"
+            android:visibility="gone"
             app:bootstrapBrand="danger"
             app:fontAwesomeIcon="fa_trash_o"
-            app:layout_position="endIcon" />
+            app:layout_position="endIcon"
+            tools:visibility="visible" />
 
     </org.schulcloud.mobile.ui.layouts.ListItemLayout>
 

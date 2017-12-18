@@ -10,6 +10,12 @@ public class CurrentUser implements RealmModel {
     public static final String PERMISSION_LESSONS_VIEW = "LESSONS_VIEW";
     public static final String PERMISSION_TOOL_NEW_VIEW = "TOOL_NEW_VIEW";
     public static final String PERMISSION_COURSE_EDIT = "COURSE_EDIT";
+    public static final String PERMISSION_HOMEWORK_CREATE = "HOMEWORK_CREATE";
+    public static final String PERMISSION_FILE_CREATE = "FILE_CREATE";
+    public static final String PERMISSION_FILE_MOVE = "FILE_MOVE";
+    public static final String PERMISSION_FILE_DELETE = "FILE_DELETE";
+    public static final String PERMISSION_FOLDER_CREATE = "FOLDER_CREATE";
+    public static final String PERMISSION_FOLDER_DELETE = "FOLDER_DELETE";
     public static final String PERMISSION_TEACHER_CREATE = "TEACHER_CREATE";
     public static final String PERMISSION_STUDENT_CREATE = "STUDENT_CREATE";
     public static final String PERMISSION_BASE_VIEW = "BASE_VIEW";

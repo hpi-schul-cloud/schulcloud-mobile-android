@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
@@ -43,6 +44,16 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         mDataManager = dataManager;
     }
 
+    @Override
+    public void attachView(SettingsMvpView mvpView) {
+        super.attachView(mvpView);
+        mDataManager.isInDemoMode()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isInDemoMode -> {
+                    getMvpView().showSupportsCalendar(!isInDemoMode);
+                    getMvpView().showSupportsNotifications(!isInDemoMode);
+                });
+    }
     @Override
     public void detachView() {
         super.detachView();
@@ -81,7 +92,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
      * @param showToast           {Boolean} - whether to show a toast after writing
      */
     public void writeEventsToLocalCalendar(String calendarName, List<Event> events,
-            CalendarContentUtil calendarContentUtil, Boolean showToast) {
+                                           CalendarContentUtil calendarContentUtil, Boolean showToast) {
         for (Event event : events) {
             // syncing by deleting first and writing again
             calendarContentUtil.deleteEventByUid(event._id);
@@ -146,8 +157,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
             RxUtil.unsubscribe(mSubscription);
             mSubscription = mDataManager.createDevice(deviceRequest, token)
                     .subscribe(
-                            deviceResponse -> {},
-                            throwable -> {},
+                            deviceResponse -> {
+                            },
+                            throwable -> {
+                            },
                             () -> getMvpView().reloadDevices());
         }
     }
@@ -172,8 +185,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         mSubscription = mDataManager.deleteDevice(device.token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        voidResponse -> {},
-                        throwable -> {},
+                        voidResponse -> {
+                        },
+                        throwable -> {
+                        },
                         () -> {
                             getMvpView().reloadDevices();
                             mDataManager.getPreferencesHelper()

@@ -99,7 +99,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         ButterKnife.bind(this, view);
         setTitle(R.string.files_title);
@@ -176,6 +176,19 @@ public class FileFragment extends MainFragment implements FileMvpView {
     public void showDirectories(List<Directory> directories) {
         mDirectoriesAdapter.setDirectories(directories);
         mDirectoriesAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCanCreateFile(boolean canCreateFile) {
+        ViewUtil.setVisibility(fileUploadButton, canCreateFile);
+    }
+    @Override
+    public void showCanDeleteFiles(boolean canDeleteFiles) {
+        mFilesAdapter.setCanDeleteFiles(canDeleteFiles);
+    }
+    @Override
+    public void showCanDeleteDirectories(boolean canDeleteDirectories) {
+        mDirectoriesAdapter.setCanDeleteDirectories(canDeleteDirectories);
     }
 
     @Override

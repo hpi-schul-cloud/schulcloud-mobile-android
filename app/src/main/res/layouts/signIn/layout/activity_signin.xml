@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp">
+
             <EditText
                 android:id="@+id/input_username"
                 android:layout_width="match_parent"
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp">
+
             <EditText
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
@@ -60,6 +62,34 @@
             android:layout_marginTop="24dp"
             android:padding="16dp"
             android:text="@string/login_login" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/material_divider" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:text="@string/login_demo" />
+
+        <Button
+            android:id="@+id/btn_demo_student"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="@string/login_demo_student" />
+
+        <Button
+            android:id="@+id/btn_demo_teacher"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="@string/login_demo_teacher" />
 
     </LinearLayout>
 

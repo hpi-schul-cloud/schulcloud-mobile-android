@@ -60,7 +60,9 @@
             android:background="?android:attr/selectableItemBackground"
             android:textColor="@color/gray"
             android:textSize="@dimen/fa_icon_medium"
-            app:fontAwesomeIcon="fa_trash_o" />
+            android:visibility="gone"
+            app:fontAwesomeIcon="fa_trash_o"
+            tools:visibility="visible" />
 
     </RelativeLayout>
 

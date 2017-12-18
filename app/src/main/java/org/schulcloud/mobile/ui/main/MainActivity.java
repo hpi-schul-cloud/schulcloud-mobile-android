@@ -70,6 +70,11 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
                     return true;
                 });
     }
+    @Override
+    protected void onDestroy() {
+        mMainPresenter.detachView();
+        super.onDestroy();
+    }
     private int getTabIndexById(@IdRes int tabId) {
         switch (tabId) {
             case TAB_DASHBOARD:

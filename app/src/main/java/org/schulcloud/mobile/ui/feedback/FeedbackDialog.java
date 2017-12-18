@@ -110,12 +110,9 @@ public class FeedbackDialog extends BaseDialog implements FeedbackMvpView {
         return dialog;
     }
     @Override
-    public void onCancel(DialogInterface dialog) {
-        super.onCancel(dialog);
-    }
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
+    public void onDestroy() {
+        mFeedbackPresenter.detachView();
+        super.onDestroy();
     }
     @Override
     public void showContentHint() {

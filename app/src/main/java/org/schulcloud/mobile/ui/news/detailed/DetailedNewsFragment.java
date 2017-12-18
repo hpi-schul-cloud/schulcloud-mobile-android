@@ -72,7 +72,11 @@ public class DetailedNewsFragment extends MainFragment implements DetailedNewsMv
 
         return view;
     }
-
+    @Override
+    public void onDestroy() {
+        mDetailedNewsPresenter.detachView();
+        super.onDestroy();
+    }
     @Override
     public void showNews(@NonNull News news) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");

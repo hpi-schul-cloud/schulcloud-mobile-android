@@ -3,6 +3,8 @@ package org.schulcloud.mobile.ui.dashboard;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.EventDataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -15,12 +17,15 @@ import rx.android.schedulers.AndroidSchedulers;
 @ConfigPersistent
 public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
 
-    private DataManager mDataManager;
+    private HomeworkDataManager mHomeworkDataManager;
+    private EventDataManager mEventDataManager;
     private Subscription mSubscription;
 
     @Inject
-    DashboardPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public DashboardPresenter(HomeworkDataManager homeworkDataManager,
+                              EventDataManager eventDataManager) {
+        mHomeworkDataManager = homeworkDataManager;
+        mEventDataManager = eventDataManager;
     }
 
     @Override
@@ -30,12 +35,12 @@ public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
     }
 
     public void showHomework() {
-        sendToView(view -> view.showOpenHomework(mDataManager.getOpenHomeworks()));
+        sendToView(view -> view.showOpenHomework(mHomeworkDataManager.getOpenHomeworks()));
     }
 
     public void showEvents() {
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getEventsForToday()
+        mSubscription = mEventDataManager.getEventsForToday()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(events -> sendToView(view -> view.showEvents(events)));
     }

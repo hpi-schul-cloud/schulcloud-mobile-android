@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.ui.base.MvpView;
@@ -24,7 +25,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private static final int TAB_LEVEL_LAST = -1;
     private static final int TAB_LEVEL_ONE_BACK = -2;
 
-    private final DataManager mDataManager;
+    private final UserDataManager mUserDataManager;
     private Subscription mSubscription;
 
     private Stack<MainFragment>[] mFragments;
@@ -33,8 +34,8 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private int mCurrentLevel;
 
     @Inject
-    public MainPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public MainPresenter(UserDataManager userDataManager) {
+        mUserDataManager = userDataManager;
     }
 
     @Override
@@ -59,7 +60,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
      */
     public void checkSignedIn(@NonNull Context context) {
         // 1. try to get currentUser from prefs
-        String currentUserId = mDataManager.getCurrentUserId();
+        String currentUserId = mUserDataManager.getCurrentUserId();
 
         // value is "null" as String if pref does not exist
         if (currentUserId.equals("null")) {
@@ -70,7 +71,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         // 2. if there is a valid jwt in the storage (just online)
         if (NetworkUtil.isNetworkConnected(context)) {
             RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.syncCurrentUser(currentUserId)
+            mSubscription = mUserDataManager.syncCurrentUser(currentUserId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             // onNext

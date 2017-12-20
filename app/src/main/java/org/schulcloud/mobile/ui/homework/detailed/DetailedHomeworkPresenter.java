@@ -3,6 +3,9 @@ package org.schulcloud.mobile.ui.homework.detailed;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -11,11 +14,17 @@ import javax.inject.Inject;
 @ConfigPersistent
 public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvpView> {
 
-    private DataManager mDataManager;
+    private HomeworkDataManager mHomeworkDataManager;
+    private SubmissionDataManager mSubmissionDataManager;
+    private UserDataManager mUserDataManager;
 
     @Inject
-    public DetailedHomeworkPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public DetailedHomeworkPresenter(HomeworkDataManager homeworkDataManager,
+                                     SubmissionDataManager submissionDataManager,
+                                     UserDataManager userDataManager) {
+        mHomeworkDataManager = homeworkDataManager;
+        mSubmissionDataManager = submissionDataManager;
+        mUserDataManager = userDataManager;
     }
 
     /**
@@ -24,7 +33,7 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
      * @param homeworkId The id of the homework to be shown.
      */
     public void loadHomework(@NonNull String homeworkId) {
-        getViewOrThrow().showHomework(mDataManager.getHomeworkForId(homeworkId));
+        getViewOrThrow().showHomework(mHomeworkDataManager.getHomeworkForId(homeworkId));
     }
 
     /**
@@ -33,7 +42,7 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
      * @param homeworkId The id of the displayed homework. Required to reference the submission.
      */
     public void loadComments(@NonNull String homeworkId) {
-        getViewOrThrow().showSubmission(mDataManager.getSubmissionForId(homeworkId),
-                mDataManager.getCurrentUserId());
+        getViewOrThrow().showSubmission(mSubmissionDataManager.getSubmissionForId(homeworkId),
+                mUserDataManager.getCurrentUserId());
     }
 }

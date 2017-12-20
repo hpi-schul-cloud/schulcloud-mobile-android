@@ -3,6 +3,8 @@ package org.schulcloud.mobile.ui.homework;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -17,18 +19,21 @@ import timber.log.Timber;
 @ConfigPersistent
 public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
-    private DataManager mDataManager;
+    private HomeworkDataManager mHomeworkDataManager;
+    private UserDataManager mUserDataManager;
     private Subscription mSubscription;
 
     @Inject
-    public HomeworkPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public HomeworkPresenter(HomeworkDataManager homeworkDataManager,
+                             UserDataManager userDataManager) {
+        mHomeworkDataManager = homeworkDataManager;
+        mUserDataManager = userDataManager;
     }
 
     @Override
     protected void onViewAttached(@NonNull HomeworkMvpView view) {
         super.onViewAttached(view);
-        mDataManager.getCurrentUser()
+        mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser ->
                         sendToView(v -> v.showCanCreateHomework(
@@ -42,7 +47,7 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
     public void loadHomework() {
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getHomework()
+        mSubscription = mHomeworkDataManager.getHomework()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         homework -> {

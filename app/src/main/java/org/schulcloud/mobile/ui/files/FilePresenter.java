@@ -6,6 +6,8 @@ import android.util.Log;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.FileDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
@@ -23,7 +25,8 @@ import timber.log.Timber;
 @ConfigPersistent
 public class FilePresenter extends BasePresenter<FileMvpView> {
 
-    private DataManager mDataManager;
+    private FileDataManager mFileDataManager;
+    private UserDataManager mUserDataManager;
     private Subscription fileSubscription;
     private Subscription directorySubscription;
     private Subscription fileGetterSubscription;
@@ -34,14 +37,15 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     private Subscription directoryDeleteSubscription;
 
     @Inject
-    FilePresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    FilePresenter(FileDataManager fileDataManager, UserDataManager userDataManager) {
+        mFileDataManager = fileDataManager;
+        mUserDataManager = userDataManager;
     }
 
     @Override
     protected void onViewAttached(@NonNull FileMvpView view) {
         super.onViewAttached(view);
-        mDataManager.getCurrentUser()
+        mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser -> {
                     sendToView(v -> v.showCanCreateFile(
@@ -67,7 +71,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
 
     public void loadFiles() {
         RxUtil.unsubscribe(fileSubscription);
-        fileSubscription = mDataManager.getFiles()
+        fileSubscription = mFileDataManager.getFiles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         files -> sendToView(view -> view.showFiles(files)),
@@ -78,7 +82,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     }
     public void loadDirectories() {
         RxUtil.unsubscribe(directorySubscription);
-        directorySubscription = mDataManager.getDirectories()
+        directorySubscription = mFileDataManager.getDirectories()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         // onNext
@@ -98,7 +102,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void loadFileFromServer(@NonNull File file, @NonNull Boolean download) {
         RxUtil.unsubscribe(fileGetterSubscription);
-        fileGetterSubscription = mDataManager
+        fileGetterSubscription = mFileDataManager
                 .getFileUrl(new SignedUrlRequest(
                         SignedUrlRequest.ACTION_OBJECT_GET, // action
                         file.key, // path
@@ -128,7 +132,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void downloadFile(@NonNull String url, @NonNull String fileName) {
         RxUtil.unsubscribe(fileDownloadSubscription);
-        fileDownloadSubscription = mDataManager.downloadFile(url)
+        fileDownloadSubscription = mFileDataManager.downloadFile(url)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(view -> view.saveFile(responseBody, fileName)),
@@ -145,7 +149,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      * @param dirName {String} - the directory's name for which the files will be fetched
      */
     public void goIntoDirectory(@NonNull String dirName) {
-        mDataManager.setCurrentStorageContext(dirName);
+        mFileDataManager.setCurrentStorageContext(dirName);
         getViewOrThrow().reloadFiles();
     }
 
@@ -156,7 +160,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void uploadFileToServer(@NonNull java.io.File fileToUpload) {
         // todo: refactor later on when there are class and course folders
-        String uploadPath = mDataManager.getCurrentStorageContext() + fileToUpload.getName();
+        String uploadPath = mFileDataManager.getCurrentStorageContext() + fileToUpload.getName();
 
         SignedUrlRequest signedUrlRequest = new SignedUrlRequest(
                 SignedUrlRequest.ACTION_OBJECT_PUT, // action
@@ -164,7 +168,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
                 FileUtils.getMimeType(fileToUpload));
 
         RxUtil.unsubscribe(fileUploadSubscription);
-        fileUploadSubscription = mDataManager.getFileUrl(signedUrlRequest)
+        fileUploadSubscription = mFileDataManager.getFileUrl(signedUrlRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         signedUrlResponse -> startUploading(fileToUpload, signedUrlResponse),
@@ -192,7 +196,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     public void startUploading(@NonNull java.io.File file,
             @NonNull SignedUrlResponse signedUrlResponse) {
         RxUtil.unsubscribe(fileStartUploadSubscription);
-        fileStartUploadSubscription = mDataManager.uploadFile(file, signedUrlResponse)
+        fileStartUploadSubscription = mFileDataManager.uploadFile(file, signedUrlResponse)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(FileMvpView::reloadFiles),
@@ -213,7 +217,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void deleteFile(@NonNull String path) {
         RxUtil.unsubscribe(fileDeleteSubscription);
-        fileDeleteSubscription = mDataManager.deleteFile(path)
+        fileDeleteSubscription = mFileDataManager.deleteFile(path)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(FileMvpView::showFileDeleteSuccess),
@@ -234,7 +238,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      */
     public void deleteDirectory(@NonNull String path) {
         RxUtil.unsubscribe(directoryDeleteSubscription);
-        directoryDeleteSubscription = mDataManager.deleteDirectory(path)
+        directoryDeleteSubscription = mFileDataManager.deleteDirectory(path)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(FileMvpView::showDirectoryDeleteSuccess),
@@ -251,7 +255,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
      * @return True if stepping back was successful, false if we are already in the root directory.
      */
     boolean stepOneDirectoryBack() {
-        String currentPath = mDataManager.getCurrentStorageContext();
+        String currentPath = mFileDataManager.getCurrentStorageContext();
 
         // remove last slash
         if (currentPath.lastIndexOf(java.io.File.separator) == (currentPath.length() - 1))
@@ -260,7 +264,7 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
         // first two parts are meta
         if (currentPath.split(java.io.File.separator).length > 2) {
             currentPath = currentPath.substring(0, currentPath.lastIndexOf(java.io.File.separator));
-            mDataManager.setCurrentStorageContext(currentPath);
+            mFileDataManager.setCurrentStorageContext(currentPath);
             getViewOrThrow().reloadFiles();
             return true;
         }

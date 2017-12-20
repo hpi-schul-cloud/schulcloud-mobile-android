@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -17,12 +18,12 @@ import rx.android.schedulers.AndroidSchedulers;
 @ConfigPersistent
 public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
 
-    private DataManager mDataManager;
+    private FeedbackDataManager mFeedbackDataManager;
     private Subscription mSubscription;
 
     @Inject
-    FeedbackPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public FeedbackPresenter(FeedbackDataManager feedbackDataManager) {
+        mFeedbackDataManager = feedbackDataManager;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
             FeedbackRequest feedbackRequest = new FeedbackRequest(text, subject, to);
 
             RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.sendFeedback(feedbackRequest)
+            mSubscription = mFeedbackDataManager.sendFeedback(feedbackRequest)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(feedbackResponse -> {},
                             throwable -> Log.e("Feedback", "onError", throwable),

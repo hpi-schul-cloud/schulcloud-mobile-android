@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.signin;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
 
@@ -14,12 +15,12 @@ import timber.log.Timber;
 
 public class SignInPresenter extends BasePresenter<SignInMvpView> {
 
-    private DataManager mDataManager;
+    private UserDataManager mUserDataManager;
     private Subscription mSubscription;
 
     @Inject
-    public SignInPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public SignInPresenter(UserDataManager userDataManager) {
+        mUserDataManager = userDataManager;
     }
 
     @Override
@@ -30,9 +31,9 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
 
     public void signIn(@NonNull String username, @NonNull String password, boolean demoMode) {
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.signIn(username, password)
+        mSubscription = mUserDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnCompleted(() -> mDataManager.setInDemoMode(demoMode))
+                .doOnCompleted(() -> mUserDataManager.setInDemoMode(demoMode))
                 .subscribe(
                         accessToken -> {},
                         throwable -> {

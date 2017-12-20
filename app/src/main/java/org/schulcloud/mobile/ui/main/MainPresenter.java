@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.ui.base.MvpView;
@@ -28,8 +30,8 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
     private static final int TAB_LEVEL_LAST = -1;
     private static final int TAB_LEVEL_ONE_BACK = -2;
 
-    private final DataManager mDataManager;
     private Subscription mCurrentUserSubscription;
+    private final UserDataManager mUserDataManager;
 
     private Stack<Integer>[] mViewIds;
     private Integer mCurrentViewId;
@@ -37,8 +39,8 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
     private int mCurrentLevel;
 
     @Inject
-    public MainPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public MainPresenter(UserDataManager userDataManager) {
+        mUserDataManager = userDataManager;
         mCurrentViewId = -1;
 
         sendToView(v -> {
@@ -56,7 +58,7 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
      */
     public void checkSignedIn(@NonNull Context context) {
         // 1. try to get currentUser from prefs
-        String currentUserId = mDataManager.getCurrentUserId();
+        String currentUserId = mUserDataManager.getCurrentUserId();
 
         // value is "null" as String if pref does not exist
         if (currentUserId.equals("null")) {
@@ -67,7 +69,7 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
         // 2. if there is a valid jwt in the storage (just online)
         if (NetworkUtil.isNetworkConnected(context)) {
             RxUtil.unsubscribe(mCurrentUserSubscription);
-            mCurrentUserSubscription = mDataManager.syncCurrentUser(currentUserId)
+            mCurrentUserSubscription = mUserDataManager.syncCurrentUser(currentUserId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             // onNext

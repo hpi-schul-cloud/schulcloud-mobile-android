@@ -9,6 +9,7 @@ import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
@@ -23,7 +24,7 @@ import timber.log.Timber;
 public class UserSyncService extends Service {
 
     @Inject
-    DataManager mDataManager;
+    UserDataManager mUserDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -52,7 +53,7 @@ public class UserSyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncUsers()
+        mSubscription = mUserDataManager.syncUsers()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<User>() {
                     @Override

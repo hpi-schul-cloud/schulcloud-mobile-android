@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
@@ -33,7 +34,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
     DetailedCoursePresenter mDetailedCoursePresenter;
 
     @Inject
-    DataManager mDataManger;
+    UserDataManager mUserDataManger;
 
     @Inject
     public ContentAdapter() {
@@ -59,8 +60,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         holder.nameTextView.setText(contents.title);
 
+<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
         PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, context,
                 mDataManger.getAccessToken());
+=======
+        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext, mUserDataManger.getAccessToken());
+>>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
 
         if (contents.component.equals("text"))
             holder.descriptionTextView

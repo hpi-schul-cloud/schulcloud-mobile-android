@@ -9,6 +9,11 @@ import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
+<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
+=======
+import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
+import org.schulcloud.mobile.data.model.News;
+>>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
 import org.schulcloud.mobile.util.RxUtil;
@@ -21,7 +26,7 @@ import timber.log.Timber;
 
 public class NewsSyncService extends Service {
     @Inject
-    DataManager mDataManager;
+    NewsDataManager mNewsDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -50,7 +55,7 @@ public class NewsSyncService extends Service {
         }
 
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncNews()
+        mSubscription = mNewsDataManager.syncNews()
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         news -> {},

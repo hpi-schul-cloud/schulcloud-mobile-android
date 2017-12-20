@@ -3,7 +3,11 @@ package org.schulcloud.mobile.ui.courses.topic;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
 import org.schulcloud.mobile.data.model.Topic;
+=======
+import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
+>>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -16,8 +20,13 @@ public class TopicPresenter extends BasePresenter<TopicMvpView> {
     private Topic mTopic;
 
     @Inject
+<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
     TopicPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+=======
+    public TopicPresenter(TopicDataManager topicDataManager) {
+        mTopicDataManager = topicDataManager;
+>>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
     }
     @Override
     public void onViewAttached(@NonNull TopicMvpView view) {
@@ -25,6 +34,7 @@ public class TopicPresenter extends BasePresenter<TopicMvpView> {
         showName();
     }
 
+<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
     public void loadContents(@NonNull String topicId) {
         mTopic = mDataManager.getTopicForId(topicId);
         showName();
@@ -36,5 +46,10 @@ public class TopicPresenter extends BasePresenter<TopicMvpView> {
                 return;
             v.showName(mTopic.name);
         });
+=======
+    public void loadContents(String topicId) {
+        checkViewAttached();
+        getMvpView().showContent(mTopicDataManager.getContents(topicId));
+>>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
     }
 }

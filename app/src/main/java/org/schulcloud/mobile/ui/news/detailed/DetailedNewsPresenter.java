@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.injection.ConfigPersistent;
+import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
 import javax.inject.Inject;
@@ -12,12 +13,12 @@ import javax.inject.Inject;
 @ConfigPersistent
 public class DetailedNewsPresenter extends BasePresenter<DetailedNewsMvpView> {
 
-    private final DataManager mDataManager;
+    private final NewsDataManager mNewsDataManager;
     private News mNews;
 
     @Inject
-    public DetailedNewsPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public DetailedNewsPresenter(NewsDataManager newsDataManager) {
+        mNewsDataManager = newsDataManager;
     }
 
     @Override
@@ -27,7 +28,7 @@ public class DetailedNewsPresenter extends BasePresenter<DetailedNewsMvpView> {
     }
 
     public void loadNews(@NonNull String newsId) {
-        mNews = mDataManager.getNewsForId(newsId);
+        mNews = mNewsDataManager.getNewsForId(newsId);
         showNews();
     }
     private void showNews() {

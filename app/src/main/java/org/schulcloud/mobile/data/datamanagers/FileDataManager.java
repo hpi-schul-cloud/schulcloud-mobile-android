@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.data.datamanagers;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.local.FileStorageDatabasehelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Directory;
@@ -122,13 +124,16 @@ public class FileDataManager {
         return mRestService.downloadFile(url);
     }
 
-    public Observable<ResponseBody> uploadFile(java.io.File file, SignedUrlResponse signedUrlResponse) {
-        RequestBody requestBody  = RequestBody.create(MediaType.parse("file/*"), file);
+    @NonNull
+    public Observable<ResponseBody> uploadFile(@NonNull java.io.File file,
+                                               @NonNull SignedUrlResponse signedUrlResponse) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("file/*"), file);
         return mRestService.uploadFile(
                 signedUrlResponse.url,
                 signedUrlResponse.header.getContentType(),
                 signedUrlResponse.header.getMetaPath(),
                 signedUrlResponse.header.getMetaName(),
+                signedUrlResponse.header.getMetaFlatName(),
                 signedUrlResponse.header.getMetaThumbnail(),
                 requestBody
         );

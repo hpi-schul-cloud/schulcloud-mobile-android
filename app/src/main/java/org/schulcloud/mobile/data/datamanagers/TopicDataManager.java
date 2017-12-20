@@ -1,5 +1,8 @@
 package org.schulcloud.mobile.data.datamanagers;
 
+import android.support.annotation.NonNull;
+
+import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.TopicsDatabaseHelper;
 import org.schulcloud.mobile.data.model.Contents;
@@ -50,10 +53,10 @@ public class TopicDataManager {
     }
 
     public Observable<List<Topic>> getTopics() {
-        return mDatabaseHelper.getTopics().distinct();
+        return mDatabaseHelper.getTopics().distinctUntilChanged();
     }
 
-    public List<Contents> getContents(String topicId) {
-        return mDatabaseHelper.getContents(topicId).contents;
+    public Topic getTopicForId(@NonNull String topicId) {
+        return mDatabaseHelper.getTopicForId(topicId);
     }
 }

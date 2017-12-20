@@ -37,7 +37,6 @@ public class UserDataManager{
         mPreferencesHelper = preferencesHelper;
         mUserDatabaseHelper = userDatabaseHelper;
     }
-
     public Observable<User> syncUsers() {
         return mRestService.getUsers(getAccessToken())
                 .concatMap(new Func1<List<User>, Observable<User>>() {

@@ -52,19 +52,8 @@ public class DirectorySyncService extends Service {
             return START_NOT_STICKY;
         }
 
-<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncDirectories(mDataManager.getCurrentStorageContext())
-=======
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-
-        // generate correct storageContext/path
-
-        // maybe refactor it when we also support course/class folders
-        String path = mFileDataManager.getCurrentStorageContext();
-
-        mSubscription = mFileDataManager.syncDirectories(path)
->>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
+        mSubscription = mFileDataManager.syncDirectories(mFileDataManager.getCurrentStorageContext())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Directory>() {
                     @Override

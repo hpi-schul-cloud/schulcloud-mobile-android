@@ -200,7 +200,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         throwable -> {},
                         () -> {
                             sendToView(SettingsMvpView::reloadDevices);
-                            mUserDataManager.getPreferencesHelper()
+                            mNotificationDataManager.getPreferencesHelper()
                                     .clear(PreferencesHelper.PREFERENCE_MESSAGING_TOKEN);
                         });
     }

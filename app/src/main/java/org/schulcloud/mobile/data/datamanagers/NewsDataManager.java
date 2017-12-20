@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import org.schulcloud.mobile.data.local.NewsDatabaseHelper;
+import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.data.remote.RestService;

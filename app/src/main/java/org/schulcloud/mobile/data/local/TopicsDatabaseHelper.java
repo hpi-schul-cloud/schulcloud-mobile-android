@@ -49,4 +49,9 @@ public class TopicsDatabaseHelper extends  BaseDatabaseHelper {
         final Realm realm = mRealmProvider.get();
         return realm.where(Topic.class).equalTo("_id", topicId).findFirst();
     }
+
+    public Topic getTopicForId(String topicId) {
+        final Realm realm = mRealmProvider.get();
+        return realm.where(Topic.class).equalTo("_id", topicId).findFirst();
+    }
 }

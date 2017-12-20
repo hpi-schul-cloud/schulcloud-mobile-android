@@ -59,12 +59,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         holder.nameTextView.setText(contents.title);
 
-<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
         PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, context,
-                mDataManger.getAccessToken());
-=======
-        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext, mUserDataManger.getAccessToken());
->>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
+                mUserDataManger.getAccessToken());
 
         if (contents.component.equals("text"))
             holder.descriptionTextView

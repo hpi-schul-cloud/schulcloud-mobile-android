@@ -52,18 +52,8 @@ public class FileSyncService extends Service {
             return START_NOT_STICKY;
         }
 
-<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncFiles(mDataManager.getCurrentStorageContext())
-=======
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-
-        // generate correct storageContext/path
-
-        String path = mFileDataManager.getCurrentStorageContext();
-
-        mSubscription = mFileDataManager.syncFiles(path)
->>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
+        mSubscription = mFileDataManager.syncFiles(mFileDataManager.getCurrentStorageContext())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<File>() {
                     @Override

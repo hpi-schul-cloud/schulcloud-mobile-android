@@ -1,6 +1,9 @@
 package org.schulcloud.mobile.ui.homework.detailed;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -11,8 +14,12 @@ import javax.inject.Inject;
 public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvpView> {
 
     @Inject
-    public DetailedHomeworkPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public DetailedHomeworkPresenter(HomeworkDataManager homeworkDataManager,
+                                     SubmissionDataManager submissionDataManager,
+                                     UserDataManager userDataManager) {
+        mHomeworkDataManager = homeworkDataManager;
+        mSubmissionDataManager = submissionDataManager;
+        mUserDataManager = userDataManager;
     }
 
     @Override
@@ -28,7 +35,7 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
      */
     public void loadHomework(String homeworkId) {
         checkViewAttached();
-        getMvpView().showHomework(mDataManager.getHomeworkForId(homeworkId));
+        getMvpView().showHomework(mHomeworkDataManager.getHomeworkForId(homeworkId));
     }
 
     /**
@@ -39,7 +46,7 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
     public void loadComments(String homeworkId) {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        getMvpView().showSubmission(mDataManager.getSubmissionForId(homeworkId),
-                mDataManager.getCurrentUserId());
+        getMvpView().showSubmission(mSubmissionDataManager.getSubmissionForId(homeworkId),
+                mUserDataManager.getCurrentUserId());
     }
 }

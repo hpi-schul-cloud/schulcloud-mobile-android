@@ -3,6 +3,16 @@ package org.schulcloud.mobile.ui.base;
 import android.content.Context;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
+import org.schulcloud.mobile.data.datamanagers.EventDataManager;
+import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
+import org.schulcloud.mobile.data.datamanagers.FileDataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
+import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
+import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
+import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.util.NetworkUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
@@ -17,7 +27,17 @@ import timber.log.Timber;
  */
 public class BasePresenter<T extends MvpView> implements Presenter<T> {
 
-    public DataManager mDataManager;
+    public UserDataManager mUserDataManager;
+    public EventDataManager mEventDataManager;
+    public FeedbackDataManager mFeedbackDataManager;
+    public FileDataManager mFileDataManager;
+    public HomeworkDataManager mHomeworkDataManager;
+    public NewsDataManager mNewsDataManager;
+    public NotificationDataManager mNotificationDataManager;
+    public SubmissionDataManager mSubmissionDataManager;
+    public TopicDataManager mTopicDataManager;
+    public CourseDataManager mCourseDataManager;
+
     public Subscription mSubscription;
     private T mMvpView;
 
@@ -47,7 +67,7 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
     /**
      * Checks whether there is already a logged-in user, if not so go to sign-in screen
      */
-    public void isAlreadySignedIn(DataManager dataManager, Context context) {
+    public void isAlreadySignedIn(UserDataManager dataManager, Context context) {
         // 1. try to get currentUser from prefs
         String currentUserId = dataManager.getCurrentUserId();
 

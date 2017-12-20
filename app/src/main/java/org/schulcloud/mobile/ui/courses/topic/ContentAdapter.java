@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
 import org.schulcloud.mobile.util.PicassoImageGetter;
@@ -32,7 +33,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
     DetailedCoursePresenter mDetailedCoursePresenter;
 
     @Inject
-    DataManager mDataManger;
+    UserDataManager mUserDataManger;
 
     @Inject
     public ContentAdapter() {
@@ -57,7 +58,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         Contents contents = mContent.get(position);
         holder.nameTextView.setText(contents.title);
 
-        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext, mDataManger.getAccessToken());
+        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext, mUserDataManger.getAccessToken());
 
         if (contents.component.equals("text"))
             holder.descriptionTextView.setText(Html.fromHtml(contents.content.text, imageGetter, null));

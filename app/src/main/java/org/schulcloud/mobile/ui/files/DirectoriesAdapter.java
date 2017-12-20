@@ -28,8 +28,6 @@ public class DirectoriesAdapter
 
     @Inject
     FilePresenter mFilesPresenter;
-    @Inject
-    DataManager mDataManager;
 
     private List<Directory> mDirectories;
     private boolean mCanDeleteDirectories = false;

@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.FileDataManager;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
@@ -23,7 +23,7 @@ import timber.log.Timber;
 public class DirectorySyncService extends Service {
 
     @Inject
-    DataManager mDataManager;
+    FileDataManager mFileDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -56,9 +56,9 @@ public class DirectorySyncService extends Service {
         // generate correct storageContext/path
 
         // maybe refactor it when we also support course/class folders
-        String path = mDataManager.getCurrentStorageContext();
+        String path = mFileDataManager.getCurrentStorageContext();
 
-        mSubscription = mDataManager.syncDirectories(path)
+        mSubscription = mFileDataManager.syncDirectories(path)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Directory>() {
                     @Override

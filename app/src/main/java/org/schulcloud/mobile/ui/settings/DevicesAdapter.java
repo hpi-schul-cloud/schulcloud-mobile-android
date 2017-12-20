@@ -10,6 +10,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.model.Device;
 
 import java.util.ArrayList;
@@ -24,12 +25,12 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
     @Inject
     SettingsPresenter mSettingsPresenter;
     private List<Device> mDevices;
-    private DataManager mDataManager;
+    private NotificationDataManager mNotificationDataManager;
 
     @Inject
-    public DevicesAdapter(DataManager dataManager) {
+    public DevicesAdapter(NotificationDataManager dataManager) {
         mDevices = new ArrayList<>();
-        mDataManager = dataManager;
+        mNotificationDataManager = dataManager;
     }
 
     public void setDevices(List<Device> devices) {
@@ -49,7 +50,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
         holder.nameTextView.setText(device.name);
         holder.tokenText.setText(device.token);
 
-        if (mDataManager.getPreferencesHelper().getMessagingToken().equals(holder.tokenText.getText().toString())) {
+        if (mNotificationDataManager.getPreferencesHelper().getMessagingToken().equals(holder.tokenText.getText().toString())) {
             holder.awesomeTextView.setFontAwesomeIcon("fa_trash");
             holder.awesomeTextView.setOnClickListener(v -> mSettingsPresenter.deleteDevice(device));
         }

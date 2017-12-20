@@ -10,6 +10,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.EventDataManager;
+import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
@@ -40,14 +43,17 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     private String[] mContributors;
 
     @Inject
-    public SettingsPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public SettingsPresenter(UserDataManager userDataManager, EventDataManager eventDataManager,
+                             NotificationDataManager notificationDataManager) {
+        mUserDataManager = userDataManager;
+        mEventDataManager = eventDataManager;
+        mNotificationDataManager = notificationDataManager;
     }
 
     @Override
     public void attachView(SettingsMvpView mvpView) {
         super.attachView(mvpView);
-        mDataManager.isInDemoMode()
+        mUserDataManager.isInDemoMode()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isInDemoMode -> {
                     getMvpView().showSupportsCalendar(!isInDemoMode);
@@ -70,7 +76,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     public void loadEvents(boolean promptForCalendar) {
         checkViewAttached();
         RxUtil.unsubscribe(eventSubscription);
-        eventSubscription = mDataManager.getEvents()
+        eventSubscription = mEventDataManager.getEvents()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         events -> {
@@ -145,17 +151,17 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     // Notifications
     public void registerDevice() {
-        if (mDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
+        if (mNotificationDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
             String token = FirebaseInstanceId.getInstance().getToken();
             Log.d("FirebaseID", "Refreshed token: " + token);
 
             Log.d("FirebaseID", "sending registration to Server");
             DeviceRequest deviceRequest = new DeviceRequest("firebase", "mobile",
                     android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")",
-                    mDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
+                    mUserDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
 
             RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.createDevice(deviceRequest, token)
+            mSubscription = mNotificationDataManager.createDevice(deviceRequest, token)
                     .subscribe(
                             deviceResponse -> {
                             },
@@ -167,7 +173,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     public void loadDevices() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getDevices()
+        mSubscription = mNotificationDataManager.getDevices()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         devices -> {
@@ -182,7 +188,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
     public void deleteDevice(Device device) {
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.deleteDevice(device.token)
+        mSubscription = mNotificationDataManager.deleteDevice(device.token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         voidResponse -> {
@@ -191,7 +197,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         },
                         () -> {
                             getMvpView().reloadDevices();
-                            mDataManager.getPreferencesHelper()
+                            mNotificationDataManager.getPreferencesHelper()
                                     .clear(PreferencesHelper.PREFERENCE_MESSAGING_TOKEN);
                         });
     }

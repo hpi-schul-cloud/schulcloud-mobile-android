@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.ui.homework;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.injection.ConfigPersistent;
@@ -19,14 +21,16 @@ import timber.log.Timber;
 public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
     @Inject
-    public HomeworkPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public HomeworkPresenter(HomeworkDataManager homeworkDataManager,
+                             UserDataManager userDataManager) {
+        mHomeworkDataManager = homeworkDataManager;
+        mUserDataManager = userDataManager;
     }
 
     @Override
     public void attachView(HomeworkMvpView mvpView) {
         super.attachView(mvpView);
-        mDataManager.getCurrentUser()
+        mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser ->
                         getMvpView().showCanCreateHomework(
@@ -41,7 +45,7 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
     public void loadHomework() {
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getHomework()
+        mSubscription = mHomeworkDataManager.getHomework()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Homework>>() {
                     @Override

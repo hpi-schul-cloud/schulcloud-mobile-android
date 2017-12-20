@@ -12,6 +12,10 @@
     <color name="backgroundStart">#f9e5e5</color>
 
     <color name="homework_over">#c3c1c1</color>
+    
+    <color name="blue_dark">#283E56</color>
+    <color name="blue_light">#1989AC</color>
+    <color name="turquoise">#00B8A9</color>
 
     <!--Material-->
     <color name="material_control_activated">#FFFFFFFF</color>

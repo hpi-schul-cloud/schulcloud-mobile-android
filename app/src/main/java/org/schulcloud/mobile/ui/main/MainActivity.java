@@ -17,7 +17,7 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
-import org.schulcloud.mobile.ui.files.FileFragment;
+import org.schulcloud.mobile.ui.files.overview.FileOverviewFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
@@ -128,7 +128,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
                 NewsFragment.newInstance(),
                 CourseFragment.newInstance(),
                 HomeworkFragment.newInstance(),
-                FileFragment.newInstance()};
+                FileOverviewFragment.newInstance()};
     }
     @Override
     public void showFragment(@NonNull MainFragment fragment, int oldTabIndex, int newTabIndex) {

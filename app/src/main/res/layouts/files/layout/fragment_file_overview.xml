@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="25dp">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/filesOverview_my_c_wrapper"
+                    style="@style/FileOverview.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:contentPadding="0dp">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:background="@color/blue_dark"
+                            app:layout_constraintBottom_toTopOf="@+id/filesOverview_my_tv_divider"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.beardedhen.androidbootstrap.AwesomeTextView
+                            android:id="@+id/filesOverview_my_atv_icon"
+                            style="@style/FileOverview.Card_Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:fontAwesomeIcon="fa_user"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_my_tv_title"
+                            style="@style/FileOverview.Card_Title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:text="Persönliche Dateien"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/filesOverview_my_atv_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/filesOverview_my_atv_icon" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_my_tv_fileCount"
+                            style="@style/FileOverview.Card_FileCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="13 Dateien"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_my_atv_icon" />
+
+                        <View
+                            android:id="@+id/filesOverview_my_tv_divider"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/filesOverview_my_tv_fileCount" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_my_tv_description"
+                            style="@style/FileOverview.Card_Description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzern teilen."
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_my_tv_divider" />
+
+                        <Button
+                            android:id="@+id/filesOverview_my_b_open"
+                            style="@style/FileOverview.Card_Open"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dateien öffnen"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_my_tv_description" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    style="@style/FileOverview.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentPadding="0dp">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:background="@color/blue_light"
+                            app:layout_constraintBottom_toTopOf="@+id/filesOverview_courses_tv_divider"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.beardedhen.androidbootstrap.AwesomeTextView
+                            android:id="@+id/filesOverview_courses_atv_icon"
+                            style="@style/FileOverview.Card_Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:fontAwesomeIcon="fa_graduation_cap"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_courses_tv_title"
+                            style="@style/FileOverview.Card_Title"
+                            android:layout_width="0dp"
+                            android:layout_height="28dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:text="Kurs-Dateien"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/filesOverview_courses_atv_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/filesOverview_courses_atv_icon" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_courses_tv_fileCount"
+                            style="@style/FileOverview.Card_FileCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="13 Dateien"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_courses_atv_icon" />
+
+                        <View
+                            android:id="@+id/filesOverview_courses_tv_divider"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/filesOverview_courses_tv_fileCount" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_courses_tv_description"
+                            style="@style/FileOverview.Card_Description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff."
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_courses_tv_divider" />
+
+                        <Button
+                            android:id="@+id/filesOverview_courses_b_open"
+                            style="@style/FileOverview.Card_Open"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dateien öffnen"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_courses_tv_description" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/filesOverview_courses_rv_courses"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/filesOverview_courses_tv_description"
+                            tools:listitem="@layout/item_directory_course" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+
+                <android.support.v7.widget.CardView
+                    style="@style/FileOverview.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentPadding="0dp">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:background="@color/turquoise"
+                            app:layout_constraintBottom_toTopOf="@+id/filesOverview_shared_tv_divider"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.beardedhen.androidbootstrap.AwesomeTextView
+                            android:id="@+id/filesOverview_shared_atv_icon"
+                            style="@style/FileOverview.Card_Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            app:fontAwesomeIcon="fa_share_alt"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_shared_tv_title"
+                            style="@style/FileOverview.Card_Title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:text="Mit mir geteilte Dateien"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/filesOverview_shared_atv_icon"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/filesOverview_shared_atv_icon" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_shared_tv_fileCount"
+                            style="@style/FileOverview.Card_FileCount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="13 Dateien"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_shared_atv_icon" />
+
+                        <View
+                            android:id="@+id/filesOverview_shared_tv_divider"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintTop_toBottomOf="@id/filesOverview_shared_tv_fileCount" />
+
+                        <TextView
+                            android:id="@+id/filesOverview_shared_tv_description"
+                            style="@style/FileOverview.Card_Description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Hier findest du alle mit dir geteilten Dateien. Dies sind Dateien die von anderen Nutzern zur Verfügung gestellt worden sind."
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_shared_tv_divider" />
+
+                        <Button
+                            android:id="@+id/filesOverview_shared_b_open"
+                            style="@style/FileOverview.Card_Open"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dateien öffnen"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/filesOverview_shared_tv_description" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</FrameLayout>

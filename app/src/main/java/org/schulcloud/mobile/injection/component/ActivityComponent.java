@@ -9,6 +9,7 @@ import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.courses.topic.TopicFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
 import org.schulcloud.mobile.ui.feedback.FeedbackDialog;
+import org.schulcloud.mobile.ui.files.overview.FileOverviewFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.homework.add.AddHomeworkFragment;
@@ -62,6 +63,8 @@ public interface ActivityComponent {
     void inject(AddHomeworkFragment addHomeworkFragment);
 
     //    File
+    void inject(FileOverviewFragment fileOverviewFragment);
+
     void inject(FileFragment fileFragment);
 
     //    Settings

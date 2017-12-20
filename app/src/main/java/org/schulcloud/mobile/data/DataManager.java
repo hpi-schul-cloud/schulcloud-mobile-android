@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.data;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
@@ -227,8 +228,17 @@ public class DataManager {
         return storageContext.equals("null") ? "users/" + this.getCurrentUserId() + "/" : storageContext + "/";
     }
 
+    private static final String FILES_CONTEXT_MY = "users/";
+    private static final String FILES_CONTEXT_COURSES = "courses/";
+
     public void setCurrentStorageContext(String newStorageContext) {
         mPreferencesHelper.saveCurrentStorageContext(newStorageContext);
+    }
+    public void setCurrentStorageContextToMy() {
+        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_MY + getCurrentUserId());
+    }
+    public void setCurrentStorageContextToCourse(@NonNull String courseId) {
+        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_COURSES + courseId);
     }
 
     /**** NotificationService ****/

@@ -36,6 +36,13 @@
         <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
     </style>
 
+    <style name="Icon">
+        <item name="android:width">20dp</item>
+        <item name="android:height">20dp</item>
+    </style>
+    <style name="Icon.Inverse">
+        <item name="android:color">?android:attr/textColorPrimaryInverse</item>
+    </style>
 
     <style name="Preference.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:padding">@dimen/settings_preference_padding</item>
@@ -57,6 +64,16 @@
         <item name="android:clickable">false</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
+
+    <style name="FileOverview.Card" parent="Material.Card.Margin">
+        <item name="contentPadding">0dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+    <style name="FileOverview.Card_Icon" parent="Icon" />
+    <style name="FileOverview.Card_Title" parent="TextAppearance.AppCompat.Title.Inverse" />
+    <style name="FileOverview.Card_FileCount" parent="TextAppearance.AppCompat.Subhead.Inverse" />
+    <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
+    <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
 
     <!-- Material Design -->
     <style name="Material" />

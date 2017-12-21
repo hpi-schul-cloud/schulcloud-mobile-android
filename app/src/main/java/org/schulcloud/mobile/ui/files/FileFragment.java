@@ -95,7 +95,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
             startService(DirectorySyncService.getStartIntent(getContext()));
         }
 
-        mFilesUtil = new InternalFilesUtil(getContext());
+        mFilesUtil = new InternalFilesUtil(getActivity());
     }
     @Nullable
     @Override

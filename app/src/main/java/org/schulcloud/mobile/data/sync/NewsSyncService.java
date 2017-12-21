@@ -8,12 +8,16 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
+<<<<<<< 1faa04727458a2e67d8779f85a46c262c241d005
 import org.schulcloud.mobile.data.DataManager;
 <<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
 =======
 import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
 import org.schulcloud.mobile.data.model.News;
 >>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
+=======
+import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
+>>>>>>> removed usage of DatabaseHelper and DatManager completely in code, cleaned up imports( removed DataManager and DatabaseHelper from Imports)
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
 import org.schulcloud.mobile.util.RxUtil;

@@ -3,7 +3,6 @@ package org.schulcloud.mobile.ui.feedback;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.User;

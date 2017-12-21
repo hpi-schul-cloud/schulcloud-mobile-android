@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.courses.CourseFragment;

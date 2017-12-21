@@ -2,11 +2,8 @@ package org.schulcloud.mobile.ui.courses.detailed;
 
 import android.support.annotation.NonNull;
 
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
-import org.schulcloud.mobile.data.model.Course;
-import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;

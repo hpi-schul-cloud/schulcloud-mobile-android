@@ -1,8 +1,8 @@
 package org.schulcloud.mobile.ui.dashboard;
 
+
 import android.support.annotation.NonNull;
 
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;

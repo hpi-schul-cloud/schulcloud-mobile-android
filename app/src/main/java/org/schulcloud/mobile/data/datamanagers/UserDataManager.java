@@ -1,9 +1,7 @@
 package org.schulcloud.mobile.data.datamanagers;
 
-import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.UserDatabaseHelper;
-import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;

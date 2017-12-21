@@ -5,7 +5,16 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
+import org.schulcloud.mobile.data.datamanagers.EventDataManager;
+import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
+import org.schulcloud.mobile.data.datamanagers.FileDataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
+import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
+import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
+import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.injection.ApplicationContext;
 import dagger.Module;
@@ -47,8 +56,62 @@ public class ApplicationTestModule {
 
     @Provides
     @Singleton
-    DataManager provideDataManager() {
-        return mock(DataManager.class);
+    UserDataManager provideUserDataManager() {
+        return mock(UserDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    EventDataManager provideEventDataManager() {
+        return mock(EventDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    CourseDataManager provideCourseDataManager() {
+        return mock(CourseDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    FeedbackDataManager provideFeedbackDataManager() {
+        return mock(FeedbackDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    FileDataManager provideFileDataManager() {
+        return mock(FileDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    HomeworkDataManager provideHomeworkDataManager() {
+        return mock(HomeworkDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    NewsDataManager provideNewsDataManager() {
+        return mock(NewsDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    NotificationDataManager provideNotificationDataManager() {
+        return mock(NotificationDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    SubmissionDataManager provideSubmissionDataManager() {
+        return mock(SubmissionDataManager.class);
+    }
+
+    @Provides
+    @Singleton
+    TopicDataManager provideTopicDataManager() {
+        return mock(TopicDataManager.class);
     }
 
     @Provides

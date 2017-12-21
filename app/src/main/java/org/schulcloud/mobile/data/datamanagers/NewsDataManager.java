@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.data.datamanagers;
 
-import org.schulcloud.mobile.data.local.DatabaseHelper;
+import org.schulcloud.mobile.data.local.NewsDatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.data.remote.RestService;
@@ -20,7 +20,7 @@ import rx.Observable;
 public class NewsDataManager {
 
     private final RestService mRestService;
-    private final DatabaseHelper mDatabaseHelper;
+    private final NewsDatabaseHelper mNewsDatabaseHelper;
 
     @Inject
     PreferencesHelper mPreferencesHelper;
@@ -29,10 +29,10 @@ public class NewsDataManager {
 
     @Inject
     public NewsDataManager(RestService restService, PreferencesHelper preferencesHelper,
-                               DatabaseHelper databaseHelper) {
+                               NewsDatabaseHelper newsDatabaseHelper) {
         mRestService = restService;
         mPreferencesHelper = preferencesHelper;
-        mDatabaseHelper = databaseHelper;
+        mNewsDatabaseHelper = newsDatabaseHelper;
     }
 
     public PreferencesHelper getPreferencesHelper() {
@@ -40,16 +40,16 @@ public class NewsDataManager {
     }
 
     public Observable<List<News>> getNews() {
-        return mDatabaseHelper.getNews();
+        return mNewsDatabaseHelper.getNews();
     }
     public News getNewsForId(String newsId) {
-        return mDatabaseHelper.getNewsForId(newsId);
+        return mNewsDatabaseHelper.getNewsForId(newsId);
     }
     public Observable<News> syncNews() {
         return mRestService.getNews(userDataManager.getAccessToken())
                 .concatMap(newsFeathersResponse -> {
-                    mDatabaseHelper.clearTable(News.class);
-                    return mDatabaseHelper.setNews(newsFeathersResponse.data);
+                    mNewsDatabaseHelper.clearTable(News.class);
+                    return mNewsDatabaseHelper.setNews(newsFeathersResponse.data);
                 }).doOnError(Throwable::printStackTrace);
     }
 }

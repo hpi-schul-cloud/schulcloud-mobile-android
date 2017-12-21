@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Homework;

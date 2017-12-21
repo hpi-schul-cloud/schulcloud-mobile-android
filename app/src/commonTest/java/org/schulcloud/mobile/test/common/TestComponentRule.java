@@ -8,6 +8,7 @@ import org.junit.runners.model.Statement;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.test.common.injection.component.DaggerTestComponent;
 import org.schulcloud.mobile.test.common.injection.component.TestComponent;
 import org.schulcloud.mobile.test.common.injection.module.ApplicationTestModule;
@@ -36,8 +37,8 @@ public class TestComponentRule implements TestRule {
         return mContext;
     }
 
-    public DataManager getMockDataManager() {
-        return mTestComponent.dataManager();
+    public UserDataManager getMockUserDataManager() {
+        return mTestComponent.userDataManager();
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.schulcloud.mobile.ui.homework.add;
 
 import android.support.annotation.NonNull;
 
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;

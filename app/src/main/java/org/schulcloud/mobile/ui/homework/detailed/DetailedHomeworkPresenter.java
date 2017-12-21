@@ -2,12 +2,15 @@ package org.schulcloud.mobile.ui.homework.detailed;
 
 import android.support.annotation.NonNull;
 
+<<<<<<< 488a63dc89c06296c9017298deab1621e8f58c25
 import org.schulcloud.mobile.data.DataManager;
 <<<<<<< 9cba5cf22b8ef44549486cd749b09223db48fc3e
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
 =======
 >>>>>>> split DataManagers/DatabaseHelpers and updated for the new builds, need to fix Tests
+=======
+>>>>>>> removed usage of DatabaseHelper and DatManager completely in code, cleaned up imports( removed DataManager and DatabaseHelper from Imports)
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;

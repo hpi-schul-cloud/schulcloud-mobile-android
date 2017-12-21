@@ -1,9 +1,6 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.local.DatabaseHelper;
-import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.local.SubmissionDatabaseHelper;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.remote.RestService;

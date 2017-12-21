@@ -6,17 +6,6 @@ import android.util.Log;
 
 import org.schulcloud.mobile.util.Action;
 import org.schulcloud.mobile.util.SuperNotCalledException;
-import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
-import org.schulcloud.mobile.data.datamanagers.EventDataManager;
-import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
-import org.schulcloud.mobile.data.datamanagers.FileDataManager;
-import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
-import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
-import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
-import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
-import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
-import org.schulcloud.mobile.data.datamanagers.UserDataManager;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

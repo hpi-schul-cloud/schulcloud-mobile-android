@@ -1,11 +1,8 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import android.support.annotation.NonNull;
-
-import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.TopicsDatabaseHelper;
-import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.remote.RestService;

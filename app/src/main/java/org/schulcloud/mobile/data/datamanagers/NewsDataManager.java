@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import org.schulcloud.mobile.data.local.NewsDatabaseHelper;
-import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.data.remote.RestService;
@@ -12,10 +11,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
-
-/**
- * Created by araknor on 01.12.17.
- */
 
 @Singleton
 public class NewsDataManager {

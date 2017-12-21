@@ -41,11 +41,11 @@
 
     <!--Files-->
     <string name="files_title">Dateien</string>
-    <plurals name="filesOverview_fileCount">
-        <item quantity="zero">%d Dateien</item>
-        <item quantity="one">%d Datei</item>
-        <item quantity="other">%d Dateien</item>
-    </plurals>
+    <string name="filesOverview_my">Persönliche Dateien</string>
+    <string name="filesOverview_my_description">Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzern teilen.</string>
+    <string name="filesOverview_courses">Kurs-Dateien</string>
+    <string name="filesOverview_courses_description">Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff.</string>
+    <string name="filesOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
     <string name="files_delete_request">Bist du dir sicher, dass du \'%1$s\' löschen möchtest?</string>
     <string name="files_delete_error_directory">Beim Löschen des Ordners ist etwas schiefgelaufen.</string>
     <string name="files_delete_error_file">Beim Löschen der Datei ist etwas schiefgelaufen.</string>

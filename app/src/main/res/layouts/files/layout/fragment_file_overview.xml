@@ -58,7 +58,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
-                            android:text="Persönliche Dateien"
+                            android:text="@string/filesOverview_my"
                             app:layout_constraintBaseline_toBaselineOf="@+id/filesOverview_my_atv_icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/filesOverview_my_atv_icon" />
@@ -78,7 +78,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzern teilen."
+                            android:text="@string/filesOverview_my_description"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/filesOverview_my_tv_divider" />
@@ -124,7 +124,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
-                            android:text="Kurs-Dateien"
+                            android:text="@string/filesOverview_courses"
                             app:layout_constraintBaseline_toBaselineOf="@+id/filesOverview_courses_atv_icon"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/filesOverview_courses_atv_icon" />
@@ -144,7 +144,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff."
+                            android:text="@string/filesOverview_courses_description"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/filesOverview_courses_tv_divider" />
@@ -167,7 +167,7 @@
                             android:layout_marginTop="4dp"
                             android:gravity="center"
                             android:minHeight="32dp"
-                            android:text="Die Kurse konnten nicht geladen werden"
+                            android:text="@string/filesOverview_courses_error"
                             android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@id/filesOverview_courses_rv_courses" />
 

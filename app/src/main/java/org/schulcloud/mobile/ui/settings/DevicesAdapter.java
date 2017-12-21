@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.model.Device;
 

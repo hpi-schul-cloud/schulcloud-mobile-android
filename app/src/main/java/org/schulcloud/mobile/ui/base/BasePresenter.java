@@ -2,7 +2,6 @@ package org.schulcloud.mobile.ui.base;
 
 import android.content.Context;
 
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;

@@ -9,7 +9,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;

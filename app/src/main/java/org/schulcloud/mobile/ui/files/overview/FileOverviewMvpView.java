@@ -9,12 +9,9 @@ import java.util.List;
 
 public interface FileOverviewMvpView extends MvpView {
 
-    void showFileCountMy(int count);
-
     void showCourses(@NonNull List<Course> courses);
 
-    void showFileCountShared(int count);
-
+    void showCoursesError();
 
     void showDirectory();
 

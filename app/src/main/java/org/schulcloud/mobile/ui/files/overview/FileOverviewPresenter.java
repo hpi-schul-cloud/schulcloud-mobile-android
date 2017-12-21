@@ -33,7 +33,8 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
         mCoursesSubscription = mDataManager.getCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        courses -> sendToView(view -> view.showCourses(courses))
+                        courses -> sendToView(view -> view.showCourses(courses)),
+                        throwable -> sendToView(FileOverviewMvpView::showCoursesError)
                 );
     }
 

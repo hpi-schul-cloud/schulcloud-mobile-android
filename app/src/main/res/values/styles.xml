@@ -37,11 +37,11 @@
     </style>
 
     <style name="Icon">
-        <item name="android:width">20dp</item>
-        <item name="android:height">20dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">24dp</item>
     </style>
     <style name="Icon.Inverse">
         <item name="android:color">?android:attr/textColorPrimaryInverse</item>
+        <item name="bootstrapBrand">secondary</item>
     </style>
 
     <style name="Preference.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
@@ -67,9 +67,12 @@
 
     <style name="FileOverview.Card" parent="Material.Card.Margin">
         <item name="contentPadding">0dp</item>
+        <item name="contentPaddingBottom">4dp</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
-    <style name="FileOverview.Card_Icon" parent="Icon" />
+    <style name="FileOverview.Card_Icon" parent="Icon.Inverse">
+        <item name="android:width">40dp</item>
+    </style>
     <style name="FileOverview.Card_Title" parent="TextAppearance.AppCompat.Title.Inverse" />
     <style name="FileOverview.Card_FileCount" parent="TextAppearance.AppCompat.Subhead.Inverse" />
     <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />

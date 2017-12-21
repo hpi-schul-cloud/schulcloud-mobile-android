@@ -35,6 +35,7 @@ import org.schulcloud.mobile.util.crypt.JWTUtil;
 import org.schulcloud.mobile.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -370,7 +371,15 @@ public class DataManager {
     }
 
     public Observable<List<Course>> getCourses() {
-        return mDatabaseHelper.getCourses().distinct();
+        return mDatabaseHelper.getCourses()
+                .distinct()
+                .map(courses -> {
+                    Collections.sort(courses, (o1, o2) ->
+                            o1.name == null
+                                    ? (o2.name == null ? 0 : -1)
+                                    : o1.name.compareTo(o2.name));
+                    return courses;
+                });
     }
 
     public Course getCourseForId(String courseId) {

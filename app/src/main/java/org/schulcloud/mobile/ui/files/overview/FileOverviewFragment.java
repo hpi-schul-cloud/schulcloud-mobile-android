@@ -11,16 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Course;
-import org.schulcloud.mobile.data.sync.DirectorySyncService;
-import org.schulcloud.mobile.data.sync.FileSyncService;
+import org.schulcloud.mobile.data.sync.CourseSyncService;
 import org.schulcloud.mobile.ui.files.FileFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
-import org.schulcloud.mobile.util.InternalFilesUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.List;
@@ -34,39 +31,22 @@ import butterknife.ButterKnife;
 public class FileOverviewFragment extends MainFragment implements FileOverviewMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
-    private static final int FILE_CHOOSE_RESULT_ACTION = 2017;
-    private static final int FILE_READER_PERMISSION_CALLBACK_ID = 44;
-    private static final int FILE_WRITER_PERMISSION_CALLBACK_ID = 43;
-
     @Inject
     FileOverviewPresenter mFileOverviewPresenter;
 
     @Inject
     CourseDirectoryAdapter mCourseDirectoryAdapter;
 
-    private InternalFilesUtil mFilesUtil;
-
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout vSwipeRefresh;
 
     @BindView(R.id.filesOverview_my_c_wrapper)
     CardView vC_myWrapper;
-    @BindView(R.id.filesOverview_my_b_open)
-    Button vB_myOpen;
-    @BindView(R.id.filesOverview_my_tv_fileCount)
-    TextView vTv_myFileCount;
 
-    @BindView(R.id.filesOverview_courses_b_open)
-    Button vB_coursesOpen;
-    @BindView(R.id.filesOverview_courses_tv_fileCount)
-    TextView vTv_coursesFileCount;
     @BindView(R.id.filesOverview_courses_rv_courses)
     RecyclerView vRv_coursesList;
-
-    @BindView(R.id.filesOverview_shared_b_open)
-    Button vB_sharedOpen;
-    @BindView(R.id.filesOverview_shared_tv_fileCount)
-    TextView vTv_sharedFileCount;
+    @BindView(R.id.filesOverview_courses_tv_coursesError)
+    TextView vTv_coursesError;
 
     @NonNull
     public static FileOverviewFragment newInstance() {
@@ -95,12 +75,8 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
 
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
-            startService(FileSyncService.getStartIntent(getContext()));
-            startService(DirectorySyncService.getStartIntent(getContext()));
-        }
-
-        mFilesUtil = new InternalFilesUtil(getActivity());
+        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true))
+            startService(CourseSyncService.getStartIntent(getContext()));
     }
     @Nullable
     @Override
@@ -113,8 +89,7 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
         ViewUtil.initSwipeRefreshColors(vSwipeRefresh);
         vSwipeRefresh.setOnRefreshListener(
                 () -> {
-                    startService(FileSyncService.getStartIntent(getContext()));
-                    startService(DirectorySyncService.getStartIntent(getContext()));
+                    startService(CourseSyncService.getStartIntent(getContext()));
 
                     new Handler().postDelayed(() -> {
                         mFileOverviewPresenter.load();
@@ -125,7 +100,6 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
         );
 
         vC_myWrapper.setOnClickListener(v -> mFileOverviewPresenter.showMyFiles());
-        vB_myOpen.setOnClickListener(v -> addFragment(FileFragment.newInstance()));
 
         vRv_coursesList.setAdapter(mCourseDirectoryAdapter);
         vRv_coursesList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -142,22 +116,16 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
     }
 
     /***** MVP View methods implementation *****/
-
-    @Override
-    public void showFileCountMy(int count) {
-        vTv_myFileCount.setText(
-                getResources().getQuantityString(R.plurals.filesOverview_fileCount, count, count));
-    }
     @Override
     public void showCourses(@NonNull List<Course> courses) {
-        //vTv_coursesFileCount.setText(
-        //        getResources().getQuantityString(R.plurals.filesOverview_fileCount, count, count));
+        vRv_coursesList.setVisibility(View.VISIBLE);
+        vTv_coursesError.setVisibility(View.GONE);
         mCourseDirectoryAdapter.setCourses(courses);
     }
     @Override
-    public void showFileCountShared(int count) {
-        vTv_sharedFileCount.setText(
-                getResources().getQuantityString(R.plurals.filesOverview_fileCount, count, count));
+    public void showCoursesError() {
+        vRv_coursesList.setVisibility(View.GONE);
+        vTv_coursesError.setVisibility(View.VISIBLE);
     }
 
     @Override

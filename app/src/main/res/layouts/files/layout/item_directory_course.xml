@@ -11,7 +11,8 @@
         android:id="@+id/directoryCourse_v_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_position="startIcon" />
+        app:layout_position="startIcon"
+        tools:background="@color/hpiOrange" />
 
     <TextView
         android:id="@+id/directoryCourse_tv_name"

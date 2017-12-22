@@ -1,7 +1,9 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.ui.base.MvpView;
@@ -11,6 +13,8 @@ import java.util.List;
 import okhttp3.ResponseBody;
 
 public interface FileMvpView extends MvpView {
+
+    void showBreadcrumbs(@NonNull String path, @Nullable Course course);
 
     void showFiles(@NonNull List<File> files);
 

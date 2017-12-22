@@ -226,20 +226,22 @@ public class DataManager {
     public String getCurrentStorageContext() {
         String storageContext = mPreferencesHelper.getCurrentStorageContext();
         // personal files are default
-        return storageContext.equals("null") ? "users/" + this.getCurrentUserId() + "/" : storageContext + "/";
+        return storageContext.equals("null")
+                ? FILES_CONTEXT_MY + "/" + getCurrentUserId() + "/"
+                : storageContext + "/";
     }
 
-    private static final String FILES_CONTEXT_MY = "users/";
-    private static final String FILES_CONTEXT_COURSES = "courses/";
+    public static final String FILES_CONTEXT_MY = "users";
+    public static final String FILES_CONTEXT_COURSES = "courses";
 
     public void setCurrentStorageContext(String newStorageContext) {
         mPreferencesHelper.saveCurrentStorageContext(newStorageContext);
     }
     public void setCurrentStorageContextToMy() {
-        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_MY + getCurrentUserId());
+        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_MY + "/" + getCurrentUserId());
     }
     public void setCurrentStorageContextToCourse(@NonNull String courseId) {
-        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_COURSES + courseId);
+        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_COURSES + "/" + courseId);
     }
 
     /**** NotificationService ****/

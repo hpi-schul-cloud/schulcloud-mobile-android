@@ -51,6 +51,13 @@ public class FilePresenter extends BasePresenter<FileMvpView> {
     }
 
     public void loadFiles() {
+        String path = mDataManager.getCurrentStorageContext();
+        if (path.startsWith(DataManager.FILES_CONTEXT_MY))
+            getViewOrThrow().showBreadcrumbs(path, null);
+        else if (path.startsWith(DataManager.FILES_CONTEXT_COURSES))
+            getViewOrThrow().showBreadcrumbs(path,
+                    mDataManager.getCourseForId(path.split("/", 3)[1]));
+
         RxUtil.unsubscribe(fileSubscription);
         fileSubscription = mDataManager.getFiles()
                 .observeOn(AndroidSchedulers.mainThread())

@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.files;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,13 +13,20 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
@@ -55,6 +63,11 @@ public class FileFragment extends MainFragment implements FileMvpView {
     private InternalFilesUtil mFilesUtil;
     private ProgressDialog mUploadProgressDialog;
     private ProgressDialog mDownloadProgressDialog;
+
+    @BindView(R.id.files_breadcrumbs_v_color)
+    View vV_breadcrumbs_color;
+    @BindView(R.id.files_breadcrumbs_tv_text)
+    TextView vTv_breadcrumbs_text;
 
     @BindView(R.id.directories_recycler_view)
     RecyclerView directoriesRecyclerView;
@@ -162,6 +175,55 @@ public class FileFragment extends MainFragment implements FileMvpView {
 
     /***** MVP View methods implementation *****/
     @Override
+    public void showBreadcrumbs(@NonNull String path, @Nullable Course course) {
+        String[] folders = path.split("/");
+        final StringBuilder currentPath = new StringBuilder(folders[0] + "/" + folders[1]);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        // Top-level directory ("Persönliche Dateien" or name and color of the course)
+        if (course == null) {
+            vV_breadcrumbs_color.setVisibility(View.GONE);
+            builder.append(getString(R.string.filesOverview_my));
+        } else {
+            vV_breadcrumbs_color.setBackgroundColor(Color.parseColor(course.color));
+            vV_breadcrumbs_color.setVisibility(View.VISIBLE);
+            builder.append(course.name);
+        }
+        builder.setSpan(new BreadcrumbClickableSpan(currentPath.toString()),
+                0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Add all subfolders
+        for (int i = 2; i < folders.length; i++) {
+            builder.append(getString(R.string.files_breadcrumbs_divider));
+            currentPath.append("/").append(folders[i]);
+            builder.append(folders[i]);
+            builder.setSpan(new BreadcrumbClickableSpan(currentPath.toString()),
+                    builder.length() - folders[i].length(), builder.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        vTv_breadcrumbs_text.setText(builder);
+        vTv_breadcrumbs_text.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+    private class BreadcrumbClickableSpan extends ClickableSpan {
+        private final String mPath;
+
+        BreadcrumbClickableSpan(@NonNull String path) {
+            mPath = path;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            mFilePresenter.goIntoDirectory(mPath);
+        }
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+        }
+    }
+
+    @Override
     public void showFiles(@NonNull List<File> files) {
         mFilesAdapter.setFiles(files);
 
@@ -171,7 +233,6 @@ public class FileFragment extends MainFragment implements FileMvpView {
         fileRecyclerView.setLayoutParams(params);
         fileRecyclerView.setNestedScrollingEnabled(false);
     }
-
     @Override
     public void showDirectories(@NonNull List<Directory> directories) {
         mDirectoriesAdapter.setDirectories(directories);

@@ -125,6 +125,10 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
         mHomeworkAdapter.setContext(getContext());
     }
     @Override
+    public void showCanCreateHomework(boolean canCreateHomework) {
+        ViewUtil.setVisibility(fabAddHomework, canCreateHomework);
+    }
+    @Override
     public void showHomeworkEmpty() {
         mHomeworkAdapter.setHomework(Collections.emptyList());
     }

@@ -20,12 +20,16 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     @Inject
     SignInPresenter mSignInPresenter;
 
-    @BindView(R.id.btn_login)
-    Button btn_login;
     @BindView(R.id.input_username)
     EditText username;
     @BindView(R.id.input_password)
     EditText password;
+    @BindView(R.id.btn_login)
+    Button login;
+    @BindView(R.id.btn_demo_student)
+    Button demoStudent;
+    @BindView(R.id.btn_demo_teacher)
+    Button demoTeacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +40,15 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
         ButterKnife.bind(this);
 
         mSignInPresenter.attachView(this);
-        btn_login.setOnClickListener(v -> mSignInPresenter
-                .signIn(username.getText().toString(), password.getText().toString()));
+        login.setOnClickListener(v -> mSignInPresenter
+                .signIn(username.getText().toString(), password.getText().toString(), false));
+
+        demoStudent.setOnClickListener(v -> mSignInPresenter.signIn(
+                getString(R.string.login_demo_student_username),
+                getString(R.string.login_demo_student_password), true));
+        demoTeacher.setOnClickListener(v -> mSignInPresenter.signIn(
+                getString(R.string.login_demo_teacher_username),
+                getString(R.string.login_demo_teacher_password), true));
     }
 
     @Override

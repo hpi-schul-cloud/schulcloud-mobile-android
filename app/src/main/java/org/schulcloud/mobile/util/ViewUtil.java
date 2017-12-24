@@ -12,7 +12,16 @@ import android.view.inputmethod.InputMethodManager;
 import org.schulcloud.mobile.R;
 
 public final class ViewUtil {
-
+    /**
+     * Converts <code>visible</code> to a visibility for a view.
+     *
+     * @param visible True if the view should be visible, false otherwise
+     * @return {@link View#VISIBLE} if <code>visible</code> is <code>true</code>, {@link View#GONE}
+     * otherwise
+     */
+    public static int boolToVisibility(boolean visible) {
+        return visible ? View.VISIBLE : View.GONE;
+    }
     /**
      * Sets the view's visibility to {@link View#VISIBLE} if <code>visible</code> is
      * <code>true</code>, and {@link View#GONE} otherwise

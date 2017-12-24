@@ -45,9 +45,6 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
     @Inject
     MainPresenter mMainPresenter;
 
-    @Inject
-    DataManager mDataManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

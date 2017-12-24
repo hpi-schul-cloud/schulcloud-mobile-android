@@ -19,8 +19,8 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
+import rx.Single;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
@@ -41,6 +41,9 @@ public class SettingsPresenterTest {
     @Before
     public void setUp() {
         mSettingsPresenter = new SettingsPresenter(mMockDataManager);
+        doReturn(Single.just(false))
+                .when(mMockDataManager)
+                .isInDemoMode();
         mSettingsPresenter.attachView(mMockSettingsMvpView);
     }
 

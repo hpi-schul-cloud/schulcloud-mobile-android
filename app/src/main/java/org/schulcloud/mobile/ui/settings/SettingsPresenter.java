@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
@@ -46,6 +47,16 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         mDataManager = dataManager;
     }
 
+    @Override
+    protected void onViewAttached(@NonNull SettingsMvpView view) {
+        super.onViewAttached(view);
+        mDataManager.isInDemoMode()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isInDemoMode -> {
+                    sendToView(v -> v.showSupportsCalendar(!isInDemoMode));
+                    sendToView(v -> v.showSupportsNotifications(!isInDemoMode));
+                });
+    }
     @Override
     protected void onViewDetached() {
         super.onViewDetached();
@@ -175,8 +186,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         mDevicesSubscription = mDataManager.deleteDevice(device.token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        voidResponse -> {},
-                        throwable -> {},
+                        voidResponse -> {
+                        },
+                        throwable -> {
+                        },
                         () -> {
                             sendToView(SettingsMvpView::reloadDevices);
                             mDataManager.getPreferencesHelper()

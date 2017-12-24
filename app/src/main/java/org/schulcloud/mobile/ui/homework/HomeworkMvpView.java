@@ -11,6 +11,8 @@ public interface HomeworkMvpView extends MvpView {
 
     void showHomework(@NonNull List<Homework> homework);
 
+    void showCanCreateHomework(boolean canCreateHomework);
+
     void showHomeworkEmpty();
 
     void showHomeworkDetail(@NonNull String homeworkId);

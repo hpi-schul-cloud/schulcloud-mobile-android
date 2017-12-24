@@ -17,6 +17,7 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
 
     private final DataManager mDataManager;
     private Subscription mCoursesSubscription;
+    private boolean mIsFirstLoad = true;
 
     @Inject
     public FileOverviewPresenter(DataManager dataManager) {
@@ -30,6 +31,16 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
     }
     public void load() {
         RxUtil.unsubscribe(mCoursesSubscription);
+
+        // Open folder directly if it is already set (e.g. from a previous session)
+        if (mIsFirstLoad
+                && mDataManager.getCurrentStorageContext().split("/", 3).length > 2) {
+            mIsFirstLoad = false;
+            getViewOrThrow().showDirectory();
+            return;
+        }
+
+        mDataManager.setCurrentStorageContextToRoot();
         mCoursesSubscription = mDataManager.getCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

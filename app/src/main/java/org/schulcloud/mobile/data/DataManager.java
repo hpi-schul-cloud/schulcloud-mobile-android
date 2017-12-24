@@ -237,6 +237,9 @@ public class DataManager {
     public void setCurrentStorageContext(String newStorageContext) {
         mPreferencesHelper.saveCurrentStorageContext(newStorageContext);
     }
+    public void setCurrentStorageContextToRoot() {
+        mPreferencesHelper.saveCurrentStorageContext("");
+    }
     public void setCurrentStorageContextToMy() {
         mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_MY + "/" + getCurrentUserId());
     }

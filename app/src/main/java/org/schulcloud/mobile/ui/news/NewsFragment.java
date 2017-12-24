@@ -97,9 +97,9 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
         return view;
     }
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mNewsPresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     @Override

@@ -110,9 +110,9 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
         return view;
     }
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mFileOverviewPresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

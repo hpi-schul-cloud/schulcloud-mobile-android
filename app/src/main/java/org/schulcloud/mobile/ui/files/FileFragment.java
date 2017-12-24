@@ -148,9 +148,9 @@ public class FileFragment extends MainFragment implements FileMvpView {
         return view;
     }
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mFilePresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     @Override

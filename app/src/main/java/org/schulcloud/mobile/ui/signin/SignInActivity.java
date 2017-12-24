@@ -41,9 +41,9 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onPause() {
         mSignInPresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     @Override

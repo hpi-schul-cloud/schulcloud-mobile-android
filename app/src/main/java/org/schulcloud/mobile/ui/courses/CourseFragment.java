@@ -99,9 +99,9 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
         return view;
     }
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mCoursePresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

@@ -83,9 +83,9 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
         return view;
     }
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mDetailedCoursePresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

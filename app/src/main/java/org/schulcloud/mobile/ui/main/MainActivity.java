@@ -70,6 +70,12 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
                     return true;
                 });
     }
+    @Override
+    protected void onPause() {
+        mMainPresenter.detachView();
+        super.onPause();
+    }
+
     private int getTabIndexById(@IdRes int tabId) {
         switch (tabId) {
             case TAB_DASHBOARD:
@@ -138,6 +144,7 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         else if (newTabIndex < oldTabIndex)
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
         transaction.replace(R.id.content, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }

@@ -113,9 +113,9 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
         return view;
     }
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mHomeworkPresenter.detachView();
-        super.onDestroy();
+        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

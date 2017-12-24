@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LongSparseArray;
 
-import org.schulcloud.mobile.BuildConfig;
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
@@ -76,6 +75,16 @@ public abstract class BaseFragment extends Fragment implements MvpView {
         }
         mActivityComponent = configPersistentComponent
                 .activityComponent(new ActivityModule(getActivity()));
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(KEY_ACTIVITY_ID, mActivityId);
+    }
+    @Override
+    public void onDestroy() {
+        sComponentsMap.remove(mActivityId);
+        super.onDestroy();
     }
 
     public ActivityComponent activityComponent() {

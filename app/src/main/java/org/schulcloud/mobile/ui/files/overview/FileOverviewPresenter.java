@@ -34,7 +34,7 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
 
         // Open folder directly if it is already set (e.g. from a previous session)
         if (mIsFirstLoad
-                && mDataManager.getCurrentStorageContext().split("/", 3).length > 2) {
+                && mDataManager.getCurrentStorageContext().split("/", 3).length >= 2) {
             mIsFirstLoad = false;
             getViewOrThrow().showDirectory();
             return;

@@ -154,7 +154,6 @@ public class DataManager {
 
     public Observable<List<File>> getFiles() {
         return mDatabaseHelper.getFiles()
-                .distinctUntilChanged()
                 .map(files -> {
                     List<File> filteredFiles = new ArrayList<>();
                     String currentContext = getCurrentStorageContext();
@@ -186,7 +185,6 @@ public class DataManager {
     @NonNull
     public Observable<List<Directory>> getDirectories() {
         return mDatabaseHelper.getDirectories()
-                .distinctUntilChanged()
                 .map(directories -> {
                     List<Directory> filteredDirectories = new ArrayList<>();
                     String currentContext = getCurrentStorageContext();

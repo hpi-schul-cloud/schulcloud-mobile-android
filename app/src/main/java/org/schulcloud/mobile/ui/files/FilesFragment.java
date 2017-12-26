@@ -33,7 +33,9 @@ import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.DialogUtil;
 import org.schulcloud.mobile.util.InternalFilesUtil;
+import org.schulcloud.mobile.util.PathUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.List;
@@ -42,27 +44,25 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 
-public class FileFragment extends MainFragment implements FileMvpView {
+public class FilesFragment extends MainFragment implements FilesMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
-    private static final int FILE_CHOOSE_RESULT_ACTION = 2017;
-    private static final int FILE_READER_PERMISSION_CALLBACK_ID = 44;
-    private static final int FILE_WRITER_PERMISSION_CALLBACK_ID = 43;
+    @Inject
+    FilesPresenter mFilesPresenter;
 
     @Inject
-    FilePresenter mFilePresenter;
-
+    InternalFilesUtil mFilesUtil;
     @Inject
     FilesAdapter mFilesAdapter;
     @Inject
     DirectoriesAdapter mDirectoriesAdapter;
 
-    private InternalFilesUtil mFilesUtil;
-    private ProgressDialog mUploadProgressDialog;
-    private ProgressDialog mDownloadProgressDialog;
+    private ProgressDialog mFileUploadProgressDialog;
+    private ProgressDialog mFileDownloadProgressDialog;
 
     @BindView(R.id.files_breadcrumbs_v_color)
     View vV_breadcrumbs_color;
@@ -78,7 +78,8 @@ public class FileFragment extends MainFragment implements FileMvpView {
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
-    public static FileFragment newInstance() {
+    @NonNull
+    public static FilesFragment newInstance() {
         return newInstance(true);
     }
     /**
@@ -88,14 +89,15 @@ public class FileFragment extends MainFragment implements FileMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
-    public static FileFragment newInstance(boolean triggerDataSyncOnCreate) {
-        FileFragment fileFragment = new FileFragment();
+    @NonNull
+    public static FilesFragment newInstance(boolean triggerDataSyncOnCreate) {
+        FilesFragment filesFragment = new FilesFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_TRIGGER_SYNC, triggerDataSyncOnCreate);
-        fileFragment.setArguments(args);
+        filesFragment.setArguments(args);
 
-        return fileFragment;
+        return filesFragment;
     }
 
     @Override
@@ -104,16 +106,14 @@ public class FileFragment extends MainFragment implements FileMvpView {
         activityComponent().inject(this);
 
         if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
-            startService(FileSyncService.getStartIntent(getContext()));
-            startService(DirectorySyncService.getStartIntent(getContext()));
+            restartService(FileSyncService.getStartIntent(getContext()));
+            restartService(DirectorySyncService.getStartIntent(getContext()));
         }
-
-        mFilesUtil = new InternalFilesUtil(getActivity());
     }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         ButterKnife.bind(this, view);
         setTitle(R.string.files_title);
@@ -124,59 +124,39 @@ public class FileFragment extends MainFragment implements FileMvpView {
         directoriesRecyclerView.setAdapter(mDirectoriesAdapter);
         directoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fileUploadButton.setOnClickListener(v -> startFileChoosing());
-
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
-        swipeRefresh.setOnRefreshListener(
-                () -> {
-                    startService(FileSyncService.getStartIntent(getContext()));
-                    startService(DirectorySyncService.getStartIntent(getContext()));
+        swipeRefresh.setOnRefreshListener(() -> {
+            reloadFiles();
+            reloadDirectories();
 
-                    new Handler().postDelayed(() -> {
-                        mFilePresenter.loadFiles();
-                        mFilePresenter.loadDirectories();
-
-                        swipeRefresh.setRefreshing(false);
-                    }, 3000);
-                }
-        );
-
-        mFilePresenter.attachView(this);
-        mFilePresenter.loadFiles();
-        mFilePresenter.loadDirectories();
+            // Realm doesn't trigger a notification if a table was and stays empty, so in case of a
+            // manual refresh in an empty directory the refresh indicator would never terminate.
+            new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
+        });
 
         return view;
     }
     @Override
+    public void onResume() {
+        super.onResume();
+        mFilesPresenter.attachView(this);
+    }
+    @Override
     public void onPause() {
-        mFilePresenter.detachView();
+        mFilesPresenter.detachView();
         super.onPause();
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FILE_CHOOSE_RESULT_ACTION:
-                if (data != null) {
-                    java.io.File file = mFilesUtil.getFileFromContentPath(data.getData());
-                    mFilePresenter.uploadFileToServer(file);
-                }
-                break;
-
-            default:
-                super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
     public boolean onBackPressed() {
-        return mFilePresenter.stepOneDirectoryBack();
+        return mFilesPresenter.onBackSelected();
     }
+
 
     /***** MVP View methods implementation *****/
     @Override
     public void showBreadcrumbs(@NonNull String path, @Nullable Course course) {
-        String[] folders = path.split("/");
+        String[] folders = PathUtil.getAllParts(path);
         final StringBuilder currentPath = new StringBuilder(folders[0] + "/" + folders[1]);
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
@@ -214,7 +194,7 @@ public class FileFragment extends MainFragment implements FileMvpView {
 
         @Override
         public void onClick(View widget) {
-            mFilePresenter.goIntoDirectory(mPath);
+            mFilesPresenter.onDirectorySelected(mPath);
         }
         @Override
         public void updateDrawState(TextPaint ds) {
@@ -223,9 +203,17 @@ public class FileFragment extends MainFragment implements FileMvpView {
         }
     }
 
+
+    /* File load */
+    @Override
+    public void reloadFiles() {
+        swipeRefresh.setRefreshing(true);
+        restartService(FileSyncService.getStartIntent(getContext()));
+    }
     @Override
     public void showFiles(@NonNull List<File> files) {
         mFilesAdapter.setFiles(files);
+        swipeRefresh.setRefreshing(false);
 
         // adjust height of recycler view (bugfix for nested scrolling)
         ViewGroup.LayoutParams params = fileRecyclerView.getLayoutParams();
@@ -234,142 +222,132 @@ public class FileFragment extends MainFragment implements FileMvpView {
         fileRecyclerView.setNestedScrollingEnabled(false);
     }
     @Override
-    public void showDirectories(@NonNull List<Directory> directories) {
-        mDirectoriesAdapter.setDirectories(directories);
+    public void showFilesLoadError() {
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_fileLoad_error)
+                .show();
     }
 
+    /* File download */
     @Override
-    public void showCanCreateFile(boolean canCreateFile) {
-        ViewUtil.setVisibility(fileUploadButton, canCreateFile);
+    public void showFileDownloadStarted() {
+        mFileDownloadProgressDialog = DialogFactory.createProgressDialog(getContext(),
+                R.string.files_fileDownload_progress);
+        mFileDownloadProgressDialog.show();
     }
+    @Override
+    public void showFile(@NonNull String url, @NonNull String mimeType, @NonNull String extension) {
+        DialogUtil.cancel(mFileDownloadProgressDialog);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), mimeType);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null)
+            startActivity(intent);
+        else
+            DialogFactory.createGenericErrorDialog(getContext(),
+                    getString(R.string.files_fileDownload_error_cantResolve, extension))
+                    .show();
+    }
+    @Override
+    public void saveFile(@NonNull String fileName, @NonNull ResponseBody body) {
+        DialogUtil.cancel(mFileDownloadProgressDialog);
+
+        permissionsDeniedToError(requestPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .subscribe(
+                        results -> mFilesUtil.writeResponseBodyToDisk(fileName, body),
+                        throwable -> DialogFactory.createGenericErrorDialog(getContext(),
+                                R.string.files_fileDownload_error_savePermissionDenied));
+    }
+    @Override
+    public void showFileDownloadError() {
+        DialogUtil.cancel(mFileDownloadProgressDialog);
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_fileDownload_error)
+                .show();
+    }
+
+    /* File upload */
+    @Override
+    public void showCanUploadFile(boolean canUploadFile) {
+        ViewUtil.setVisibility(fileUploadButton, canUploadFile);
+    }
+    @OnClick(R.id.files_upload)
+    void startFileUploadChoosing() {
+        permissionsDeniedToError(requestPermissions(Manifest.permission.READ_EXTERNAL_STORAGE))
+                .flatMap(results -> mFilesUtil.openFileChooser())
+                .subscribe(
+                        file -> mFilesPresenter.onFileUploadSelected(file),
+                        throwable -> DialogFactory.createGenericErrorDialog(getContext(),
+                                R.string.files_fileUpload_error_readPermissionDenied)
+                );
+    }
+    @Override
+    public void showFileUploadStarted() {
+        mFileUploadProgressDialog = DialogFactory.createProgressDialog(getContext(),
+                R.string.files_fileUpload_progress);
+        mFileUploadProgressDialog.show();
+
+    }
+    @Override
+    public void showFileUploadSuccess() {
+        DialogUtil.cancel(mFileUploadProgressDialog);
+        DialogFactory.createSuperToast(getContext(), getString(R.string.files_fileUpload_success),
+                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
+    }
+    @Override
+    public void showFileUploadError() {
+        DialogUtil.cancel(mFileUploadProgressDialog);
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_fileUpload_error)
+                .show();
+    }
+
+    /* File deletion */
     @Override
     public void showCanDeleteFiles(boolean canDeleteFiles) {
         mFilesAdapter.setCanDeleteFiles(canDeleteFiles);
     }
     @Override
-    public void showCanDeleteDirectories(boolean canDeleteDirectories) {
-        mDirectoriesAdapter.setCanDeleteDirectories(canDeleteDirectories);
-    }
-
-    @Override
-    public void showError() {
-        DialogFactory.createGenericErrorDialog(getContext(), getString(R.string.files_fetch_error))
-                .show();
-    }
-
-    @Override
-    public void showLoadingFileFromServerError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_load_error)
-                .show();
-    }
-
-    @Override
-    public void showFile(@NonNull String url, @NonNull String mimeType) {
-        if (mDownloadProgressDialog != null && mDownloadProgressDialog.isShowing())
-            mDownloadProgressDialog.cancel();
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(url), mimeType);
-        startActivity(intent);
-    }
-
-    @Override
-    public void showUploadFileError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_upload_error)
-                .show();
-    }
-
-    @Override
-    public void reloadFiles() {
-        if (mUploadProgressDialog != null && mUploadProgressDialog.isShowing())
-            mUploadProgressDialog.cancel();
-
-        stopService(FileSyncService.getStartIntent(getContext()));
-        stopService(DirectorySyncService.getStartIntent(getContext()));
-
-        startService(FileSyncService.getStartIntent(getContext()));
-        startService(DirectorySyncService.getStartIntent(getContext()));
-
-        mFilePresenter.loadFiles();
-        mFilePresenter.loadDirectories();
-    }
-
-    @Override
-    public void saveFile(@NonNull ResponseBody body, @NonNull String fileName) {
-        if (mDownloadProgressDialog != null && mDownloadProgressDialog.isShowing())
-            mDownloadProgressDialog.cancel();
-
-        if (checkPermissions(FILE_WRITER_PERMISSION_CALLBACK_ID,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            mFilesUtil.writeResponseBodyToDisk(body, fileName);
-    }
-
-    @Override
-    public void startFileChoosing() {
-        if (checkPermissions(FILE_READER_PERMISSION_CALLBACK_ID,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            mUploadProgressDialog = DialogFactory.createProgressDialog(getContext(),
-                    R.string.files_upload_progress);
-            mUploadProgressDialog.show();
-
-            // show file chooser
-            this.mFilesUtil.openFileChooser(FILE_CHOOSE_RESULT_ACTION);
-        }
-    }
-
-    @Override
-    public void startDownloading(@NonNull File file, boolean download) {
-        mDownloadProgressDialog = DialogFactory.createProgressDialog(getContext(),
-                R.string.files_download_progress);
-        mDownloadProgressDialog.show();
-        mFilePresenter.loadFileFromServer(file, download);
-    }
-
-    /* File deletion */
-    @Override
-    public void startFileDeleting(@NonNull String path, @NonNull String fileName) {
-        DialogFactory.createSimpleOkCancelDialog(
-                getContext(),
-                this.getResources().getString(R.string.files_dialog_delete_title),
-                this.getResources().getString(R.string.files_delete_request, fileName))
-                .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) ->
-                        mFilePresenter.deleteFile(path))
-                .show();
-    }
-    @Override
     public void showFileDeleteSuccess() {
         DialogFactory.createSuperToast(getContext(),
-                getResources().getString(R.string.files_delete_success_file),
+                getString(R.string.files_fileDelete_success),
                 PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
-        reloadFiles();
     }
     @Override
     public void showFileDeleteError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_delete_error_file)
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_fileDelete_error)
+                .show();
+    }
+
+
+    /* Directory load */
+    @Override
+    public void reloadDirectories() {
+        swipeRefresh.setRefreshing(true);
+        restartService(DirectorySyncService.getStartIntent(getContext()));
+    }
+    @Override
+    public void showDirectories(@NonNull List<Directory> directories) {
+        mDirectoriesAdapter.setDirectories(directories);
+        swipeRefresh.setRefreshing(false);
+    }
+    @Override
+    public void showDirectoriesLoadError() {
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_directoryLoad_error)
                 .show();
     }
 
     /* Directory deletion */
     @Override
-    public void startDirectoryDeleting(@NonNull String path, @NonNull String dirName) {
-        DialogFactory.createSimpleOkCancelDialog(
-                getContext(),
-                this.getResources().getString(R.string.files_dialog_delete_title),
-                this.getResources().getString(R.string.files_delete_request, dirName))
-                .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) ->
-                        mFilePresenter.deleteDirectory(path))
-                .show();
+    public void showCanDeleteDirectories(boolean canDeleteDirectories) {
+        mDirectoriesAdapter.setCanDeleteDirectories(canDeleteDirectories);
     }
     @Override
     public void showDirectoryDeleteSuccess() {
         DialogFactory.createSuperToast(getContext(),
-                getResources().getString(R.string.files_delete_success_directory),
+                getString(R.string.files_directoryDelete_success),
                 PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
-        reloadFiles();
     }
     @Override
     public void showDirectoryDeleteError() {
-        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_delete_error_directory)
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_directoryDelete_error)
                 .show();
     }
 }

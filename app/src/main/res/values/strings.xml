@@ -55,19 +55,28 @@
     <string name="filesOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
     <string name="files_breadcrumbs_divider">\u0020/\u0020</string>
     <string name="files_breadcrumbs_my">@string/filesOverview_my</string>
-    <string name="files_delete_request">Bist du dir sicher, dass du \'%1$s\' löschen möchtest?</string>
-    <string name="files_delete_error_directory">Beim Löschen des Ordners ist etwas schiefgelaufen.</string>
-    <string name="files_delete_error_file">Beim Löschen der Datei ist etwas schiefgelaufen.</string>
-    <string name="files_delete_success_directory">Ordner wurde erfolgreich gelöscht.</string>
-    <string name="files_delete_success_file">Datei wurde erfolgreich gelöscht.</string>
-    <string name="files_download_progress">Datei wird vom Server heruntergeladen&#8230;</string>
-    <string name="files_fetch_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
-    <string name="files_load_error">Die Datei konnte nicht geladen werden</string>
-    <string name="files_upload_progress">Datei wird zum Server hochgeladen&#8230;</string>
-    <string name="files_upload_error">Beim Hochladen der Datei ist etwas schiefgelaufen.</string>
-    <string name="files_save_error">Die Datei konnte nicht gespeichert werden</string>
-    <string name="files_save_success">Datei %1$s wurde erfolgreich in Downloads gespeichert!</string>
-    <string name="files_dialog_delete_title">Löschen</string>
+    <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
+    <string name="files_fileDownload_progress">Die Datei wird geladen&#8230;</string>
+    <string name="files_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
+    <string name="files_fileDownload_error">Die Datei konnte nicht geladen werden</string>
+    <string name="files_fileDownload_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
+    <string name="files_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
+    <string name="files_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
+    <string name="files_fileUpload_progress">Datei wird hochgeladen&#8230;</string>
+    <string name="files_fileUpload_success">Datei wurde hochgeladen</string>
+    <string name="files_fileUpload_error">Beim Hochladen der Datei ist etwas schiefgelaufen</string>
+    <string name="files_fileUpload_error_readPermissionDenied">Ohne die Berechtigung kann keine Datei zum Upload ausgewählt werden</string>
+    <string name="files_fileDelete_dialogTitle">Löschen</string>
+    <string name="files_fileDelete_request">Bist du dir sicher, dass du die Datei \'%1$s\' löschen möchtest?</string>
+    <string name="files_fileDelete_success">Datei wurde erfolgreich gelöscht.</string>
+    <string name="files_fileDelete_error">Beim Löschen der Datei ist etwas schiefgelaufen</string>
+    <string name="files_directoryLoad_error">Oops! Irgendwas ist beim Laden der Ordner schief gelaufen!</string>
+    <string name="files_directoryDelete_dialogTitle">Löschen</string>
+    <string name="files_directoryDelete_request">Bist du dir sicher, dass du die Datei \'%1$s\' löschen möchtest?</string>
+    <string name="files_directoryDelete_success">Ordner wurde erfolgreich gelöscht</string>
+    <string name="files_directoryDelete_error">Beim Löschen des Ordners ist etwas schiefgelaufen</string>
+
+
 
     <!--Courses-->
     <string name="courses_title">Kurse</string>

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.sync.CourseSyncService;
-import org.schulcloud.mobile.ui.files.FileFragment;
+import org.schulcloud.mobile.ui.files.FilesFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.util.ViewUtil;
 
@@ -130,6 +130,6 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
 
     @Override
     public void showDirectory() {
-        addFragment(FileFragment.newInstance());
+        addFragment(FilesFragment.newInstance());
     }
 }

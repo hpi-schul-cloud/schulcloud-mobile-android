@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.files;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import butterknife.ButterKnife;
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> {
 
     @Inject
-    FilePresenter mFilesPresenter;
+    FilesPresenter mFilesPresenter;
 
     private List<File> mFiles;
     private boolean mCanDeleteFiles;
@@ -46,21 +48,29 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     @Override
     public FilesAdapter.FilesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_file, parent, false);
-        return new FilesAdapter.FilesViewHolder(itemView);
+        FilesViewHolder holder = new FilesViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_file, parent, false));
+        ViewUtil.setVisibility(holder.deleteIcon, mCanDeleteFiles);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(FilesAdapter.FilesViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         File file = mFiles.get(position);
-        holder.nameTextView.setText(file.name);
-        holder.cardView.setOnClickListener(v -> mFilesPresenter.startDownloading(file, false));
-        holder.downloadIcon.setOnClickListener(v -> mFilesPresenter.startDownloading(file, true));
 
-        ViewUtil.setVisibility(holder.deleteIcon, mCanDeleteFiles);
+        holder.nameTextView.setText(file.name);
+        holder.cardView.setOnClickListener(v -> mFilesPresenter.onFileSelected(file));
+        holder.downloadIcon.setOnClickListener(v -> mFilesPresenter.onFileDownloadSelected(file));
+
         holder.deleteIcon.setOnClickListener(
-                v -> mFilesPresenter.startFileDeleting(file.key, file.name));
+                v -> DialogFactory.createSimpleOkCancelDialog(
+                        context,
+                        context.getString(R.string.files_fileDelete_dialogTitle),
+                        context.getString(R.string.files_fileDelete_request, file.name))
+                        .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) ->
+                                mFilesPresenter.onFileDeleteSelected(file))
+                        .show());
     }
 
     @Override

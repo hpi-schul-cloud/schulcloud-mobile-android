@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -28,11 +27,11 @@ import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
-import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
-import org.schulcloud.mobile.util.crypt.JWTUtil;
 import org.schulcloud.mobile.util.Pair;
+import org.schulcloud.mobile.util.PathUtil;
+import org.schulcloud.mobile.util.crypt.JWTUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +57,7 @@ public class DataManager {
 
     @Inject
     public DataManager(RestService restService, PreferencesHelper preferencesHelper,
-                       DatabaseHelper databaseHelper) {
+            DatabaseHelper databaseHelper) {
         mRestService = restService;
         mPreferencesHelper = preferencesHelper;
         mDatabaseHelper = databaseHelper;
@@ -81,7 +80,7 @@ public class DataManager {
     }
 
     public Observable<List<User>> getUsers() {
-        return mDatabaseHelper.getUsers().distinct();
+        return mDatabaseHelper.getUsers().distinctUntilChanged();
     }
 
     public String getAccessToken() {
@@ -135,86 +134,88 @@ public class DataManager {
     /**** FileStorage ****/
 
     public Observable<File> syncFiles(String path) {
-        return mRestService.getFiles(getAccessToken(), path)
-                .concatMap(new Func1<FilesResponse, Observable<File>>() {
-                    @Override
-                    public Observable<File> call(FilesResponse filesResponse) {
-                        // clear old files
-                        mDatabaseHelper.clearTable(File.class);
+        return mRestService.getFiles(getAccessToken(), path + "/")
+                .concatMap(filesResponse -> {
+                    // clear old files
+                    mDatabaseHelper.clearTable(File.class);
 
-                        List<File> files = new ArrayList<>();
+                    List<File> files = new ArrayList<>();
 
-                        // set fullPath for every file
-                        for (File file : filesResponse.files) {
-                            file.fullPath = file.key.substring(0,
-                                    file.key.lastIndexOf(java.io.File.separator));
-                            files.add(file);
-                        }
-
-                        return mDatabaseHelper.setFiles(files);
+                    // set fullPath for every file
+                    for (File file : filesResponse.files) {
+                        file.fullPath = file.key.substring(0,
+                                file.key.lastIndexOf(java.io.File.separator));
+                        files.add(file);
                     }
+
+                    return mDatabaseHelper.setFiles(files);
                 }).doOnError(Throwable::printStackTrace);
     }
 
     public Observable<List<File>> getFiles() {
-        return mDatabaseHelper.getFiles().distinct().concatMap(files -> {
-            List<File> filteredFiles = new ArrayList<File>();
-            String currentContext = getCurrentStorageContext();
-            // remove last trailing slash
-            if (!currentContext.equals("/") && currentContext.endsWith("/")) {
-                currentContext = currentContext.substring(0, currentContext.length() - 1);
-            }
+        return mDatabaseHelper.getFiles()
+                .distinctUntilChanged()
+                .map(files -> {
+                    List<File> filteredFiles = new ArrayList<>();
+                    String currentContext = getCurrentStorageContext();
 
-            for (File f : files) {
-                if (f.fullPath.equals(currentContext)) filteredFiles.add(f);
-            }
-            return Observable.just(filteredFiles);
-        });
+                    for (File f : files)
+                        if (f.fullPath.equals(currentContext))
+                            filteredFiles.add(f);
+                    return filteredFiles;
+                });
     }
 
-    public Observable<Directory> syncDirectories(String path) {
-        return mRestService.getFiles(getAccessToken(), path)
-                .concatMap(new Func1<FilesResponse, Observable<Directory>>() {
-                    @Override
-                    public Observable<Directory> call(FilesResponse filesResponse) {
-                        // clear old directories
-                        mDatabaseHelper.clearTable(Directory.class);
+    @NonNull
+    public Observable<Directory> syncDirectories(@NonNull String path) {
+        return mRestService.getFiles(getAccessToken(), path + "/")
+                .concatMap(filesResponse -> {
+                    // clear old directories
+                    mDatabaseHelper.clearTable(Directory.class);
 
-                        List<Directory> improvedDirs = new ArrayList<Directory>();
-                        for (Directory d : filesResponse.directories) {
-                            d.path = getCurrentStorageContext();
-                            improvedDirs.add(d);
-                        }
-
-                        return mDatabaseHelper.setDirectories(improvedDirs);
+                    List<Directory> improvedDirs = new ArrayList<>();
+                    for (Directory d : filesResponse.directories) {
+                        d.path = getCurrentStorageContext();
+                        improvedDirs.add(d);
                     }
+
+                    return mDatabaseHelper.setDirectories(improvedDirs);
                 }).doOnError(Throwable::printStackTrace);
-
     }
 
+    @NonNull
     public Observable<List<Directory>> getDirectories() {
-        return mDatabaseHelper.getDirectories().distinct().concatMap(directories -> {
-            List<Directory> filteredDirectories = new ArrayList<Directory>();
-            for (Directory d : directories) {
-                if (d.path.equals(getCurrentStorageContext())) filteredDirectories.add(d);
-            }
-            return Observable.just(filteredDirectories);
-        });
+        return mDatabaseHelper.getDirectories()
+                .distinctUntilChanged()
+                .map(directories -> {
+                    List<Directory> filteredDirectories = new ArrayList<>();
+                    String currentContext = getCurrentStorageContext();
+
+                    for (Directory d : directories)
+                        if (d.path.equals(currentContext))
+                            filteredDirectories.add(d);
+                    return filteredDirectories;
+                });
     }
 
-    public Observable<ResponseBody> deleteDirectory(String path) {
-        return mRestService.deleteDirectory(this.getAccessToken(), path);
+    @NonNull
+    public Observable<ResponseBody> deleteDirectory(@NonNull String path) {
+        return mRestService.deleteDirectory(getAccessToken(), PathUtil.trimLeadingSlash(path));
     }
 
-    public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
-        return mRestService.generateSignedUrl(this.getAccessToken(), signedUrlRequest);
+    @NonNull
+    public Observable<SignedUrlResponse> getFileUrl(@NonNull SignedUrlRequest signedUrlRequest) {
+        return mRestService.generateSignedUrl(getAccessToken(), signedUrlRequest);
     }
 
-    public Observable<ResponseBody> downloadFile(String url) {
+    @NonNull
+    public Observable<ResponseBody> downloadFile(@NonNull String url) {
         return mRestService.downloadFile(url);
     }
 
-    public Observable<ResponseBody> uploadFile(java.io.File file, SignedUrlResponse signedUrlResponse) {
+    @NonNull
+    public Observable<ResponseBody> uploadFile(@NonNull java.io.File file,
+            @NonNull SignedUrlResponse signedUrlResponse) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("file/*"), file);
         return mRestService.uploadFile(
                 signedUrlResponse.url,
@@ -226,32 +227,35 @@ public class DataManager {
         );
     }
 
-    public Observable<ResponseBody> deleteFile(String path) {
-        return mRestService.deleteFile(this.getAccessToken(), path);
+    @NonNull
+    public Observable<ResponseBody> deleteFile(@NonNull String path) {
+        return mRestService.deleteFile(getAccessToken(), path);
     }
 
+    /**
+     * Returns the current storage context without leading or trailing slashes.
+     */
+    @NonNull
     public String getCurrentStorageContext() {
         String storageContext = mPreferencesHelper.getCurrentStorageContext();
-        // personal files are default
-        return storageContext.equals("null")
-                ? FILES_CONTEXT_MY + "/" + getCurrentUserId() + "/"
-                : storageContext + "/";
+        // Default is root (overview)
+        return (storageContext == null || storageContext.equals("null")) ? "" : storageContext;
     }
 
     public static final String FILES_CONTEXT_MY = "users";
     public static final String FILES_CONTEXT_COURSES = "courses";
 
-    public void setCurrentStorageContext(String newStorageContext) {
-        mPreferencesHelper.saveCurrentStorageContext(newStorageContext);
+    public void setCurrentStorageContext(@NonNull String newStorageContext) {
+        mPreferencesHelper.saveCurrentStorageContext(PathUtil.trimSlashes(newStorageContext));
     }
     public void setCurrentStorageContextToRoot() {
-        mPreferencesHelper.saveCurrentStorageContext("");
+        setCurrentStorageContext("");
     }
     public void setCurrentStorageContextToMy() {
-        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_MY + "/" + getCurrentUserId());
+        setCurrentStorageContext(FILES_CONTEXT_MY + "/" + getCurrentUserId());
     }
     public void setCurrentStorageContextToCourse(@NonNull String courseId) {
-        mPreferencesHelper.saveCurrentStorageContext(FILES_CONTEXT_COURSES + "/" + courseId);
+        setCurrentStorageContext(FILES_CONTEXT_COURSES + "/" + courseId);
     }
 
     /**** NotificationService ****/
@@ -283,7 +287,7 @@ public class DataManager {
     }
 
     public Observable<List<Device>> getDevices() {
-        return mDatabaseHelper.getDevices().distinct();
+        return mDatabaseHelper.getDevices().distinctUntilChanged();
     }
 
     public Observable<Response<Void>> sendCallback(CallbackRequest callbackRequest) {
@@ -309,7 +313,7 @@ public class DataManager {
     }
 
     public Observable<List<Event>> getEvents() {
-        return mDatabaseHelper.getEvents().distinct();
+        return mDatabaseHelper.getEvents().distinctUntilChanged();
     }
 
     public Observable<List<Event>> getEventsForToday() {
@@ -331,7 +335,7 @@ public class DataManager {
     }
 
     public Observable<List<Homework>> getHomework() {
-        return mDatabaseHelper.getHomework().distinct();
+        return mDatabaseHelper.getHomework().distinctUntilChanged();
     }
 
     public Homework getHomeworkForId(String homeworkId) {
@@ -361,7 +365,7 @@ public class DataManager {
     }
 
     public Observable<List<Submission>> getSubmissions() {
-        return mDatabaseHelper.getSubmissions().distinct();
+        return mDatabaseHelper.getSubmissions().distinctUntilChanged();
     }
 
     public Submission getSubmissionForId(String homeworkId) {
@@ -384,7 +388,7 @@ public class DataManager {
 
     public Observable<List<Course>> getCourses() {
         return mDatabaseHelper.getCourses()
-                .distinct()
+                .distinctUntilChanged()
                 .map(courses -> {
                     Collections.sort(courses, (o1, o2) ->
                             o1.name == null
@@ -413,7 +417,7 @@ public class DataManager {
     }
 
     public Observable<List<Topic>> getTopics() {
-        return mDatabaseHelper.getTopics().distinct();
+        return mDatabaseHelper.getTopics().distinctUntilChanged();
     }
 
     public List<Contents> getContents(String topicId) {

@@ -29,6 +29,7 @@ public class CurrentUser implements RealmModel {
     public String email;
     public String schoolId;
     public String displayName;
+    public String gender;
 
     public RealmList<RealmString> permissions;
 
@@ -93,6 +94,14 @@ public class CurrentUser implements RealmModel {
     }
     public void setPermissions(RealmList<RealmString> permissions) {
         this.permissions = permissions;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }
 

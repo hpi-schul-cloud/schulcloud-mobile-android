@@ -16,7 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
@@ -51,6 +56,9 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     public static final Integer CALENDAR_PERMISSION_CALLBACK_ID = 42;
     private static final String EXTRA_TRIGGER_SYNC = "org.schulcloud.mobile.ui.settings.SettingsActivity.EXTRA_TRIGGER_SYNC";
 
+    private CurrentUser mCurrentUser;
+    private ArrayAdapter<CharSequence> spinner_adapter;
+
     @Inject
     SettingsPresenter mSettingsPresenter;
 
@@ -72,6 +80,17 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     BootstrapButton btn_create_device;
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
+    //Profile
+    @BindView(R.id.settings_gender_spinner)
+    Spinner gender_spinner;
+    @BindView(R.id.settings_name_EditText)
+    EditText name_editText;
+    @BindView(R.id.settings_last_name_EditText)
+    EditText lastName_editText;
+    @BindView(R.id.settings_email_EditText)
+    EditText email_EditText;
+    @BindView(R.id.settings_submit)
+    Button settings_submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,11 +150,28 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         findViewById(R.id.about_privacyPolicy).setOnClickListener(v ->
                 mSettingsPresenter.showPrivacyPolicy(getResources()));
 
+        // Profile
+        settings_submit.setOnClickListener(listener -> {
+            String name = name_editText.getText().toString() != null ?
+                    name_editText.getText().toString() : mCurrentUser.firstName;
+            String last_name = lastName_editText.getText().toString() != null ?
+                    lastName_editText.getText().toString() : mCurrentUser.lastName;
+            String email = email_EditText.getText().toString() != null?
+                    email_EditText.getText().toString() : mCurrentUser.email;
+            String gender = gender_spinner.getSelectedItem().toString();
+            mSettingsPresenter.changeProfile(name,last_name,email,gender);
+        });
+        spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
+                R.layout.item_gender_spinner);
+        spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        gender_spinner.setAdapter(spinner_adapter);
+
         // Presenter
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
+        mSettingsPresenter.loadProfile();
     }
     @Override
     public void onReadArguments(Intent intent) {
@@ -272,5 +308,35 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     @Override
     public void showExternalContent(@NonNull Uri data) {
         startActivity(new Intent(Intent.ACTION_VIEW, data));
+    }
+
+    //Profile
+    @Override
+    public void showProfile(CurrentUser user) {
+        mCurrentUser = user;
+        name_editText.setText(mCurrentUser.firstName);
+        lastName_editText.setText(mCurrentUser.lastName);
+        email_EditText.setText(mCurrentUser.email);
+        gender_spinner.setSelection(spinner_adapter.getPosition(mCurrentUser.gender));
+    }
+
+    @Override
+    public void showProfileError()
+    {
+        DialogFactory.createGenericErrorDialog(this, R.string.settings_profile_loading_error).show();
+    }
+
+    @Override
+    public void showProfileChanged()
+    {
+        reloadProfile();
+        Toast.makeText(this,R.string.settings_profile_changing_error,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void reloadProfile() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        this.startActivity(intent);
+        finish();
     }
 }

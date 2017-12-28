@@ -14,9 +14,11 @@ import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.jsonApi.Included;
 import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
+import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.signin.SignInMvpView;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
@@ -38,6 +40,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
+    private Subscription mAccountSubscription;
 
     private String[] mContributors;
 
@@ -213,6 +216,34 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
     public String[] getContributors() {
         return mContributors;
+    }
+
+    /* Profile */
+    public void loadProfile()
+    {
+        mAccountSubscription = mDataManager.getCurrentUser()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        currentUser -> {
+                            getViewOrThrow().showProfile(currentUser);
+                        },
+                        throwable -> {
+                            Timber.e(throwable, "An error occured while loading the profile"
+                            );
+                            sendToView(SettingsMvpView::showProfileError);
+                        });
+    }
+
+    public void changeProfile(@NonNull String firstName, @NonNull String lastName,
+                              @NonNull String email, @NonNull String gender)
+    {
+        AccountRequest accountRequest = new AccountRequest(mDataManager.getCurrentUserId(),firstName,
+                email,lastName,mDataManager.getCurrentSchoolID(),"",gender);
+        mAccountSubscription = mDataManager.changeAccountInfo(accountRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(accountResponse -> {},
+                        throwable -> Log.e("Accounts","OnError",throwable),
+                        () -> sendToView(SettingsMvpView::reloadProfile));
     }
 
 }

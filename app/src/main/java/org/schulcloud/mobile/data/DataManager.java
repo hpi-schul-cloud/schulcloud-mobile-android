@@ -16,12 +16,14 @@ import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.AddHomeworkRequest;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.responseBodies.AccountResponse;
 import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
@@ -126,6 +128,22 @@ public class DataManager {
     }
     public Single<Boolean> isInDemoMode() {
         return Single.just(mPreferencesHelper.isInDemoMode());
+    }
+
+    public Observable<AccountResponse> changeAccountInfo(AccountRequest accountRequest) {
+        return mRestService.changeAccountInfo(
+                getAccessToken(),
+                accountRequest)
+                .concatMap(new Func1<AccountResponse, Observable<AccountResponse>>() {
+                    @Override
+                    public Observable<AccountResponse> call(AccountResponse accountResponse) {
+                        return Observable.just(accountResponse);
+                    }
+                });
+    }
+
+    public String getCurrentSchoolID() {
+        return mPreferencesHelper.getCurrentSchoolId();
     }
 
 

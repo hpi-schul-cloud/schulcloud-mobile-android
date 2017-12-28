@@ -8,4 +8,10 @@
         <item>Elias Lehnert</item>
     </string-array>
 
+    <string-array name="genderArray">
+        <item>Männlich</item>
+        <item>Weiblich</item>
+        <item>Anderes</item>
+    </string-array>
+
 </resources>

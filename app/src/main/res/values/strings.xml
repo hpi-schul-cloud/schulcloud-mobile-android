@@ -115,6 +115,16 @@
     <string name="settings_about_contact_mail_subject">Schul-Cloud Anfrage</string>
     <string name="settings_about_imprint">Impressum</string>
     <string name="settings_about_imprint_website">https://hpi.de/impressum.html</string>
+    <string name="settings_profile">Profil</string>
+    <string name="settings_name">Name</string>
+    <string name="settings_last_name">Nachnahme</string>
+    <string name="settings_gender">Geschlecht</string>
+    <string name="settings_password">Passwort</string>
+    <string name="settings_password_hint">**********</string>
+    <string name="settings_submit">Daten absenden</string>
+    <string name="settings_email">E-Mail</string>
+    <string name="settings_profile_loading_error">Es gab ein Fehler beim Laden des Profiles</string>
+    <string name="settings_profile_changing_error">Es gab einen Fehler beim Verändern deines Profiles</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

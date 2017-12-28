@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.settings;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.ui.base.MvpView;
@@ -31,5 +32,14 @@ public interface SettingsMvpView extends MvpView {
     void showContributors(@NonNull String[] contributors);
 
     void showExternalContent(@NonNull Uri uri);
+
+    //Profile
+    void showProfile(@NonNull CurrentUser user);
+
+    void showProfileError();
+
+    void showProfileChanged();
+
+    void reloadProfile();
 
 }

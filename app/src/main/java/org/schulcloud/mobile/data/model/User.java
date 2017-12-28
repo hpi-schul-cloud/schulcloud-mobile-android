@@ -14,6 +14,7 @@ public class User implements RealmModel {
     public String email;
     public String schoolId;
     public String displayName;
+    public String gender;
 
     public String get_id() {
         return _id;
@@ -61,5 +62,13 @@ public class User implements RealmModel {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

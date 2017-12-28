@@ -26,6 +26,7 @@ import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.signin.SignInMvpView;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
@@ -301,19 +302,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         String username = mDataManager.getCurrentUser().toBlocking().value().displayName;
         mAccountSubscription = mDataManager.signIn(username,password)
                 .observeOn(AndroidSchedulers.mainThread())
-<<<<<<< 09b46b7a2ff708709d6dcc9fe1836de4978258d6
                 .subscribe(accountResponse -> {},
                         throwable -> Log.e("Accounts","OnError",throwable),
                         () -> sendToView(v -> v.showProfileChanged()));
     }
-=======
-                .subscribe(
-                        accessToken -> {},
-                        throwable ->  {
-                            Timber.e(throwable,"There was an error while trying to change your profile...");
-                            getMvpView().showPasswordChangeFailed();
-                        }
-                );
     }*/
 
 }

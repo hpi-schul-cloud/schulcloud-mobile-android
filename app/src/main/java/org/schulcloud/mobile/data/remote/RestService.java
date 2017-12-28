@@ -134,5 +134,4 @@ public interface RestService {
 
     @PATCH("accounts")
     Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
-
 }

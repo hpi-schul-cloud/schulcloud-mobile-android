@@ -184,6 +184,22 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         gender_spinner.setAdapter(spinner_adapter);
 
+        // Profile
+        settings_submit.setOnClickListener(listener -> {
+            String name = name_editText.getText().toString() != null ?
+                    name_editText.getText().toString() : mCurrentUser.firstName;
+            String last_name = lastName_editText.getText().toString() != null ?
+                    lastName_editText.getText().toString() : mCurrentUser.lastName;
+            String email = email_EditText.getText().toString() != null?
+                    email_EditText.getText().toString() : mCurrentUser.email;
+            String gender = gender_spinner.getSelectedItem().toString();
+            mSettingsPresenter.changeProfile(name,last_name,email,gender);
+        });
+        spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
+                R.layout.item_gender_spinner);
+        spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        gender_spinner.setAdapter(spinner_adapter);
+
         // Presenter
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);

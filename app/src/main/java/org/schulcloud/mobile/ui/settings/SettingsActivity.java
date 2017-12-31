@@ -256,11 +256,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                 .commit();
     }
 
-    @Override
-    public void showDevices() {
-
-    }
-
     // About
     @Override
     public void showContributors(@NonNull String[] contributors) {

@@ -13,6 +13,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.ui.base.BaseFragment;
 import org.schulcloud.mobile.ui.settings.DevicesAdapter;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.List;
 
@@ -66,6 +67,6 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
 
     @Override
     public void showDevicesError() {
-
+        DialogFactory.createGenericErrorDialog(getContext(), "Leider gab es ein problem beim Laden der Geräte");
     }
 }

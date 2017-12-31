@@ -30,12 +30,6 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
         RxUtil.unsubscribe(mSubscription);
     }
 
-    @Inject
-    public DevicesPresenter(DataManager dataManager)
-    {
-        mDataManager = dataManager;
-    }
-
     public void registerDevice() {
         if (mDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
             String token = FirebaseInstanceId.getInstance().getToken();
@@ -63,11 +57,13 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
                         devices -> {
                             if (devices.isEmpty()) {
                                 getMvpView().showDevicesEmpty();
+                                // TODO: Show something
                             } else {
                                 getMvpView().showDevices(devices);
                             }
                         },
-                        throwable ->  Timber.e(throwable, "There was an error loading the users."));
+                        //TODO: Show error
+                        throwable -> Timber.e(throwable, "There was an error loading the users."));
     }
     public void deleteDevice(Device device) {
         RxUtil.unsubscribe(mSubscription);

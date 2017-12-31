@@ -75,8 +75,8 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_devices,container,false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_devices, container, false);
+        ButterKnife.bind(this, view);
 
         mRecyclerView.setAdapter(mDevicesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -93,7 +93,6 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
                 }, 3000);
             }
         });
-
         mDevicesPresenter.attachView(this);
         mDevicesPresenter.loadDevices();
 
@@ -118,6 +117,6 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
     }
 
     public void showDevicesError() {
-        DialogFactory.createGenericErrorDialog(getContext(),"Leider gab es ein problem beim Laden der Geräte");
+        DialogFactory.createGenericErrorDialog(getContext(), "Leider gab es ein problem beim Laden der Geräte");
     }
 }

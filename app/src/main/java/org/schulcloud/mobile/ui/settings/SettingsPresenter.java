@@ -143,7 +143,6 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
             getMvpView().showSyncToCalendarSuccessful();
     }
 
-
     // About
     public void contact(@NonNull String to, @NonNull String subject) {
         getMvpView().showExternalContent(Uri.parse("mailto:" + to + "?subject=" + subject));

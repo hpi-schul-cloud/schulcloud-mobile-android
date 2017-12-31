@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -25,12 +24,11 @@ import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
-import org.schulcloud.mobile.data.sync.EventSyncService;
+import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
+import org.schulcloud.mobile.ui.settings.devices.DevicesActivity;
 import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
@@ -87,8 +85,8 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         setTitle(R.string.settings_title);
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
-            startService(EventSyncService.getStartIntent(this));
             startService(DeviceSyncService.getStartIntent(this));
+            startService(UserSyncService.getStartIntent(this));
         }
 
         // Calender
@@ -103,7 +101,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         });
 
         // Notifications
-        btn_view_devices.setOnClickListener(view -> openDevicesFragment());
+        btn_view_devices.setOnClickListener(view -> openDevicesView());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
@@ -226,16 +224,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     }
 
     @Override
-    public void openDevicesFragment()
+    public void openDevicesView()
     {
-        Bundle args = new Bundle();
-        DevicesFragment devicesFragment = new DevicesFragment();
-        devicesFragment.setArguments(args);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.devices,devicesFragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(this,DevicesActivity.class);
+        intent.getBooleanExtra(EXTRA_TRIGGER_SYNC,true);
+        startActivity(intent);
     }
 
     // About

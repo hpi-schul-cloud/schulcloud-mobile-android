@@ -4,19 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/devices_swiperefresh"
+    android:id="@+id/swiperefresh"
     style="@style/Content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginLeft="40dp"
-    android:layout_marginRight="40dp"
-    android:layout_marginTop="40dp"
-    android:layout_marginBottom="40dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/action_bar" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:paddingBottom="6dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:scrollbars="vertical"
         tools:listitem="@layout/item_device">
         <LinearLayout

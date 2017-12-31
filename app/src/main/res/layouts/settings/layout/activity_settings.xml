@@ -62,17 +62,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/settings_notifications_title" />
 
-                <com.beardedhen.androidbootstrap.BootstrapButton
-                    android:id="@+id/btn_create_device"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/settings_notifications_registerDevice"
-                    app:bootstrapSize="lg"
-                    app:buttonMode="regular"
-                    app:roundedCorners="true"
-                    app:showOutline="false" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/devices_recycler_view"
                     android:layout_width="match_parent"
@@ -202,12 +191,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/devices">
     </ScrollView>
 
 </LinearLayout>

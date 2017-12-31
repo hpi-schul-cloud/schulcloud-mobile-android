@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,13 +24,11 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
-import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
-import org.schulcloud.mobile.data.sync.EventSyncService;
+import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.PermissionsUtil;
@@ -109,7 +106,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         });
 
         // Notifications
-        btn_view_devices.setOnClickListener(view -> openDevicesFragment());
+        btn_view_devices.setOnClickListener(view -> openDevicesView());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
@@ -244,16 +241,11 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     }
 
     @Override
-    public void openDevicesFragment()
+    public void openDevicesView()
     {
-        Bundle args = new Bundle();
-        DevicesFragment devicesFragment = new DevicesFragment();
-        devicesFragment.setArguments(args);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.devices,devicesFragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(this,DevicesActivity.class);
+        intent.getBooleanExtra(EXTRA_TRIGGER_SYNC,true);
+        startActivity(intent);
     }
 
     // About

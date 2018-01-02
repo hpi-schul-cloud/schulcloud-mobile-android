@@ -136,23 +136,21 @@
     <string name="settings_about_contact_mail_to">schul-cloud@hpi.de</string>
     <string name="settings_about_contact_mail_subject">Schul-Cloud Anfrage</string>
     <string name="settings_about_imprint">Impressum</string>
-<<<<<<< 7d98e070801387c77a122fd23a30f82e95e74393
     <string name="settings_about_imprint_website">https://schul-cloud.org/impressum</string>
     <string name="settings_about_privacyPolicy">Datenschutzerklärung</string>
     <string name="settings_about_privacyPolicy_website">https://schul-cloud.org/impressum#data_security</string>
-=======
-    <string name="settings_about_imprint_website">https://hpi.de/impressum.html</string>
     <string name="settings_profile">Profil</string>
     <string name="settings_name">Name</string>
     <string name="settings_last_name">Nachnahme</string>
     <string name="settings_gender">Geschlecht</string>
-    <string name="settings_password">Passwort</string>
+    <string name="settings_password">Aktuelles Passwort</string>
     <string name="settings_password_hint">**********</string>
     <string name="settings_submit">Daten absenden</string>
     <string name="settings_email">E-Mail</string>
     <string name="settings_profile_loading_error">Es gab ein Fehler beim Laden des Profiles</string>
     <string name="settings_profile_changing_error">Es gab einen Fehler beim Verändern deines Profiles</string>
->>>>>>> added Profile section to settings, added getSchoolId and ChangeAccountInfo to DataManager, added AccountRequest and AccountResponse bodies, added changeAccountInfo to RestService, added gender_array for spinenr, added gender to user and CurrentUser, added showProfile, reloadProfile, etc. to SettingsActivity, -MvpView, -Presenter
+    <string name="settings_newPassword">Neues Passwort</string>
+    <string name="settings_newPasswordSecond">Neues Passwort(wiederholen)</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

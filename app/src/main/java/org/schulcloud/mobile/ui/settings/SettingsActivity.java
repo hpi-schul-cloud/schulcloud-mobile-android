@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,9 +25,9 @@ import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
+import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
@@ -54,9 +52,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     SettingsPresenter mSettingsPresenter;
 
     @Inject
-    DevicesPresenter mDevicesPresenter;
-
-    @Inject
     PreferencesHelper mPreferencesHelper;
     @Inject
     DevicesAdapter mDevicesAdapter;
@@ -74,8 +69,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     BootstrapButton btn_create_device;
     @BindView(R.id.btn_view_devices)
     BootstrapButton btn_view_devices;
-    @BindView(R.id.devices_recycler_view)
-    RecyclerView devices_recycler_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +100,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
         // Notifications
         btn_view_devices.setOnClickListener(view -> openDevicesView());
-
-        devices_recycler_view.setAdapter(mDevicesAdapter);
-        devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
         // About
         findViewById(R.id.settings_about_contributors).setOnLongClickListener(v -> {
@@ -243,9 +233,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     @Override
     public void openDevicesView()
     {
-        Intent intent = new Intent(this,DevicesActivity.class);
-        intent.getBooleanExtra(EXTRA_TRIGGER_SYNC,true);
-        startActivity(intent);
+        // TODO: add function logic
     }
 
     // About

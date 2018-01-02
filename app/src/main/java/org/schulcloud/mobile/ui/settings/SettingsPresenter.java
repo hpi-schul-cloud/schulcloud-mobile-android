@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.settings;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -57,6 +58,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 .subscribe(isInDemoMode -> {
                     sendToView(v -> v.showSupportsCalendar(!isInDemoMode));
                     sendToView(v -> v.showSupportsNotifications(!isInDemoMode));
+                    sendToView(v -> v.showSupportsProfile(!isInDemoMode));
                 });
     }
     @Override
@@ -235,8 +237,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     public void changeProfile(@NonNull String firstName, @NonNull String lastName,
-                              @NonNull String email, @NonNull String gender)
+                              @NonNull String email, @NonNull String gender, @Nullable String password,
+                              @Nullable String newPassword, @Nullable String newPasswordRepeat)
     {
+        //TODO:include password
         AccountRequest accountRequest = new AccountRequest(mDataManager.getCurrentUserId(),firstName,
                 email,lastName,mDataManager.getCurrentSchoolID(),"",gender);
         mAccountSubscription = mDataManager.changeAccountInfo(accountRequest)

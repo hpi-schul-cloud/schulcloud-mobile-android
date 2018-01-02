@@ -170,110 +170,157 @@
 
             </org.schulcloud.mobile.ui.layouts.ListItemLayout>
 
-            <TextView
-                style="@style/Content_Title.Margin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/settings_profile"
-                android:layout_marginTop="20dp"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/settings_profile_view"
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/Material.ListItem_TextPrimary"
+                    style="@style/Content_Title.Margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_name"
-                    android:layout_marginLeft="10dp"
+                    android:textSize="18sp"
+                    android:text="@string/settings_profile"
                     android:layout_marginTop="20dp"/>
 
-                <EditText
-                    style="@style/Material.ListItem_TextPrimary"
+                <LinearLayout
+                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:id="@+id/settings_name_EditText"
-                    android:layout_marginTop="20dp"/>
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_last_name"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"/>
+                    <TextView
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"/>
 
-                <EditText
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:id="@+id/settings_last_name_EditText"
-                    android:layout_marginTop="20dp"/>
+                    <EditText
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:id="@+id/settings_name_EditText"
+                        android:layout_marginTop="20dp"/>
 
-                <TextView
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_gender"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"/>
+                    <TextView
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_last_name"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"/>
 
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/settings_gender_spinner" />
+                    <EditText
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:id="@+id/settings_last_name_EditText"
+                        android:layout_marginTop="20dp"/>
 
-                <TextView
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_email"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"/>
+                    <TextView
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_gender"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"/>
 
-                <EditText
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/settings_email_EditText"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"/>
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/settings_gender_spinner" />
 
-                <TextView
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_password"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="20dp"/>
+                    <TextView
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_email"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"/>
 
-                <EditText
-                    style="@style/Material.ListItem_TextPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/settings_password_editText"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:hint="@string/settings_password_hint"/>
+                    <EditText
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/settings_email_EditText"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="10dp"/>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_submit"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
-                    android:id="@+id/settings_submit"
-                    style="@style/Widget.AppCompat.Button.Colored"/>
+                    <TextView
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_password"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"/>
 
+                    <EditText
+                        style="@style/Material.ListItem_TextPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/settings_password_editText"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/settings_password_hint"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/settings_add_if_not_in_demo_mode"
+                        android:orientation="vertical">
+                        <TextView
+                            style="@style/Material.ListItem_TextPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_email"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="20dp"/>
+
+                        <EditText
+                            style="@style/Material.ListItem_TextPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/settings_newPassword_editText"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="10dp"
+                            android:hint="@string/settings_password_hint"/>
+
+                        <TextView
+                            style="@style/Material.ListItem_TextPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_email"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="20dp"/>
+
+                        <EditText
+                            style="@style/Material.ListItem_TextPrimary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/settings_newPasswordSecond_editText"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="10dp"
+                            android:hint="@string/settings_password_hint"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_submit"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="30dp"
+                            android:id="@+id/settings_submit"
+                            style="@style/Widget.AppCompat.Button.Colored"/>
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

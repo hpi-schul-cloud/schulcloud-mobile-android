@@ -34,6 +34,8 @@ public interface SettingsMvpView extends MvpView {
     void showExternalContent(@NonNull Uri uri);
 
     //Profile
+    void showSupportsProfile(boolean supportsProfile);
+
     void showProfile(@NonNull CurrentUser user);
 
     void showProfileError();

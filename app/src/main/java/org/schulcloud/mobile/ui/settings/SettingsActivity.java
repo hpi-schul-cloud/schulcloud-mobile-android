@@ -77,6 +77,8 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
     //Profile
+    @BindView(R.id.settings_add_if_not_in_demo_mode)
+    LinearLayout addIfNotDemoMode;
     @BindView(R.id.settings_gender_spinner)
     Spinner gender_spinner;
     @BindView(R.id.settings_name_EditText)
@@ -85,6 +87,12 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     EditText lastName_editText;
     @BindView(R.id.settings_email_EditText)
     EditText email_EditText;
+    @BindView(R.id.settings_password_editText)
+    EditText password_editText;
+    @BindView(R.id.settings_newPassword_editText)
+    EditText newPassword_editText;
+    @BindView(R.id.settings_newPasswordSecond_editText)
+    EditText newPasswordSecond_editText;
     @BindView(R.id.settings_submit)
     Button settings_submit;
 
@@ -151,7 +159,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
             String email = email_EditText.getText().toString() != null?
                     email_EditText.getText().toString() : mCurrentUser.email;
             String gender = gender_spinner.getSelectedItem().toString();
-            mSettingsPresenter.changeProfile(name,last_name,email,gender);
+            String password = password_editText.getText().toString();
+            String newPassword = newPassword_editText.getText().toString();
+            String newPasswordSecond = newPasswordSecond_editText.getText().toString();
+            mSettingsPresenter.changeProfile(name,last_name,email,gender,password,newPassword,
+                    newPasswordSecond);
         });
         spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
                 R.layout.item_gender_spinner);
@@ -321,5 +333,10 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         Intent intent = new Intent(this, SettingsActivity.class);
         this.startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showSupportsProfile(boolean supportsProfile) {
+        ViewUtil.setVisibility(addIfNotDemoMode,supportsProfile);
     }
 }

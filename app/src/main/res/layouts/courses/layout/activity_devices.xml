@@ -26,9 +26,11 @@
             android:orientation="vertical">
             <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/btn_create_device"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
                 android:text="@string/settings_notifications_registerDevice"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"
@@ -39,8 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:paddingBottom="6dp"
-                android:paddingTop="6dp"
                 android:scrollbars="vertical"
                 tools:listitem="@layout/item_device"/>
         </LinearLayout>

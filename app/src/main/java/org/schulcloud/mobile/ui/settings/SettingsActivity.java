@@ -8,9 +8,6 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,11 +22,9 @@ import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Event;
-import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.devices.DevicesActivity;
-import org.schulcloud.mobile.ui.settings.devices.DevicesPresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
@@ -53,9 +48,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     SettingsPresenter mSettingsPresenter;
 
     @Inject
-    DevicesPresenter mDevicesPresenter;
-
-    @Inject
     PreferencesHelper mPreferencesHelper;
     @Inject
     DevicesAdapter mDevicesAdapter;
@@ -71,8 +63,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     LinearLayout notifications;
     @BindView(R.id.btn_view_devices)
     BootstrapButton btn_view_devices;
-    @BindView(R.id.devices_recycler_view)
-    RecyclerView devices_recycler_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +75,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         setTitle(R.string.settings_title);
 
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
-            startService(DeviceSyncService.getStartIntent(this));
             startService(UserSyncService.getStartIntent(this));
         }
 
@@ -102,9 +91,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
 
         // Notifications
         btn_view_devices.setOnClickListener(view -> openDevicesView());
-
-        devices_recycler_view.setAdapter(mDevicesAdapter);
-        devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
         // About
         findViewById(R.id.settings_about_contributors).setOnLongClickListener(v -> {

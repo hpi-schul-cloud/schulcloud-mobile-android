@@ -26,6 +26,24 @@ public final class PathUtil {
     public static String[] getAllParts(@NonNull String path) {
         return path.split(File.separator);
     }
+    @NonNull
+    public static String combine(@NonNull String... parts) {
+        StringBuilder builder = new StringBuilder(parts[0]);
+        for (int i = 1; i < parts.length; i++) {
+            boolean endsWithSeparator = builder.length() > 0
+                    && builder.charAt(builder.length() - 1) == File.separatorChar;
+            boolean beginsWithSeparator = parts[i].length() > 0
+                    && parts[i].charAt(0) == File.separatorChar;
+
+            if (endsWithSeparator && beginsWithSeparator)
+                builder.append(parts[i].substring(1));
+            else if (!endsWithSeparator && !beginsWithSeparator)
+                builder.append(File.separatorChar).append(parts[i]);
+            else
+                builder.append(parts[i]);
+        }
+        return builder.toString();
+    }
 
     @NonNull
     public static String parent(@NonNull String path) {

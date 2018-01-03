@@ -19,6 +19,7 @@ import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.AddHomeworkRequest;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
+import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
@@ -195,7 +196,10 @@ public class DataManager {
                     return filteredDirectories;
                 });
     }
-
+    @NonNull
+    public Observable<Directory> createDirectory(@NonNull CreateDirectoryRequest createDirectoryRequest) {
+        return mRestService.createDirectory(getAccessToken(), createDirectoryRequest);
+    }
     @NonNull
     public Observable<ResponseBody> deleteDirectory(@NonNull String path) {
         return mRestService.deleteDirectory(getAccessToken(), PathUtil.trimLeadingSlash(path));

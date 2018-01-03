@@ -152,4 +152,13 @@
         <item name="android:layout_marginRight">@dimen/material_card_marginHorizontal</item>
     </style>
 
+    <!-- Dialog -->
+    <style name="Material.Dialog_Content">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/material_dialog_content_paddingHorizontal</item>
+        <item name="android:paddingTop">@dimen/material_dialog_content_paddingTop</item>
+        <item name="android:paddingRight">@dimen/material_dialog_content_paddingHorizontal</item>
+    </style>
+
 </resources>

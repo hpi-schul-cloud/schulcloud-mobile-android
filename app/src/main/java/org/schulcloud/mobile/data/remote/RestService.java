@@ -4,6 +4,7 @@ import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
+import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.News;
@@ -12,6 +13,7 @@ import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.AddHomeworkRequest;
 import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
+import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
@@ -62,6 +64,10 @@ public interface RestService {
 
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
+
+    @POST("fileStorage/directories")
+    Observable<Directory> createDirectory(@Header("Authorization") String accessToken, @Body
+            CreateDirectoryRequest createDirectoryRequest);
 
     @DELETE("fileStorage/directories")
     Observable<ResponseBody> deleteDirectory(@Header("Authorization") String accessToken, @Query("path") String path);

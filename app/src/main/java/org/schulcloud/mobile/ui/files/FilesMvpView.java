@@ -57,6 +57,13 @@ public interface FilesMvpView extends MvpView {
 
     void showDirectoriesLoadError();
 
+    /* Directory creation */
+    void showCanCreateDirectories(boolean canCreateDirectories);
+
+    void showDirectoryCreateSuccess();
+
+    void showDirectoryCreateError();
+
     /* Directory deletion */
     void showCanDeleteDirectories(boolean canDeleteDirectories);
 

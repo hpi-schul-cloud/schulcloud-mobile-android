@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -18,9 +19,14 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
@@ -69,14 +75,17 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
     @BindView(R.id.files_breadcrumbs_tv_text)
     TextView vTv_breadcrumbs_text;
 
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.directories_recycler_view)
     RecyclerView directoriesRecyclerView;
+
     @BindView(R.id.files_recycler_view)
     RecyclerView fileRecyclerView;
     @BindView(R.id.files_upload)
     FloatingActionButton fileUploadButton;
-    @BindView(R.id.swiperefresh)
-    SwipeRefreshLayout swipeRefresh;
+
+    private MenuItem nDirectoryCreate;
 
     @NonNull
     public static FilesFragment newInstance() {
@@ -109,6 +118,8 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
             restartService(FileSyncService.getStartIntent(getContext()));
             restartService(DirectorySyncService.getStartIntent(getContext()));
         }
+
+        setHasOptionsMenu(true);
     }
     @Nullable
     @Override
@@ -135,6 +146,24 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
         });
 
         return view;
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_files, menu);
+        nDirectoryCreate = menu.findItem(R.id.files_action_directoryCreate);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.files_action_directoryCreate:
+                createDirectory();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     @Override
     public void onResume() {
@@ -331,6 +360,32 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
     @Override
     public void showDirectoriesLoadError() {
         DialogFactory.createGenericErrorDialog(getContext(), R.string.files_directoryLoad_error)
+                .show();
+    }
+
+    /* Directory creation */
+    @Override
+    public void showCanCreateDirectories(boolean canCreateDirectories) {
+        nDirectoryCreate.setVisible(canCreateDirectories);
+    }
+    private void createDirectory() {
+        DialogFactory.showSimpleTextInputDialog(getContext(),
+                getString(R.string.files_directoryCreate_title),
+                getString(R.string.dialog_action_ok), getString(R.string.dialog_action_cancel))
+                .subscribe(
+                        s -> mFilesPresenter.onDirectoryCreateSelected(s),
+                        throwable -> {} // Abort if cancel was selected
+                );
+    }
+    @Override
+    public void showDirectoryCreateSuccess() {
+        DialogFactory.createSuperToast(getContext(),
+                getString(R.string.files_directoryCreate_success),
+                PaletteUtils.getSolidColor(PaletteUtils.MATERIAL_GREEN)).show();
+    }
+    @Override
+    public void showDirectoryCreateError() {
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.files_directoryCreate_error)
                 .show();
     }
 

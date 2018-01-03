@@ -9,6 +9,7 @@ import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
@@ -32,7 +33,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     private Subscription mFileUploadGetterSubscription;
     private Subscription mFileUploadSubscription;
     private Subscription mFileDeleteSubscription;
-    private Subscription mDirectorySubscription;
+
+    private Subscription mDirectoryCreateSubscription;
     private Subscription mDirectoryDeleteSubscription;
 
     @Inject
@@ -41,14 +43,16 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
 
         mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(currentUser -> {
-                    sendToView(v -> v.showCanUploadFile(
-                            currentUser.hasPermission(CurrentUser.PERMISSION_FILE_CREATE)));
-                    sendToView(v -> v.showCanDeleteFiles(
-                            currentUser.hasPermission(CurrentUser.PERMISSION_FILE_DELETE)));
-                    sendToView(v -> v.showCanDeleteDirectories(
-                            currentUser.hasPermission(CurrentUser.PERMISSION_FOLDER_DELETE)));
-                });
+                .subscribe(currentUser -> sendToView(v -> {
+                    v.showCanUploadFile(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FILE_CREATE));
+                    v.showCanDeleteFiles(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FILE_DELETE));
+                    v.showCanCreateDirectories(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FOLDER_CREATE));
+                    v.showCanDeleteDirectories(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FOLDER_DELETE));
+                }));
         loadBreadcrumbs();
         loadFiles();
         loadDirectories();
@@ -68,6 +72,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         RxUtil.unsubscribe(mFileUploadGetterSubscription);
         RxUtil.unsubscribe(mFileUploadSubscription);
         RxUtil.unsubscribe(mFileDeleteSubscription);
+
+        RxUtil.unsubscribe(mDirectoryCreateSubscription);
         RxUtil.unsubscribe(mDirectoryDeleteSubscription);
     }
 
@@ -240,6 +246,25 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
             view.reloadFiles();
             view.reloadDirectories();
         });
+    }
+
+    /* Directory creation */
+    public void onDirectoryCreateSelected(@NonNull String name) {
+        RxUtil.unsubscribe(mDirectoryCreateSubscription);
+        mDirectoryCreateSubscription = mDataManager
+                .createDirectory(new CreateDirectoryRequest(
+                        PathUtil.combine(mDataManager.getCurrentStorageContext(), name)))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        directory -> sendToView(view -> {
+                            view.reloadDirectories();
+                            view.showDirectoryCreateSuccess();
+                        }),
+                        error -> {
+                            Timber.e(error,
+                                    "There was an error while creating a directory on the Server.");
+                            sendToView(FilesMvpView::showDirectoryCreateError);
+                        });
     }
 
     /* Directory deletion */

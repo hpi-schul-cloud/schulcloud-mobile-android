@@ -53,6 +53,7 @@
     <string name="filesOverview_courses">Kurs-Dateien</string>
     <string name="filesOverview_courses_description">Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff.</string>
     <string name="filesOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
+    <string name="files_action_directoryCreate">@string/files_directoryCreate_title</string>
     <string name="files_breadcrumbs_divider">\u0020/\u0020</string>
     <string name="files_breadcrumbs_my">@string/filesOverview_my</string>
     <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
@@ -71,12 +72,13 @@
     <string name="files_fileDelete_success">Datei wurde erfolgreich gelöscht.</string>
     <string name="files_fileDelete_error">Beim Löschen der Datei ist etwas schiefgelaufen</string>
     <string name="files_directoryLoad_error">Oops! Irgendwas ist beim Laden der Ordner schief gelaufen!</string>
+    <string name="files_directoryCreate_title">Neuer Ordner</string>
+    <string name="files_directoryCreate_success">Ordner wurde erstellt</string>
+    <string name="files_directoryCreate_error">Beim Erstellen des Ordners ist etwas schiefgelaufen</string>
     <string name="files_directoryDelete_dialogTitle">Löschen</string>
     <string name="files_directoryDelete_request">Bist du dir sicher, dass du die Datei \'%1$s\' löschen möchtest?</string>
     <string name="files_directoryDelete_success">Ordner wurde erfolgreich gelöscht</string>
     <string name="files_directoryDelete_error">Beim Löschen des Ordners ist etwas schiefgelaufen</string>
-
-
 
     <!--Courses-->
     <string name="courses_title">Kurse</string>

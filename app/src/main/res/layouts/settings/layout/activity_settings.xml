@@ -254,7 +254,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settings_gender"
                         android:textSize="17sp"
-
                         android:layout_marginTop="20dp"/>
 
                     <Spinner
@@ -306,7 +305,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/settings_newPassword"
                             android:textSize="17sp"
-
                             android:layout_marginTop="20dp"/>
 
                         <EditText
@@ -332,7 +330,6 @@
                             android:id="@+id/settings_newPasswordRepeat_editText"
                             android:layout_marginTop="20dp"
                             android:hint=""/>
-
 
                         <Button
                             android:layout_width="wrap_content"

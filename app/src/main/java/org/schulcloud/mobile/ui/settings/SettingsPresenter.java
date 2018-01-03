@@ -58,7 +58,6 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 .subscribe(isInDemoMode -> {
                     sendToView(v -> v.showSupportsCalendar(!isInDemoMode));
                     sendToView(v -> v.showSupportsNotifications(!isInDemoMode));
-                    sendToView(v -> v.showSupportsProfile(!isInDemoMode));
                 });
     }
     @Override

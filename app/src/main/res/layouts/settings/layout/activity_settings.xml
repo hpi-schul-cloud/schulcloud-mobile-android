@@ -201,6 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/settings_profile_view"
+                android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -214,22 +215,20 @@
                 <LinearLayout
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp">
 
                     <TextView
                         style="@style/Material.ListItem_TextPrimary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_name"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
                         style="@style/Material.ListItem_TextPrimary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:paddingRight="10dp"
                         android:id="@+id/settings_name_EditText"
                         android:layout_marginTop="20dp"/>
 
@@ -238,15 +237,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_last_name"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
                         style="@style/Material.ListItem_TextPrimary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:paddingRight="10dp"
                         android:id="@+id/settings_last_name_EditText"
                         android:layout_marginTop="20dp"/>
 
@@ -255,14 +251,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_gender"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"/>
 
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="6dp"
                         android:id="@+id/settings_gender_spinner" />
 
                     <TextView
@@ -270,7 +265,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_email"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
@@ -278,15 +272,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/settings_email_EditText"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_marginTop="20dp"/>
 
                     <TextView
                         style="@style/Material.ListItem_TextPrimary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_password"
-                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
@@ -295,7 +287,6 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/settings_password_editText"
                         android:layout_marginTop="20dp"
-                        android:layout_marginLeft="10dp"
                         android:hint="@string/settings_password_hint"/>
 
                     <LinearLayout
@@ -307,8 +298,7 @@
                             style="@style/Material.ListItem_TextPrimary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_email"
-                            android:layout_marginLeft="10dp"
+                            android:text="@string/settings_newPassword"
                             android:layout_marginTop="20dp"/>
 
                         <EditText
@@ -317,25 +307,22 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/settings_newPassword_editText"
                             android:layout_marginTop="20dp"
-                            android:layout_marginLeft="10dp"
-                            android:hint="@string/settings_password_hint"/>
+                            android:hint=""/>
 
                         <TextView
                             style="@style/Material.ListItem_TextPrimary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_email"
-                            android:layout_marginLeft="10dp"
+                            android:text="@string/settings_newPasswordRepeat"
                             android:layout_marginTop="20dp"/>
 
                         <EditText
                             style="@style/Material.ListItem_TextPrimary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/settings_newPasswordSecond_editText"
+                            android:id="@+id/settings_newPasswordRepeat_editText"
                             android:layout_marginTop="20dp"
-                            android:layout_marginLeft="10dp"
-                            android:hint="@string/settings_password_hint"/>
+                            android:hint=""/>
 
                         <Button
                             android:layout_width="wrap_content"

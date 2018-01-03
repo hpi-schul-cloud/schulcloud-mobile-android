@@ -20,6 +20,7 @@ import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.data.model.responseBodies.AccountResponse;
 import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
@@ -27,6 +28,7 @@ import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
+import org.schulcloud.mobile.data.model.responseBodies.UserResponse;
 
 import java.util.List;
 
@@ -126,6 +128,10 @@ public interface RestService {
     @GET("news?$sort=createdAt:1")
     Observable<FeathersResponse<News>> getNews(@Header("Authorization") String accessToken);
 
+    @POST("user")
+    Observable<UserResponse> changeUserInfo(@Header("Authorization") String accessToken, @Body UserRequest userRequest);
+
     @POST("account")
-    Observable<AccountResponse> changeAccountInfo(@Header("Authorization") String accessToken, @Body AccountRequest accountRequest);
+    Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
+
 }

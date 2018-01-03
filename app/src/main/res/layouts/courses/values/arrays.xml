@@ -9,6 +9,7 @@
     </string-array>
 
     <string-array name="genderArray">
+        <item>Geschlecht auswählen</item>
         <item>Männlich</item>
         <item>Weiblich</item>
         <item>Anderes</item>

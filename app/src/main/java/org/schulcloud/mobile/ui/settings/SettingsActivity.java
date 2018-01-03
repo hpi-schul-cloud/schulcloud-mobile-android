@@ -95,8 +95,8 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     EditText password_editText;
     @BindView(R.id.settings_newPassword_editText)
     EditText newPassword_editText;
-    @BindView(R.id.settings_newPasswordSecond_editText)
-    EditText newPasswordSecond_editText;
+    @BindView(R.id.settings_newPasswordRepeat_editText)
+    EditText newPasswordRepeat_editText;
     @BindView(R.id.settings_submit)
     Button settings_submit;
 
@@ -169,9 +169,9 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             String gender = gender_spinner.getSelectedItem().toString();
             String password = password_editText.getText().toString();
             String newPassword = newPassword_editText.getText().toString();
-            String newPasswordSecond = newPasswordSecond_editText.getText().toString();
+            String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
             mSettingsPresenter.changeProfile(name,last_name,email,gender,password,newPassword,
-                    newPasswordSecond);
+                    newPasswordRepeat);
         });
         spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
                 R.layout.item_gender_spinner);

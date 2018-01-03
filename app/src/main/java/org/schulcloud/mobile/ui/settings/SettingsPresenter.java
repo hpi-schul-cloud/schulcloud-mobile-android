@@ -13,12 +13,14 @@ import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.jsonApi.Included;
 import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
+import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
@@ -28,11 +30,13 @@ import org.schulcloud.mobile.util.RxUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 import javax.inject.Inject;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import timber.log.Timber;
 
 @ConfigPersistent
@@ -47,6 +51,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
     private Subscription mAccountSubscription;
+    private Subscription mUserSubscription;
 
     private String[] mContributors;
 
@@ -254,9 +259,22 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                               @NonNull String email, @NonNull String gender, @Nullable String password,
                               @Nullable String newPassword, @Nullable String newPasswordRepeat)
     {
-        //TODO:include password
-        AccountRequest accountRequest = new AccountRequest(mDataManager.getCurrentUserId(),firstName,
-                email,lastName,mDataManager.getCurrentSchoolID(),"",gender);
+        String currentPassword = password;
+        if(newPassword != "" && newPassword != password && newPassword == newPasswordRepeat)
+            currentPassword = newPassword;
+
+        String displayName = mDataManager.getCurrentUser().toBlocking().value().displayName;
+
+        AccountRequest accountRequest = new AccountRequest(displayName,currentPassword);
+        UserRequest userRequest = new UserRequest(mDataManager.getCurrentUserId(),firstName
+                ,lastName,email,mDataManager.getCurrentSchoolID(),gender);
+
+        mUserSubscription = mDataManager.changeUserInfo(userRequest)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(userResponse -> {},
+                        throwable -> Log.e("User","OnError",throwable),
+                        () -> sendToView(v -> v.showProfileChanged()));
+
         mAccountSubscription = mDataManager.changeAccountInfo(accountRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(accountResponse -> {},

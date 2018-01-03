@@ -150,7 +150,8 @@
     <string name="settings_profile_loading_error">Es gab ein Fehler beim Laden des Profiles</string>
     <string name="settings_profile_changing_error">Es gab einen Fehler beim Verändern deines Profiles</string>
     <string name="settings_newPassword">Neues Passwort</string>
-    <string name="settings_newPasswordSecond">Neues Passwort(wiederholen)</string>
+    <string name="settings_newPasswordRepeat">Neues Passwort(wiederholen)</string>
+    <string name="settings_user">Nutzer-Einstellungen</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

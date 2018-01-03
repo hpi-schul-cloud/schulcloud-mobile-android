@@ -24,12 +24,14 @@ import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
+import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.data.model.responseBodies.AccountResponse;
 import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
+import org.schulcloud.mobile.data.model.responseBodies.UserResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.Pair;
 import org.schulcloud.mobile.util.PathUtil;
@@ -136,11 +138,23 @@ public class DataManager {
         return Single.just(mPreferencesHelper.isInDemoMode());
     }
 
+    public Observable<UserResponse> changeUserInfo(UserRequest userRequest) {
+        return mRestService.changeUserInfo(
+                getAccessToken(),
+                userRequest)
+                .concatMap(new Func1<UserResponse, Observable<UserResponse>>() {
+                    @Override
+                    public Observable<UserResponse> call(UserResponse userResponse) {
+                        return Observable.just(userResponse);
+                    }
+                });
+    }
+
     public Observable<AccountResponse> changeAccountInfo(AccountRequest accountRequest) {
         return mRestService.changeAccountInfo(
                 getAccessToken(),
                 accountRequest)
-                .concatMap(new Func1<AccountResponse, Observable<AccountResponse>>() {
+                .concatMap(new Func1<AccountResponse, Observable<? extends AccountResponse>>() {
                     @Override
                     public Observable<AccountResponse> call(AccountResponse accountResponse) {
                         return Observable.just(accountResponse);

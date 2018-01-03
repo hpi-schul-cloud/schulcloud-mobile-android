@@ -69,7 +69,7 @@ public class DirectoriesAdapter
                         context.getString(R.string.files_directoryDelete_dialogTitle),
                         context.getString(R.string.files_directoryDelete_request, directory.name))
                         .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) ->
-                                mFilesPresenter.deleteDirectory(directory))
+                                mFilesPresenter.onDirectoryDeleteSelected(directory))
                         .show());
     }
 

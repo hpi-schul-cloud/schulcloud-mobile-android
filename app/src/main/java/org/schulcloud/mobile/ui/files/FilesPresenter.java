@@ -273,7 +273,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      *
      * @param directory The directory to delete
      */
-    public void deleteDirectory(@NonNull Directory directory) {
+    public void onDirectoryDeleteSelected(@NonNull Directory directory) {
         RxUtil.unsubscribe(mDirectoryDeleteSubscription);
         mDirectoryDeleteSubscription = mDataManager.deleteDirectory(directory.path + directory.name)
                 .observeOn(AndroidSchedulers.mainThread())

@@ -12,6 +12,7 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;

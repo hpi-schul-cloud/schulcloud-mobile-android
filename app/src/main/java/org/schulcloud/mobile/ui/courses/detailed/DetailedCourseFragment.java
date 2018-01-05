@@ -16,7 +16,7 @@ import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.sync.TopicSyncService;
 import org.schulcloud.mobile.ui.courses.topic.TopicFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
-import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +13,8 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
-import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.dialogs.SimpleDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,32 +47,54 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     }
 
     @Override
-    public FilesAdapter.FilesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        FilesViewHolder holder = new FilesViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_file, parent, false));
-        ViewUtil.setVisibility(holder.deleteIcon, mCanDeleteFiles);
+    public FilesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+
+        View view = LayoutInflater.from(context).inflate(R.layout.item_file, parent, false);
+
+        PopupMenu menu = new PopupMenu(context, view.findViewById(R.id.file_iv_overflow));
+        menu.inflate(R.menu.item_file);
+        menu.getMenu().findItem(R.id.files_file_action_delete)
+                .setVisible(mCanDeleteFiles);
+
+        FilesViewHolder holder = new FilesViewHolder(view, menu);
+        ViewUtil.setVisibility(holder.vIv_overflow, mCanDeleteFiles);
+
         return holder;
     }
-
     @Override
-    public void onBindViewHolder(FilesAdapter.FilesViewHolder holder, int position) {
+    public void onBindViewHolder(FilesViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         File file = mFiles.get(position);
+        PopupMenu menu = holder.nOverflow;
 
-        holder.nameTextView.setText(file.name);
-        holder.cardView.setOnClickListener(v -> mFilesPresenter.onFileSelected(file));
-        holder.downloadIcon.setOnClickListener(v -> mFilesPresenter.onFileDownloadSelected(file));
+        holder.vEt_name.setText(file.name);
+        holder.itemView.setOnClickListener(v -> mFilesPresenter.onFileSelected(file));
+        holder.vAtv_download.setOnClickListener(v -> mFilesPresenter.onFileDownloadSelected(file));
 
-        holder.deleteIcon.setOnClickListener(
-                v -> DialogFactory.createSimpleOkCancelDialog(
-                        context,
-                        context.getString(R.string.files_fileDelete_dialogTitle),
-                        context.getString(R.string.files_fileDelete_request, file.name))
-                        .setPositiveButton(R.string.dialog_action_ok, (dialogInterface, i) ->
-                                mFilesPresenter.onFileDeleteSelected(file))
-                        .show());
+        holder.vIv_overflow.setOnClickListener(v -> menu.show());
+        holder.itemView.setOnLongClickListener(v -> {
+            menu.show();
+            return true;
+        });
+        menu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.files_file_action_delete:
+                    new SimpleDialogBuilder(context)
+                            .title(R.string.files_fileDelete_dialogTitle)
+                            .message(
+                                    context.getString(R.string.files_fileDelete_request, file.name))
+                            .buildAndShow()
+                            .subscribe(
+                                    o -> mFilesPresenter.onFileDeleteSelected(file),
+                                    throwable -> {}); // Ignore cancel event
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
     }
-
     @Override
     public int getItemCount() {
         return mFiles.size();
@@ -81,17 +103,20 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     class FilesViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.text_name)
-        TextView nameTextView;
-        @BindView(R.id.card_view)
-        CardView cardView;
-        @BindView(R.id.file_download_icon)
-        AwesomeTextView downloadIcon;
-        @BindView(R.id.file_delete_icon)
-        AwesomeTextView deleteIcon;
+        TextView vEt_name;
 
-        public FilesViewHolder(View itemView) {
+        @BindView(R.id.file_atv_download)
+        AwesomeTextView vAtv_download;
+        @BindView(R.id.file_iv_overflow)
+        View vIv_overflow;
+
+        PopupMenu nOverflow;
+
+        public FilesViewHolder(@NonNull View itemView, @NonNull PopupMenu menuOverflow) {
             super(itemView);
+
             ButterKnife.bind(this, itemView);
+            nOverflow = menuOverflow;
         }
     }
 }

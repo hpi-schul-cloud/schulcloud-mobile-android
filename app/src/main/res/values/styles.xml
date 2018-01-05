@@ -36,14 +36,6 @@
         <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
     </style>
 
-    <style name="Icon">
-        <item name="android:textSize" tools:ignore="SpUsage">24dp</item>
-    </style>
-    <style name="Icon.Inverse">
-        <item name="android:color">?android:attr/textColorPrimaryInverse</item>
-        <item name="bootstrapBrand">secondary</item>
-    </style>
-
     <style name="Preference.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:padding">@dimen/settings_preference_padding</item>
         <item name="android:background">?attr/selectableItemBackground</item>
@@ -70,7 +62,7 @@
         <item name="contentPaddingBottom">4dp</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
-    <style name="FileOverview.Card_Icon" parent="Icon.Inverse">
+    <style name="FileOverview.Card_Icon" parent="Material.Icon.Dense.Inverse">
         <item name="android:width">40dp</item>
     </style>
     <style name="FileOverview.Card_Title" parent="TextAppearance.AppCompat.Title.Inverse" />
@@ -80,6 +72,27 @@
 
     <!-- Material Design -->
     <style name="Material" />
+
+    <!-- Icon -->
+    <style name="Material.Icon">
+        <item name="android:width">48dp</item>
+        <item name="android:height">48dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
+        <item name="android:color">?android:attr/textColorPrimary</item>
+    </style>
+    <style name="Material.Icon.Inverse">
+        <item name="android:color">?android:attr/textColorPrimaryInverse</item>
+        <item name="bootstrapBrand">secondary</item>
+    </style>
+    <style name="Material.Icon.Dense">
+        <item name="android:width">40dp</item>
+        <item name="android:height">40dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">18dp</item>
+    </style>
+    <style name="Material.Icon.Dense.Inverse">
+        <item name="android:color">?android:attr/textColorPrimaryInverse</item>
+        <item name="bootstrapBrand">secondary</item>
+    </style>
 
     <!-- Buttons -->
     <!--Floating Action Button-->

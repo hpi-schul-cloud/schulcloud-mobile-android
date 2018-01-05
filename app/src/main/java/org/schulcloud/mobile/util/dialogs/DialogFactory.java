@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.util;
+package org.schulcloud.mobile.util.dialogs;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;

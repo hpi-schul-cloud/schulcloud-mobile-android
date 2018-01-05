@@ -13,7 +13,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Directory;
-import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.ArrayList;

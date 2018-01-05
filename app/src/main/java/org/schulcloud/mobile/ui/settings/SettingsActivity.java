@@ -29,7 +29,7 @@ import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
-import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 

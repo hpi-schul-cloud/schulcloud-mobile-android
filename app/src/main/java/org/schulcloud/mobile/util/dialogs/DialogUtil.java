@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.util;
+package org.schulcloud.mobile.util.dialogs;
 
 import android.app.Dialog;
 import android.support.annotation.Nullable;

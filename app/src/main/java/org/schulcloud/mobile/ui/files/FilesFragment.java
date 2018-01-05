@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -19,14 +18,12 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
@@ -38,8 +35,8 @@ import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
-import org.schulcloud.mobile.util.DialogFactory;
-import org.schulcloud.mobile.util.DialogUtil;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogUtil;
 import org.schulcloud.mobile.util.InternalFilesUtil;
 import org.schulcloud.mobile.util.PathUtil;
 import org.schulcloud.mobile.util.ViewUtil;
@@ -147,6 +144,7 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
 
         return view;
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_files, menu);

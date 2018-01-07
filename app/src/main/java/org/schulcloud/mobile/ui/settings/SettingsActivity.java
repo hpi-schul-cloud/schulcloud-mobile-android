@@ -199,6 +199,8 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             mSettingsPresenter.changeProfile(name,last_name,email,gender,password,newPassword,
                     newPasswordRepeat);
         });
+        newPassword_editText.setHint(R.string.settings_newPasswordHint);
+        newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
         spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
                 R.layout.item_gender_spinner);
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);

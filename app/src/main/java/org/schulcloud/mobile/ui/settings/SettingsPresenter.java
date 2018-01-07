@@ -295,8 +295,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         () -> sendToView(v -> v.showProfileChanged()));
     }
 
-    //TODO:complete function
-    /*public boolean checkIfPasswordCorrect(String password)
+    public boolean checkIfPasswordCorrect(String password)
     {
         String username = mDataManager.getCurrentUser().toBlocking().value().displayName;
         mAccountSubscription = mDataManager.signIn(username,password)
@@ -304,7 +303,8 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 .subscribe(accountResponse -> {},
                         throwable -> Log.e("Accounts","OnError",throwable),
                         () -> sendToView(v -> v.showProfileChanged()));
+      }
     }
-    }*/
+
 
 }

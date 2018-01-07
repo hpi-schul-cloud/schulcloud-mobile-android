@@ -15,4 +15,11 @@
         <item>Anderes</item>
     </string-array>
 
+    <string-array name="genderArrayPosReference">
+        <item>Choose gender</item>
+        <item>male</item>
+        <item>female</item>
+        <item>other</item>
+    </string-array>
+
 </resources>

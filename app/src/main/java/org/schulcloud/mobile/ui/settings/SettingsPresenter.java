@@ -17,6 +17,7 @@ import org.schulcloud.mobile.data.model.jsonApi.Included;
 import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
+import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.ui.signin.SignInMvpView;
@@ -42,6 +43,8 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
     private Subscription mAccountSubscription;
+    private Subscription eventSubscription;
+    private Subscription profileSubscription;
 
     private String[] mContributors;
 
@@ -222,7 +225,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     /* Profile */
     public void loadProfile()
     {
-        mAccountSubscription = mDataManager.getCurrentUser()
+        profileSubscription = mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         currentUser -> {
@@ -239,14 +242,38 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                               @NonNull String email, @NonNull String gender, @Nullable String password,
                               @Nullable String newPassword, @Nullable String newPasswordRepeat)
     {
-        //TODO:include password
-        AccountRequest accountRequest = new AccountRequest(mDataManager.getCurrentUserId(),firstName,
-                email,lastName,mDataManager.getCurrentSchoolID(),"",gender);
-        mAccountSubscription = mDataManager.changeAccountInfo(accountRequest)
+        String currentPassword = password;
+        if(newPassword != "" && newPassword != password && newPassword == newPasswordRepeat)
+            currentPassword = newPassword;
+
+        String displayName = mDataManager.getCurrentUser().toBlocking().value().displayName;
+
+        AccountRequest accountRequest = new AccountRequest(displayName,currentPassword);
+        UserRequest userRequest = new UserRequest(mDataManager.getCurrentUserId(),firstName
+                ,lastName,email,mDataManager.getCurrentSchoolID(),gender);
+
+        profileSubscription = mDataManager.changeProfileInfo(accountRequest,userRequest)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(accountResponse -> {},
-                        throwable -> Log.e("Accounts","OnError",throwable),
-                        () -> sendToView(SettingsMvpView::reloadProfile));
+                .subscribe(
+                        userResponse -> {},
+                        throwable -> Log.e("Profile","OnError",throwable),
+                        () -> getMvpView().showProfileChanged()
+                );
     }
+
+    //TODO:complete function
+    /*public boolean checkIfPasswordCorrect(String password)
+    {
+        String username = mDataManager.getCurrentUser().toBlocking().value().displayName;
+        mAccountSubscription = mDataManager.signIn(username,password)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        accessToken -> {},
+                        throwable ->  {
+                            Timber.e(throwable,"There was an error while trying to change your profile...");
+                            getMvpView().showPasswordChangeFailed();
+                        }
+                );
+    }*/
 
 }

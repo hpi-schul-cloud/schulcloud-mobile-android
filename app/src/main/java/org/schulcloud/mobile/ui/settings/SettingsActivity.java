@@ -165,6 +165,8 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
             mSettingsPresenter.changeProfile(name,last_name,email,gender,password,newPassword,
                     newPasswordRepeat);
         });
+        newPassword_editText.setHint(R.string.settings_newPasswordHint);
+        newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
         spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
                 R.layout.item_gender_spinner);
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -311,7 +313,9 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         name_editText.setText(mCurrentUser.firstName);
         lastName_editText.setText(mCurrentUser.lastName);
         email_EditText.setText(mCurrentUser.email);
-        gender_spinner.setSelection(spinner_adapter.getPosition(mCurrentUser.gender));
+        List<String> genderReferenceArray =
+                Arrays.asList(getResources().getStringArray(R.array.genderArrayPosReference));
+        gender_spinner.setSelection(genderReferenceArray.indexOf(mCurrentUser.gender));
     }
 
     @Override
@@ -337,5 +341,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @Override
     public void showSupportsProfile(boolean supportsProfile) {
         ViewUtil.setVisibility(addIfNotDemoMode,supportsProfile);
+    }
+
+    @Override
+    public void showPasswordChangeFailed()
+    {
+        DialogFactory.createGenericErrorDialog(this,R.string.settings_showPasswordChangeFailed);
     }
 }

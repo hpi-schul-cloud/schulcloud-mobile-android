@@ -23,6 +23,7 @@ import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
+import org.schulcloud.mobile.data.model.requestBodies.ProfileRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.data.model.responseBodies.AccountResponse;
@@ -30,6 +31,8 @@ import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
+import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+import org.schulcloud.mobile.data.model.responseBodies.ProfileResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.model.responseBodies.UserResponse;
 import org.schulcloud.mobile.data.remote.RestService;
@@ -50,7 +53,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Single;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 @Singleton
 public class DataManager {
@@ -160,6 +165,20 @@ public class DataManager {
                         return Observable.just(accountResponse);
                     }
                 });
+    }
+
+    public Observable<ProfileResponse> changeProfileInfo(AccountRequest accountRequest,
+                                                         UserRequest userRequest) {
+        Observable<AccountResponse> accountResponseObservable = changeAccountInfo(accountRequest);
+        Observable<UserResponse> userResponseObservable = changeUserInfo(userRequest);
+        Observable<ProfileResponse> profileResponseObservable = Observable
+                .zip(accountResponseObservable, userResponseObservable, new Func2<AccountResponse, UserResponse, ProfileResponse>() {
+                    @Override
+                    public ProfileResponse call(AccountResponse accountResponse, UserResponse userResponse) {
+                        return new ProfileResponse(userResponse, accountResponse);
+                    }
+                });
+        return profileResponseObservable;
     }
 
     public String getCurrentSchoolID() {

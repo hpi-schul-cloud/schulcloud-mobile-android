@@ -208,7 +208,7 @@
                     style="@style/Content_Title.Margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:text="@string/settings_profile"
                     android:layout_marginTop="20dp"/>
 
@@ -223,6 +223,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_name"
+                        android:textSize="17sp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
@@ -237,6 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_last_name"
+                        android:textSize="17sp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
@@ -251,6 +253,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_gender"
+                        android:textSize="17sp"
                         android:layout_marginTop="20dp"/>
 
                     <Spinner
@@ -265,6 +268,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_email"
+                        android:textSize="17sp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
@@ -279,6 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_password"
+                        android:textSize="17sp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
@@ -299,6 +304,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/settings_newPassword"
+                            android:textSize="17sp"
                             android:layout_marginTop="20dp"/>
 
                         <EditText
@@ -313,7 +319,8 @@
                             style="@style/Material.ListItem_TextPrimary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_newPasswordRepeat"
+                            android:text="@string/settings_newPassword"
+                            android:textSize="17sp"
                             android:layout_marginTop="20dp"/>
 
                         <EditText

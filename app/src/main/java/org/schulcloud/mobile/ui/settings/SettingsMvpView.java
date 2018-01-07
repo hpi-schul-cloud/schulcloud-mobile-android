@@ -44,4 +44,6 @@ public interface SettingsMvpView extends MvpView {
 
     void reloadProfile();
 
+    void showPasswordChangeFailed();
+
 }

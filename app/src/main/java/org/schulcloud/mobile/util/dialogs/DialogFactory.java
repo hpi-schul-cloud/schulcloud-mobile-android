@@ -91,7 +91,8 @@ public final class DialogFactory {
                     .setPositiveButton(positiveTitle, (dialog, which) ->
                             e.onSuccess(input.getText().toString()))
                     .setNegativeButton(negativeTitle, (dialog, which) ->
-                            e.onError(new RuntimeException()))
+                            e.onError(new DialogCancelledException()))
+                    .setOnDismissListener(dialog -> e.onError(new DialogDismissedException()))
                     .show();
         });
     }

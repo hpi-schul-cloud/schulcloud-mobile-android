@@ -95,11 +95,14 @@ public abstract class DialogBuilder<T, D extends DialogBuilder<T, D>> {
                 e.onSuccess(getSuccessValue()));
         builder.setNegativeButton(mNegativeTitle, (dialog, which) ->
                 e.onError(new DialogCancelledException()));
+        // If any button is selected this will be fired too, but after the respective button event
+        builder.setOnDismissListener(dialog ->
+                e.onError(new DialogDismissedException()));
 
         return builder;
     }
     @NonNull
-    public final Single<T> buildAndShow() {
+    public final Single<T> buildAsSingle() {
         return Single.create(e -> onBuild(prepareBuild(e)).show());
     }
     @NonNull

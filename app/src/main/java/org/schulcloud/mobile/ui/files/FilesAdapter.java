@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
                             .title(R.string.files_fileDelete_dialogTitle)
                             .message(
                                     context.getString(R.string.files_fileDelete_request, file.name))
-                            .buildAndShow()
+                            .buildAsSingle()
                             .subscribe(
                                     o -> mFilesPresenter.onFileDeleteSelected(file),
                                     throwable -> {}); // Ignore cancel event

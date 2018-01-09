@@ -72,8 +72,6 @@ public interface ActivityComponent {
     void inject(FeedbackDialog feedbackDialog);
 
     //    Devices
-
     void inject(DevicesFragment devicesFragment);
 
-    //    Devices
 }

@@ -2,23 +2,27 @@ package org.schulcloud.mobile.ui.files;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
+import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.injection.ActivityContext;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.SimpleDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -30,12 +34,29 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     @Inject
     FilesPresenter mFilesPresenter;
 
+    private Map<String, Integer> mIconIds;
     private List<File> mFiles;
     private boolean mCanDeleteFiles;
 
     @Inject
-    public FilesAdapter() {
+    public FilesAdapter(@ActivityContext Context context) {
         mFiles = new ArrayList<>();
+
+        String[] availableIcons = {
+                "txt", "doc", "pdf",
+                "xls",
+                "jpg", "png", "gif", "psd", "tiff",
+                "ai",
+                "mp3", "flac", "aac",
+                "mp4", "avi", "mov",
+                "html", "js"};
+        mIconIds = new ArrayMap<>();
+        for (String extension : availableIcons)
+            mIconIds.put(extension,
+                    context.getResources().getIdentifier("thumb_" + extension, "drawable", context.getPackageName()));
+        mIconIds.put("xlsx", mIconIds.get("xls"));
+        mIconIds.put("docx", mIconIds.get("doc"));
+        mIconIds.put("jpeg", mIconIds.get("jpg"));
     }
 
     public void setFiles(@NonNull List<File> files) {
@@ -69,8 +90,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         File file = mFiles.get(position);
         PopupMenu menu = holder.nOverflow;
 
-        holder.vEt_name.setText(file.name);
         holder.itemView.setOnClickListener(v -> mFilesPresenter.onFileSelected(file));
+        holder.vTv_name.setText(file.name);
+
+        Integer iconId = mIconIds.get(FileUtils.getExtension(file.name).substring(1));
+        if (iconId != null)
+            holder.vIv_icon.setImageResource(iconId);
+
         holder.vAtv_download.setOnClickListener(v -> mFilesPresenter.onFileDownloadSelected(file));
 
         holder.vIv_overflow.setOnClickListener(v -> menu.show());
@@ -103,8 +129,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 
     class FilesViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.text_name)
-        TextView vEt_name;
+        @BindView(R.id.file_iv_icon)
+        ImageView vIv_icon;
+        @BindView(R.id.file_tv_name)
+        TextView vTv_name;
 
         @BindView(R.id.file_atv_download)
         AwesomeTextView vAtv_download;

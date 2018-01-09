@@ -244,7 +244,9 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
 
         // adjust height of recycler view (bugfix for nested scrolling)
         ViewGroup.LayoutParams params = fileRecyclerView.getLayoutParams();
-        params.height = 250 * mFilesAdapter.getItemCount() + 200;
+
+        params.height = ViewUtil.dpToPx(68) * mFilesAdapter.getItemCount()
+                + ViewUtil.dpToPx(6); // Padding top
         fileRecyclerView.setLayoutParams(params);
         fileRecyclerView.setNestedScrollingEnabled(false);
     }

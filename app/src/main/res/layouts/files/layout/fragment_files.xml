@@ -61,7 +61,6 @@
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:paddingBottom="6dp"
                     android:paddingTop="6dp"
                     android:scrollbars="vertical"
                     tools:listitem="@layout/item_directory" />
@@ -70,9 +69,9 @@
                     android:id="@+id/files_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/material_button_fab_spacer"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
-                    android:paddingBottom="6dp"
                     android:paddingTop="6dp"
                     android:scrollbars="vertical"
                     tools:listitem="@layout/item_file" />

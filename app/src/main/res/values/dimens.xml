@@ -33,6 +33,7 @@
     <!-- Buttons -->
     <!--Floating Action Button-->
     <dimen name="material_button_fab_margin">16dp</dimen>
+    <dimen name="material_button_fab_spacer">88dp</dimen>
 
     <!-- Divider -->
     <dimen name="material_divider_height">1dp</dimen>

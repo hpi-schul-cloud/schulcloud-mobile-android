@@ -1,11 +1,14 @@
 package org.schulcloud.mobile.ui.settings;
 
 import android.content.res.Resources;
+import android.database.Observable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.common.api.BooleanResult;
+import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
@@ -20,7 +23,6 @@ import org.schulcloud.mobile.data.model.jsonApi.Included;
 import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
-import org.schulcloud.mobile.data.model.requestBodies.ProfileRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -28,16 +30,19 @@ import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
+import java.util.function.BooleanSupplier;
 
 import javax.inject.Inject;
 
+import rx.Completable;
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
+import rx.functions.Action0;
 import timber.log.Timber;
 
 @ConfigPersistent
@@ -243,7 +248,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     /* Profile */
     public void loadProfile()
     {
-        profileSubscription = mDataManager.getCurrentUser()
+        mProfileSubscription = mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         currentUser -> {
@@ -264,13 +269,19 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         if(newPassword != "" && newPassword != password && newPassword == newPasswordRepeat)
             currentPassword = newPassword;
 
-        String displayName = mDataManager.getCurrentUser().toBlocking().value().displayName;
+        CurrentUser currentUser = mDataManager.getCurrentUser().toBlocking().value();
+        String displayName = currentUser.displayName;
+        String _id = currentUser._id;
+        String schoolID = currentUser.schoolId;
 
         AccountRequest accountRequest = new AccountRequest(displayName,currentPassword);
-        UserRequest userRequest = new UserRequest(mDataManager.getCurrentUserId(),firstName
-                ,lastName,email,mDataManager.getCurrentSchoolID(),gender);
+        UserRequest userRequest = new UserRequest(_id,firstName,lastName,email,schoolID,gender);
 
-        profileSubscription = mDataManager.changeProfileInfo(accountRequest,userRequest)
+        mDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
+            getMvpView().showPasswordChangeFailed();
+        });
+
+        mProfileSubscription = mDataManager.changeProfileInfo(accountRequest,userRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userResponse -> {},
                         throwable -> Log.e("Profile","OnError",throwable),

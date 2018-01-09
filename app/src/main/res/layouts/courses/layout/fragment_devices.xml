@@ -8,8 +8,6 @@
     style="@style/Content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/action_bar" />
-
     <ScrollView
         android:paddingBottom="6dp"
         android:paddingLeft="6dp"

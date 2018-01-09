@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +25,7 @@ import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.devices.DevicesActivity;
+import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
@@ -212,9 +213,13 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @Override
     public void openDevicesView()
     {
-        Intent intent = new Intent(this,DevicesActivity.class);
-        intent.getBooleanExtra(EXTRA_TRIGGER_SYNC,true);
-        startActivity(intent);
+        DevicesFragment devicesFragment = new DevicesFragment();
+        Bundle args = new Bundle();
+        devicesFragment.setArguments(args);
+        FragmentManager fragmentTransaction = getSupportFragmentManager();
+        fragmentTransaction.beginTransaction()
+                .add(R.id.fragment_devices_overlay,devicesFragment)
+                .commit();
     }
 
     // About

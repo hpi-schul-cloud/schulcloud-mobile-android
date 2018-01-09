@@ -42,6 +42,9 @@ public class DirectoriesAdapter
         mDirectories = directories;
         notifyDataSetChanged();
     }
+    public List<Directory> getDirectories() {
+        return mDirectories;
+    }
     public void setCanDeleteDirectories(boolean canDeleteDirectories) {
         mCanDeleteDirectories = canDeleteDirectories;
         notifyItemRangeChanged(0, mDirectories.size());

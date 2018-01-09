@@ -55,6 +55,14 @@
                 android:orientation="vertical"
                 android:paddingBottom="25dp">
 
+                <TextView
+                    android:id="@+id/files_tv_empty"
+                    style="@style/Content_Text.Empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/files_directoryEmpty"
+                    android:visibility="gone" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/directories_recycler_view"
                     android:layout_width="match_parent"

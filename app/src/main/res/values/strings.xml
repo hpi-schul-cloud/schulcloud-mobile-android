@@ -56,6 +56,7 @@
     <string name="files_action_directoryCreate">@string/files_directoryCreate_title</string>
     <string name="files_breadcrumbs_divider">\u0020/\u0020</string>
     <string name="files_breadcrumbs_my">@string/filesOverview_my</string>
+    <string name="files_directoryEmpty">Der Ordner ist leer</string>
     <string name="files_file_action_delete">Löschen</string>
     <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
     <string name="files_fileDownload_progress">Die Datei wird geladen&#8230;</string>

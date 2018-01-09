@@ -41,6 +41,9 @@ import org.schulcloud.mobile.util.InternalFilesUtil;
 import org.schulcloud.mobile.util.PathUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -74,6 +77,8 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
 
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.files_tv_empty)
+    TextView vTv_empty;
     @BindView(R.id.directories_recycler_view)
     RecyclerView directoriesRecyclerView;
 
@@ -179,6 +184,12 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
         return mFilesPresenter.onBackSelected();
     }
 
+    private void updateEmptyText() {
+        List<Directory> directories = mDirectoriesAdapter.getDirectories();
+        List<File> files = mFilesAdapter.getFiles();
+        ViewUtil.setVisibility(vTv_empty, (directories == null || directories.isEmpty())
+                && (files == null || files.isEmpty()));
+    }
 
     /***** MVP View methods implementation *****/
     @Override
@@ -241,6 +252,7 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
     public void showFiles(@NonNull List<File> files) {
         mFilesAdapter.setFiles(files);
         swipeRefresh.setRefreshing(false);
+        updateEmptyText();
 
         // adjust height of recycler view (bugfix for nested scrolling)
         ViewGroup.LayoutParams params = fileRecyclerView.getLayoutParams();
@@ -356,6 +368,7 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
     public void showDirectories(@NonNull List<Directory> directories) {
         mDirectoriesAdapter.setDirectories(directories);
         swipeRefresh.setRefreshing(false);
+        updateEmptyText();
     }
     @Override
     public void showDirectoriesLoadError() {

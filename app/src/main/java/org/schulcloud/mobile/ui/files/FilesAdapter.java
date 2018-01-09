@@ -63,6 +63,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         mFiles = files;
         notifyDataSetChanged();
     }
+    public List<File> getFiles() {
+        return mFiles;
+    }
     public void setCanDeleteFiles(boolean canDeleteFiles) {
         mCanDeleteFiles = canDeleteFiles;
         notifyItemRangeChanged(0, mFiles.size());

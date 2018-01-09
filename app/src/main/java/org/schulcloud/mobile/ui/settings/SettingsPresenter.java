@@ -294,17 +294,4 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                         throwable -> Log.e("Profile","OnError",throwable),
                         () -> sendToView(v -> v.showProfileChanged()));
     }
-
-    public boolean checkIfPasswordCorrect(String password)
-    {
-        String username = mDataManager.getCurrentUser().toBlocking().value().displayName;
-        mAccountSubscription = mDataManager.signIn(username,password)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(accountResponse -> {},
-                        throwable -> Log.e("Accounts","OnError",throwable),
-                        () -> sendToView(v -> v.showProfileChanged()));
-      }
-    }
-
-
 }

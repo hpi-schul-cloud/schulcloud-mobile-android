@@ -53,7 +53,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         mIconIds = new ArrayMap<>();
         for (String extension : availableIcons)
             mIconIds.put(extension,
-                    context.getResources().getIdentifier("thumb_" + extension, "drawable", context.getPackageName()));
+                    context.getResources().getIdentifier("thumb_" + extension, "drawable",
+                            context.getPackageName()));
         mIconIds.put("xlsx", mIconIds.get("xls"));
         mIconIds.put("docx", mIconIds.get("doc"));
         mIconIds.put("jpeg", mIconIds.get("jpg"));
@@ -96,9 +97,15 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         holder.itemView.setOnClickListener(v -> mFilesPresenter.onFileSelected(file));
         holder.vTv_name.setText(file.name);
 
-        Integer iconId = mIconIds.get(FileUtils.getExtension(file.name).substring(1));
-        if (iconId != null)
-            holder.vIv_icon.setImageResource(iconId);
+        String extension = FileUtils.getExtension(file.name);
+        if (!extension.isEmpty()) {
+            Integer iconId = mIconIds.get(extension.substring(1));
+            if (iconId != null)
+                holder.vIv_icon.setImageResource(iconId);
+            else
+                holder.vIv_icon.setImageResource(R.drawable.thumb_default);
+        } else
+            holder.vIv_icon.setImageResource(R.drawable.thumb_default);
 
         holder.vAtv_download.setOnClickListener(v -> mFilesPresenter.onFileDownloadSelected(file));
 

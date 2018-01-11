@@ -157,7 +157,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     /* File upload */
     public void onFileUploadSelected(@NonNull java.io.File file) {
         sendToView(FilesMvpView::showFileUploadStarted);
-        String uploadPath = mDataManager.getCurrentStorageContext() + file.getName();
+        String uploadPath = PathUtil
+                .combine(mDataManager.getCurrentStorageContext(), file.getName());
 
         SignedUrlRequest signedUrlRequest = new SignedUrlRequest(
                 SignedUrlRequest.ACTION_PUT,
@@ -237,7 +238,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      * @param directory The selected directory
      */
     public void onDirectorySelected(@NonNull Directory directory) {
-        onDirectorySelected(directory.path + "/" + directory.name);
+        onDirectorySelected(PathUtil.combine(directory.path, directory.name));
     }
     public void onDirectorySelected(@NonNull String path) {
         mDataManager.setCurrentStorageContext(path);
@@ -275,7 +276,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      */
     public void onDirectoryDeleteSelected(@NonNull Directory directory) {
         RxUtil.unsubscribe(mDirectoryDeleteSubscription);
-        mDirectoryDeleteSubscription = mDataManager.deleteDirectory(directory.path + directory.name)
+        mDirectoryDeleteSubscription = mDataManager
+                .deleteDirectory(PathUtil.combine(directory.path, directory.name))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> {

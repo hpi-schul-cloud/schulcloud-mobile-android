@@ -147,7 +147,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         @BindView(R.id.file_atv_download)
         AwesomeTextView vAtv_download;
         @BindView(R.id.file_iv_overflow)
-        View vIv_overflow;
+        ImageView vIv_overflow;
 
         PopupMenu nOverflow;
 

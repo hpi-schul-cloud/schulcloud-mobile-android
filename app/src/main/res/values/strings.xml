@@ -58,6 +58,7 @@
     <string name="files_breadcrumbs_my">@string/filesOverview_my</string>
     <string name="files_directoryEmpty">Der Ordner ist leer</string>
     <string name="files_file_action_delete">Löschen</string>
+    <string name="files_directory_action_delete">@string/files_file_action_delete</string>
     <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
     <string name="files_fileDownload_progress">Die Datei wird geladen&#8230;</string>
     <string name="files_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
@@ -78,7 +79,7 @@
     <string name="files_directoryCreate_success">Ordner wurde erstellt</string>
     <string name="files_directoryCreate_error">Beim Erstellen des Ordners ist etwas schiefgelaufen</string>
     <string name="files_directoryDelete_dialogTitle">Löschen</string>
-    <string name="files_directoryDelete_request">Bist du dir sicher, dass du die Datei \'%1$s\' löschen möchtest?</string>
+    <string name="files_directoryDelete_request">Bist du dir sicher, dass du den Ordner \'%1$s\' löschen möchtest?</string>
     <string name="files_directoryDelete_success">Ordner wurde erfolgreich gelöscht</string>
     <string name="files_directoryDelete_error">Beim Löschen des Ordners ist etwas schiefgelaufen</string>
 

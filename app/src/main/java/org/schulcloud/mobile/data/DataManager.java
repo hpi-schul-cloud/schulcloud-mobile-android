@@ -162,6 +162,11 @@ public class DataManager {
                     for (File f : files)
                         if (f.fullPath.equals(currentContext))
                             filteredFiles.add(f);
+
+                    Collections.sort(filteredFiles, (o1, o2) ->
+                            o1.name == null
+                                    ? (o2.name == null ? 0 : -1)
+                                    : o1.name.compareTo(o2.name));
                     return filteredFiles;
                 });
     }
@@ -193,6 +198,11 @@ public class DataManager {
                     for (Directory d : directories)
                         if (d.path.equals(currentContext))
                             filteredDirectories.add(d);
+
+                    Collections.sort(filteredDirectories, (o1, o2) ->
+                            o1.name == null
+                                    ? (o2.name == null ? 0 : -1)
+                                    : o1.name.compareTo(o2.name));
                     return filteredDirectories;
                 });
     }

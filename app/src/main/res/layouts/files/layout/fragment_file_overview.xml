@@ -19,8 +19,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="25dp">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/filesOverview_my_c_wrapper"

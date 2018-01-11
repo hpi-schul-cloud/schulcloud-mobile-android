@@ -147,6 +147,14 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
             new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
         });
 
+        // Sync services are called in onCreate, so it is currently loading
+        swipeRefresh.setRefreshing(true);
+        // When starting the app with an empty folder selected, this lines are required
+        new Handler().postDelayed(() -> {
+            swipeRefresh.setRefreshing(false);
+            updateEmptyText();
+        }, 3000);
+
         return view;
     }
 

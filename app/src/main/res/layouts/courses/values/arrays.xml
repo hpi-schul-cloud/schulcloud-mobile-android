@@ -16,7 +16,7 @@
     </string-array>
 
     <string-array name="genderArrayPosReference">
-        <item>Choose gender</item>
+        <item>Choose Gender</item>
         <item>male</item>
         <item>female</item>
         <item>other</item>

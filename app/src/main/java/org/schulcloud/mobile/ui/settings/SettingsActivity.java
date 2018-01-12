@@ -192,7 +192,11 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                     lastName_editText.getText().toString() : mCurrentUser.lastName;
             String email = email_EditText.getText().toString() != null?
                     email_EditText.getText().toString() : mCurrentUser.email;
-            String gender = gender_spinner.getSelectedItem().toString();
+            String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
+                    R.layout.item_gender_spinner)
+                    .getItem(gender_spinner.getSelectedItemPosition()).toString();
+            if(gender.equals("Choose Gender"))
+                gender = null;
             String password = password_editText.getText().toString();
             String newPassword = newPassword_editText.getText().toString();
             String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
@@ -396,5 +400,4 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     public void showPasswordBad(){
         DialogFactory.createGenericErrorDialog(this,"Das Passwort muss mindestens 8 Zeichen lang sein und" +
                 " große und kleine Buchstaben sowie Zahlen beinhalten!");
-    }
 }

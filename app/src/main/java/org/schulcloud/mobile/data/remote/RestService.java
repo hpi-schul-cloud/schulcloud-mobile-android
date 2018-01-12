@@ -128,10 +128,10 @@ public interface RestService {
     @GET("news?$sort=createdAt:1")
     Observable<FeathersResponse<News>> getNews(@Header("Authorization") String accessToken);
 
-    @POST("user")
+    @POST("users")
     Observable<UserResponse> changeUserInfo(@Header("Authorization") String accessToken, @Body UserRequest userRequest);
 
-    @POST("account")
+    @POST("accounts")
     Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
 
 }

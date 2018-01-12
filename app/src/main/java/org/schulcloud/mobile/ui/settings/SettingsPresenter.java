@@ -262,23 +262,25 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     public void changeProfile(@NonNull String firstName, @NonNull String lastName,
-                              @NonNull String email, @NonNull String gender, @Nullable String password,
-                              @Nullable String newPassword, @Nullable String newPasswordRepeat)
-    {
-        String currentPassword = password;
-        if(newPassword != "" && newPassword != password && newPassword == newPasswordRepeat)
-            currentPassword = newPassword;
+                              @NonNull String email, @NonNull String gender,
+                              @Nullable String currentPassword,
+                              @Nullable String newPassword, @Nullable String newPasswordRepeat) {
+        if(newPassword.equals("") || newPassword.equals(currentPassword) || !(newPassword.equals(newPasswordRepeat))) {
+            getMvpView().showPasswordChangeFailed();
+            return;
+        }
 
         CurrentUser currentUser = mDataManager.getCurrentUser().toBlocking().value();
         String displayName = currentUser.displayName;
         String _id = currentUser._id;
         String schoolID = currentUser.schoolId;
 
-        AccountRequest accountRequest = new AccountRequest(displayName,currentPassword);
+        AccountRequest accountRequest = new AccountRequest(displayName,newPassword);
         UserRequest userRequest = new UserRequest(_id,firstName,lastName,email,schoolID,gender);
 
         mDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
             getMvpView().showPasswordChangeFailed();
+            return;
         });
 
         mProfileSubscription = mDataManager.changeProfileInfo(accountRequest,userRequest)
@@ -286,7 +288,6 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 .subscribe(userResponse -> {},
                         throwable -> Log.e("Profile","OnError",throwable),
                         () -> sendToView(v -> v.showProfileChanged()));
-                );
     }
 
     //TODO:complete function

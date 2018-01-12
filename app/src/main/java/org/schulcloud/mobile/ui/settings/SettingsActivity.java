@@ -158,7 +158,11 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                     lastName_editText.getText().toString() : mCurrentUser.lastName;
             String email = email_EditText.getText().toString() != null?
                     email_EditText.getText().toString() : mCurrentUser.email;
-            String gender = gender_spinner.getSelectedItem().toString();
+            String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
+                    R.layout.item_gender_spinner)
+                    .getItem(gender_spinner.getSelectedItemPosition()).toString();
+            if(gender.equals("Choose Gender"))
+                gender = null;
             String password = password_editText.getText().toString();
             String newPassword = newPassword_editText.getText().toString();
             String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
@@ -347,6 +351,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @Override
     public void showPasswordChangeFailed()
     {
-        DialogFactory.createGenericErrorDialog(this,R.string.settings_showPasswordChangeFailed);
+        DialogFactory.createGenericErrorDialog(this,R.string.settings_showPasswordChangeFailed).show();
     }
 }

@@ -348,8 +348,13 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     }
 
     @Override
-    public void showPasswordChangeFailed()
-    {
+    public void showPasswordChangeFailed(){
         DialogFactory.createGenericErrorDialog(this,R.string.settings_showPasswordChangeFailed).show();
+    }
+
+    @Override
+    public void showPasswordBad(){
+        DialogFactory.createGenericErrorDialog(this,"Das Passwort muss mindestens 8 Zeichen lang sein und" +
+                " große und kleine Buchstaben sowie Zahlen beinhalten!");
     }
 }

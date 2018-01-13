@@ -46,4 +46,5 @@ public interface SettingsMvpView extends MvpView {
 
     void showPasswordChangeFailed();
 
+    void showPasswordBad();
 }

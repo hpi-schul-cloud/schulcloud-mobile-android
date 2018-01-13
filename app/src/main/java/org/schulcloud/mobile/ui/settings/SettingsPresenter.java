@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -265,6 +266,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                               @NonNull String email, @NonNull String gender,
                               @Nullable String currentPassword,
                               @Nullable String newPassword, @Nullable String newPasswordRepeat) {
+        if(newPassword.length() < 8 || newPassword.equals(newPassword.toLowerCase()) || newPassword
+            .equals(newPassword.toUpperCase()) || Pattern.matches("[a-zA-Z]+",newPassword)){
+            get
+        }
         if(newPassword.equals("") || newPassword.equals(currentPassword) || !(newPassword.equals(newPasswordRepeat))) {
             getMvpView().showPasswordChangeFailed();
             return;

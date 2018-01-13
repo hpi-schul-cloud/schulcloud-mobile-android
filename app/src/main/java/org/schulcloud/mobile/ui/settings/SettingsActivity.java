@@ -164,17 +164,17 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                     name_editText.getText().toString() : mCurrentUser.firstName;
             String last_name = lastName_editText.getText().toString() != null ?
                     lastName_editText.getText().toString() : mCurrentUser.lastName;
-            String email = email_EditText.getText().toString() != null?
+            String email = email_EditText.getText().toString() != null ?
                     email_EditText.getText().toString() : mCurrentUser.email;
             String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
                     R.layout.item_gender_spinner)
                     .getItem(gender_spinner.getSelectedItemPosition()).toString();
-            if(gender.equals("Choose Gender"))
+            if (gender.equals("Choose Gender"))
                 gender = null;
             String password = password_editText.getText().toString();
             String newPassword = newPassword_editText.getText().toString();
             String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-            mSettingsPresenter.changeProfile(name,last_name,email,gender,password,newPassword,
+            mSettingsPresenter.changeProfile(name, last_name, email, gender, password, newPassword,
                     newPasswordRepeat);
         });
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
@@ -190,17 +190,17 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                     name_editText.getText().toString() : mCurrentUser.firstName;
             String last_name = lastName_editText.getText().toString() != null ?
                     lastName_editText.getText().toString() : mCurrentUser.lastName;
-            String email = email_EditText.getText().toString() != null?
+            String email = email_EditText.getText().toString() != null ?
                     email_EditText.getText().toString() : mCurrentUser.email;
             String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
                     R.layout.item_gender_spinner)
                     .getItem(gender_spinner.getSelectedItemPosition()).toString();
-            if(gender.equals("Choose Gender"))
+            if (gender.equals("Choose Gender"))
                 gender = null;
             String password = password_editText.getText().toString();
             String newPassword = newPassword_editText.getText().toString();
             String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-            mSettingsPresenter.changeProfile(name,last_name,email,gender,password,newPassword,
+            mSettingsPresenter.changeProfile(name, last_name, email, gender, password, newPassword,
                     newPasswordRepeat);
         });
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
@@ -217,6 +217,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         mSettingsPresenter.loadContributors(getResources());
         mSettingsPresenter.loadProfile();
     }
+
     @Override
     public void onReadArguments(Intent intent) {
         if (intent.getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
@@ -224,6 +225,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             startService(DeviceSyncService.getStartIntent(this));
         }
     }
+
     private void updateCalendarSwitch(boolean isChecked, @NonNull String calendarName) {
         switch_calendar.setChecked(isChecked);
         if (isChecked && calendarName != null)
@@ -244,12 +246,14 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /***** MVP View methods implementation *****/
     // Calender
     @Override
     public void showSupportsCalendar(boolean supportsCalendar) {
         ViewUtil.setVisibility(calendar, supportsCalendar);
     }
+
     @Override
     public void showEventsEmpty() {
         //Toast.makeText(this, R.string.empty_events, Toast.LENGTH_LONG).show();
@@ -316,6 +320,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     public void showSupportsNotifications(boolean supportsNotifications) {
         ViewUtil.setVisibility(notifications, supportsNotifications);
     }
+
     @Override
     public void showDevices(@NonNull List<Device> devices) {
         mDevicesAdapter.setDevices(devices);
@@ -349,6 +354,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             contributorsWrapper.addView(textView);
         }
     }
+
     @Override
     public void showExternalContent(@NonNull Uri data) {
         startActivity(new Intent(Intent.ACTION_VIEW, data));
@@ -367,16 +373,14 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     }
 
     @Override
-    public void showProfileError()
-    {
+    public void showProfileError() {
         DialogFactory.createGenericErrorDialog(this, R.string.settings_profile_loading_error).show();
     }
 
     @Override
-    public void showProfileChanged()
-    {
+    public void showProfileChanged() {
         reloadProfile();
-        Toast.makeText(this,R.string.settings_profile_changing_error,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.settings_profile_changing_error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -388,16 +392,17 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
     @Override
     public void showSupportsProfile(boolean supportsProfile) {
-        ViewUtil.setVisibility(addIfNotDemoMode,supportsProfile);
+        ViewUtil.setVisibility(addIfNotDemoMode, supportsProfile);
     }
 
     @Override
-    public void showPasswordChangeFailed(){
-        DialogFactory.createGenericErrorDialog(this,R.string.settings_showPasswordChangeFailed).show();
+    public void showPasswordChangeFailed() {
+        DialogFactory.createGenericErrorDialog(this, R.string.settings_showPasswordChangeFailed).show();
     }
 
     @Override
-    public void showPasswordBad(){
-        DialogFactory.createGenericErrorDialog(this,"Das Passwort muss mindestens 8 Zeichen lang sein und" +
+    public void showPasswordBad() {
+        DialogFactory.createGenericErrorDialog(this, "Das Passwort muss mindestens 8 Zeichen lang sein und" +
                 " große und kleine Buchstaben sowie Zahlen beinhalten!");
+    }
 }

@@ -1,14 +1,11 @@
 package org.schulcloud.mobile.ui.settings;
 
 import android.content.res.Resources;
-import android.database.Observable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.google.android.gms.common.api.BooleanResult;
-import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
@@ -26,25 +23,19 @@ import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
-import org.schulcloud.mobile.ui.signin.SignInMvpView;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
-import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import rx.Completable;
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import timber.log.Timber;
 
 @ConfigPersistent
@@ -58,8 +49,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     private Subscription mDemoModeSubscription;
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
-    private Subscription mAccountSubscription;
-    private Subscription mUserSubscription;
+    private Subscription mProfileSubscription;
 
     private String[] mContributors;
 
@@ -268,10 +258,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                               @Nullable String newPassword, @Nullable String newPasswordRepeat) {
         if(newPassword.length() < 8 || newPassword.equals(newPassword.toLowerCase()) || newPassword
             .equals(newPassword.toUpperCase()) || Pattern.matches("[a-zA-Z]+",newPassword)){
-            get
+            sendToView(v -> v.showPasswordBad());
         }
         if(newPassword.equals("") || newPassword.equals(currentPassword) || !(newPassword.equals(newPasswordRepeat))) {
-            getMvpView().showPasswordChangeFailed();
+            sendToView(v -> v.showPasswordChangeFailed());
             return;
         }
 
@@ -284,7 +274,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         UserRequest userRequest = new UserRequest(_id,firstName,lastName,email,schoolID,gender);
 
         mDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
-            getMvpView().showPasswordChangeFailed();
+            sendToView(v -> v.showPasswordChangeFailed());
             return;
         });
 

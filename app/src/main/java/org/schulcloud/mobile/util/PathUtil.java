@@ -21,6 +21,12 @@ public final class PathUtil {
     public static String trimSlashes(@NonNull String path) {
         return trimTrailingSlash(trimLeadingSlash(path));
     }
+    @NonNull
+    public static String ensureTrailingSlash(@NonNull String path) {
+        if (path.length() == 0 || path.charAt(path.length() - 1) != File.separatorChar)
+            return path + File.separator;
+        return path;
+    }
 
     @NonNull
     public static String[] getAllParts(@NonNull String path) {

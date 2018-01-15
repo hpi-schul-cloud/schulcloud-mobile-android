@@ -171,7 +171,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
                 .subscribe(
                         signedUrlResponse -> uploadFile(file, signedUrlResponse),
                         error -> {
-                            Timber.e(error, "There was an error uploading file from Server.");
+                            Timber.e(error, "There was an error uploading file to Server.");
                             sendToView(FilesMvpView::showFileUploadError);
                         });
     }
@@ -185,6 +185,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
             @NonNull SignedUrlResponse signedUrlResponse) {
         RxUtil.unsubscribe(mFileUploadSubscription);
         mFileUploadSubscription = mDataManager.uploadFile(file, signedUrlResponse)
+                .flatMap(responseBody -> mDataManager.persistFile(signedUrlResponse, file.getName(),
+                        FileUtils.getMimeType(file), file.length()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(view -> {

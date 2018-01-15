@@ -207,7 +207,8 @@ public class DataManager {
                 });
     }
     @NonNull
-    public Observable<Directory> createDirectory(@NonNull CreateDirectoryRequest createDirectoryRequest) {
+    public Observable<Directory> createDirectory(
+            @NonNull CreateDirectoryRequest createDirectoryRequest) {
         return mRestService.createDirectory(getAccessToken(), createDirectoryRequest);
     }
     @NonNull
@@ -234,9 +235,24 @@ public class DataManager {
                 signedUrlResponse.header.getContentType(),
                 signedUrlResponse.header.getMetaPath(),
                 signedUrlResponse.header.getMetaName(),
+                signedUrlResponse.header.getMetaFlatName(),
                 signedUrlResponse.header.getMetaThumbnail(),
                 requestBody
         );
+    }
+
+    @NonNull
+    public Observable<ResponseBody> persistFile(@NonNull SignedUrlResponse signedUrl,
+            @NonNull String fileName, @NonNull String fileType, long fileSize) {
+        File newFile = new File();
+        newFile.key = PathUtil.combine(signedUrl.header.getMetaPath(), fileName);
+        newFile.path = PathUtil.ensureTrailingSlash(signedUrl.header.getMetaPath());
+        newFile.name = fileName;
+        newFile.type = fileType;
+        newFile.size = "" + fileSize;
+        newFile.flatFileName = signedUrl.header.getMetaFlatName();
+        newFile.thumbnail = signedUrl.header.getMetaThumbnail();
+        return mRestService.persistFile(getAccessToken(), newFile);
     }
 
     @NonNull

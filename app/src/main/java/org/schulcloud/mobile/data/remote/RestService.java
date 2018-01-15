@@ -6,6 +6,7 @@ import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.data.model.Submission;
@@ -65,6 +66,9 @@ public interface RestService {
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
+    @POST("files")
+    Observable<ResponseBody> persistFile(@Header("Authorization") String accessToken, @Body File file);
+
     @POST("fileStorage/directories")
     Observable<Directory> createDirectory(@Header("Authorization") String accessToken, @Body
             CreateDirectoryRequest createDirectoryRequest);
@@ -75,10 +79,11 @@ public interface RestService {
     @PUT
     Observable<ResponseBody> uploadFile(
             @Url String fileUrl,
-            @Header("Content-Type") String contentType,
+            @Header("content-type") String contentType,
             @Header("x-amz-meta-path") String metaPath,
             @Header("x-amz-meta-name") String metaName,
-            @Header("x-amz-meta-thumbnail") String metaThumbnai,
+            @Header("x-amz-meta-flat-name") String metaFlatName,
+            @Header("x-amz-meta-thumbnail") String metaThumbnail,
             @Body RequestBody file);
 
 

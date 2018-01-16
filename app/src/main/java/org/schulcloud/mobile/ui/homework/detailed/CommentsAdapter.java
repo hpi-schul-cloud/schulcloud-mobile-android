@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.homework.detailed;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         mComments = new ArrayList<>();
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(@NonNull List<Comment> comments) {
         mComments = comments;
+        notifyDataSetChanged();
     }
 
-    public void setUserId(String userId) { mUserId = userId; }
+    public void setUserId(@NonNull String userId) { mUserId = userId; }
 
     @Override
     public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

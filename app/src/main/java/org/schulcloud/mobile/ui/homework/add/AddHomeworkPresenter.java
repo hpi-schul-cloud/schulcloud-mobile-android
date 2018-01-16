@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.ui.homework.add;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Course;
@@ -23,8 +25,11 @@ import timber.log.Timber;
 
 @ConfigPersistent
 public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
+
+    private DataManager mDataManager;
     private PreferencesHelper mPreferencesHelper;
 
+    private Subscription mSubscription;
     private Subscription mCoursesSubscription;
     private Subscription mCurrentUserSubscription;
 
@@ -41,16 +46,14 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
     }
 
     @Override
-    public void detachView() {
-        super.detachView();
+    protected void onViewDetached() {
+        super.onViewDetached();
         RxUtil.unsubscribe(mSubscription);
         RxUtil.unsubscribe(mCoursesSubscription);
         RxUtil.unsubscribe(mCurrentUserSubscription);
     }
 
     public void loadData() {
-        checkViewAttached();
-
         mCourses = new ArrayList<>();
         mCourses.add(null);
         List<String> names = new ArrayList<>();
@@ -60,41 +63,34 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
         mCoursesSubscription = mDataManager.getCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        courses ->
-                        {
+                        courses -> {
                             mCourses.addAll(courses);
                             for (Course course : courses)
                                 names.add(course.name);
-                            if (isViewAttached())
-                                getMvpView().setCourses(names);
+                            sendToView(view -> view.setCourses(names));
                         },
-                        throwable ->
-                        {
+                        throwable -> {
                             Timber.e(throwable, "There was an error loading the courses.");
-                            getMvpView().showCourseLoadingError();
+                            sendToView(AddHomeworkMvpView::showCourseLoadingError);
                         });
 
+        RxUtil.unsubscribe(mCurrentUserSubscription);
         mCurrentUserSubscription = mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        currentUser ->
-                        {
-                            if (isViewAttached())
-                                getMvpView().setCanCreatePublic(
-                                        currentUser.hasPermission(
-                                                CurrentUser.PERMISSION_COURSE_EDIT));
-                        },
-                        throwable ->
-                                Timber.e(throwable,
-                                        "There was an error loading the current user."));
+                        currentUser -> sendToView(view -> view.setCanCreatePublic(currentUser
+                                .hasPermission(CurrentUser.PERMISSION_COURSE_EDIT))),
+                        throwable -> Timber.e(throwable,
+                                "There was an error loading the current user."));
     }
 
-    public void addHomework(String name, int courseIndex, boolean isPrivate, String description,
-            Calendar availableDate, Calendar dueDate, boolean publicSubmissions) {
+    public void addHomework(@NonNull String name, int courseIndex, boolean isPrivate,
+            @NonNull String description, @NonNull Calendar availableDate, @NonNull Calendar dueDate,
+            boolean publicSubmissions) {
         if (name.isEmpty())
-            getMvpView().showNameEmpty();
+            getViewOrThrow().showNameEmpty();
         else if (!dueDate.after(availableDate))
-            getMvpView().showInvalidDates();
+            getViewOrThrow().showInvalidDates();
         else {
             Course course = mCourses.get(courseIndex);
             AddHomeworkRequest addHomeworkRequest = new AddHomeworkRequest(
@@ -108,14 +104,14 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
                     publicSubmissions,
                     isPrivate);
 
-            checkViewAttached();
             RxUtil.unsubscribe(mSubscription);
             mSubscription = mDataManager.addHomework(addHomeworkRequest)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            addHomeworkResponse -> getMvpView().reloadHomeworkList(),
-                            throwable -> getMvpView().showSaveError(),
-                            () -> getMvpView().showHomeworkSaved());
+                            addHomeworkResponse -> sendToView(
+                                    AddHomeworkMvpView::reloadHomeworkList),
+                            throwable -> sendToView(AddHomeworkMvpView::showSaveError),
+                            () -> sendToView(AddHomeworkMvpView::showHomeworkSaved));
         }
     }
 }

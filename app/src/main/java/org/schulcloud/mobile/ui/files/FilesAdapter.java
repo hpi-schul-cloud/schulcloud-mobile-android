@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.files;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,8 +35,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         mFiles = new ArrayList<>();
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(@NonNull List<File> files) {
         mFiles = files;
+        notifyDataSetChanged();
     }
     public void setCanDeleteFiles(boolean canDeleteFiles) {
         mCanDeleteFiles = canDeleteFiles;

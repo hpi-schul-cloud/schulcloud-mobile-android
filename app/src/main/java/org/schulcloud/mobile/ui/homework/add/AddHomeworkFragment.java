@@ -139,7 +139,7 @@ public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpV
     }
 
     @Override
-    public void setCourses(List<String> courses) {
+    public void setCourses(@NonNull List<String> courses) {
         for (int i = 0; i < courses.size(); i++)
             if (courses.get(i) == null)
                 courses.set(i, getString(R.string.homework_homework_course_none));

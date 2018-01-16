@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.ui.courses;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -7,20 +9,24 @@ import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 @ConfigPersistent
 public class CoursePresenter extends BasePresenter<CourseMvpView> {
 
+    private DataManager mDataManager;
+    private Subscription mSubscription;
+
     @Inject
-    public CoursePresenter(DataManager dataManager) {
+    CoursePresenter(DataManager dataManager) {
         mDataManager = dataManager;
     }
 
     @Override
-    public void detachView() {
-        super.detachView();
+    protected void onViewDetached() {
+        super.onViewDetached();
         RxUtil.unsubscribe(mSubscription);
     }
 
@@ -34,17 +40,17 @@ public class CoursePresenter extends BasePresenter<CourseMvpView> {
                 .subscribe(
                         courses -> {
                             if (courses.isEmpty())
-                                getMvpView().showCoursesEmpty();
+                                sendToView(CourseMvpView::showCoursesEmpty);
                             else
-                                getMvpView().showCourses(courses);
+                                sendToView(view -> view.showCourses(courses));
                         },
                         error -> {
                             Timber.e(error, "There was an error loading the courses.");
-                            getMvpView().showError();
+                            sendToView(CourseMvpView::showError);
                         });
     }
 
-    public void showCourseDetail(String courseId) {
-        getMvpView().showCourseDetail(courseId);
+    public void showCourseDetail(@NonNull String courseId) {
+        getViewOrThrow().showCourseDetail(courseId);
     }
 }

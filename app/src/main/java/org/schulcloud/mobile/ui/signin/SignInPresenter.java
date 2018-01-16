@@ -8,10 +8,14 @@ import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 public class SignInPresenter extends BasePresenter<SignInMvpView> {
+
+    private DataManager mDataManager;
+    private Subscription mSubscription;
 
     @Inject
     public SignInPresenter(DataManager dataManager) {
@@ -19,13 +23,12 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     }
 
     @Override
-    public void detachView() {
-        super.detachView();
+    protected void onViewDetached() {
+        super.onViewDetached();
         RxUtil.unsubscribe(mSubscription);
     }
 
     public void signIn(@NonNull String username, @NonNull String password, boolean demoMode) {
-        checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.signIn(username, password)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -34,8 +37,8 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
                         accessToken -> {},
                         throwable -> {
                             Timber.e(throwable, "There was an error signing in.");
-                            getMvpView().showSignInFailed();
+                            sendToView(SignInMvpView::showSignInFailed);
                         },
-                        () -> getMvpView().showSignInSuccessful());
+                        () -> sendToView(SignInMvpView::showSignInSuccessful));
     }
 }

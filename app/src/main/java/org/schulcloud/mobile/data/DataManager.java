@@ -4,7 +4,6 @@ import android.util.Log;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -30,8 +29,8 @@ import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
-import org.schulcloud.mobile.util.crypt.JWTUtil;
 import org.schulcloud.mobile.util.Pair;
+import org.schulcloud.mobile.util.crypt.JWTUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -90,18 +90,17 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showCourse(Course course) {
+    public void showCourse(@NonNull Course course) {
         courseName.setText(course.name);
     }
 
     @Override
-    public void showTopics(List<Topic> topics) {
+    public void showTopics(@NonNull List<Topic> topics) {
         mTopicsAdapter.setTopics(topics);
-        mTopicsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showTopicDetail(String topicId, String topicName) {
+    public void showTopicDetail(@NonNull String topicId, @NonNull String topicName) {
         addFragment(TopicFragment.newInstance(topicId, topicName));
     }
 

@@ -6,16 +6,26 @@ import android.support.annotation.NonNull;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.base.MvpView;
+import org.schulcloud.mobile.util.NetworkUtil;
+import org.schulcloud.mobile.util.RxUtil;
 
 import java.util.Stack;
 
 import javax.inject.Inject;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 @ConfigPersistent
 public class MainPresenter extends BasePresenter<MainMvpView> {
     private static final int TAB_LEVEL_TOP = 0;
     private static final int TAB_LEVEL_LAST = -1;
     private static final int TAB_LEVEL_ONE_BACK = -2;
+
+    private final DataManager mDataManager;
+    private Subscription mSubscription;
 
     private Stack<MainFragment>[] mFragments;
     private MainFragment mCurrentFragment;
@@ -28,11 +38,10 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     @Override
-    public void attachView(MainMvpView mvpView) {
-        super.attachView(mvpView);
-
+    protected void onViewAttached(@NonNull MainMvpView mvpView) {
+        super.onViewAttached(mvpView);
         if (mFragments == null) {
-            MainFragment[] topLevelFragments = getMvpView().getInitialFragments();
+            MainFragment[] topLevelFragments = getViewOrThrow().getInitialFragments();
 
             //noinspection unchecked
             mFragments = (Stack<MainFragment>[]) new Stack[topLevelFragments.length];
@@ -45,8 +54,33 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
             showFragment(0, TAB_LEVEL_TOP, false);
         }
     }
+    /**
+     * Checks whether there is already a logged-in user, if not so go to sign-in screen
+     */
     public void checkSignedIn(@NonNull Context context) {
-        isAlreadySignedIn(mDataManager, context);
+        // 1. try to get currentUser from prefs
+        String currentUserId = mDataManager.getCurrentUserId();
+
+        // value is "null" as String if pref does not exist
+        if (currentUserId.equals("null")) {
+            getViewOrThrow().goToSignIn();
+            return;
+        }
+
+        // 2. if there is a valid jwt in the storage (just online)
+        if (NetworkUtil.isNetworkConnected(context)) {
+            RxUtil.unsubscribe(mSubscription);
+            mSubscription = mDataManager.syncCurrentUser(currentUserId)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            // onNext
+                            currentUser -> {},
+                            // onError, check failed
+                            error -> {
+                                Timber.e(error, "There was an error while fetching currentUser.");
+                                sendToView(MvpView::goToSignIn);
+                            });
+        }
     }
 
     public void onTabSelected(int tabIndex) {
@@ -128,13 +162,13 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         if (level < 0) {
             if (!closeIfEmpty)
                 return false;
-            getMvpView().finish();
+            getViewOrThrow().finish();
         } else {
             while (tabStack.size() > level + 1)
                 tabStack.pop();
             MainFragment fragment = tabStack.get(level);
 
-            getMvpView().showFragment(fragment, mCurrentTabIndex, tabIndex);
+            getViewOrThrow().showFragment(fragment, mCurrentTabIndex, tabIndex);
 
             mCurrentFragment = fragment;
             mCurrentTabIndex = tabIndex;

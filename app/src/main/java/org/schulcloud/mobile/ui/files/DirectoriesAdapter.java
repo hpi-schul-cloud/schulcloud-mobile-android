@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.files;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,8 +40,9 @@ public class DirectoriesAdapter
         mDirectories = new ArrayList<>();
     }
 
-    public void setDirectories(List<Directory> directories) {
+    public void setDirectories(@NonNull List<Directory> directories) {
         mDirectories = directories;
+        notifyDataSetChanged();
     }
     public void setCanDeleteDirectories(boolean canDeleteDirectories) {
         mCanDeleteDirectories = canDeleteDirectories;

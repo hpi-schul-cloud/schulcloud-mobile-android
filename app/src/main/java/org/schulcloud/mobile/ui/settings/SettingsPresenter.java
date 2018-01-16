@@ -8,7 +8,6 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
@@ -35,7 +34,10 @@ import timber.log.Timber;
 @ConfigPersistent
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
-    private Subscription eventSubscription;
+    private DataManager mDataManager;
+
+    private Subscription mEventsSubscription;
+    private Subscription mDevicesSubscription;
 
     private String[] mContributors;
 
@@ -45,54 +47,56 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     @Override
-    public void attachView(SettingsMvpView mvpView) {
-        super.attachView(mvpView);
+    protected void onViewAttached(@NonNull SettingsMvpView view) {
+        super.onViewAttached(view);
         mDataManager.isInDemoMode()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isInDemoMode -> {
-                    getMvpView().showSupportsCalendar(!isInDemoMode);
-                    getMvpView().showSupportsNotifications(!isInDemoMode);
+                    sendToView(v -> v.showSupportsCalendar(!isInDemoMode));
+                    sendToView(v -> v.showSupportsNotifications(!isInDemoMode));
                 });
     }
     @Override
-    public void detachView() {
-        super.detachView();
-        RxUtil.unsubscribe(mSubscription);
-        RxUtil.unsubscribe(eventSubscription);
+    protected void onViewDetached() {
+        super.onViewDetached();
+        RxUtil.unsubscribe(mEventsSubscription);
+        RxUtil.unsubscribe(mDevicesSubscription);
     }
 
-    // Calender
+    /* Calendar */
     /**
      * Fetches events from local db
      *
      * @param promptForCalendar {Boolean} - whether to open a calendar-choose-dialog
      */
     public void loadEvents(boolean promptForCalendar) {
-        checkViewAttached();
-        RxUtil.unsubscribe(eventSubscription);
-        eventSubscription = mDataManager.getEvents()
+        RxUtil.unsubscribe(mEventsSubscription);
+        mEventsSubscription = mDataManager.getEvents()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         events -> {
                             if (events.isEmpty())
-                                getMvpView().showEventsEmpty();
+                                sendToView(SettingsMvpView::showEventsEmpty);
                             else
-                                getMvpView().connectToCalendar(events, promptForCalendar);
+                                sendToView(view ->
+                                        view.connectToCalendar(events, promptForCalendar));
                         },
                         throwable -> Timber.e(throwable, "There was an error loading the events."));
     }
     /**
-     * Syncs given Events to local calendar
+     * Syncs given events to local calendar
      *
      * @param calendarName        {String} - the calendar in which the events will be inserted
      * @param events              {List<Event>} - the events which will be inserted into the
      *                            calendar
-     * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil for
+     * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil
+     *                            for
      *                            handling the local calendar storage
      * @param showToast           {Boolean} - whether to show a toast after writing
      */
-    public void writeEventsToLocalCalendar(String calendarName, List<Event> events,
-                                           CalendarContentUtil calendarContentUtil, Boolean showToast) {
+    public void writeEventsToLocalCalendar(@NonNull String calendarName,
+            @NonNull List<Event> events,
+            @NonNull CalendarContentUtil calendarContentUtil, boolean showToast) {
         for (Event event : events) {
             // syncing by deleting first and writing again
             calendarContentUtil.deleteEventByUid(event._id);
@@ -140,10 +144,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         }
 
         if (showToast)
-            getMvpView().showSyncToCalendarSuccessful();
+            getViewOrThrow().showSyncToCalendarSuccessful();
     }
 
-    // Notifications
+    /* Notifications */
     public void registerDevice() {
         if (mDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
             String token = FirebaseInstanceId.getInstance().getToken();
@@ -154,64 +158,58 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                     android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")",
                     mDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
 
-            RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.createDevice(deviceRequest, token)
+            RxUtil.unsubscribe(mDevicesSubscription);
+            mDevicesSubscription = mDataManager.createDevice(deviceRequest, token)
                     .subscribe(
-                            deviceResponse -> {
-                            },
-                            throwable -> {
-                            },
-                            () -> getMvpView().reloadDevices());
+                            deviceResponse -> {},
+                            throwable -> {},
+                            () -> sendToView(SettingsMvpView::reloadDevices));
         }
     }
     public void loadDevices() {
-        checkViewAttached();
-        RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getDevices()
+        RxUtil.unsubscribe(mDevicesSubscription);
+        mDevicesSubscription = mDataManager.getDevices()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         devices -> {
                             if (devices.isEmpty()) {
                                 // TODO: Show something
-                            } else {
-                                getMvpView().showDevices(devices);
-                            }
+                            } else
+                                sendToView(view -> view.showDevices(devices));
                         },
                         //TODO: Show error
                         throwable -> Timber.e(throwable, "There was an error loading the users."));
     }
-    public void deleteDevice(Device device) {
-        RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.deleteDevice(device.token)
+    public void deleteDevice(@NonNull Device device) {
+        RxUtil.unsubscribe(mDevicesSubscription);
+        mDevicesSubscription = mDataManager.deleteDevice(device.token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        voidResponse -> {
-                        },
-                        throwable -> {
-                        },
+                        voidResponse -> {},
+                        throwable -> {},
                         () -> {
-                            getMvpView().reloadDevices();
+                            sendToView(SettingsMvpView::reloadDevices);
                             mDataManager.getPreferencesHelper()
                                     .clear(PreferencesHelper.PREFERENCE_MESSAGING_TOKEN);
                         });
     }
 
-    // About
+    /* About */
     public void contact(@NonNull String to, @NonNull String subject) {
-        getMvpView().showExternalContent(Uri.parse("mailto:" + to + "?subject=" + subject));
+        getViewOrThrow().showExternalContent(Uri.parse("mailto:" + to + "?subject=" + subject));
     }
     public void showImprint(@NonNull Resources resources) {
-        getMvpView().showExternalContent(
+        getViewOrThrow().showExternalContent(
                 Uri.parse(resources.getString(R.string.settings_about_imprint_website)));
     }
     public void showGitHub(@NonNull Resources resources) {
-        getMvpView().showExternalContent(
+        getViewOrThrow().showExternalContent(
                 Uri.parse(resources.getString(R.string.settings_about_openSource_website)));
     }
 
     public void loadContributors(@NonNull Resources resources) {
         mContributors = resources.getStringArray(R.array.settings_about_contributors);
-        getMvpView().showContributors(mContributors);
+        getViewOrThrow().showContributors(mContributors);
     }
     public String[] getContributors() {
         return mContributors;

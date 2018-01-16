@@ -130,7 +130,7 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
         mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
     }
-    private void updateCalendarSwitch(boolean isChecked, String calendarName) {
+    private void updateCalendarSwitch(boolean isChecked, @NonNull String calendarName) {
         switch_calendar.setChecked(isChecked);
         if (isChecked && calendarName != null)
             switch_calendar.setText(
@@ -221,7 +221,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     @Override
     public void showDevices(@NonNull List<Device> devices) {
         mDevicesAdapter.setDevices(devices);
-        mDevicesAdapter.notifyDataSetChanged();
     }
 
     @Override

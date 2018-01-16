@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.courses.detailed;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,8 +31,9 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
         mTopics = new ArrayList<>();
     }
 
-    public void setTopics(List<Topic> topics) {
+    public void setTopics(@NonNull List<Topic> topics) {
         mTopics = topics;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -47,8 +49,8 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
 
         holder.nameTextView.setText(topic.name);
 
-        holder.cardView.setOnClickListener(
-                v -> mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
+        holder.cardView.setOnClickListener(v ->
+                mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
     }
 
     @Override

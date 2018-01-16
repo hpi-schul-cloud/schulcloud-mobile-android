@@ -120,10 +120,9 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showHomework(List<Homework> homework) {
+    public void showHomework(@NonNull List<Homework> homework) {
         mHomeworkAdapter.setHomework(homework);
         mHomeworkAdapter.setContext(getContext());
-        mHomeworkAdapter.notifyDataSetChanged();
     }
     @Override
     public void showCanCreateHomework(boolean canCreateHomework) {
@@ -132,7 +131,6 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
     @Override
     public void showHomeworkEmpty() {
         mHomeworkAdapter.setHomework(Collections.emptyList());
-        mHomeworkAdapter.notifyDataSetChanged();
     }
     @Override
     public void showError() {
@@ -141,7 +139,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
     }
 
     @Override
-    public void showHomeworkDetail(String homeworkId) {
+    public void showHomeworkDetail(@NonNull String homeworkId) {
         addFragment(DetailedHomeworkFragment.newInstance(homeworkId));
     }
 }

@@ -90,9 +90,8 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showContent(List<Contents> contents) {
+    public void showContent(@NonNull List<Contents> contents) {
         mContentAdapter.setContent(contents);
         mContentAdapter.setContext(getActivity());
-        mContentAdapter.notifyDataSetChanged();
     }
 }

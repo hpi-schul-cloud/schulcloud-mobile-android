@@ -108,7 +108,6 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     @Override
     public void showCourses(List<Course> courses) {
         mCourseAdapter.setCourses(courses);
-        mCourseAdapter.notifyDataSetChanged();
     }
     @Override
     public void showError() {
@@ -118,7 +117,6 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     @Override
     public void showCoursesEmpty() {
         mCourseAdapter.setCourses(Collections.emptyList());
-        mCourseAdapter.notifyDataSetChanged();
     }
 
     @Override

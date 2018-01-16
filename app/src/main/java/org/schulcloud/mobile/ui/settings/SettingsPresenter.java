@@ -8,7 +8,6 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
@@ -186,10 +185,8 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         mDevicesSubscription = mDataManager.deleteDevice(device.token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        voidResponse -> {
-                        },
-                        throwable -> {
-                        },
+                        voidResponse -> {},
+                        throwable -> {},
                         () -> {
                             sendToView(SettingsMvpView::reloadDevices);
                             mDataManager.getPreferencesHelper()

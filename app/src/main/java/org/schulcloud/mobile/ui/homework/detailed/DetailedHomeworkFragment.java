@@ -93,7 +93,11 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
 
         return view;
     }
-
+    @Override
+    public void onDestroy() {
+        mDetailedHomeworkPresenter.detachView();
+        super.onDestroy();
+    }
     /***** MVP View methods implementation *****/
     @Override
     public void showHomework(@NonNull Homework homework) {

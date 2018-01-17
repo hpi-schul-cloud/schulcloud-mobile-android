@@ -19,18 +19,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
-public class FeedbackDialog extends BaseDialog implements FeedbackMvpView {
-    private static final String TAG = FeedbackDialog.class.getSimpleName();
-
-    public static final String ARGUMENT_CONTEXT_NAME = "contextName";
-    public static final String ARGUMENT_CURRENT_USER = "currentUser";
-    public static final String ARGUMENT_EMAIL = "email";
-    public static final String ARGUMENT_OPINION = "opinion";
-
-    private String mContextName;
-    private String mCurrentUser;
+public class FeedbackDialog extends BaseDialog<FeedbackMvpView, FeedbackPresenter>
+        implements FeedbackMvpView {
+    private static final String ARGUMENT_CONTEXT_NAME = "contextName";
 
     @Inject
     FeedbackPresenter mFeedbackPresenter;
@@ -42,17 +34,12 @@ public class FeedbackDialog extends BaseDialog implements FeedbackMvpView {
     @BindView(R.id.opinionWrapper)
     TextInputLayout mOpinionWrapper;
 
-    private String mEmail;
-    private String mOpinion;
-
-    public FeedbackDialog() {
-    }
-    public static FeedbackDialog newInstance(String contextName, String currentUser) {
+    @NonNull
+    public static FeedbackDialog newInstance(@NonNull String contextName) {
         FeedbackDialog feedbackDialog = new FeedbackDialog();
 
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_CONTEXT_NAME, contextName);
-        arguments.putString(ARGUMENT_CURRENT_USER, currentUser);
         feedbackDialog.setArguments(arguments);
 
         return feedbackDialog;
@@ -61,69 +48,45 @@ public class FeedbackDialog extends BaseDialog implements FeedbackMvpView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState == null) {
-            if (getArguments() == null
-                || getArguments().getString(ARGUMENT_CONTEXT_NAME) == null
-                || getArguments().getString(ARGUMENT_CURRENT_USER) == null) {
-                Timber.e(TAG, "Argument(s) missing/invalid");
-                dismiss();
-            }
-            mContextName = getArguments().getString(ARGUMENT_CONTEXT_NAME);
-            mCurrentUser = getArguments().getString(ARGUMENT_CURRENT_USER);
-        } else {
-            mContextName = savedInstanceState.getString(ARGUMENT_CONTEXT_NAME);
-            mCurrentUser = savedInstanceState.getString(ARGUMENT_CURRENT_USER);
-
-            mEmail = savedInstanceState.getString(ARGUMENT_EMAIL);
-            mOpinion = savedInstanceState.getString(ARGUMENT_OPINION);
-        }
+        activityComponent().inject(this);
+        setPresenter(mFeedbackPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        mFeedbackPresenter.init(args.getString(ARGUMENT_CONTEXT_NAME));
     }
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        activityComponent().inject(this);
         @SuppressLint("InflateParams")
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_feedback, null);
         ButterKnife.bind(this, view);
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
-            .setTitle(R.string.feedback_title)
-            .setView(view)
-            .setPositiveButton(R.string.feedback_send, null)
-            .setNegativeButton(R.string.dialog_action_cancel, null).create();
+                .setTitle(R.string.feedback_title)
+                .setView(view)
+                .setPositiveButton(R.string.feedback_send, null)
+                .setNegativeButton(R.string.dialog_action_cancel, null).create();
         dialog.setOnShowListener(dialog1 ->
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setOnClickListener(v ->
-                    mFeedbackPresenter.sendFeedback(
-                        getString(R.string.feedback_transmit_format),
-                        mEmailInput.getText().toString().trim(),
-                        mOpinionInput.getText().toString().trim(),
-                        mContextName, mCurrentUser,
-                        getString(R.string.feedback_transmit_subject),
-                        getString(R.string.feedback_transmit_to))));
-
-        mEmailInput.setText(mEmail);
-        mOpinionInput.setText(mOpinion);
-
-        mFeedbackPresenter.attachView(this);
-
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+                        .setOnClickListener(v ->
+                                mFeedbackPresenter.sendFeedback(
+                                        getString(R.string.feedback_transmit_format),
+                                        mEmailInput.getText().toString(),
+                                        mOpinionInput.getText().toString(),
+                                        getString(R.string.feedback_transmit_subject),
+                                        getString(R.string.feedback_transmit_to))));
         return dialog;
     }
+
+    /***** MVP View methods implementation *****/
     @Override
-    public void onDestroy() {
-        mFeedbackPresenter.detachView();
-        super.onDestroy();
-    }
-    @Override
-    public void showContentHint() {
+    public void showError_contentEmpty() {
         mOpinionWrapper.setError(getString(R.string.feedback_error_opinionEmpty));
     }
     @Override
     public void showFeedbackSent() {
         Toast.makeText(getContext(), R.string.feedback_transmit_sent, Toast.LENGTH_SHORT).show();
         dismiss();
-    }
-    @Override
-    public void goToSignIn() {
     }
 }

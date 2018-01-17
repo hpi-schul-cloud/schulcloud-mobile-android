@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.LongSparseArray;
+import android.util.SparseArray;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
@@ -23,7 +24,7 @@ public abstract class BaseFragment<V extends MvpView, P extends BasePresenter<V>
         implements MvpView {
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicInteger sNextId = new AtomicInteger(0);
-    private static final LongSparseArray<ConfigPersistentComponent> sComponents = new LongSparseArray<>();
+    private static final SparseArray<ConfigPersistentComponent> sComponents = new SparseArray<>();
 
     private ActivityComponent mActivityComponent;
     private int mActivityId;
@@ -64,6 +65,7 @@ public abstract class BaseFragment<V extends MvpView, P extends BasePresenter<V>
         super.onResume();
 
         if (mPresenter != null)
+            //noinspection unchecked
             mPresenter.attachView((V) this);
     }
     @Override

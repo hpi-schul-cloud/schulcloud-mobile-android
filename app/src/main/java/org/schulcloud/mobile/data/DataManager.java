@@ -119,6 +119,10 @@ public class DataManager {
         return mDatabaseHelper.getCurrentUser();
     }
 
+    public String getCurrentUserName() {
+        return mPreferencesHelper.getCurrentUsername();
+    }
+
     public String getCurrentUserId() {
         return mPreferencesHelper.getCurrentUserId();
     }

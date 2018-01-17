@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.base;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -19,7 +17,6 @@ import android.view.Window;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.DataManager;
-import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
@@ -34,10 +31,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Single;
 import rx.SingleSubscriber;
-import rx.Subscriber;
 import timber.log.Timber;
 
 public abstract class BaseActivity extends AppCompatActivity implements MvpView {
@@ -45,8 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
     private static final AtomicLong NEXT_ID = new AtomicLong(0);
     private static final LongSparseArray<ConfigPersistentComponent> sComponentsMap = new LongSparseArray<>();
 
-    @Inject
-    PreferencesHelper mPreferencesHelper;
     @Inject
     DataManager mDataManager;
 
@@ -102,8 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.base_action_feedback:
-                FeedbackDialog.newInstance(getClass().getSimpleName(),
-                        mPreferencesHelper.getCurrentUsername())
+                FeedbackDialog.newInstance(getClass().getSimpleName())
                         .show(getSupportFragmentManager(), null);
                 return true;
 

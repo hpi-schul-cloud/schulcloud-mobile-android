@@ -32,8 +32,6 @@ public interface ActivityComponent {
     //    Base
     void inject(BaseActivity baseActivity);
 
-    void inject(BaseFragment baseFragment);
-
     //    Sign in
     void inject(SignInActivity signInActivity);
 

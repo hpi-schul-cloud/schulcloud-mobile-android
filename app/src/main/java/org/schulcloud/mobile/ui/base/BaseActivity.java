@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -27,7 +27,7 @@ import org.schulcloud.mobile.ui.signin.SignInActivity;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -35,18 +35,21 @@ import rx.Single;
 import rx.SingleSubscriber;
 import timber.log.Timber;
 
-public abstract class BaseActivity extends AppCompatActivity implements MvpView {
+public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>>
+        extends AppCompatActivity implements MvpView {
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
-    private static final AtomicLong NEXT_ID = new AtomicLong(0);
-    private static final LongSparseArray<ConfigPersistentComponent> sComponentsMap = new LongSparseArray<>();
+    private static final AtomicInteger sNextId = new AtomicInteger(0);
+    private static final SparseArray<ConfigPersistentComponent> sComponentsMap = new SparseArray<>();
 
     @Inject
     DataManager mDataManager;
 
     private ActivityComponent mActivityComponent;
-    private long mActivityId;
+    private int mActivityId;
     private List<SingleSubscriber<? super Intent>> mActivityRequests;
     private List<SingleSubscriber<? super Boolean[]>> mPermissionRequests;
+
+    private P mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,8 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is
         // being called after a configuration change.
         mActivityId = savedInstanceState != null
-                ? savedInstanceState.getLong(KEY_ACTIVITY_ID)
-                : NEXT_ID.getAndIncrement();
+                ? savedInstanceState.getInt(KEY_ACTIVITY_ID)
+                : sNextId.getAndIncrement();
         ConfigPersistentComponent configPersistentComponent;
         if (null == sComponentsMap.get(mActivityId)) {
             Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
@@ -71,6 +74,27 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         }
         mActivityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
     }
+    protected final void readArguments(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null)
+            onReadArguments(getIntent());
+    }
+    public void onReadArguments(Intent intent) {
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mPresenter != null)
+            //noinspection unchecked
+            mPresenter.attachView((V) this);
+    }
+    @Override
+    protected void onPause() {
+        if (mPresenter != null)
+            mPresenter.detachView();
+
+        super.onPause();
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -79,6 +103,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
     @Override
     protected void onDestroy() {
         if (!isChangingConfigurations()) {
+            if (mPresenter != null)
+                mPresenter.destroy();
+
             Timber.i("Clearing ConfigPersistentComponent id=%d", mActivityId);
             sComponentsMap.remove(mActivityId);
         }
@@ -106,6 +133,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
 
     public ActivityComponent activityComponent() {
         return mActivityComponent;
+    }
+    protected void setPresenter(@NonNull P presenter) {
+        mPresenter = presenter;
     }
 
     @NonNull
@@ -201,6 +231,12 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
         startService(service);
     }
 
+    @Inject
+    public void setDataManager(DataManager dataManager) {
+        mDataManager = dataManager;
+    }
+
+    /***** MVP View methods implementation *****/
     @Override
     public void goToSignIn() {
         mDataManager.signOut();

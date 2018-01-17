@@ -13,12 +13,14 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StartActivity extends BaseActivity implements StartMvpView {
+public class StartActivity extends BaseActivity<StartMvpView, BasePresenter<StartMvpView>>
+        implements StartMvpView {
 
     @BindView(R.id.cloudy_icon)
     AwesomeTextView cloudIcon;

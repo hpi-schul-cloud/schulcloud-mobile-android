@@ -14,7 +14,7 @@ import timber.log.Timber;
 
 public class SignInPresenter extends BasePresenter<SignInMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject
@@ -23,8 +23,8 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     }
 
     @Override
-    public void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
     }
 

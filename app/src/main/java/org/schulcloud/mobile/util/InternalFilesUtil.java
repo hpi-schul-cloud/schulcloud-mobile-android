@@ -12,6 +12,8 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.base.MvpView;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.io.File;
@@ -28,10 +30,11 @@ import rx.Single;
 public class InternalFilesUtil {
     private static final String TAG = InternalFilesUtil.class.getCanonicalName();
 
-    private BaseActivity mActivity;
+    private BaseActivity<? extends MvpView, ? extends BasePresenter> mActivity;
 
     @Inject
-    public InternalFilesUtil(@NonNull BaseActivity activity) {
+    public InternalFilesUtil(
+            @NonNull BaseActivity<? extends MvpView, ? extends BasePresenter> activity) {
         mActivity = activity;
     }
 

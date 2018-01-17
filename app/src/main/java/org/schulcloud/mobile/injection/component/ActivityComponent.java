@@ -19,6 +19,7 @@ import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
+import org.schulcloud.mobile.ui.start.StartActivity;
 
 import dagger.Subcomponent;
 
@@ -29,8 +30,8 @@ import dagger.Subcomponent;
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
 
-    //    Base
-    void inject(BaseActivity baseActivity);
+    //    Start
+    void inject(StartActivity startActivity);
 
     //    Sign in
     void inject(SignInActivity signInActivity);

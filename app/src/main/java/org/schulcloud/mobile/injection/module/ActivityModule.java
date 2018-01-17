@@ -5,6 +5,8 @@ import android.content.Context;
 
 import org.schulcloud.mobile.injection.ActivityContext;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.base.MvpView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,9 +14,9 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
-    private BaseActivity mActivity;
+    private BaseActivity<? extends MvpView, ? extends BasePresenter> mActivity;
 
-    public ActivityModule(BaseActivity activity) {
+    public ActivityModule(BaseActivity<? extends MvpView, ? extends BasePresenter> activity) {
         mActivity = activity;
     }
 
@@ -23,7 +25,7 @@ public class ActivityModule {
         return mActivity;
     }
     @Provides
-    BaseActivity provideBaseActivity() {
+    BaseActivity<? extends MvpView, ? extends BasePresenter> provideBaseActivity() {
         return mActivity;
     }
 

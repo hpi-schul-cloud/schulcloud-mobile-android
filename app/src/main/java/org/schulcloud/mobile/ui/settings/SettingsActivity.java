@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -42,7 +43,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends BaseActivity implements SettingsMvpView {
+public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPresenter>
+        implements SettingsMvpView {
 
     public static final Integer CALENDAR_PERMISSION_CALLBACK_ID = 42;
     private static final String EXTRA_TRIGGER_SYNC = "org.schulcloud.mobile.ui.settings.SettingsActivity.EXTRA_TRIGGER_SYNC";
@@ -73,16 +75,18 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+        setPresenter(mSettingsPresenter);
+        readArguments(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        setTitle(R.string.settings_title);
-
-        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
-            startService(EventSyncService.getStartIntent(this));
-            startService(DeviceSyncService.getStartIntent(this));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.settings_title);
 
         // Calender
         updateCalendarSwitch(
@@ -124,11 +128,17 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                 mSettingsPresenter.showImprint(getResources()));
 
         // Presenter
-        mSettingsPresenter.attachView(this);
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
+    }
+    @Override
+    public void onReadArguments(Intent intent) {
+        if (intent.getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
+            startService(EventSyncService.getStartIntent(this));
+            startService(DeviceSyncService.getStartIntent(this));
+        }
     }
     private void updateCalendarSwitch(boolean isChecked, @NonNull String calendarName) {
         switch_calendar.setChecked(isChecked);
@@ -137,12 +147,6 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                     getString(R.string.settings_calendar_sync_calenderChosen, calendarName));
         else
             switch_calendar.setText(R.string.settings_calendar_sync);
-    }
-
-    @Override
-    protected void onPause() {
-        mSettingsPresenter.detachView();
-        super.onPause();
     }
 
 

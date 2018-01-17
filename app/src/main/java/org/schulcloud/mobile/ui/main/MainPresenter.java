@@ -38,7 +38,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     }
 
     @Override
-    protected void onViewAttached(@NonNull MainMvpView mvpView) {
+    public void onViewAttached(@NonNull MainMvpView mvpView) {
         super.onViewAttached(mvpView);
         if (mFragments == null) {
             MainFragment[] topLevelFragments = getViewOrThrow().getInitialFragments();

@@ -50,7 +50,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
         holder.nameTextView.setText(topic.name);
 
         holder.cardView.setOnClickListener(v ->
-                mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
+                mDetailedCoursePresenter.showTopicDetail(topic._id));
     }
 
     @Override

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.schulcloud.mobile.data.local.DatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
-import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
@@ -448,8 +447,8 @@ public class DataManager {
         return mDatabaseHelper.getTopics().distinctUntilChanged();
     }
 
-    public List<Contents> getContents(String topicId) {
-        return mDatabaseHelper.getContents(topicId).contents;
+    public Topic getTopicForId(@NonNull String topicId) {
+        return mDatabaseHelper.getTopicForId(topicId);
     }
 
     /**** Feedback ****/

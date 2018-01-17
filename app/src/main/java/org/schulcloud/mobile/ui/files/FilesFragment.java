@@ -35,15 +35,12 @@ import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.sync.DirectorySyncService;
 import org.schulcloud.mobile.data.sync.FileSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
-import org.schulcloud.mobile.util.dialogs.DialogFactory;
-import org.schulcloud.mobile.util.dialogs.DialogUtil;
 import org.schulcloud.mobile.util.InternalFilesUtil;
 import org.schulcloud.mobile.util.PathUtil;
 import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogUtil;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,7 +51,8 @@ import butterknife.OnClick;
 import okhttp3.ResponseBody;
 
 
-public class FilesFragment extends MainFragment implements FilesMvpView {
+public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
+        implements FilesMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
@@ -115,13 +113,17 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+        setPresenter(mFilesPresenter);
+        readArguments(savedInstanceState);
 
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
+        setHasOptionsMenu(true);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
             restartService(FileSyncService.getStartIntent(getContext()));
             restartService(DirectorySyncService.getStartIntent(getContext()));
         }
-
-        setHasOptionsMenu(true);
     }
     @Nullable
     @Override
@@ -175,16 +177,6 @@ public class FilesFragment extends MainFragment implements FilesMvpView {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mFilesPresenter.attachView(this);
-    }
-    @Override
-    public void onPause() {
-        mFilesPresenter.detachView();
-        super.onPause();
     }
 
     @Override

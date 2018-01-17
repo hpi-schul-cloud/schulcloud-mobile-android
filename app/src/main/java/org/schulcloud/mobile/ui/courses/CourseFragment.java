@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.courses;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +27,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CourseFragment extends MainFragment implements CourseMvpView {
+public class CourseFragment extends MainFragment<CourseMvpView, CoursePresenter>
+        implements CourseMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
@@ -40,6 +42,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
+    @NonNull
     public static CourseFragment newInstance() {
         return newInstance(true);
     }
@@ -50,6 +53,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
+    @NonNull
     public static CourseFragment newInstance(boolean triggerDataSyncOnCreate) {
         CourseFragment courseFragment = new CourseFragment();
 
@@ -64,8 +68,12 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true))
+        setPresenter(mCoursePresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true))
             startService(CourseSyncService.getStartIntent(getContext()));
     }
     @Nullable
@@ -93,15 +101,7 @@ public class CourseFragment extends MainFragment implements CourseMvpView {
                 }
         );
 
-        mCoursePresenter.attachView(this);
-        mCoursePresenter.loadCourses();
-
         return view;
-    }
-    @Override
-    public void onPause() {
-        mCoursePresenter.detachView();
-        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

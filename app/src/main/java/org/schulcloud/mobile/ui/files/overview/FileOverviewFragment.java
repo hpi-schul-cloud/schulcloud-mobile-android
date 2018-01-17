@@ -28,7 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FileOverviewFragment extends MainFragment implements FileOverviewMvpView {
+public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, FileOverviewPresenter>
+        implements FileOverviewMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
@@ -74,8 +75,12 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true))
+        setPresenter(mFileOverviewPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true))
             startService(CourseSyncService.getStartIntent(getContext()));
     }
     @Nullable
@@ -104,15 +109,7 @@ public class FileOverviewFragment extends MainFragment implements FileOverviewMv
         vRv_coursesList.setAdapter(mCourseDirectoryAdapter);
         vRv_coursesList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mFileOverviewPresenter.attachView(this);
-        mFileOverviewPresenter.load();
-
         return view;
-    }
-    @Override
-    public void onPause() {
-        mFileOverviewPresenter.detachView();
-        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

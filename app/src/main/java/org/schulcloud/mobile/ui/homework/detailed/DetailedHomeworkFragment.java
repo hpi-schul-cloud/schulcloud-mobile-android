@@ -29,7 +29,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.RealmList;
 
-public class DetailedHomeworkFragment extends MainFragment implements DetailedHomeworkMvpView {
+public class DetailedHomeworkFragment
+        extends MainFragment<DetailedHomeworkMvpView, DetailedHomeworkPresenter>
+        implements DetailedHomeworkMvpView {
     private static final String ARGUMENT_HOMEWORK_ID = "ARGUMENT_HOMEWORK_ID";
 
     @Inject
@@ -37,8 +39,6 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
 
     @Inject
     CommentsAdapter mCommentsAdapter;
-
-    private String mHomeworkId = null;
 
     @BindView(R.id.homeworkName)
     TextView homeworkName;
@@ -61,6 +61,7 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
      * @param homeworkId The ID of the homework to be shown.
      * @return The new instance
      */
+    @NonNull
     public static DetailedHomeworkFragment newInstance(@NonNull String homeworkId) {
         DetailedHomeworkFragment detailedHomeworkFragment = new DetailedHomeworkFragment();
 
@@ -75,8 +76,12 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        mHomeworkId = getArguments().getString(ARGUMENT_HOMEWORK_ID);
+        setPresenter(mDetailedHomeworkPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        mDetailedHomeworkPresenter.loadHomework(getArguments().getString(ARGUMENT_HOMEWORK_ID));
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,16 +93,10 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
         recyclerView.setAdapter(mCommentsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mDetailedHomeworkPresenter.attachView(this);
-        mDetailedHomeworkPresenter.loadHomework(mHomeworkId);
-
         return view;
     }
-    @Override
-    public void onDestroy() {
-        mDetailedHomeworkPresenter.detachView();
-        super.onDestroy();
-    }
+
+
     /***** MVP View methods implementation *****/
     @Override
     public void showHomework(@NonNull Homework homework) {
@@ -111,10 +110,9 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
             e.printStackTrace();
         }
 
-        if (untilDate.before(new Date())) {
-            homeworkDueDate.setPaintFlags(
-                    homeworkDueDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
+        if (untilDate.before(new Date()))
+            homeworkDueDate
+                    .setPaintFlags(homeworkDueDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         if (homework.courseId != null && homework.courseId.name != null)
             homeworkName.setText(getString(R.string.homework_homework_name_format,
@@ -123,19 +121,14 @@ public class DetailedHomeworkFragment extends MainFragment implements DetailedHo
             homeworkName.setText(homework.name);
         homeworkDescription.setText(Html.fromHtml(homework.description));
 
-        if (homework.restricted == null || !homework.restricted)
-            mDetailedHomeworkPresenter.loadComments(mHomeworkId);
-        else
-            nonPrivate.setVisibility(View.GONE);
-
         if (untilDate != null)
             homeworkDueDate.setText(dateFormatDeux.format(untilDate));
-
-        String course = homework.courseId != null ? homework.courseId.name : "";
     }
 
     @Override
-    public void showSubmission(@NonNull Submission submission, String userId) {
+    public void showSubmission(@Nullable Submission submission, String userId) {
+        nonPrivate.setVisibility(View.VISIBLE);
+
         if (submission == null) {
             submission = new Submission();
             submission.comment = getString(R.string.homework_homework_notSubmitted);

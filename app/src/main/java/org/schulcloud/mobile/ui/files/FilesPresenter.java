@@ -28,12 +28,15 @@ import timber.log.Timber;
 public class FilesPresenter extends BasePresenter<FilesMvpView> {
 
     private DataManager mDataManager;
+    private Subscription mCurrentUserSubscription;
+    private Subscription mFileSubscription;
     private Subscription mFileDownloadGetterSubscription;
     private Subscription mFileDownloadSubscription;
     private Subscription mFileUploadGetterSubscription;
     private Subscription mFileUploadSubscription;
     private Subscription mFileDeleteSubscription;
 
+    private Subscription mDirectorySubscription;
     private Subscription mDirectoryCreateSubscription;
     private Subscription mDirectoryDeleteSubscription;
 
@@ -41,7 +44,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     FilesPresenter(DataManager dataManager) {
         mDataManager = dataManager;
 
-        mDataManager.getCurrentUser()
+        mCurrentUserSubscription = mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser -> sendToView(v -> {
                     v.showCanUploadFile(currentUser.hasPermission(
@@ -59,20 +62,23 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     }
 
     @Override
-    protected void onViewAttached(@NonNull FilesMvpView view) {
+    public void onViewAttached(@NonNull FilesMvpView view) {
         super.onViewAttached(view);
         // TODO: Remove when fragment lifecycle is fixed
         loadBreadcrumbs();
     }
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
+        RxUtil.unsubscribe(mCurrentUserSubscription);
+        RxUtil.unsubscribe(mFileSubscription);
         RxUtil.unsubscribe(mFileDownloadGetterSubscription);
         RxUtil.unsubscribe(mFileDownloadSubscription);
         RxUtil.unsubscribe(mFileUploadGetterSubscription);
         RxUtil.unsubscribe(mFileUploadSubscription);
         RxUtil.unsubscribe(mFileDeleteSubscription);
 
+        RxUtil.unsubscribe(mDirectorySubscription);
         RxUtil.unsubscribe(mDirectoryCreateSubscription);
         RxUtil.unsubscribe(mDirectoryDeleteSubscription);
     }
@@ -87,7 +93,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     }
 
     private void loadFiles() {
-        mDataManager.getFiles()
+        RxUtil.unsubscribe(mFileSubscription);
+        mFileSubscription = mDataManager.getFiles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         files -> sendToView(view -> view.showFiles(files)),
@@ -224,7 +231,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
 
 
     private void loadDirectories() {
-        mDataManager.getDirectories()
+        RxUtil.unsubscribe(mDirectorySubscription);
+        mDirectorySubscription = mDataManager.getDirectories()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         directories -> sendToView(view -> view.showDirectories(directories)),

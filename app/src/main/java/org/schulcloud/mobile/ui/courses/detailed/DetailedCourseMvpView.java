@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface DetailedCourseMvpView extends MvpView {
 
-    void showCourse(@NonNull Course course);
+    void showCourseName(@NonNull String name);
 
     void showTopics(@NonNull List<Topic> topics);
 
-    void showTopicDetail(@NonNull String topicId, @NonNull String topicName);
+    void showTopicDetail(@NonNull String topicId);
 
     void showError();
 }

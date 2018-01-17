@@ -1,18 +1,18 @@
 package org.schulcloud.mobile.ui.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import org.schulcloud.mobile.ui.base.BaseFragment;
+import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.ui.base.MvpView;
-import org.schulcloud.mobile.util.PermissionsUtil;
 
 /**
  * Base class for any fragment that will be shown inside {@link MainActivity}.
  */
-public abstract class MainFragment extends BaseFragment implements MvpView {
+public abstract class MainFragment<V extends MvpView, P extends BasePresenter<V>>
+        extends BaseFragment<V, P> {
     private MainActivity mMainActivity;
 
     @Override

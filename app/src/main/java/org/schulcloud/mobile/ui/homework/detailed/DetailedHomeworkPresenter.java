@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.homework.detailed;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvpView> {
 
     private DataManager mDataManager;
+    private Homework mHomework;
 
     @Inject
     public DetailedHomeworkPresenter(DataManager dataManager) {
@@ -24,16 +26,16 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
      * @param homeworkId The id of the homework to be shown.
      */
     public void loadHomework(@NonNull String homeworkId) {
-        getViewOrThrow().showHomework(mDataManager.getHomeworkForId(homeworkId));
+        mHomework = mDataManager.getHomeworkForId(homeworkId);
+        sendToView(v -> v.showHomework(mDataManager.getHomeworkForId(homeworkId)));
+        loadSubmission();
     }
 
     /**
      * Loads a specific submission containing the comments.
-     *
-     * @param homeworkId The id of the displayed homework. Required to reference the submission.
      */
-    public void loadComments(@NonNull String homeworkId) {
-        getViewOrThrow().showSubmission(mDataManager.getSubmissionForId(homeworkId),
-                mDataManager.getCurrentUserId());
+    public void loadSubmission() {
+        sendToView(v -> v.showSubmission(mDataManager.getSubmissionForId(mHomework._id),
+                mDataManager.getCurrentUserId()));
     }
 }

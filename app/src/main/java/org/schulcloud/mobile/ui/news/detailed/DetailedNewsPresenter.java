@@ -16,7 +16,6 @@ public class DetailedNewsPresenter extends BasePresenter<DetailedNewsMvpView> {
         mDataManager = dataManager;
     }
 
-
     public void loadNews(@NonNull String newsId) {
         getViewOrThrow().showNews(mDataManager.getNewsForId(newsId));
     }

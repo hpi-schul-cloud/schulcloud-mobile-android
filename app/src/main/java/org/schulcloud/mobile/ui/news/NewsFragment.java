@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewsFragment extends MainFragment implements NewsMvpView {
+public class NewsFragment extends MainFragment<NewsMvpView, NewsPresenter> implements NewsMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
@@ -41,6 +41,7 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
+    @NonNull
     public static NewsFragment newInstance() {
         return newInstance(true);
     }
@@ -51,6 +52,7 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
      *                                only be set to false during testing.
      * @return The new instance
      */
+    @NonNull
     public static NewsFragment newInstance(boolean triggerDataSyncOnCreate) {
         NewsFragment newsFragment = new NewsFragment();
 
@@ -65,7 +67,11 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
+        setPresenter(mNewsPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
         if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true))
             startService(NewsSyncService.getStartIntent(getContext()));
     }
@@ -91,15 +97,7 @@ public class NewsFragment extends MainFragment implements NewsMvpView {
                 }
         );
 
-        mNewsPresenter.attachView(this);
-        mNewsPresenter.loadNews();
-
         return view;
-    }
-    @Override
-    public void onPause() {
-        mNewsPresenter.detachView();
-        super.onPause();
     }
 
     @Override

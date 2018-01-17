@@ -26,7 +26,7 @@ import timber.log.Timber;
 @ConfigPersistent
 public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private PreferencesHelper mPreferencesHelper;
 
     private Subscription mSubscription;
@@ -43,11 +43,12 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
         mPreferencesHelper = preferencesHelper;
 
         mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        loadData();
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
         RxUtil.unsubscribe(mCoursesSubscription);
         RxUtil.unsubscribe(mCurrentUserSubscription);

@@ -26,7 +26,7 @@ public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
     }
 
     @Override
-    protected void onViewDetached() {
+    public void onViewDetached() {
         super.onViewDetached();
         RxUtil.unsubscribe(mSubscription);
     }

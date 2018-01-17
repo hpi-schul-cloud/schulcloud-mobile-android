@@ -47,7 +47,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     @Override
-    protected void onViewAttached(@NonNull SettingsMvpView view) {
+    public void onViewAttached(@NonNull SettingsMvpView view) {
         super.onViewAttached(view);
         mDataManager.isInDemoMode()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -57,7 +57,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 });
     }
     @Override
-    protected void onViewDetached() {
+    public void onViewDetached() {
         super.onViewDetached();
         RxUtil.unsubscribe(mEventsSubscription);
         RxUtil.unsubscribe(mDevicesSubscription);

@@ -21,19 +21,18 @@ public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
     @Inject
     DashboardPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+        reload();
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
     }
 
-    public void showHomework() {
-        sendToView(view -> view.showOpenHomework(mDataManager.getOpenHomeworks()));
-    }
+    public void reload() {
+        sendToView(v -> v.showOpenHomework(mDataManager.getOpenHomeworks()));
 
-    public void showEvents() {
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getEventsForToday()
                 .observeOn(AndroidSchedulers.mainThread())

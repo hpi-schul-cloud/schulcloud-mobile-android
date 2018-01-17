@@ -23,7 +23,7 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     }
 
     @Override
-    protected void onViewDetached() {
+    public void onViewDetached() {
         super.onViewDetached();
         RxUtil.unsubscribe(mSubscription);
     }

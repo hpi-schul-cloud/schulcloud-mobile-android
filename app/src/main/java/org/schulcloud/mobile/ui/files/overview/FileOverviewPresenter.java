@@ -22,16 +22,16 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
     @Inject
     public FileOverviewPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+        sendToView(v -> load());
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mCoursesSubscription);
     }
-    public void load() {
-        RxUtil.unsubscribe(mCoursesSubscription);
 
+    public void load() {
         // Open folder directly if it is already set (e.g. from a previous session)
         if (mIsFirstLoad
                 && mDataManager.getCurrentStorageContext().split("/", 3).length >= 2) {
@@ -41,6 +41,7 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
         }
 
         mDataManager.setCurrentStorageContextToRoot();
+        RxUtil.unsubscribe(mCoursesSubscription);
         mCoursesSubscription = mDataManager.getCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

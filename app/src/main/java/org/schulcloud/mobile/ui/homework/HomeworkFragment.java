@@ -30,7 +30,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
+public class HomeworkFragment extends MainFragment<HomeworkMvpView, HomeworkPresenter>
+        implements HomeworkMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
@@ -72,8 +73,12 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
+        setPresenter(mHomeworkPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
             startService(HomeworkSyncService.getStartIntent(getContext()));
             startService(SubmissionSyncService.getStartIntent(getContext()));
         }
@@ -88,7 +93,6 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
 
         recyclerView.setAdapter(mHomeworkAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
         swipeRefresh.setOnRefreshListener(
@@ -107,15 +111,7 @@ public class HomeworkFragment extends MainFragment implements HomeworkMvpView {
 
         fabAddHomework.setOnClickListener(v -> addFragment(AddHomeworkFragment.newInstance()));
 
-        mHomeworkPresenter.attachView(this);
-        mHomeworkPresenter.loadHomework();
-
         return view;
-    }
-    @Override
-    public void onPause() {
-        mHomeworkPresenter.detachView();
-        super.onPause();
     }
 
     /***** MVP View methods implementation *****/

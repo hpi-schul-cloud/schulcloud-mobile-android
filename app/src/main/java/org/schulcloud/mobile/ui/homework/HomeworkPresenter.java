@@ -19,15 +19,19 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
     private DataManager mDataManager;
     private Subscription mSubscription;
+    private Subscription mCurrentUserSubscription;
 
     @Inject
     public HomeworkPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+        loadHomework();
     }
 
     @Override
-    protected void onViewAttached(@NonNull HomeworkMvpView view) {
+    public void onViewAttached(@NonNull HomeworkMvpView view) {
         super.onViewAttached(view);
+        // TODO: Required?
+        RxUtil.unsubscribe(mCurrentUserSubscription);
         mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser ->
@@ -35,8 +39,9 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
                                 currentUser.hasPermission(CurrentUser.PERMISSION_HOMEWORK_CREATE))));
     }
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
+        RxUtil.unsubscribe(mCurrentUserSubscription);
         RxUtil.unsubscribe(mSubscription);
     }
 

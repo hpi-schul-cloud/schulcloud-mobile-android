@@ -25,10 +25,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailedCourseFragment extends MainFragment implements DetailedCourseMvpView {
+public class DetailedCourseFragment
+        extends MainFragment<DetailedCourseMvpView, DetailedCoursePresenter>
+        implements DetailedCourseMvpView {
     private static final String ARGUMENT_COURSE_ID = "ARGUMENT_COURSE_ID";
-
-    private String mCourseId = null;
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
@@ -47,6 +47,7 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
      * @param courseId The ID of the course that should be shown.
      * @return The new instance
      */
+    @NonNull
     public static DetailedCourseFragment newInstance(@NonNull String courseId) {
         DetailedCourseFragment detailedCourseFragment = new DetailedCourseFragment();
 
@@ -61,10 +62,14 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        mCourseId = getArguments().getString(ARGUMENT_COURSE_ID);
-
-        startService(TopicSyncService.getStartIntent(getContext(), mCourseId));
+        setPresenter(mDetailedCoursePresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        String courseId = args.getString(ARGUMENT_COURSE_ID);
+        mDetailedCoursePresenter.loadCourse(courseId);
+        startService(TopicSyncService.getStartIntent(getContext(), courseId));
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,22 +81,13 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
         recyclerView.setAdapter(mTopicsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mDetailedCoursePresenter.attachView(this);
-        mDetailedCoursePresenter.loadCourse(mCourseId);
-        mDetailedCoursePresenter.loadTopics();
-
         return view;
-    }
-    @Override
-    public void onPause() {
-        mDetailedCoursePresenter.detachView();
-        super.onPause();
     }
 
     /***** MVP View methods implementation *****/
     @Override
-    public void showCourse(@NonNull Course course) {
-        courseName.setText(course.name);
+    public void showCourseName(@NonNull String name) {
+        courseName.setText(name);
     }
 
     @Override
@@ -100,8 +96,8 @@ public class DetailedCourseFragment extends MainFragment implements DetailedCour
     }
 
     @Override
-    public void showTopicDetail(@NonNull String topicId, @NonNull String topicName) {
-        addFragment(TopicFragment.newInstance(topicId, topicName));
+    public void showTopicDetail(@NonNull String topicId) {
+        addFragment(TopicFragment.newInstance(topicId));
     }
 
     @Override

@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +15,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
@@ -23,6 +24,8 @@ import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.util.NetworkUtil;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -31,25 +34,25 @@ import butterknife.ButterKnife;
  * MainActivity displays a BottomNavigationView and the Toolbar, the content is managed by fragments
  * which inherit from {@link MainFragment}.
  */
-public final class MainActivity extends BaseActivity implements MainMvpView {
-    private static final String TAG = MainActivity.class.getSimpleName();
-
-    public static final int TAB_DASHBOARD = R.id.main_navigation_dashboard;
-    public static final int TAB_NEWS = R.id.main_navigation_news;
-    public static final int TAB_COURSES = R.id.main_navigation_courses;
-    public static final int TAB_HOMEWORK = R.id.main_navigation_homework;
-    public static final int TAB_FILES = R.id.main_navigation_files;
-    //    public static final int TAB_MATERIALS = R.id.main_navigation_materials;
-    //    public static final int TAB_ADMINISTRATION = R.id.main_navigation_administration;
+public final class MainActivity
+        extends BaseActivity<MainMvpView<MainFragment>, MainPresenter<MainFragment>>
+        implements MainMvpView<MainFragment> {
+    private static final int TAB_DASHBOARD = R.id.main_navigation_dashboard;
+    private static final int TAB_NEWS = R.id.main_navigation_news;
+    private static final int TAB_COURSES = R.id.main_navigation_courses;
+    private static final int TAB_HOMEWORK = R.id.main_navigation_homework;
+    private static final int TAB_FILES = R.id.main_navigation_files;
+    //    private static final int TAB_MATERIALS = R.id.main_navigation_materials;
+    //    private static final int TAB_ADMINISTRATION = R.id.main_navigation_administration;
 
     @Inject
-    MainPresenter mMainPresenter;
+    MainPresenter<MainFragment> mMainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        mMainPresenter.attachView(this);
+        setPresenter(mMainPresenter);
         mMainPresenter.checkSignedIn(this);
 
         setContentView(R.layout.activity_main);
@@ -67,12 +70,6 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
                     return true;
                 });
     }
-    @Override
-    protected void onPause() {
-        mMainPresenter.detachView();
-        super.onPause();
-    }
-
     private int getTabIndexById(@IdRes int tabId) {
         switch (tabId) {
             case TAB_DASHBOARD:
@@ -88,12 +85,6 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
             default:
                 return 0;
         }
-    }
-    public void addFragment(@NonNull MainFragment parent, @NonNull MainFragment child) {
-        mMainPresenter.addFragment(parent, child);
-    }
-    public void removeFragment(@NonNull MainFragment fragment) {
-        mMainPresenter.removeFragment(fragment);
     }
 
     @Override
@@ -123,25 +114,79 @@ public final class MainActivity extends BaseActivity implements MainMvpView {
         mMainPresenter.onBackPressed();
     }
 
+
+    /***** MVP View methods implementation *****/
+    @Override
+    public int getTabCount() {
+        return 5;
+    }
     @NonNull
     @Override
-    public MainFragment[] getInitialFragments() {
-        return new MainFragment[]{
-                DashboardFragment.newInstance(),
-                NewsFragment.newInstance(),
-                CourseFragment.newInstance(),
-                HomeworkFragment.newInstance(),
-                FileOverviewFragment.newInstance()};
+    public Pair<Integer, MainFragment> createInitialView(int tabIndex) {
+        MainFragment fragment;
+        switch (tabIndex) {
+            case 0:
+                fragment = DashboardFragment.newInstance();
+                break;
+            case 1:
+                fragment = NewsFragment.newInstance();
+                break;
+            case 2:
+                fragment = CourseFragment.newInstance();
+                break;
+            case 3:
+                fragment = HomeworkFragment.newInstance();
+                break;
+            case 4:
+                fragment = FileOverviewFragment.newInstance();
+                break;
+
+            default:
+                throw new IllegalArgumentException("newTabIndex could not be found");
+        }
+        return new Pair<>(fragment.getActivityId(), fragment);
     }
+
     @Override
-    public void showFragment(@NonNull MainFragment fragment, int oldTabIndex, int newTabIndex) {
+    public void showView(int oldViewId, int newViewId, @Nullable MainFragment newView,
+            int oldTabIndex, int newTabIndex) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
         if (newTabIndex > oldTabIndex)
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         else if (newTabIndex < oldTabIndex)
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(R.id.content, fragment);
-        transaction.addToBackStack(null);
+
+        if (oldViewId >= 0)
+            transaction.detach(findFragment(oldViewId));
+
+        if (newView != null)
+            transaction.add(R.id.content, newView, "" + newViewId);
+        else
+            transaction.attach(findFragment(newViewId));
+
         transaction.commit();
+    }
+    @Override
+    public void removeViews(@NonNull List<Integer> viewIds) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+                .setAllowOptimization(true);
+        for (int viewId : viewIds)
+            transaction.remove(findFragment(viewId));
+        transaction.commit();
+    }
+    @Override
+    public boolean currentViewHandlesBack(int viewId) {
+        return findFragment(viewId).onBackPressed();
+    }
+    private MainFragment findFragment(int viewId) {
+        return (MainFragment) getSupportFragmentManager().findFragmentByTag("" + viewId);
+    }
+
+    public void addFragment(@NonNull MainFragment parent, @NonNull MainFragment child) {
+        mMainPresenter.addView(parent.getActivityId(), child.getActivityId(), child);
+    }
+    public void removeFragment(@NonNull MainFragment fragment) {
+        mMainPresenter.removeView(fragment.getActivityId());
     }
 }

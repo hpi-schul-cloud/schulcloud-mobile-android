@@ -18,6 +18,7 @@ import com.beardedhen.androidbootstrap.font.FontAwesome;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +31,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder> {
 
     private List<Homework> mHomework;

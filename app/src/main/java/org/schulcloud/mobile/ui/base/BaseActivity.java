@@ -98,7 +98,7 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(KEY_ACTIVITY_ID, mActivityId);
+        outState.putInt(KEY_ACTIVITY_ID, mActivityId);
     }
     @Override
     protected void onDestroy() {

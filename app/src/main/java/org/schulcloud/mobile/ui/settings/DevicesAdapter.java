@@ -26,8 +26,8 @@ import butterknife.ButterKnife;
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesViewHolder> {
     @Inject
     SettingsPresenter mSettingsPresenter;
+    private final DataManager mDataManager;
     private List<Device> mDevices;
-    private DataManager mDataManager;
 
     @Inject
     public DevicesAdapter(DataManager dataManager) {

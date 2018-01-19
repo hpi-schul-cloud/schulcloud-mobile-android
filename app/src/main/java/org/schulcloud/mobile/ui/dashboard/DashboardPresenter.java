@@ -15,7 +15,7 @@ import rx.android.schedulers.AndroidSchedulers;
 @ConfigPersistent
 public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject

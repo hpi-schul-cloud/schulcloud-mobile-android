@@ -34,7 +34,7 @@ import timber.log.Timber;
 @ConfigPersistent
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
 
     private Subscription mDemoModeSubscription;
     private Subscription mEventsSubscription;

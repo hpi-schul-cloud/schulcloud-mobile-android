@@ -27,7 +27,7 @@ import timber.log.Timber;
 @ConfigPersistent
 public class FilesPresenter extends BasePresenter<FilesMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mCurrentUserSubscription;
     private Subscription mFileSubscription;
     private Subscription mFileDownloadGetterSubscription;

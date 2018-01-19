@@ -16,7 +16,7 @@ import timber.log.Timber;
 @ConfigPersistent
 public class NewsPresenter extends BasePresenter<NewsMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject

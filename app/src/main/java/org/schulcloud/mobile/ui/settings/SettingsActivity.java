@@ -8,12 +8,14 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -30,9 +32,9 @@ import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
-import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -149,7 +151,17 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             switch_calendar.setText(R.string.settings_calendar_sync);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     /***** MVP View methods implementation *****/
     // Calender
     @Override

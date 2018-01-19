@@ -117,6 +117,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
         readArguments(savedInstanceState);
 
         setHasOptionsMenu(true);
+        mFilesAdapter.initIcons(getContext());
     }
     @Override
     public void onReadArguments(Bundle args) {

@@ -17,6 +17,7 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.injection.ActivityContext;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.SimpleDialogBuilder;
 
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHolder> {
 
     @Inject
@@ -39,9 +41,11 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
     private boolean mCanDeleteFiles;
 
     @Inject
-    public FilesAdapter(@ActivityContext Context context) {
+    public FilesAdapter() {
         mFiles = new ArrayList<>();
+    }
 
+    public void initIcons(@NonNull Context context) {
         String[] availableIcons = {
                 "txt", "doc", "pdf",
                 "xls",
@@ -59,7 +63,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
         mIconIds.put("docx", mIconIds.get("doc"));
         mIconIds.put("jpeg", mIconIds.get("jpg"));
     }
-
     public void setFiles(@NonNull List<File> files) {
         mFiles = files;
         notifyDataSetChanged();

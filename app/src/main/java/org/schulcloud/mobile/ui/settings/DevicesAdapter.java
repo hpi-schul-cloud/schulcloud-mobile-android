@@ -12,6 +12,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.model.Device;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesViewHolder> {
     @Inject
     SettingsPresenter mSettingsPresenter;

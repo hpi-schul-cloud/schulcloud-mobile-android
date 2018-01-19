@@ -8,7 +8,7 @@ import org.schulcloud.mobile.util.Action;
 import org.schulcloud.mobile.util.SuperNotCalledException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 /**
  * Base class that implements the Presenter interface and provides a base implementation for
  * attachView() and detachView(). It also handles keeping a reference to the view that

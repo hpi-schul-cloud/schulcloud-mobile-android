@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.ui.news;
 
 import android.support.annotation.NonNull;
-
 import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;

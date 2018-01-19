@@ -140,8 +140,7 @@ public class DashboardFragment extends MainFragment<DashboardMvpView, DashboardP
     }
     @Override
     public void showEvents(@NonNull List<Event> eventsForDay) {
-        mEventsAdapter.setContext(getContext());
-        mEventsAdapter.setEvents(eventsForDay);
+        mEventsAdapter.setEvents(getContext(), eventsForDay);
     }
 
     @Override

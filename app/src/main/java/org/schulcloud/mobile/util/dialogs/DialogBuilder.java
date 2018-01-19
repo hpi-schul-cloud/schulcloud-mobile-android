@@ -7,8 +7,6 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.util.Action;
-import org.schulcloud.mobile.util.Action0;
 
 import rx.Single;
 import rx.SingleSubscriber;

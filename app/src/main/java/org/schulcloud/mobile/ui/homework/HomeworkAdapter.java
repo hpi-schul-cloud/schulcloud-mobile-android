@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder> {
 
     private List<Homework> mHomework;
-    private Context mContext;
 
     @Inject
     HomeworkPresenter mHomeworkPresenter;
@@ -50,10 +49,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         notifyDataSetChanged();
     }
 
-    public void setContext(@NonNull Context context) {
-        mContext = context;
-    }
-
     @Override
     public HomeworkViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -63,6 +58,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     @Override
     public void onBindViewHolder(HomeworkViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Homework homework = mHomework.get(position);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -79,11 +75,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             holder.dueDate
                     .setPaintFlags(holder.dueDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.cardView.setCardBackgroundColor(
-                    ContextCompat.getColor(mContext, R.color.gray_dark));
+                    ContextCompat.getColor(context, R.color.gray_dark));
         }
 
         if (homework.courseId != null && homework.courseId.name != null)
-            holder.nameTextView.setText(mContext.getString(R.string.homework_homework_name_format,
+            holder.nameTextView.setText(context.getString(R.string.homework_homework_name_format,
                     homework.courseId.name, homework.name));
         else
             holder.nameTextView.setText(homework.name);

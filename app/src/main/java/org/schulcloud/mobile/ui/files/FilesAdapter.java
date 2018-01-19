@@ -16,7 +16,6 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.File;
-import org.schulcloud.mobile.injection.ActivityContext;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.SimpleDialogBuilder;

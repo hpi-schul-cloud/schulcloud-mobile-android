@@ -88,6 +88,5 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
     @Override
     public void showContent(@NonNull List<Contents> contents) {
         mContentAdapter.setContent(contents);
-        mContentAdapter.setContext(getActivity());
     }
 }

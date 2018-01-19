@@ -118,7 +118,6 @@ public class HomeworkFragment extends MainFragment<HomeworkMvpView, HomeworkPres
     @Override
     public void showHomework(@NonNull List<Homework> homework) {
         mHomeworkAdapter.setHomework(homework);
-        mHomeworkAdapter.setContext(getContext());
     }
     @Override
     public void showCanCreateHomework(boolean canCreateHomework) {

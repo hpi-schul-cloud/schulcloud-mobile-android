@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.Topic;
 import org.schulcloud.mobile.data.sync.TopicSyncService;
 import org.schulcloud.mobile.ui.courses.topic.TopicFragment;

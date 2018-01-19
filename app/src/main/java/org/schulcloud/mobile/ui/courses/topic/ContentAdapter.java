@@ -28,8 +28,6 @@ import butterknife.ButterKnife;
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentViewHolder> {
 
     private List<Contents> mContent;
-    private String mUserId;
-    private Context mContext;
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
@@ -47,8 +45,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         notifyDataSetChanged();
     }
 
-    public void setContext(@NonNull Context context) { mContext = context; }
-
     @Override
     public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -58,15 +54,21 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
     @Override
     public void onBindViewHolder(ContentViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Contents contents = mContent.get(position);
+
         holder.nameTextView.setText(contents.title);
 
-        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, mContext, mDataManger.getAccessToken());
+        PicassoImageGetter imageGetter = new PicassoImageGetter(holder.descriptionTextView, context,
+                mDataManger.getAccessToken());
 
         if (contents.component.equals("text"))
-            holder.descriptionTextView.setText(Html.fromHtml(contents.content.text, imageGetter, null));
+            holder.descriptionTextView
+                    .setText(Html.fromHtml(contents.content.text, imageGetter, null));
         else
-            holder.descriptionTextView.setText(mContext.getString(R.string.courses_content_error_notSupported, contents.component));
+            holder.descriptionTextView.setText(
+                    context.getString(R.string.courses_content_error_notSupported,
+                            contents.component));
     }
 
     @Override

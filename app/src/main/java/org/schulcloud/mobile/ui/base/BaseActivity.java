@@ -116,13 +116,15 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
     @CallSuper
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_base, menu);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.base_action_feedback:
-                FeedbackDialog.newInstance(getClass().getSimpleName())
+                FeedbackDialog.newInstance(
+                        getClass().getSimpleName() + ": " + provideDetailedFeedbackContext())
                         .show(getSupportFragmentManager(), null);
                 return true;
 
@@ -234,6 +236,10 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
     @Inject
     public void setDataManager(DataManager dataManager) {
         mDataManager = dataManager;
+    }
+    @NonNull
+    protected String provideDetailedFeedbackContext() {
+        return "";
     }
 
     /***** MVP View methods implementation *****/

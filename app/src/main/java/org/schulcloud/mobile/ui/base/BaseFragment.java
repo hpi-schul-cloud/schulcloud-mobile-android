@@ -77,7 +77,7 @@ public abstract class BaseFragment<V extends MvpView, P extends BasePresenter<V>
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(KEY_ACTIVITY_ID, mActivityId);
+        outState.putInt(KEY_ACTIVITY_ID, mActivityId);
     }
 
     @NonNull

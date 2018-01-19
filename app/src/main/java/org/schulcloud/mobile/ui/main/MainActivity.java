@@ -109,6 +109,12 @@ public final class MainActivity
         }
     }
 
+    @NonNull
+    @Override
+    protected String provideDetailedFeedbackContext() {
+        int currentViewId = mMainPresenter.getCurrentViewId();
+        return currentViewId + ", " + findFragment(currentViewId).getClass().getSimpleName();
+    }
     @Override
     public void onBackPressed() {
         mMainPresenter.onBackPressed();

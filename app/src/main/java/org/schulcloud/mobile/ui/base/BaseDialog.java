@@ -74,6 +74,11 @@ public abstract class BaseDialog<V extends MvpView, P extends BasePresenter<V>>
         super.onPause();
     }
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_ACTIVITY_ID, mActivityId);
+    }
+    @Override
     public void onDismiss(DialogInterface dialog) {
         if (mPresenter != null)
             mPresenter.destroy();

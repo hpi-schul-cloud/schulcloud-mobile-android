@@ -188,5 +188,9 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
         if (!getViewOrThrow().currentViewHandlesBack(mCurrentViewId))
             showView(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, null, true);
     }
+
+    public int getCurrentViewId() {
+        return mCurrentViewId;
+    }
 }
 

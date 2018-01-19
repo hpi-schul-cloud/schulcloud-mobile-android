@@ -30,7 +30,6 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
     @Override
     public void onViewAttached(@NonNull HomeworkMvpView view) {
         super.onViewAttached(view);
-        // TODO: Required?
         RxUtil.unsubscribe(mCurrentUserSubscription);
         mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())

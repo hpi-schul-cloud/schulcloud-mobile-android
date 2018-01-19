@@ -42,7 +42,6 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
      * Creates a new instance of this fragment.
      *
      * @param topicId   The ID of the topic that should be shown
-     * @param topicName The name of the topic that should be shown
      * @return The new instance
      */
     @NonNull

@@ -85,7 +85,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
     @BindView(R.id.files_upload)
     FloatingActionButton fileUploadButton;
 
-    private MenuItem nDirectoryCreate;
+    private boolean mShowDirectoryCreate;
 
     @NonNull
     public static FilesFragment newInstance() {
@@ -150,13 +150,15 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
             new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
         });
 
-        // Sync services are called in onCreate, so it is currently loading
-        swipeRefresh.setRefreshing(true);
-        // When starting the app with an empty folder selected, this lines are required
-        new Handler().postDelayed(() -> {
-            swipeRefresh.setRefreshing(false);
-            updateEmptyText();
-        }, 3000);
+        if (savedInstanceState == null) {
+            // Sync services are called in initial onCreate, so it is currently loading
+            swipeRefresh.setRefreshing(true);
+            // When starting the app with an empty folder selected, this lines are required
+            new Handler().postDelayed(() -> {
+                swipeRefresh.setRefreshing(false);
+                updateEmptyText();
+            }, 3000);
+        }
 
         return view;
     }
@@ -164,9 +166,12 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_files, menu);
-        nDirectoryCreate = menu.findItem(R.id.files_action_directoryCreate);
-
         super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.files_action_directoryCreate).setVisible(mShowDirectoryCreate);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -380,7 +385,8 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
     /* Directory creation */
     @Override
     public void showCanCreateDirectories(boolean canCreateDirectories) {
-        nDirectoryCreate.setVisible(canCreateDirectories);
+        mShowDirectoryCreate = canCreateDirectories;
+        getActivity().invalidateOptionsMenu();
     }
     private void createDirectory() {
         DialogFactory.showSimpleTextInputDialog(getContext(),

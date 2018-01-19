@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.ui.main.MainActivity;
@@ -19,6 +21,7 @@ import org.schulcloud.mobile.ui.main.MainActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class StartActivity extends BaseActivity<StartMvpView, BasePresenter<StartMvpView>>
         implements StartMvpView {
 

@@ -27,6 +27,12 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
     }
 
     @Override
+    public void onViewAttached(@NonNull DetailedCourseMvpView view) {
+        super.onViewAttached(view);
+
+        showName();
+    }
+    @Override
     public void onDestroy() {
         super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
@@ -39,7 +45,7 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
      */
     public void loadCourse(@NonNull String courseId) {
         mCourse = mDataManager.getCourseForId(courseId);
-        sendToView(v -> v.showCourseName(mCourse.name));
+        showName();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getTopics()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,8 +56,15 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
                             sendToView(DetailedCourseMvpView::showError);
                         });
     }
+    private void showName() {
+        sendToView(v -> {
+            if (mCourse == null)
+                return;
+            v.showCourseName(mCourse.name);
+        });
+    }
 
     public void showTopicDetail(@NonNull String topicId) {
-        getViewOrThrow().showTopicDetail(topicId);
+        sendToView(v -> v.showTopicDetail(topicId));
     }
 }

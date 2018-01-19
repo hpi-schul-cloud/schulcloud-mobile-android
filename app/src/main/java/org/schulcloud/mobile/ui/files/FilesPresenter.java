@@ -44,19 +44,6 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     FilesPresenter(DataManager dataManager) {
         mDataManager = dataManager;
 
-        mCurrentUserSubscription = mDataManager.getCurrentUser()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(currentUser -> sendToView(v -> {
-                    v.showCanUploadFile(currentUser.hasPermission(
-                            CurrentUser.PERMISSION_FILE_CREATE));
-                    v.showCanDeleteFiles(currentUser.hasPermission(
-                            CurrentUser.PERMISSION_FILE_DELETE));
-                    v.showCanCreateDirectories(currentUser.hasPermission(
-                            CurrentUser.PERMISSION_FOLDER_CREATE));
-                    v.showCanDeleteDirectories(currentUser.hasPermission(
-                            CurrentUser.PERMISSION_FOLDER_DELETE));
-                }));
-        loadBreadcrumbs();
         loadFiles();
         loadDirectories();
     }
@@ -64,7 +51,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     @Override
     public void onViewAttached(@NonNull FilesMvpView view) {
         super.onViewAttached(view);
-        // TODO: Remove when fragment lifecycle is fixed
+        loadPermissions();
         loadBreadcrumbs();
     }
     @Override
@@ -83,6 +70,21 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         RxUtil.unsubscribe(mDirectoryDeleteSubscription);
     }
 
+    private void loadPermissions() {
+        RxUtil.unsubscribe(mCurrentUserSubscription);
+        mCurrentUserSubscription = mDataManager.getCurrentUser()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(currentUser -> sendToView(v -> {
+                v.showCanUploadFile(currentUser.hasPermission(
+                        CurrentUser.PERMISSION_FILE_CREATE));
+                v.showCanDeleteFiles(currentUser.hasPermission(
+                        CurrentUser.PERMISSION_FILE_DELETE));
+                v.showCanCreateDirectories(currentUser.hasPermission(
+                        CurrentUser.PERMISSION_FOLDER_CREATE));
+                v.showCanDeleteDirectories(currentUser.hasPermission(
+                        CurrentUser.PERMISSION_FOLDER_DELETE));
+            }));
+    }
     private void loadBreadcrumbs() {
         String path = mDataManager.getCurrentStorageContext();
         if (path.startsWith(DataManager.FILES_CONTEXT_MY))

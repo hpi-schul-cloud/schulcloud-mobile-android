@@ -60,8 +60,8 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 });
     }
     @Override
-    public void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mDemoModeSubscription);
         RxUtil.unsubscribe(mEventsSubscription);
         RxUtil.unsubscribe(mDevicesSubscription);

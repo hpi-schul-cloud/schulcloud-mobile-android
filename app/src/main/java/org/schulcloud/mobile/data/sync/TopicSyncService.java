@@ -62,10 +62,12 @@ public class TopicSyncService extends Service {
             return START_NOT_STICKY;
         }
 
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            courseId = extras.getString(EXTRA_COURSE_ID);
-            //The key argument here must match that used in the other activity
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                courseId = extras.getString(EXTRA_COURSE_ID);
+                //The key argument here must match that used in the other activity
+            }
         }
 
         RxUtil.unsubscribe(mSubscription);

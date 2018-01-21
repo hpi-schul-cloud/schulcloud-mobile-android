@@ -31,6 +31,10 @@
     <string name="login_demo_teacher_password">schulcloud</string>
     <string name="login_successful">Erfolgreich angemeldet!</string>
     <string name="login_error">Falscher Nutzername oder Passwort</string>
+    <string name="forgot_password">Password vergessen?</string>
+    <string name="passwordRecovery">Password wiederherstellen</string>
+    <string name="passwordRecoverySuccessfull">Eine E-Mail für dein Passwort wurde an deinen Account gesendet.</string>
+    <string name="passwordRecoveryFailed">Bei dem wiederherstellen deines Passwortes gab es einen Fehler. Ist dein Benutzername richtig geschrieben?</string>
 
     <!--Dashboard-->
     <string name="dashboard_title">Übersicht</string>

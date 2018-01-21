@@ -14,6 +14,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
+import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.jsonApi.Included;
@@ -251,10 +252,10 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                               @Nullable String newPassword, @Nullable String newPasswordRepeat) {
         if(newPassword.length() < 8 || newPassword.equals(newPassword.toLowerCase()) || newPassword
             .equals(newPassword.toUpperCase()) || Pattern.matches("[a-zA-Z]+",newPassword)){
-            get
+            sendToView(SettingsMvpView::showPasswordBad);
         }
         if(newPassword.equals("") || newPassword.equals(currentPassword) || !(newPassword.equals(newPasswordRepeat))) {
-            getMvpView().showPasswordChangeFailed();
+            sendToView(SettingsMvpView::showPasswordChangeFailed);
             return;
         }
 
@@ -267,7 +268,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         UserRequest userRequest = new UserRequest(_id,firstName,lastName,email,schoolID,gender);
 
         mDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
-            getMvpView().showPasswordChangeFailed();
+            sendToView(SettingsMvpView::showPasswordChangeFailed);
             return;
         });
 
@@ -275,7 +276,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 .subscribe(
                         userResponse -> {},
                         throwable -> Log.e("Profile","OnError",throwable),
-                        () -> getMvpView().showProfileChanged()
+                        () -> sendToView(SettingsMvpView::showProfileChanged)
                 );
     }
 

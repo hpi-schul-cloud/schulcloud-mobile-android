@@ -41,4 +41,16 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
                         },
                         () -> sendToView(SignInMvpView::showSignInSuccessful));
     }
+
+    public void sendPasswordRecovery(String username) {
+        RxUtil.unsubscribe(mSubscription);
+        mSubscription = mDataManager.sendPasswordRecovery(username)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {},
+                        throwable -> {
+                            Timber.e(throwable,"There was an error while sending the passwordRecovery.");
+                            sendToView(SignInMvpView::showPasswordRecoveryFailed);
+                        }
+                        , () -> sendToView(SignInMvpView::showPasswordRecovery));
+    }
 }

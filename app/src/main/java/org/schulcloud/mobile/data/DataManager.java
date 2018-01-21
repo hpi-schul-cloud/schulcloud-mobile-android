@@ -21,12 +21,14 @@ import org.schulcloud.mobile.data.model.requestBodies.CallbackRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
+import org.schulcloud.mobile.data.model.requestBodies.PasswordRecoveryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+import org.schulcloud.mobile.data.model.responseBodies.PasswordRecoveryResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.Pair;
@@ -44,6 +46,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Single;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 
 @Singleton
@@ -126,6 +129,17 @@ public class DataManager {
     }
     public Single<Boolean> isInDemoMode() {
         return Single.just(mPreferencesHelper.isInDemoMode());
+    }
+
+    public Observable<PasswordRecoveryResponse> sendPasswordRecovery(String username) {
+        return mRestService.sendPasswordRecovery(getAccessToken(), new PasswordRecoveryRequest(username))
+                .concatMap(new Func1<PasswordRecoveryResponse, Observable<? extends PasswordRecoveryResponse>>() {
+                    @Override
+                    public Observable<PasswordRecoveryResponse> call(PasswordRecoveryResponse passwordRecoveryResponse) {
+                        return Observable.just(passwordRecoveryResponse);
+                    }
+                });
+
     }
 
 

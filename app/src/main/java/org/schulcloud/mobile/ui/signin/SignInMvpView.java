@@ -8,4 +8,8 @@ public interface SignInMvpView extends MvpView {
 
     void showSignInFailed();
 
+    void showPasswordRecovery();
+
+    void showPasswordRecoveryFailed();
+
 }

@@ -30,6 +30,8 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     Button demoStudent;
     @BindView(R.id.btn_demo_teacher)
     Button demoTeacher;
+    @BindView(R.id.forgot_password)
+    Button forgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,15 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
         demoTeacher.setOnClickListener(v -> mSignInPresenter.signIn(
                 getString(R.string.login_demo_teacher_username),
                 getString(R.string.login_demo_teacher_password), true));
+        forgotPassword.setOnClickListener(v -> {
+            if(!username.getText().toString().trim().isEmpty()){
+                mSignInPresenter.sendPasswordRecovery(username.getText().toString());
+            }
+            else
+            {
+                showPasswordRecoveryFailed();
+            }
+        });
     }
 
     @Override
@@ -67,6 +78,20 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     @Override
     public void showSignInFailed() {
         DialogFactory.createGenericErrorDialog(this, getString(R.string.login_error))
+                .show();
+    }
+
+    @Override
+    public void showPasswordRecovery() {
+        DialogFactory
+                .createSimpleOkErrorDialog(this,R.string.passwordRecovery,R.string.passwordRecoverySuccessfull)
+                .show();
+    }
+
+    @Override
+    public void showPasswordRecoveryFailed() {
+        DialogFactory
+                .createGenericErrorDialog(this,R.string.passwordRecoveryFailed)
                 .show();
     }
 

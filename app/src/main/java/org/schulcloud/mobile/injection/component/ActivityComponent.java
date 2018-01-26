@@ -18,6 +18,7 @@ import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.ui.start.StartActivity;
+import org.schulcloud.mobile.ui.signin.passwordRecovery.PasswordRecoveryFragment;
 
 import dagger.Subcomponent;
 
@@ -69,5 +70,8 @@ public interface ActivityComponent {
 
     //    Feedback
     void inject(FeedbackDialog feedbackDialog);
+
+    //    Password Recovery
+    void inject(PasswordRecoveryFragment passwordRecoveryFragment);
 
 }

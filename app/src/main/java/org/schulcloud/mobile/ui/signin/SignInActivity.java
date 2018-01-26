@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.signin;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import org.schulcloud.mobile.ui.signin.passwordRecovery.PasswordRecoveryFragment;
 import org.schulcloud.mobile.util.DialogFactory;
 
 import javax.inject.Inject;
@@ -52,13 +54,7 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
                 getString(R.string.login_demo_teacher_username),
                 getString(R.string.login_demo_teacher_password), true));
         forgotPassword.setOnClickListener(v -> {
-            if(!username.getText().toString().trim().isEmpty()){
-                mSignInPresenter.sendPasswordRecovery(username.getText().toString());
-            }
-            else
-            {
-                showPasswordRecoveryFailed();
-            }
+            openPasswordRecovery();
         });
     }
 
@@ -81,18 +77,12 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
                 .show();
     }
 
-    @Override
-    public void showPasswordRecovery() {
-        DialogFactory
-                .createSimpleOkErrorDialog(this,R.string.passwordRecovery,R.string.passwordRecoverySuccessfull)
-                .show();
-    }
-
-    @Override
-    public void showPasswordRecoveryFailed() {
-        DialogFactory
-                .createGenericErrorDialog(this,R.string.passwordRecoveryFailed)
-                .show();
+    public void openPasswordRecovery() {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.overlay_container, new PasswordRecoveryFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

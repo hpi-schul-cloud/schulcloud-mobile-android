@@ -21,12 +21,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TopicFragment extends MainFragment implements TopicMvpView {
+public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
+        implements TopicMvpView {
     private static final String ARGUMENT_TOPIC_ID = "ARGUMENT_TOPIC_ID";
-    private static final String ARGUMENT_TOPIC_NAME = "ARGUMENT_TOPIC_NAME";
 
     private String mTopicId = null;
-    private String mTopicName = null;
 
     @Inject
     TopicPresenter mTopicPresenter;
@@ -43,15 +42,14 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
      * Creates a new instance of this fragment.
      *
      * @param topicId   The ID of the topic that should be shown
-     * @param topicName The name of the topic that should be shown
      * @return The new instance
      */
-    public static TopicFragment newInstance(@NonNull String topicId, @NonNull String topicName) {
+    @NonNull
+    public static TopicFragment newInstance(@NonNull String topicId) {
         TopicFragment topicFragment = new TopicFragment();
 
         Bundle args = new Bundle();
         args.putString(ARGUMENT_TOPIC_ID, topicId);
-        args.putString(ARGUMENT_TOPIC_NAME, topicName);
         topicFragment.setArguments(args);
 
         return topicFragment;
@@ -61,9 +59,12 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        mTopicId = getArguments().getString(ARGUMENT_TOPIC_ID);
-        mTopicName = getArguments().getString(ARGUMENT_TOPIC_NAME);
+        setPresenter(mTopicPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        mTopicPresenter.loadContents(args.getString(ARGUMENT_TOPIC_ID));
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,26 +73,20 @@ public class TopicFragment extends MainFragment implements TopicMvpView {
         ButterKnife.bind(this, view);
         setTitle(R.string.courses_topic_title);
 
-        topicName.setText(mTopicName);
-
         recyclerView.setAdapter(mContentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mTopicPresenter.attachView(this);
-        mTopicPresenter.loadContents(mTopicId);
-
         return view;
     }
-    @Override
-    public void onDestroy() {
-        mTopicPresenter.detachView();
-        super.onDestroy();
-    }
+
 
     /***** MVP View methods implementation *****/
     @Override
+    public void showName(@NonNull String name) {
+        topicName.setText(name);
+    }
+    @Override
     public void showContent(@NonNull List<Contents> contents) {
         mContentAdapter.setContent(contents);
-        mContentAdapter.setContext(getActivity());
     }
 }

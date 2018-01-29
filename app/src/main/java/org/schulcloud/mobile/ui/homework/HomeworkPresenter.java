@@ -17,26 +17,31 @@ import timber.log.Timber;
 @ConfigPersistent
 public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
+    private Subscription mCurrentUserSubscription;
 
     @Inject
     public HomeworkPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+        loadHomework();
     }
 
     @Override
-    protected void onViewAttached(@NonNull HomeworkMvpView view) {
+    public void onViewAttached(@NonNull HomeworkMvpView view) {
         super.onViewAttached(view);
-        mDataManager.getCurrentUser()
+        RxUtil.unsubscribe(mCurrentUserSubscription);
+        mCurrentUserSubscription = mDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser ->
                         sendToView(v -> v.showCanCreateHomework(
-                                currentUser.hasPermission(CurrentUser.PERMISSION_HOMEWORK_CREATE))));
+                                currentUser
+                                        .hasPermission(CurrentUser.PERMISSION_HOMEWORK_CREATE))));
     }
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
+        RxUtil.unsubscribe(mCurrentUserSubscription);
         RxUtil.unsubscribe(mSubscription);
     }
 

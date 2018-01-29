@@ -19,7 +19,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
-import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,7 +33,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpView {
+public class AddHomeworkFragment extends MainFragment<AddHomeworkMvpView, AddHomeworkPresenter>
+        implements AddHomeworkMvpView {
 
     @Inject
     AddHomeworkPresenter mAddHomeworkPresenter;
@@ -68,6 +69,7 @@ public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpV
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+        setPresenter(mAddHomeworkPresenter);
 
         mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mAvailableDateCalendar = Calendar.getInstance();
@@ -95,15 +97,7 @@ public class AddHomeworkFragment extends MainFragment implements AddHomeworkMvpV
                         mDueDateCalendar,
                         publicSubmissions.isChecked()));
 
-        mAddHomeworkPresenter.attachView(this);
-        mAddHomeworkPresenter.loadData();
-
         return view;
-    }
-    @Override
-    public void onDetach() {
-        mAddHomeworkPresenter.detachView();
-        super.onDetach();
     }
 
     private void initDateButton(Calendar calendar, TextView button) {

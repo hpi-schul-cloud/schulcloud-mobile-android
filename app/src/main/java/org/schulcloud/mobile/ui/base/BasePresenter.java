@@ -28,25 +28,34 @@ public class BasePresenter<V extends MvpView> implements Presenter<V> {
 
     private boolean mCalled;
     private V mView;
+    private boolean mDestroyed;
     private BlockingQueue<Action<V>> mPostponedViewActions;
 
     public BasePresenter() {
         mCalled = true;
+        mDestroyed = false;
         mPostponedViewActions = new LinkedBlockingQueue<>();
     }
 
     @CallSuper
-    protected void onViewAttached(@NonNull V view) {
+    public void onViewAttached(@NonNull V view) {
         if (mCalled)
             throw new IllegalAccessError(
                     "Don't call #onViewAttached(V) directly, call #attachView(V)");
         mCalled = true;
     }
     @CallSuper
-    protected void onViewDetached() {
+    public void onViewDetached() {
         if (mCalled)
             throw new IllegalAccessError(
                     "Don't call #onViewDetached(V) directly, call #detachView(V)");
+        mCalled = true;
+    }
+    @Override
+    public void onDestroy() {
+        if (mCalled)
+            throw new IllegalAccessError(
+                    "Don't call #onDestroy() directly, call #destroy()");
         mCalled = true;
     }
 
@@ -86,8 +95,27 @@ public class BasePresenter<V extends MvpView> implements Presenter<V> {
 
         mView = null;
     }
+    @Override
+    public void destroy() {
+        if (mDestroyed) {
+            Log.v(TAG, "#destroy(): Presenter is already destroyed");
+            return;
+        }
 
-    protected boolean isViewAttached() {
+        if (mView != null)
+            detachView();
+
+        mCalled = false;
+        onDestroy();
+        if (!mCalled)
+            throw new SuperNotCalledException(
+                    "Presenter " + this + " didn't call call through to super.onDestroy()");
+        mCalled = true;
+
+        mDestroyed = true;
+    }
+
+    public boolean isViewAttached() {
         return mView != null;
     }
     /**
@@ -95,7 +123,7 @@ public class BasePresenter<V extends MvpView> implements Presenter<V> {
      * an instant callback.
      */
     @NonNull
-    protected V getViewOrThrow() {
+    public V getViewOrThrow() {
         if (mView == null)
             throw new IllegalStateException(
                     "The view is currently not attached. Call #sendToView(ViewAction) instead");
@@ -107,7 +135,7 @@ public class BasePresenter<V extends MvpView> implements Presenter<V> {
      *
      * @param action The action to send to the view. The parameter is the currently attached view.
      */
-    protected void sendToView(final @NonNull Action<V> action) {
+    public void sendToView(final @NonNull Action<V> action) {
         if (mView != null)
             action.call(mView);
         else

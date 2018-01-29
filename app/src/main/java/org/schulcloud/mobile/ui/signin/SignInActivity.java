@@ -8,14 +8,15 @@ import android.widget.EditText;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
-import org.schulcloud.mobile.util.DialogFactory;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SignInActivity extends BaseActivity implements SignInMvpView {
+public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
+        implements SignInMvpView {
 
     @Inject
     SignInPresenter mSignInPresenter;
@@ -35,11 +36,11 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+        setPresenter(mSignInPresenter);
 
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
 
-        mSignInPresenter.attachView(this);
         login.setOnClickListener(v -> mSignInPresenter
                 .signIn(username.getText().toString(), password.getText().toString(), false));
 
@@ -51,12 +52,8 @@ public class SignInActivity extends BaseActivity implements SignInMvpView {
                 getString(R.string.login_demo_teacher_password), true));
     }
 
-    @Override
-    protected void onDestroy() {
-        mSignInPresenter.detachView();
-        super.onDestroy();
-    }
 
+    /***** MVP View methods implementation *****/
     @Override
     public void showSignInSuccessful() {
         DialogFactory

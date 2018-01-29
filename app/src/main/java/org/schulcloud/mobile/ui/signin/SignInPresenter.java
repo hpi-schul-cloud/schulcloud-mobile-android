@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.signin;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
 
@@ -12,9 +13,10 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
+@ConfigPersistent
 public class SignInPresenter extends BasePresenter<SignInMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject
@@ -23,8 +25,8 @@ public class SignInPresenter extends BasePresenter<SignInMvpView> {
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
     }
 

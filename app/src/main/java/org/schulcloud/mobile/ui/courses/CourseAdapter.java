@@ -13,6 +13,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Course;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private List<Course> mCourses;

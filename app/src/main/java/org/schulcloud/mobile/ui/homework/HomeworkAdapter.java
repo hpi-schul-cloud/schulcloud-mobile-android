@@ -18,6 +18,7 @@ import com.beardedhen.androidbootstrap.font.FontAwesome;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,10 +31,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.HomeworkViewHolder> {
 
     private List<Homework> mHomework;
-    private Context mContext;
 
     @Inject
     HomeworkPresenter mHomeworkPresenter;
@@ -48,10 +49,6 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         notifyDataSetChanged();
     }
 
-    public void setContext(@NonNull Context context) {
-        mContext = context;
-    }
-
     @Override
     public HomeworkViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -61,6 +58,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     @Override
     public void onBindViewHolder(HomeworkViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Homework homework = mHomework.get(position);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -77,11 +75,11 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             holder.dueDate
                     .setPaintFlags(holder.dueDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.cardView.setCardBackgroundColor(
-                    ContextCompat.getColor(mContext, R.color.homework_over));
+                    ContextCompat.getColor(context, R.color.gray_dark));
         }
 
         if (homework.courseId != null && homework.courseId.name != null)
-            holder.nameTextView.setText(mContext.getString(R.string.homework_homework_name_format,
+            holder.nameTextView.setText(context.getString(R.string.homework_homework_name_format,
                     homework.courseId.name, homework.name));
         else
             holder.nameTextView.setText(homework.name);

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -476,7 +475,7 @@ public class DatabaseHelper {
                 .map(topic -> realm.copyFromRealm(topic));
     }
 
-    public Topic getContents(String topicId) {
+    public Topic getTopicForId(String topicId) {
         final Realm realm = mRealmProvider.get();
         return realm.where(Topic.class).equalTo("_id", topicId).findFirst();
     }

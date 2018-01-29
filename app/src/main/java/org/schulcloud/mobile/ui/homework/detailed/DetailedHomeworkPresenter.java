@@ -3,6 +3,8 @@ package org.schulcloud.mobile.ui.homework.detailed;
 import android.support.annotation.NonNull;
 
 import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -11,11 +13,19 @@ import javax.inject.Inject;
 @ConfigPersistent
 public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
+    private Homework mHomework;
+    private Submission mSubmission;
 
     @Inject
     public DetailedHomeworkPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+    }
+
+    @Override
+    public void onViewAttached(@NonNull DetailedHomeworkMvpView view) {
+        super.onViewAttached(view);
+        showHomework();
     }
 
     /**
@@ -24,16 +34,16 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
      * @param homeworkId The id of the homework to be shown.
      */
     public void loadHomework(@NonNull String homeworkId) {
-        getViewOrThrow().showHomework(mDataManager.getHomeworkForId(homeworkId));
+        mHomework = mDataManager.getHomeworkForId(homeworkId);
+        mSubmission = mDataManager.getSubmissionForId(mHomework._id);
+        sendToView(v -> v.showHomework(mDataManager.getHomeworkForId(homeworkId)));
     }
-
-    /**
-     * Loads a specific submission containing the comments.
-     *
-     * @param homeworkId The id of the displayed homework. Required to reference the submission.
-     */
-    public void loadComments(@NonNull String homeworkId) {
-        getViewOrThrow().showSubmission(mDataManager.getSubmissionForId(homeworkId),
-                mDataManager.getCurrentUserId());
+    private void showHomework() {
+        sendToView(v -> {
+            if (mHomework != null)
+                v.showHomework(mHomework);
+            if (mSubmission != null)
+                v.showSubmission(mSubmission, mDataManager.getCurrentUserId());
+        });
     }
 }

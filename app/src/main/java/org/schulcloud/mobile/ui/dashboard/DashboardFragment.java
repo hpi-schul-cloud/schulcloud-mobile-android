@@ -34,7 +34,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DashboardFragment extends MainFragment implements DashboardMvpView {
+public class DashboardFragment extends MainFragment<DashboardMvpView, DashboardPresenter>
+        implements DashboardMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
 
     @Inject
@@ -54,6 +55,7 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
+    @NonNull
     public static DashboardFragment newInstance() {
         return newInstance(true);
     }
@@ -64,6 +66,7 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
      *                                only be set to false during testing.
      * @return The new instance
      */
+    @NonNull
     public static DashboardFragment newInstance(boolean triggerDataSyncOnCreate) {
         DashboardFragment dashboardFragment = new DashboardFragment();
 
@@ -78,8 +81,12 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
+        setPresenter(mDashboardPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true)) {
             startService(CourseSyncService.getStartIntent(getContext()));
             startService(HomeworkSyncService.getStartIntent(getContext()));
             startService(EventSyncService.getStartIntent(getContext()));
@@ -103,24 +110,14 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
                     startService(EventSyncService.getStartIntent(getContext()));
 
                     new Handler().postDelayed(() -> {
-                        mDashboardPresenter.showHomework();
-                        mDashboardPresenter.showEvents();
+                        mDashboardPresenter.reload();
 
                         swipeRefresh.setRefreshing(false);
                     }, 3000);
                 }
         );
 
-        mDashboardPresenter.attachView(this);
-        mDashboardPresenter.showHomework();
-        mDashboardPresenter.showEvents();
-
         return view;
-    }
-    @Override
-    public void onDestroy() {
-        mDashboardPresenter.detachView();
-        super.onDestroy();
     }
 
     /***** MVP View methods implementation *****/
@@ -143,8 +140,7 @@ public class DashboardFragment extends MainFragment implements DashboardMvpView 
     }
     @Override
     public void showEvents(@NonNull List<Event> eventsForDay) {
-        mEventsAdapter.setContext(getContext());
-        mEventsAdapter.setEvents(eventsForDay);
+        mEventsAdapter.setEvents(getContext(), eventsForDay);
     }
 
     @Override

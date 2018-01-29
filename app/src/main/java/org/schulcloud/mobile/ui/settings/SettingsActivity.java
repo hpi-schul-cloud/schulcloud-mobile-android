@@ -8,11 +8,14 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,9 +32,9 @@ import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.CalendarContentUtil;
-import org.schulcloud.mobile.util.DialogFactory;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +45,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsActivity extends BaseActivity implements SettingsMvpView {
+public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPresenter>
+        implements SettingsMvpView {
 
     public static final Integer CALENDAR_PERMISSION_CALLBACK_ID = 42;
     private static final String EXTRA_TRIGGER_SYNC = "org.schulcloud.mobile.ui.settings.SettingsActivity.EXTRA_TRIGGER_SYNC";
@@ -73,16 +77,18 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
+        setPresenter(mSettingsPresenter);
+        readArguments(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        setTitle(R.string.settings_title);
-
-        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
-            startService(EventSyncService.getStartIntent(this));
-            startService(DeviceSyncService.getStartIntent(this));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        setTitle(R.string.settings_title);
 
         // Calender
         updateCalendarSwitch(
@@ -126,11 +132,17 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
                 mSettingsPresenter.showPrivacyPolicy(getResources()));
 
         // Presenter
-        mSettingsPresenter.attachView(this);
         if (mPreferencesHelper.getCalendarSyncEnabled())
             mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
+    }
+    @Override
+    public void onReadArguments(Intent intent) {
+        if (intent.getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
+            startService(EventSyncService.getStartIntent(this));
+            startService(DeviceSyncService.getStartIntent(this));
+        }
     }
     private void updateCalendarSwitch(boolean isChecked, @NonNull String calendarName) {
         switch_calendar.setChecked(isChecked);
@@ -142,12 +154,16 @@ public class SettingsActivity extends BaseActivity implements SettingsMvpView {
     }
 
     @Override
-    protected void onDestroy() {
-        mSettingsPresenter.detachView();
-        super.onDestroy();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
-
-
     /***** MVP View methods implementation *****/
     // Calender
     @Override

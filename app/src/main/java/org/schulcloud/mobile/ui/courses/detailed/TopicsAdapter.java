@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Topic;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsViewHolder> {
 
     private List<Topic> mTopics;
@@ -50,7 +52,7 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
         holder.nameTextView.setText(topic.name);
 
         holder.cardView.setOnClickListener(v ->
-                mDetailedCoursePresenter.showTopicDetail(topic._id, topic.name));
+                mDetailedCoursePresenter.showTopicDetail(topic._id));
     }
 
     @Override

@@ -34,8 +34,9 @@ import timber.log.Timber;
 @ConfigPersistent
 public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
 
+    private Subscription mDemoModeSubscription;
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
 
@@ -47,9 +48,11 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     @Override
-    protected void onViewAttached(@NonNull SettingsMvpView view) {
+    public void onViewAttached(@NonNull SettingsMvpView view) {
         super.onViewAttached(view);
-        mDataManager.isInDemoMode()
+
+        RxUtil.unsubscribe(mDemoModeSubscription);
+        mDemoModeSubscription = mDataManager.isInDemoMode()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(isInDemoMode -> {
                     sendToView(v -> v.showSupportsCalendar(!isInDemoMode));
@@ -57,8 +60,9 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
                 });
     }
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
+        RxUtil.unsubscribe(mDemoModeSubscription);
         RxUtil.unsubscribe(mEventsSubscription);
         RxUtil.unsubscribe(mDevicesSubscription);
     }
@@ -89,8 +93,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
      * @param calendarName        {String} - the calendar in which the events will be inserted
      * @param events              {List<Event>} - the events which will be inserted into the
      *                            calendar
-     * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil
-     *                            for
+     * @param calendarContentUtil {CalendarContentUtil} - an instance of the CalendarContentUtil for
      *                            handling the local calendar storage
      * @param showToast           {Boolean} - whether to show a toast after writing
      */
@@ -144,7 +147,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         }
 
         if (showToast)
-            getViewOrThrow().showSyncToCalendarSuccessful();
+            sendToView(SettingsMvpView::showSyncToCalendarSuccessful);
     }
 
     /* Notifications */
@@ -213,7 +216,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
 
     public void loadContributors(@NonNull Resources resources) {
         mContributors = resources.getStringArray(R.array.settings_about_contributors);
-        getViewOrThrow().showContributors(mContributors);
+        sendToView(v -> v.showContributors(mContributors));
     }
     public String[] getContributors() {
         return mContributors;

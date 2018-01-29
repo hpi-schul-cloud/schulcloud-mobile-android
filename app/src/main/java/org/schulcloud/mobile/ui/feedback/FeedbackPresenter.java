@@ -17,8 +17,10 @@ import rx.android.schedulers.AndroidSchedulers;
 @ConfigPersistent
 public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
+
+    private String mContextName;
 
     @Inject
     FeedbackPresenter(DataManager dataManager) {
@@ -26,27 +28,30 @@ public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
     }
 
-
+    public void init(@NonNull String contextName) {
+        mContextName = contextName;
+    }
     public void sendFeedback(@NonNull String format, @NonNull String email, @NonNull String content,
-            @NonNull String contextName, @NonNull String currentUser,
             @NonNull String subject, @NonNull String to) {
         if (content.isEmpty())
-            getViewOrThrow().showContentHint();
+            getViewOrThrow().showError_contentEmpty();
         else {
-            String text = String.format(format, currentUser, email, contextName, content);
+            String text = String
+                    .format(format, mDataManager.getCurrentUserName(), email.trim(), mContextName,
+                            content.trim());
             FeedbackRequest feedbackRequest = new FeedbackRequest(text, subject, to);
 
             RxUtil.unsubscribe(mSubscription);
             mSubscription = mDataManager.sendFeedback(feedbackRequest)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(feedbackResponse -> {},
-                            throwable -> Log.e("Feedback", "onError", throwable),
-                            () -> sendToView(FeedbackMvpView::showFeedbackSent));
+                    .subscribe(
+                            feedbackResponse -> sendToView(FeedbackMvpView::showFeedbackSent),
+                            throwable -> Log.e("Feedback", "onError", throwable));
         }
     }
 }

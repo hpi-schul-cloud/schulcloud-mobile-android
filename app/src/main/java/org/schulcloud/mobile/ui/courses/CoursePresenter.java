@@ -16,25 +16,23 @@ import timber.log.Timber;
 @ConfigPersistent
 public class CoursePresenter extends BasePresenter<CourseMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject
     CoursePresenter(DataManager dataManager) {
         mDataManager = dataManager;
+        sendToView(v -> loadCourses());
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
     }
 
     public void loadCourses() {
         RxUtil.unsubscribe(mSubscription);
-        if (!isViewAttached())
-            return;
-
         mSubscription = mDataManager.getCourses()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

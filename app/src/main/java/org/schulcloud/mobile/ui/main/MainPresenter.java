@@ -2,6 +2,8 @@ package org.schulcloud.mobile.ui.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 
 import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
@@ -10,6 +12,8 @@ import org.schulcloud.mobile.ui.base.MvpView;
 import org.schulcloud.mobile.util.NetworkUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.inject.Inject;
@@ -19,41 +23,34 @@ import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 @ConfigPersistent
-public class MainPresenter extends BasePresenter<MainMvpView> {
+public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
     private static final int TAB_LEVEL_TOP = 0;
     private static final int TAB_LEVEL_LAST = -1;
     private static final int TAB_LEVEL_ONE_BACK = -2;
 
     private final DataManager mDataManager;
-    private Subscription mSubscription;
+    private Subscription mCurrentUserSubscription;
 
-    private Stack<MainFragment>[] mFragments;
-    private MainFragment mCurrentFragment;
+    private Stack<Integer>[] mViewIds;
+    private Integer mCurrentViewId;
     private int mCurrentTabIndex;
     private int mCurrentLevel;
 
     @Inject
     public MainPresenter(DataManager dataManager) {
         mDataManager = dataManager;
-    }
+        mCurrentViewId = -1;
 
-    @Override
-    protected void onViewAttached(@NonNull MainMvpView mvpView) {
-        super.onViewAttached(mvpView);
-        if (mFragments == null) {
-            MainFragment[] topLevelFragments = getViewOrThrow().getInitialFragments();
-
+        sendToView(v -> {
             //noinspection unchecked
-            mFragments = (Stack<MainFragment>[]) new Stack[topLevelFragments.length];
-            for (int i = 0; i < topLevelFragments.length; i++) {
-                Stack<MainFragment> stack = new Stack<>();
-                stack.push(topLevelFragments[i]);
-                mFragments[i] = stack;
-            }
+            mViewIds = (Stack<Integer>[]) new Stack[v.getTabCount()];
+            for (int i = 0; i < mViewIds.length; i++)
+                mViewIds[i] = new Stack<>();
 
-            showFragment(0, TAB_LEVEL_TOP, false);
-        }
+            showView(0, TAB_LEVEL_TOP, null, false);
+        });
     }
+
     /**
      * Checks whether there is already a logged-in user, if not so go to sign-in screen
      */
@@ -63,14 +60,14 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
         // value is "null" as String if pref does not exist
         if (currentUserId.equals("null")) {
-            getViewOrThrow().goToSignIn();
+            sendToView(MvpView::goToSignIn);
             return;
         }
 
         // 2. if there is a valid jwt in the storage (just online)
         if (NetworkUtil.isNetworkConnected(context)) {
-            RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.syncCurrentUser(currentUserId)
+            RxUtil.unsubscribe(mCurrentUserSubscription);
+            mCurrentUserSubscription = mDataManager.syncCurrentUser(currentUserId)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             // onNext
@@ -85,100 +82,115 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void onTabSelected(int tabIndex) {
         if (tabIndex != mCurrentTabIndex)
-            showFragment(tabIndex, TAB_LEVEL_LAST, false);
-        else // If the user selects the same tab again, navigate back to the first fragment of the stack
-            showFragment(tabIndex, TAB_LEVEL_TOP, false);
+            showView(tabIndex, TAB_LEVEL_LAST, null, false);
+        else // If the user selects the same tab again, navigate back to the first view of the stack
+            showView(tabIndex, TAB_LEVEL_TOP, null, false);
     }
     /**
-     * Adds the fragment as the child of parent, and shows it. If parent already has a child (and
+     * Adds the view as the child of parent, and shows it. If parent already has a child (and
      * possibly sub-children), those are removed.
      *
-     * @param parent The parent of the added fragment
-     * @param child  The fragment to add
+     * @param parentId The parent's ID of the view to add
+     * @param childId  The ID of the view to add
      */
-    public void addFragment(@NonNull MainFragment parent, @NonNull MainFragment child) {
-        for (int tabIndex = 0; tabIndex < mFragments.length; tabIndex++) {
-            Stack<MainFragment> tabStack = mFragments[tabIndex];
-            for (int level = 0; level < tabStack.size(); level++) {
-                MainFragment fragment = tabStack.get(level);
-                if (parent.equals(fragment)) {
-                    int diff = tabStack.size() - tabStack.indexOf(parent) - 1;
-                    for (int k = 0; k < diff; k++)
-                        tabStack.pop();
-                    tabStack.push(child);
-                    showFragment(tabIndex, TAB_LEVEL_LAST, false);
-                    return;
-                }
-            }
+    public void addView(int parentId, int childId, @NonNull V child) {
+        for (int tabIndex = 0; tabIndex < mViewIds.length; tabIndex++) {
+            Stack<Integer> tabStack = mViewIds[tabIndex];
+            int level = tabStack.indexOf(parentId);
+            if (level < 0)
+                continue;
+
+            popTabStack(tabStack, level + 1);
+            tabStack.push(childId);
+            showView(tabIndex, TAB_LEVEL_LAST, child, false);
+            break;
         }
     }
     /**
-     * Removes the specified fragment from the hierarchy. Any child fragments will be removed too.
+     * Removes the specified view from the hierarchy. Any child views will be removed too.
      *
-     * @param fragment The fragment to be removed.
-     * @return True if the fragment was removed, false otherwise (e.g., the fragment is the top
-     * level fragment).
+     * @param viewId The view to be removed.
+     * @return True if the view was removed, false otherwise (e.g., the view is the top level view).
      */
-    public boolean removeFragment(@NonNull MainFragment fragment) {
-        if (fragment.equals(mCurrentFragment))
-            return showFragment(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, false);
+    public boolean removeView(int viewId) {
+        if (viewId == mCurrentViewId)
+            return showView(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, null, false);
 
-        int i = mFragments[mCurrentTabIndex].indexOf(fragment);
+        int i = mViewIds[mCurrentTabIndex].indexOf(viewId);
         if (i >= 0)
-            return showFragment(mCurrentTabIndex, i, false);
+            return showView(mCurrentTabIndex, i, null, false);
 
-        for (int tabIndex = 0; tabIndex < mFragments.length; tabIndex++) {
-            Stack<MainFragment> tabStack = mFragments[tabIndex];
-            for (int level = 0; level < tabStack.size(); level++) {
-                MainFragment f = tabStack.get(level);
-                if (fragment.equals(f))
-                    while (tabStack.size() > level + 1)
-                        tabStack.pop();
-            }
+        for (Stack<Integer> tabStack : mViewIds) {
+            int level = tabStack.indexOf(viewId);
+            if (level < 0)
+                continue;
+
+            popTabStack(tabStack, level);
+            break;
         }
         return true;
     }
     /**
-     * Displays the fragment identified by its tab index and level. Child fragments are removed
+     * Displays the view identified by its tab index and level. Child views are removed
      * automatically.
      *
-     * @param tabIndex     The index of the tab that the fragment belongs to.
-     * @param level        The level of the fragment. {@link #TAB_LEVEL_TOP}, {@link
-     *                     #TAB_LEVEL_LAST} and {@link #TAB_LEVEL_ONE_BACK} are allowed.
-     * @param closeIfEmpty If set to true and the other parameters would lead to the top level
-     *                     fragment being removed, the app will be closed. Handy for back
-     *                     navigation, but not if a fragment tries to remove itself.
-     * @return True if the fragment identified by {@code tabIndex} and {@code level} is now
-     * displayed, false otherwise (e.g., if that would have closed the app and that isn't
-     * permitted).
+     * @param tabIndex     The index of the tab that the view belongs to.
+     * @param level        The level of the view. {@link #TAB_LEVEL_TOP}, {@link #TAB_LEVEL_LAST}
+     *                     and {@link #TAB_LEVEL_ONE_BACK} are allowed.
+     * @param closeIfEmpty If set to true and the other parameters would lead to the top level view
+     *                     being removed, the app will be closed. Handy for back navigation, but not
+     *                     if a view tries to remove itself.
+     * @return True if the view identified by {@code tabIndex} and {@code level} is now displayed,
+     * false otherwise (e.g., if that would have closed the app and that isn't permitted).
      */
-    private boolean showFragment(int tabIndex, int level, boolean closeIfEmpty) {
-        Stack<MainFragment> tabStack = mFragments[tabIndex];
-        if (level == TAB_LEVEL_LAST)
-            level = tabStack.size() - 1;
-        else if (level == TAB_LEVEL_ONE_BACK)
-            level = tabStack.size() - 2;
-
-        if (level < 0) {
-            if (!closeIfEmpty)
-                return false;
-            getViewOrThrow().finish();
+    private boolean showView(int tabIndex, int level, @Nullable V newView, boolean closeIfEmpty) {
+        Stack<Integer> tabStack = mViewIds[tabIndex];
+        if (tabStack.isEmpty()) {
+            // TODO: Think of a safe asynchronous way
+            Pair<Integer, V> pair = getViewOrThrow().createInitialView(tabIndex);
+            tabStack.push(pair.first);
+            newView = pair.second;
+            level = 0;
         } else {
-            while (tabStack.size() > level + 1)
-                tabStack.pop();
-            MainFragment fragment = tabStack.get(level);
+            if (level == TAB_LEVEL_LAST)
+                level = tabStack.size() - 1;
+            else if (level == TAB_LEVEL_ONE_BACK)
+                level = tabStack.size() - 2;
 
-            getViewOrThrow().showFragment(fragment, mCurrentTabIndex, tabIndex);
-
-            mCurrentFragment = fragment;
-            mCurrentTabIndex = tabIndex;
-            mCurrentLevel = level;
+            if (level < 0) {
+                if (!closeIfEmpty)
+                    return false;
+                sendToView(MainMvpView::finish);
+                return true;
+            }
         }
-        return false;
+
+        popTabStack(tabStack, level + 1);
+
+        int viewId = tabStack.get(level);
+        V newViewFinal = newView;
+        sendToView(v ->
+                v.showView(mCurrentViewId, viewId, newViewFinal, mCurrentTabIndex, tabIndex));
+
+        mCurrentViewId = viewId;
+        mCurrentTabIndex = tabIndex;
+        mCurrentLevel = level;
+        return true;
     }
+    private void popTabStack(@NonNull Stack<Integer> tabStack, int endSize) {
+        List<Integer> viewIds = new LinkedList<>();
+        while (tabStack.size() > endSize)
+            viewIds.add(tabStack.pop());
+        sendToView(v -> v.removeViews(viewIds));
+    }
+
     public void onBackPressed() {
-        if (!mCurrentFragment.onBackPressed())
-            showFragment(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, true);
+        if (!getViewOrThrow().currentViewHandlesBack(mCurrentViewId))
+            showView(mCurrentTabIndex, TAB_LEVEL_ONE_BACK, null, true);
+    }
+
+    public int getCurrentViewId() {
+        return mCurrentViewId;
     }
 }
 

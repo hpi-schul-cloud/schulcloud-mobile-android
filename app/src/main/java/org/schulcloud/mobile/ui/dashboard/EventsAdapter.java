@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.injection.ConfigPersistent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,26 +25,25 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@ConfigPersistent
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewHolder> {
 
     @Inject
     DashboardPresenter mDashboardPresenter;
 
     private List<Event> mEvents;
-    private Context mContext;
 
     @Inject
-    public EventsAdapter() { mEvents = new ArrayList<>(); }
-
-    public void setContext(@NonNull Context context) {
-        mContext = context;
+    public EventsAdapter() {
+        mEvents = new ArrayList<>();
     }
-    public void setEvents(@NonNull List<Event> events) {
+
+    public void setEvents(@NonNull Context context, @NonNull List<Event> events) {
         if (events.isEmpty()) {
             mEvents = new ArrayList<>(1);
             Event e = new Event();
-            e.title = mContext.getString(R.string.dashboard_hours_none);
-            e.summary = mContext.getString(R.string.dashboard_hours_none);
+            e.title = context.getString(R.string.dashboard_hours_none);
+            e.summary = context.getString(R.string.dashboard_hours_none);
             e.start = "1514674800000";
             e.end = "1514678400000";
             e.type = Event.TYPE_TEMPLATE;
@@ -73,6 +73,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Event event = mEvents.get(position);
 
         if (!event.title.equals(event.summary))
@@ -82,7 +83,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         long end = Long.parseLong(event.end);
         holder.title.setText(event.title);
         if (event.type != null && !event.type.equals(Event.TYPE_TEMPLATE))
-            holder.time.setText(mContext.getString(R.string.dashboard_event_time,
+            holder.time.setText(context.getString(R.string.dashboard_event_time,
                     new Date(start), new Date(Long.parseLong(event.end))));
 
         if (event.xScCourseId != null)

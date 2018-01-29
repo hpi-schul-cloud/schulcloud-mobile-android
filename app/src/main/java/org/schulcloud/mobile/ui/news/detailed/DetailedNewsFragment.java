@@ -22,10 +22,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailedNewsFragment extends MainFragment implements DetailedNewsMvpView {
+public class DetailedNewsFragment extends MainFragment<DetailedNewsMvpView, DetailedNewsPresenter>
+        implements DetailedNewsMvpView {
     public static final String ARGUMENT_NEWS_ID = "ARGUMENT_NEWS_ID";
-
-    private String mNewsId;
 
     @Inject
     DetailedNewsPresenter mDetailedNewsPresenter;
@@ -43,6 +42,7 @@ public class DetailedNewsFragment extends MainFragment implements DetailedNewsMv
      * @param newsId The ID of the news that should be shown.
      * @return The new instance
      */
+    @NonNull
     public static DetailedNewsFragment newInstance(@NonNull String newsId) {
         DetailedNewsFragment detailedNewsFragment = new DetailedNewsFragment();
 
@@ -57,8 +57,12 @@ public class DetailedNewsFragment extends MainFragment implements DetailedNewsMv
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-
-        mNewsId = getArguments().getString(ARGUMENT_NEWS_ID);
+        setPresenter(mDetailedNewsPresenter);
+        readArguments(savedInstanceState);
+    }
+    @Override
+    public void onReadArguments(Bundle args) {
+        mDetailedNewsPresenter.loadNews(args.getString(ARGUMENT_NEWS_ID));
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,16 +71,10 @@ public class DetailedNewsFragment extends MainFragment implements DetailedNewsMv
         ButterKnife.bind(this, view);
         setTitle(R.string.news_news_title);
 
-        mDetailedNewsPresenter.attachView(this);
-        mDetailedNewsPresenter.loadNews(mNewsId);
-
         return view;
     }
-    @Override
-    public void onDestroy() {
-        mDetailedNewsPresenter.detachView();
-        super.onDestroy();
-    }
+
+    /***** MVP View methods implementation *****/
     @Override
     public void showNews(@NonNull News news) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");

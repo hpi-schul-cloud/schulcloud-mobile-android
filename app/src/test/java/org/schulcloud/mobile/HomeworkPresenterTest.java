@@ -38,11 +38,9 @@ public class HomeworkPresenterTest {
 
     @Before
     public void setUp() {
-        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
         doReturn(Single.just(TestDataFactory.makeCurrentUser("", true)))
                 .when(mMockDataManager)
                 .getCurrentUser();
-        mHomeworkPresenter.attachView(mMockHomeworkMvpView);
     }
 
     @After
@@ -57,7 +55,8 @@ public class HomeworkPresenterTest {
                 .when(mMockDataManager)
                 .getHomework();
 
-        mHomeworkPresenter.loadHomework();
+        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        mHomeworkPresenter.attachView(mMockHomeworkMvpView);
         verify(mMockHomeworkMvpView).showHomework(homeworks);
         verify(mMockHomeworkMvpView, never()).showHomeworkEmpty();
         verify(mMockHomeworkMvpView, never()).showError();
@@ -69,7 +68,8 @@ public class HomeworkPresenterTest {
                 .when(mMockDataManager)
                 .getHomework();
 
-        mHomeworkPresenter.loadHomework();
+        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        mHomeworkPresenter.attachView(mMockHomeworkMvpView);
         verify(mMockHomeworkMvpView).showHomeworkEmpty();
         verify(mMockHomeworkMvpView, never()).showHomework(anyListOf(Homework.class));
         verify(mMockHomeworkMvpView, never()).showError();
@@ -81,7 +81,8 @@ public class HomeworkPresenterTest {
                 .when(mMockDataManager)
                 .getHomework();
 
-        mHomeworkPresenter.loadHomework();
+        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        mHomeworkPresenter.attachView(mMockHomeworkMvpView);
         verify(mMockHomeworkMvpView).showError();
         verify(mMockHomeworkMvpView, never()).showHomeworkEmpty();
         verify(mMockHomeworkMvpView, never()).showHomework(anyListOf(Homework.class));

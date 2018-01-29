@@ -16,17 +16,18 @@ import timber.log.Timber;
 @ConfigPersistent
 public class NewsPresenter extends BasePresenter<NewsMvpView> {
 
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private Subscription mSubscription;
 
     @Inject
     public NewsPresenter(DataManager dataManager) {
         mDataManager = dataManager;
+        loadNews();
     }
 
     @Override
-    protected void onViewDetached() {
-        super.onViewDetached();
+    public void onDestroy() {
+        super.onDestroy();
         RxUtil.unsubscribe(mSubscription);
     }
 
@@ -42,7 +43,7 @@ public class NewsPresenter extends BasePresenter<NewsMvpView> {
                                 sendToView(view -> view.showNews(news));
                         },
                         throwable -> {
-                            Timber.e(throwable, "An error occured while loading news");
+                            Timber.e(throwable, "An error occurred while loading news");
                             sendToView(NewsMvpView::showError);
                         });
     }

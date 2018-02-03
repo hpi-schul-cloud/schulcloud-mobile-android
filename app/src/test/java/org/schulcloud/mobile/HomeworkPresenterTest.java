@@ -41,7 +41,6 @@ public class HomeworkPresenterTest {
 
     @Before
     public void setUp() {
-
         doReturn(Single.just(TestDataFactory.makeCurrentUser("", true)))
                 .when(mMockUserDataManager)
                 .getCurrentUser();

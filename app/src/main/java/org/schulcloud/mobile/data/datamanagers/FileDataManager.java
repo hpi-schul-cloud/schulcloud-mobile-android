@@ -123,10 +123,8 @@ public class FileDataManager {
         return mRestService.downloadFile(url);
     }
 
-    @NonNull
-    public Observable<ResponseBody> uploadFile(@NonNull java.io.File file,
-                                               @NonNull SignedUrlResponse signedUrlResponse) {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("file/*"), file);
+    public Observable<ResponseBody> uploadFile(java.io.File file, SignedUrlResponse signedUrlResponse) {
+        RequestBody requestBody  = RequestBody.create(MediaType.parse("file/*"), file);
         return mRestService.uploadFile(
                 signedUrlResponse.url,
                 signedUrlResponse.header.getContentType(),

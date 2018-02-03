@@ -21,12 +21,11 @@ public class DashboardPresenter extends BasePresenter<DashboardMvpView> {
     private Subscription mSubscription;
 
     @Inject
-
     public DashboardPresenter(HomeworkDataManager homeworkDataManager,
                               EventDataManager eventDataManager) {
-        reload();
         mHomeworkDataManager = homeworkDataManager;
         mEventDataManager = eventDataManager;
+        reload();
     }
 
     @Override

@@ -5,10 +5,12 @@ import org.schulcloud.mobile.data.local.FileStorageDatabasehelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
+import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
+import org.schulcloud.mobile.util.PathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,9 @@ import rx.functions.Func1;
 public class FileDataManager {
     private final RestService mRestService;
     private final FileStorageDatabasehelper mDatabaseHelper;
+
+    public static final String FILES_CONTEXT_MY = "users";
+    public static final String FILES_CONTEXT_COURSES = "courses";
 
     @Inject
     PreferencesHelper mPreferencesHelper;
@@ -148,5 +153,35 @@ public class FileDataManager {
 
     public void setCurrentStorageContext(String newStorageContext) {
         mPreferencesHelper.saveCurrentStorageContext(newStorageContext);
+    }
+
+    @NonNull
+    public Observable<ResponseBody> persistFile(@NonNull SignedUrlResponse signedUrl,
+                                                @NonNull String fileName, @NonNull String fileType, long fileSize) {
+        File newFile = new File();
+        newFile.key = PathUtil.combine(signedUrl.header.getMetaPath(), fileName);
+        newFile.path = PathUtil.ensureTrailingSlash(signedUrl.header.getMetaPath());
+        newFile.name = fileName;
+        newFile.type = fileType;
+        newFile.size = "" + fileSize;
+        newFile.flatFileName = signedUrl.header.getMetaFlatName();
+        newFile.thumbnail = signedUrl.header.getMetaThumbnail();
+        return mRestService.persistFile(userDataManager.getAccessToken(), newFile);
+    }
+
+    public void setCurrentStorageContextToRoot() {
+        setCurrentStorageContext("");
+    }
+    public void setCurrentStorageContextToMy() {
+        setCurrentStorageContext(FILES_CONTEXT_MY + "/" + userDataManager.getCurrentUserId());
+    }
+    public void setCurrentStorageContextToCourse(@NonNull String courseId) {
+        setCurrentStorageContext(FILES_CONTEXT_COURSES + "/" + courseId);
+    }
+
+    @NonNull
+    public Observable<Directory> createDirectory(
+            @NonNull CreateDirectoryRequest createDirectoryRequest) {
+        return mRestService.createDirectory(userDataManager.getAccessToken(), createDirectoryRequest);
     }
 }

@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.signin;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,6 @@ import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import org.schulcloud.mobile.ui.signin.passwordRecovery.PasswordRecoveryFragment;
-import org.schulcloud.mobile.util.DialogFactory;
 
 import javax.inject.Inject;
 
@@ -76,11 +76,7 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
     }
 
     public void openPasswordRecovery() {
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.overlay_container, new PasswordRecoveryFragment())
-                .addToBackStack(null)
-                .commit();
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));
     }
 
     @Override

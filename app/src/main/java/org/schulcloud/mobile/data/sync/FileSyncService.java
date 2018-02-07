@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.FileDataManager;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
@@ -24,7 +24,7 @@ import timber.log.Timber;
 public class FileSyncService extends Service {
 
     @Inject
-    DataManager mDataManager;
+    FileDataManager mFileDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -53,7 +53,7 @@ public class FileSyncService extends Service {
         }
 
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncFiles(mDataManager.getCurrentStorageContext())
+        mSubscription = mFileDataManager.syncFiles(mFileDataManager.getCurrentStorageContext())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<File>() {
                     @Override

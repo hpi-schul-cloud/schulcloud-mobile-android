@@ -7,7 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.test.common.TestDataFactory;
 import org.schulcloud.mobile.ui.homework.HomeworkMvpView;
@@ -33,13 +34,15 @@ public class HomeworkPresenterTest {
     @Mock
     HomeworkMvpView mMockHomeworkMvpView;
     @Mock
-    DataManager mMockDataManager;
+    HomeworkDataManager mMockHomeworkDataManager;
+    @Mock
+    UserDataManager mMockUserDataManager;
     private HomeworkPresenter mHomeworkPresenter;
 
     @Before
     public void setUp() {
         doReturn(Single.just(TestDataFactory.makeCurrentUser("", true)))
-                .when(mMockDataManager)
+                .when(mMockUserDataManager)
                 .getCurrentUser();
     }
 
@@ -52,10 +55,10 @@ public class HomeworkPresenterTest {
     public void loadUsersReturnsUsers() {
         List<Homework> homeworks = TestDataFactory.makeListHomework(10);
         doReturn(Observable.just(homeworks))
-                .when(mMockDataManager)
+                .when(mMockHomeworkDataManager)
                 .getHomework();
 
-        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        mHomeworkPresenter = new HomeworkPresenter(mMockHomeworkDataManager,mMockUserDataManager);
         mHomeworkPresenter.attachView(mMockHomeworkMvpView);
         verify(mMockHomeworkMvpView).showHomework(homeworks);
         verify(mMockHomeworkMvpView, never()).showHomeworkEmpty();
@@ -65,10 +68,10 @@ public class HomeworkPresenterTest {
     @Test
     public void loadUsersReturnsEmptyList() {
         doReturn(Observable.just(Collections.emptyList()))
-                .when(mMockDataManager)
+                .when(mMockHomeworkDataManager)
                 .getHomework();
 
-        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        mHomeworkPresenter = new HomeworkPresenter(mMockHomeworkDataManager,mMockUserDataManager);
         mHomeworkPresenter.attachView(mMockHomeworkMvpView);
         verify(mMockHomeworkMvpView).showHomeworkEmpty();
         verify(mMockHomeworkMvpView, never()).showHomework(anyListOf(Homework.class));
@@ -78,10 +81,10 @@ public class HomeworkPresenterTest {
     @Test
     public void loadUsersFails() {
         doReturn(Observable.error(new RuntimeException()))
-                .when(mMockDataManager)
+                .when(mMockHomeworkDataManager)
                 .getHomework();
 
-        mHomeworkPresenter = new HomeworkPresenter(mMockDataManager);
+        mHomeworkPresenter = new HomeworkPresenter(mMockHomeworkDataManager,mMockUserDataManager);
         mHomeworkPresenter.attachView(mMockHomeworkMvpView);
         verify(mMockHomeworkMvpView).showError();
         verify(mMockHomeworkMvpView, never()).showHomeworkEmpty();

@@ -7,7 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.EventDataManager;
+import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.test.common.TestDataFactory;
@@ -35,14 +37,19 @@ public class SettingsPresenterTest {
     @Mock
     SettingsMvpView mMockSettingsMvpView;
     @Mock
-    DataManager mMockDataManager;
+    UserDataManager mMockUserDataManager;
+    @Mock
+    EventDataManager mMockEventDataManager;
+    @Mock
+    NotificationDataManager mMockNotificationDataManager;
     private SettingsPresenter mSettingsPresenter;
 
     @Before
     public void setUp() {
-        mSettingsPresenter = new SettingsPresenter(mMockDataManager);
+        mSettingsPresenter = new SettingsPresenter(mMockUserDataManager,mMockEventDataManager,
+                mMockNotificationDataManager);
         doReturn(Single.just(false))
-                .when(mMockDataManager)
+                .when(mMockUserDataManager)
                 .isInDemoMode();
         mSettingsPresenter.attachView(mMockSettingsMvpView);
     }
@@ -56,7 +63,7 @@ public class SettingsPresenterTest {
     public void loadEventsReturnsEvents() {
         List<Event> events = TestDataFactory.makeListEvents(10);
         doReturn(Observable.just(events))
-                .when(mMockDataManager)
+                .when(mMockEventDataManager)
                 .getEvents();
 
         mSettingsPresenter.loadEvents(false);
@@ -67,7 +74,7 @@ public class SettingsPresenterTest {
     @Test
     public void loadEventsReturnsEmptyList() {
         doReturn(Observable.just(Collections.emptyList()))
-                .when(mMockDataManager)
+                .when(mMockEventDataManager)
                 .getEvents();
 
         mSettingsPresenter.loadEvents(false);
@@ -78,7 +85,7 @@ public class SettingsPresenterTest {
     @Test
     public void loadEventsFails() {
         doReturn(Observable.error(new RuntimeException()))
-                .when(mMockDataManager)
+                .when(mMockEventDataManager)
                 .getEvents();
 
         mSettingsPresenter.loadEvents(false);
@@ -90,7 +97,7 @@ public class SettingsPresenterTest {
     public void loadDevices() {
         List<Device> devices = TestDataFactory.makeListDevices(10);
         doReturn(Observable.just(devices))
-                .when(mMockDataManager)
+                .when(mMockNotificationDataManager)
                 .getDevices();
 
         mSettingsPresenter.loadDevices();
@@ -100,7 +107,7 @@ public class SettingsPresenterTest {
     @Test
     public void loadDevicesFails() {
         doReturn(Observable.error(new RuntimeException()))
-                .when(mMockDataManager)
+                .when(mMockNotificationDataManager)
                 .getDevices();
 
         mSettingsPresenter.loadDevices();

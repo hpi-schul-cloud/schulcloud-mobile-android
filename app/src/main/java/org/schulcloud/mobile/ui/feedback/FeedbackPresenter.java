@@ -3,7 +3,8 @@ package org.schulcloud.mobile.ui.feedback;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -17,14 +18,16 @@ import rx.android.schedulers.AndroidSchedulers;
 @ConfigPersistent
 public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
 
-    private final DataManager mDataManager;
+    private final FeedbackDataManager mFeedbackDataManager;
+    private final UserDataManager mUserDataManager;
     private Subscription mSubscription;
 
     private String mContextName;
 
     @Inject
-    FeedbackPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public FeedbackPresenter(FeedbackDataManager feedbackDataManager, UserDataManager userDataManager) {
+        mFeedbackDataManager = feedbackDataManager;
+        mUserDataManager = userDataManager;
     }
 
     @Override
@@ -42,12 +45,12 @@ public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
             getViewOrThrow().showError_contentEmpty();
         else {
             String text = String
-                    .format(format, mDataManager.getCurrentUserName(), email.trim(), mContextName,
+                    .format(format, mUserDataManager, email.trim(), mContextName,
                             content.trim());
             FeedbackRequest feedbackRequest = new FeedbackRequest(text, subject, to);
 
             RxUtil.unsubscribe(mSubscription);
-            mSubscription = mDataManager.sendFeedback(feedbackRequest)
+            mSubscription = mFeedbackDataManager.sendFeedback(feedbackRequest)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             feedbackResponse -> sendToView(FeedbackMvpView::showFeedbackSent),

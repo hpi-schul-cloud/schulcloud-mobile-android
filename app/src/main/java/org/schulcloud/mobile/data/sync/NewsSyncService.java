@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.NewsDataManager;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
 import org.schulcloud.mobile.util.RxUtil;
@@ -21,7 +21,7 @@ import timber.log.Timber;
 
 public class NewsSyncService extends Service {
     @Inject
-    DataManager mDataManager;
+    NewsDataManager mNewsDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -50,7 +50,7 @@ public class NewsSyncService extends Service {
         }
 
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.syncNews()
+        mSubscription = mNewsDataManager.syncNews()
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         news -> {},

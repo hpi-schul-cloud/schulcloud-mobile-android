@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
@@ -23,7 +23,7 @@ import timber.log.Timber;
 public class HomeworkSyncService extends Service {
 
     @Inject
-    DataManager mDataManager;
+    HomeworkDataManager mHomeworkDataManager;
     private Subscription mSubscription;
 
     public static Intent getStartIntent(Context context) {
@@ -52,7 +52,7 @@ public class HomeworkSyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncHomework()
+        mSubscription = mHomeworkDataManager.syncHomework()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Homework>() {
                     @Override

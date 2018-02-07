@@ -1,9 +1,10 @@
 package org.schulcloud.mobile.ui.homework;
 
 import android.support.annotation.NonNull;
-
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -17,13 +18,15 @@ import timber.log.Timber;
 @ConfigPersistent
 public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
-    private final DataManager mDataManager;
+    private final HomeworkDataManager mHomeworkDataManager;
+    private final UserDataManager mUserDataManager;
     private Subscription mSubscription;
     private Subscription mCurrentUserSubscription;
 
     @Inject
-    public HomeworkPresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public HomeworkPresenter(HomeworkDataManager homeworkDataManager, UserDataManager userDataManager) {
+        mHomeworkDataManager = homeworkDataManager;
+        mUserDataManager = userDataManager;
         loadHomework();
     }
 
@@ -31,12 +34,11 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
     public void onViewAttached(@NonNull HomeworkMvpView view) {
         super.onViewAttached(view);
         RxUtil.unsubscribe(mCurrentUserSubscription);
-        mCurrentUserSubscription = mDataManager.getCurrentUser()
+        mCurrentUserSubscription = mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(currentUser ->
                         sendToView(v -> v.showCanCreateHomework(
-                                currentUser
-                                        .hasPermission(CurrentUser.PERMISSION_HOMEWORK_CREATE))));
+                                currentUser.hasPermission(CurrentUser.PERMISSION_HOMEWORK_CREATE))));
     }
     @Override
     public void onDestroy() {
@@ -47,7 +49,7 @@ public class HomeworkPresenter extends BasePresenter<HomeworkMvpView> {
 
     public void loadHomework() {
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getHomework()
+        mSubscription = mHomeworkDataManager.getHomework()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         homework -> {

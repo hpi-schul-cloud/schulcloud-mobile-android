@@ -16,7 +16,8 @@ import android.view.Window;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.SchulCloudApplication;
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
+import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.injection.component.ConfigPersistentComponent;
 import org.schulcloud.mobile.injection.component.DaggerConfigPersistentComponent;
@@ -42,7 +43,9 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
     private static final SparseArray<ConfigPersistentComponent> sComponentsMap = new SparseArray<>();
 
     @Inject
-    DataManager mDataManager;
+    PreferencesHelper mPreferencesHelper;
+    @Inject
+    UserDataManager mUserDataManager;
 
     private ActivityComponent mActivityComponent;
     private int mActivityId;
@@ -234,8 +237,8 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
     }
 
     @Inject
-    public void setDataManager(DataManager dataManager) {
-        mDataManager = dataManager;
+    public void setDataManager(UserDataManager dataManager) {
+        mUserDataManager = dataManager;
     }
     @NonNull
     protected String provideDetailedFeedbackContext() {
@@ -245,7 +248,7 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
     /***** MVP View methods implementation *****/
     @Override
     public void goToSignIn() {
-        mDataManager.signOut();
+        mUserDataManager.signOut();
         startActivity(new Intent(this, SignInActivity.class));
         finish();
     }

@@ -2,8 +2,9 @@ package org.schulcloud.mobile.ui.courses.detailed;
 
 import android.support.annotation.NonNull;
 
-import org.schulcloud.mobile.data.DataManager;
+import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
 import org.schulcloud.mobile.data.model.Course;
+import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.RxUtil;
@@ -17,13 +18,15 @@ import timber.log.Timber;
 @ConfigPersistent
 public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView> {
 
-    private final DataManager mDataManager;
+    private CourseDataManager mCourseDataManager;
+    private TopicDataManager mTopicDataManager;
     private Subscription mSubscription;
     private Course mCourse;
 
     @Inject
-    DetailedCoursePresenter(DataManager dataManager) {
-        mDataManager = dataManager;
+    public DetailedCoursePresenter(CourseDataManager courseDataManager, TopicDataManager topicDataManager) {
+        mCourseDataManager = courseDataManager;
+        mTopicDataManager = topicDataManager;
     }
 
     @Override
@@ -44,10 +47,10 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
      * @param courseId The ID of the course to load.
      */
     public void loadCourse(@NonNull String courseId) {
-        mCourse = mDataManager.getCourseForId(courseId);
+        mCourse = mCourseDataManager.getCourseForId(courseId);
         showName();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mDataManager.getTopics()
+        mSubscription = mTopicDataManager.getTopics()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         topics -> sendToView(v -> v.showTopics(topics)),

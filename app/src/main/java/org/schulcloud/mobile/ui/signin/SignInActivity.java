@@ -1,24 +1,28 @@
 package org.schulcloud.mobile.ui.signin;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
-import org.schulcloud.mobile.ui.signin.passwordRecovery.PasswordRecoveryFragment;
-import org.schulcloud.mobile.ui.signin.passwordRecovery.PasswordRecoveryFragment;
-import org.schulcloud.mobile.util.DialogFactory;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
         implements SignInMvpView {
@@ -78,15 +82,16 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
     }
 
     public void openPasswordRecovery() {
-<<<<<<< HEAD
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(""));
-=======
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.overlay_container, new PasswordRecoveryFragment())
-                .addToBackStack(null)
-                .commit();
->>>>>>> d01849e941944b1bd5d42164276b838aaa90af99
+        WebView pwRecoveryView = new WebView(this);
+        WebSettings pwRecoverySettings = pwRecoveryView.getSettings();
+        pwRecoverySettings.setJavaScriptEnabled(true);
+        pwRecoveryView.loadUrl("http://schul-cloud.org");
+        setContentView(pwRecoveryView);
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT){
+            pwRecoveryView.evaluateJavascript("ADD JAVASCRIPT",null);
+        }else{
+            pwRecoveryView.loadUrl("javascript: ADD JAVASCRIPT");
+        }
     }
 
     @Override

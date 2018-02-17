@@ -25,7 +25,7 @@
     <style name="Content_Title">
         <item name="android:layout_marginBottom">@dimen/content_title_margin</item>
         <item name="android:textColor">@color/hpiRed</item>
-        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textSize">@dimen/text_title_large</item>
     </style>
     <style name="Content_Title.Margin">
         <item name="android:layout_marginLeft">@dimen/content_title_margin</item>
@@ -75,6 +75,12 @@
     <style name="FileOverview.Card_FileCount" parent="TextAppearance.AppCompat.Subhead.Inverse" />
     <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
     <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
+
+    <style name="Card.Header" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">20sp</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 
     <!-- Material Design -->
     <style name="Material" />

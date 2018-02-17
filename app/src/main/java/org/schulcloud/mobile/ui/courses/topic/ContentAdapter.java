@@ -105,60 +105,66 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
         ViewUtil.setVisibility(holder.vTv_notSupported, !supported);
         ViewUtil.setVisibility(holder.vWv_content, supported);
 
-        WebView webView = holder.vWv_content;
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                return true;
-            }
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, request.getUrl()));
-                return true;
-            }
-
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                return handleRequest(url);
-            }
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view,
-                    WebResourceRequest request) {
-                return handleRequest(request.getUrl().toString());
-            }
-            @Nullable
-            private WebResourceResponse handleRequest(@NonNull String url) {
-                try {
-                    OkHttpClient okHttpClient;
-                    if (url.startsWith("https://schul-cloud.org"))
-                        okHttpClient = new OkHttpClient().newBuilder().addInterceptor(chain -> chain
-                                .proceed(chain.request().newBuilder().addHeader("Cookie",
-                                        "jwt=" + mUserDataManger.getAccessToken()).build()))
-                                .build();
-                    else
-                        okHttpClient = new OkHttpClient();
-
-                    Response response =
-                            okHttpClient.newCall(new Request.Builder().url(url).build()).execute();
-                    return new WebResourceResponse(
-                            response.header("content-type", "text/plain"),
-                            response.header("content-encoding", "utf-8"),
-                            response.body().byteStream()
-                    );
-                } catch (Exception e) {
-                    return null;
+        if (contents.component.equals(Contents.COMPONENT_TEXT)) {
+            WebView webView = holder.vWv_content;
+            webView.getSettings().setLoadsImagesAutomatically(true);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
                 }
-            }
-        });
-        webView.loadDataWithBaseURL("https://schul-cloud.org",
-                CONTENT_PREFIX + (contents.content.text != null ? contents.content.text : "")
-                        + CONTENT_SUFFIX, "text/html",
-                "utf-8", null);
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, request.getUrl()));
+                    return true;
+                }
+
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                    return handleRequest(url);
+                }
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view,
+                        WebResourceRequest request) {
+                    return handleRequest(request.getUrl().toString());
+                }
+                @Nullable
+                private WebResourceResponse handleRequest(@NonNull String url) {
+                    try {
+                        OkHttpClient okHttpClient;
+                        if (url.startsWith("https://schul-cloud.org"))
+                            okHttpClient =
+                                    new OkHttpClient().newBuilder().addInterceptor(chain -> chain
+                                            .proceed(
+                                                    chain.request().newBuilder().addHeader("Cookie",
+                                                            "jwt=" + mUserDataManger
+                                                                    .getAccessToken()).build()))
+                                            .build();
+                        else
+                            okHttpClient = new OkHttpClient();
+
+                        Response response =
+                                okHttpClient.newCall(new Request.Builder().url(url).build())
+                                        .execute();
+                        return new WebResourceResponse(
+                                response.header("content-type", "text/plain"),
+                                response.header("content-encoding", "utf-8"),
+                                response.body().byteStream()
+                        );
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+            });
+            webView.loadDataWithBaseURL("https://schul-cloud.org",
+                    CONTENT_PREFIX + (contents.content.text != null ? contents.content.text : "")
+                            + CONTENT_SUFFIX, "text/html",
+                    "utf-8", null);
+        }
     }
     @Override
     public int getItemCount() {

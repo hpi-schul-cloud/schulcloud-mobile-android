@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,6 @@ import okhttp3.Response;
 
 @ConfigPersistent
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentViewHolder> {
-    private static final String TAG = ContentAdapter.class.getSimpleName();
     private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
             + "<html>\n"
             + "<head>\n"
@@ -45,15 +46,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
             + "  <style>\n"
             + "    table {\n"
-            + "        table-layout: fixed;\n"
-            + "        width: 100%;\n"
+            + "      table-layout: fixed;\n"
+            + "      width: 100%;\n"
             + "    }\n"
             + "  </style>\n"
             + "</head>\n"
             + "<body>";
     private static final String CONTENT_SUFFIX = "<script>\n"
-            + " for (tag of document.body.getElementsByTagName('*'))\n"
+            + "   for (tag of document.body.getElementsByTagName('*')) {\n"
             + "     tag.style.width = '';\n"
+            + "     tag.style.height = '';\n"
+            + "   }\n"
             + "  </script>\n"
             + "</body>\n"
             + "</html>\n";
@@ -82,19 +85,22 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
                 .inflate(R.layout.item_content, parent, false);
         return new ContentViewHolder(itemView);
     }
-
     @Override
     public void onBindViewHolder(ContentViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         Contents contents = mContent.get(position);
 
         holder.vTv_title.setText(contents.title);
+        ViewUtil.setVisibility(holder.vTv_title, !TextUtils.isEmpty(contents.title));
 
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             WebView.setWebContentsDebuggingEnabled(true);
 
-        if (!contents.component.equals(Contents.COMPONENT_TEXT))
-            return;
+        boolean supported = contents.component.equals(Contents.COMPONENT_TEXT);
+        holder.vTv_notSupported.setText(
+                context.getString(R.string.courses_content_error_notSupported, contents.component));
+        ViewUtil.setVisibility(holder.vTv_notSupported, !supported);
+        ViewUtil.setVisibility(holder.vWv_content, supported);
 
         WebView webView = holder.vWv_content;
         webView.getSettings().setLoadsImagesAutomatically(true);
@@ -151,7 +157,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
                         + CONTENT_SUFFIX, "text/html",
                 "utf-8", null);
     }
-
     @Override
     public int getItemCount() {
         return mContent.size();
@@ -161,6 +166,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
 
         @BindView(R.id.content_tv_title)
         TextView vTv_title;
+        @BindView(R.id.content_tv_notSupported)
+        TextView vTv_notSupported;
         @BindView(R.id.content_wv_content)
         WebView vWv_content;
 

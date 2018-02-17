@@ -17,13 +17,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/content_title_margin"
-            tools:text="Content name" />
+            android:visibility="gone"
+            tools:text="Content name"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/content_tv_notSupported"
+            style="@style/Content_Text.Empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/courses_content_error_notSupported"
+            android:visibility="gone" />
 
         <WebView
             android:id="@+id/content_wv_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

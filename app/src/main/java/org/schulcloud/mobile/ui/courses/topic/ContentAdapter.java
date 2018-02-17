@@ -49,6 +49,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             + "      table-layout: fixed;\n"
             + "      width: 100%;\n"
             + "    }\n"
+            + "    * {\n"
+            + "      max-width: 100%;\n"
+            + "    }\n"
             + "  </style>\n"
             + "</head>\n"
             + "<body>";

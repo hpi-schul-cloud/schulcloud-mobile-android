@@ -395,26 +395,29 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             ViewUtil.setVisibility(vIv_preview, true);
             ViewUtil.setVisibility(vPb_loading, false);
             ViewUtil.setVisibility(vWv_content, false);
-            Single.<String>create(subscriber -> {
-                try {
-                    Response responseRaw = CLIENT_EXTERNAL.newCall(new Request.Builder()
-                            .url(GEOGEBRA_API)
-                            .post(RequestBody.create(MediaType.parse(WebUtil.MIME_APPLICATION_JSON),
-                                    GEOGEBRA_REQUEST_PREFIX + getContent().content.materialId
-                                            + GEOGEBRA_REQUEST_SUFFIX))
-                            .build()).execute();
-                    GeogebraResponse response =
-                            mGson.fromJson(responseRaw.body().charStream(), GeogebraResponse.class);
-                    subscriber.onSuccess(response.responses.response.item.previewUrl);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error retrieving prevew URL", e);
-                    subscriber.onError(e);
-                }
-            })
+            Single.just(getContent().content.materialId)
+                    .flatMap(materialId -> Single.<String>create(subscriber -> {
+                        try {
+                            Response responseRaw = CLIENT_EXTERNAL.newCall(new Request.Builder()
+                                    .url(GEOGEBRA_API)
+                                    .post(RequestBody
+                                            .create(MediaType.parse(WebUtil.MIME_APPLICATION_JSON),
+                                                    GEOGEBRA_REQUEST_PREFIX + materialId
+                                                            + GEOGEBRA_REQUEST_SUFFIX))
+                                    .build()).execute();
+                            GeogebraResponse response =
+                                    mGson.fromJson(responseRaw.body().charStream(),
+                                            GeogebraResponse.class);
+                            subscriber.onSuccess(response.responses.response.item.previewUrl);
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error retrieving preview URL", e);
+                            subscriber.onError(e);
+                        }
+                    }))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(uri -> Picasso.with(getContext()).load(uri).into(vIv_preview),
-                            throwable -> {});
+                            throwable -> load());
         }
         private void load() {
             ViewUtil.setVisibility(vPb_loading, true);

@@ -12,4 +12,9 @@ public class Content extends RealmObject{
 
     // geogebra
     public String materialId;
+
+    // etherpad
+    public String title;
+    public String description;
+    public String url;
 }

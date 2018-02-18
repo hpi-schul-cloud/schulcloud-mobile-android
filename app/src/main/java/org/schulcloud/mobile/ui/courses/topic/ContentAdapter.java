@@ -55,8 +55,11 @@ import rx.schedulers.Schedulers;
 
 @ConfigPersistent
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseViewHolder> {
-    private static final String[] CONTENT_TYPES =
-            {Contents.COMPONENT_TEXT, Contents.COMPONENT_RESOURCES, Contents.COMPONENT_GEOGEBRA};
+    private static final String[] CONTENT_TYPES = {
+            Contents.COMPONENT_TEXT,
+            Contents.COMPONENT_RESOURCES,
+            Contents.COMPONENT_GEOGEBRA,
+            Contents.COMPONENT_ETHERPAD};
 
     private List<Contents> mContents;
 
@@ -90,6 +93,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             case 2:
                 return new GeogebraViewHolder(
                         inflater.inflate(R.layout.item_content_geogebra, parent, false));
+            case 3:
+                return new EtherpadViewHolder(
+                        inflater.inflate(R.layout.item_content_etherpad, parent, false));
 
             default:
                 return new UnsupportedViewHolder(
@@ -98,11 +104,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
     }
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        Contents content = mContents.get(position);
-        boolean hidden = content.hidden != null ? content.hidden : false;
-        ViewUtil.setVisibility(holder.itemView, !hidden);
-        if (!hidden)
-            holder.setContent(content);
+        holder.setContent(mContents.get(position));
     }
     @Override
     public int getItemCount() {
@@ -118,6 +120,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
     }
 
     public static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+        private Contents mContent;
+
         BaseViewHolder(View itemView) {
             super(itemView);
         }
@@ -127,7 +131,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             return itemView.getContext();
         }
 
-        abstract void setContent(@NonNull Contents content);
+        final void setContent(@NonNull Contents content) {
+            mContent = content;
+            boolean hidden = content.hidden != null ? content.hidden : false;
+            ViewUtil.setVisibility(itemView, !hidden);
+            if (!hidden)
+                onContentSet(content);
+        }
+        abstract void onContentSet(@NonNull Contents content);
+        @NonNull
+        final Contents getContent() {
+            return mContent;
+        }
     }
     public static abstract class WebViewHolder extends BaseViewHolder {
         protected final OkHttpClient CLIENT_INTERNAL;
@@ -151,13 +166,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                     .build();
             CLIENT_EXTERNAL = new OkHttpClient();
         }
-
-        @NonNull
-        public Context getContext() {
-            return itemView.getContext();
-        }
-
-        abstract void setContent(@NonNull Contents content);
     }
 
     class UnsupportedViewHolder extends BaseViewHolder {
@@ -172,7 +180,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             ButterKnife.bind(this, itemView);
         }
         @Override
-        void setContent(@NonNull Contents content) {
+        void onContentSet(@NonNull Contents content) {
             vTv_title.setText(content.title);
             vTv_message.setText(getContext()
                     .getString(R.string.courses_contentUnsupported_message, content.component));
@@ -215,7 +223,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
-        void setContent(@NonNull Contents content) {
+        void onContentSet(@NonNull Contents content) {
             vTv_title.setText(content.title);
             ViewUtil.setVisibility(vTv_title, !TextUtils.isEmpty(content.title));
 
@@ -290,7 +298,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             vRv.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
         }
         @Override
-        void setContent(@NonNull Contents content) {
+        void onContentSet(@NonNull Contents content) {
             if (content.content == null)
                 return;
 
@@ -351,11 +359,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         @BindView(R.id.contentGeogebra_pb_loading)
         ProgressBar vPb_loading;
 
-        private String mMaterialId;
-
         GeogebraViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            vIv_open.setOnClickListener(v -> getContext().startActivity(
+                    new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(GEOGEBRA + getContent().content.materialId))));
 
             if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                 WebView.setWebContentsDebuggingEnabled(true);
@@ -364,12 +374,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
-        void setContent(@NonNull Contents content) {
+        void onContentSet(@NonNull Contents content) {
             vTv_title.setText(content.title);
-
-            mMaterialId = content.content.materialId;
-            vIv_open.setOnClickListener(v -> getContext().startActivity(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(GEOGEBRA + mMaterialId))));
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.setWebViewClient(new WebViewClient() {
@@ -393,7 +399,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                     Response responseRaw = CLIENT_EXTERNAL.newCall(new Request.Builder()
                             .url(GEOGEBRA_API)
                             .post(RequestBody.create(MediaType.parse(WebUtil.MIME_APPLICATION_JSON),
-                                    GEOGEBRA_REQUEST_PREFIX + mMaterialId
+                                    GEOGEBRA_REQUEST_PREFIX + getContent().content.materialId
                                             + GEOGEBRA_REQUEST_SUFFIX))
                             .build()).execute();
                     GeogebraResponse response =
@@ -412,8 +418,41 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         private void load() {
             ViewUtil.setVisibility(vPb_loading, true);
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + mMaterialId + CONTENT_SUFFIX,
+                    CONTENT_PREFIX + getContent().content.materialId + CONTENT_SUFFIX,
                     WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
+        }
+    }
+    class EtherpadViewHolder extends WebViewHolder {
+
+        @BindView(R.id.contentEtherpad_tv_title)
+        TextView vTv_title;
+        @BindView(R.id.contentEtherpad_tv_description)
+        TextView vTv_description;
+        @BindView(R.id.contentEtherpad_iv_open)
+        ImageView vIv_open;
+        @BindView(R.id.contentEtherpad_wv_content)
+        WebView vWv_content;
+
+        EtherpadViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+            vIv_open.setOnClickListener(v -> getContext().startActivity(
+                    new Intent(Intent.ACTION_VIEW, Uri.parse(getContent().content.url))));
+
+            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                WebView.setWebContentsDebuggingEnabled(true);
+        }
+        @SuppressLint("SetJavaScriptEnabled")
+        @Override
+        void onContentSet(@NonNull Contents content) {
+            vTv_title.setText(content.content.title);
+
+            vTv_description.setText(content.content.description);
+            ViewUtil.setVisibility(vTv_description, content.content.description != null);
+
+            vWv_content.getSettings().setJavaScriptEnabled(true);
+            vWv_content.loadUrl(getContent().content.url);
         }
     }
 }

@@ -3,8 +3,9 @@ package org.schulcloud.mobile.ui.courses.topic;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
     /**
      * Creates a new instance of this fragment.
      *
-     * @param topicId   The ID of the topic that should be shown
+     * @param topicId The ID of the topic that should be shown
      * @return The new instance
      */
     @NonNull
@@ -74,7 +76,14 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
         setTitle(R.string.courses_topic_title);
 
         recyclerView.setAdapter(mContentAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int spans = metrics.widthPixels / ViewUtil.dpToPx(440);
+        StaggeredGridLayoutManager layoutManager =
+                new StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager
+                .setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        recyclerView.setLayoutManager(layoutManager);
 
         return view;
     }

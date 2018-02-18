@@ -68,7 +68,7 @@ public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.Reso
                                 throwable -> {
                                     Log.e(TAG, "onBindViewHolder: ", throwable);
                                     DialogFactory.createGenericErrorDialog(context,
-                                            "Es gab einen Fehler beim Laden des Materials").show();
+                                            R.string.courses_resources_error).show();
                                 })
         );
         holder.vTv_title.setText(resource.title);

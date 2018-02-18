@@ -49,7 +49,7 @@ public class CourseDataManager {
     }
 
     public Observable<List<Course>> getCourses() {
-        return mDatabaseHelper.getCourses().distinct();
+        return mDatabaseHelper.getCourses();
     }
 
     public Course getCourseForId(String courseId) {

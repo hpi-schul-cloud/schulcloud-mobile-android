@@ -1,18 +1,19 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import android.support.annotation.NonNull;
-import org.schulcloud.mobile.data.local.FileStorageDatabasehelper;
+
+import org.schulcloud.mobile.data.local.FileStorageDatabaseHelper;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
 import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
-import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.PathUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,114 +23,110 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import rx.Observable;
-import rx.functions.Func1;
 
 @Singleton
 public class FileDataManager {
     private final RestService mRestService;
-    private final FileStorageDatabasehelper mDatabaseHelper;
+    private final FileStorageDatabaseHelper mDatabaseHelper;
+    private final PreferencesHelper mPreferencesHelper;
+    private final UserDataManager mUserDataManager;
 
-    public static final String FILES_CONTEXT_MY = "users";
-    public static final String FILES_CONTEXT_COURSES = "courses";
-
-    @Inject
-    PreferencesHelper mPreferencesHelper;
-    @Inject
-    UserDataManager userDataManager;
+    public static final String CONTEXT_MY = "users";
+    public static final String CONTEXT_COURSES = "courses";
 
     @Inject
     public FileDataManager(RestService restService, PreferencesHelper preferencesHelper,
-                           FileStorageDatabasehelper databaseHelper) {
+            FileStorageDatabaseHelper databaseHelper, UserDataManager userDataManager) {
         mRestService = restService;
         mPreferencesHelper = preferencesHelper;
         mDatabaseHelper = databaseHelper;
+        mUserDataManager = userDataManager;
     }
 
-    public PreferencesHelper getPreferencesHelper() {
-        return mPreferencesHelper;
-    }
-
+    @NonNull
     public Observable<File> syncFiles(String path) {
-        return mRestService.getFiles(userDataManager.getAccessToken(), path)
-                .concatMap(new Func1<FilesResponse, Observable<File>>() {
-                    @Override
-                    public Observable<File> call(FilesResponse filesResponse) {
-                        // clear old files
-                        mDatabaseHelper.clearTable(File.class);
+        return mRestService.getFiles(mUserDataManager.getAccessToken(), path)
+                .concatMap(filesResponse -> {
+                    // clear old files
+                    mDatabaseHelper.clearTable(File.class);
 
-                        List<File> files = new ArrayList<>();
+                    List<File> files = new ArrayList<>();
 
-                        // set fullPath for every file
-                        for (File file : filesResponse.files) {
-                            file.fullPath = file.key.substring(0, file.key.lastIndexOf(java.io.File.separator));
-                            files.add(file);
-                        }
-
-                        return mDatabaseHelper.setFiles(files);
+                    // set fullPath for every file
+                    for (File file : filesResponse.files) {
+                        file.fullPath =
+                                file.key.substring(0, file.key.lastIndexOf(java.io.File.separator));
+                        files.add(file);
                     }
+
+                    return mDatabaseHelper.setFiles(files);
                 }).doOnError(Throwable::printStackTrace);
     }
-
+    @NonNull
     public Observable<List<File>> getFiles() {
-        return mDatabaseHelper.getFiles().distinct().concatMap(files -> {
-            List<File> filteredFiles = new ArrayList<File>();
-            String currentContext = getCurrentStorageContext();
-            // remove last trailing slash
-            if (!currentContext.equals("/") && currentContext.endsWith("/")) {
-                currentContext = currentContext.substring(0, currentContext.length() - 1);
-            }
+        return mDatabaseHelper.getFiles()
+                .map(files -> {
+                    List<File> filteredFiles = new ArrayList<>();
+                    String currentContext = PathUtil.trimTrailingSlash(getCurrentStorageContext());
+                    for (File f : files)
+                        if (f.fullPath.equals(currentContext))
+                            filteredFiles.add(f);
 
-            for (File f : files) {
-                if (f.fullPath.equals(currentContext)) filteredFiles.add(f);
-            }
-            return Observable.just(filteredFiles);
-        });
+                    Collections.sort(filteredFiles, (o1, o2) ->
+                            o1.name == null ? (o2.name == null ? 0 : -1)
+                                    : o1.name.compareTo(o2.name));
+                    return filteredFiles;
+                });
     }
 
+    @NonNull
     public Observable<Directory> syncDirectories(String path) {
-        return mRestService.getFiles(userDataManager.getAccessToken(), path)
-                .concatMap(new Func1<FilesResponse, Observable<Directory>>() {
-                    @Override
-                    public Observable<Directory> call(FilesResponse filesResponse) {
-                        // clear old directories
-                        mDatabaseHelper.clearTable(Directory.class);
+        return mRestService.getFiles(mUserDataManager.getAccessToken(), path)
+                .concatMap(filesResponse -> {
+                    // clear old directories
+                    mDatabaseHelper.clearTable(Directory.class);
 
-                        List<Directory> improvedDirs = new ArrayList<Directory>();
-                        for(Directory d : filesResponse.directories) {
-                            d.path = getCurrentStorageContext();
-                            improvedDirs.add(d);
-                        }
-
-                        return mDatabaseHelper.setDirectories(improvedDirs);
+                    List<Directory> improvedDirs = new ArrayList<>();
+                    for (Directory d : filesResponse.directories) {
+                        d.path = getCurrentStorageContext();
+                        improvedDirs.add(d);
                     }
+
+                    return mDatabaseHelper.setDirectories(improvedDirs);
                 }).doOnError(Throwable::printStackTrace);
-
     }
-
+    @NonNull
     public Observable<List<Directory>> getDirectories() {
-        return mDatabaseHelper.getDirectories().distinct().concatMap(directories -> {
-            List<Directory> filteredDirectories = new ArrayList<Directory>();
-            for (Directory d : directories) {
-                if (d.path.equals(getCurrentStorageContext())) filteredDirectories.add(d);
-            }
-            return Observable.just(filteredDirectories);
-        });
+        return mDatabaseHelper.getDirectories()
+                .map(directories -> {
+                    List<Directory> filteredDirectories = new ArrayList<>();
+                    String currentContext = getCurrentStorageContext();
+                    for (Directory d : directories)
+                        if (d.path.equals(currentContext))
+                            filteredDirectories.add(d);
+
+                    Collections.sort(filteredDirectories, (o1, o2) ->
+                            o1.name == null ? (o2.name == null ? 0 : -1)
+                                    : o1.name.compareTo(o2.name));
+                    return filteredDirectories;
+                });
     }
 
     public Observable<ResponseBody> deleteDirectory(String path) {
-        return mRestService.deleteDirectory(userDataManager.getAccessToken(), path);
+        return mRestService.deleteDirectory(mUserDataManager.getAccessToken(), path);
     }
 
     public Observable<SignedUrlResponse> getFileUrl(SignedUrlRequest signedUrlRequest) {
-        return mRestService.generateSignedUrl(userDataManager.getAccessToken(), signedUrlRequest);
+        return mRestService.generateSignedUrl(mUserDataManager.getAccessToken(), signedUrlRequest);
     }
 
     public Observable<ResponseBody> downloadFile(String url) {
         return mRestService.downloadFile(url);
     }
 
-    public Observable<ResponseBody> uploadFile(java.io.File file, SignedUrlResponse signedUrlResponse) {
-        RequestBody requestBody  = RequestBody.create(MediaType.parse("file/*"), file);
+    public Observable<ResponseBody> uploadFile(java.io.File file,
+            SignedUrlResponse signedUrlResponse) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("file/*"), file);
         return mRestService.uploadFile(
                 signedUrlResponse.url,
                 signedUrlResponse.header.getContentType(),
@@ -142,13 +139,14 @@ public class FileDataManager {
     }
 
     public Observable<ResponseBody> deleteFile(String path) {
-        return mRestService.deleteFile(userDataManager.getAccessToken(), path);
+        return mRestService.deleteFile(mUserDataManager.getAccessToken(), path);
     }
 
     public String getCurrentStorageContext() {
         String storageContext = mPreferencesHelper.getCurrentStorageContext();
         // personal files are default
-        return storageContext.equals("null") ? "users/" + userDataManager.getCurrentUserId() + "/" : storageContext + "/";
+        return storageContext.equals("null") ? "users/" + mUserDataManager.getCurrentUserId() + "/"
+                : storageContext + "/";
     }
 
     public void setCurrentStorageContext(String newStorageContext) {
@@ -157,7 +155,7 @@ public class FileDataManager {
 
     @NonNull
     public Observable<ResponseBody> persistFile(@NonNull SignedUrlResponse signedUrl,
-                                                @NonNull String fileName, @NonNull String fileType, long fileSize) {
+            @NonNull String fileName, @NonNull String fileType, long fileSize) {
         File newFile = new File();
         newFile.key = PathUtil.combine(signedUrl.header.getMetaPath(), fileName);
         newFile.path = PathUtil.ensureTrailingSlash(signedUrl.header.getMetaPath());
@@ -166,22 +164,23 @@ public class FileDataManager {
         newFile.size = "" + fileSize;
         newFile.flatFileName = signedUrl.header.getMetaFlatName();
         newFile.thumbnail = signedUrl.header.getMetaThumbnail();
-        return mRestService.persistFile(userDataManager.getAccessToken(), newFile);
+        return mRestService.persistFile(mUserDataManager.getAccessToken(), newFile);
     }
 
     public void setCurrentStorageContextToRoot() {
         setCurrentStorageContext("");
     }
     public void setCurrentStorageContextToMy() {
-        setCurrentStorageContext(FILES_CONTEXT_MY + "/" + userDataManager.getCurrentUserId());
+        setCurrentStorageContext(PathUtil.combine(CONTEXT_MY, mUserDataManager.getCurrentUserId()));
     }
     public void setCurrentStorageContextToCourse(@NonNull String courseId) {
-        setCurrentStorageContext(FILES_CONTEXT_COURSES + "/" + courseId);
+        setCurrentStorageContext(PathUtil.combine(CONTEXT_COURSES, courseId));
     }
 
     @NonNull
     public Observable<Directory> createDirectory(
             @NonNull CreateDirectoryRequest createDirectoryRequest) {
-        return mRestService.createDirectory(userDataManager.getAccessToken(), createDirectoryRequest);
+        return mRestService
+                .createDirectory(mUserDataManager.getAccessToken(), createDirectoryRequest);
     }
 }

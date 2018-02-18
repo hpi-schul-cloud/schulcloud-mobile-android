@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.data.local;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.model.Course;
 
 import java.util.Collection;
@@ -10,6 +12,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import timber.log.Timber;
 
@@ -38,11 +41,12 @@ public class CourseDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    @NonNull
     public Observable<List<Course>> getCourses() {
-        final Realm realm = mRealmProvider.get();
+        Realm realm = mRealmProvider.get();
         return realm.where(Course.class).findAllAsync().asObservable()
-                .filter(course -> course.isLoaded())
-                .map(course -> realm.copyFromRealm(course));
+                .filter(RealmResults::isLoaded)
+                .map(realm::copyFromRealm);
     }
 
     public Course getCourseForId(String courseId) {

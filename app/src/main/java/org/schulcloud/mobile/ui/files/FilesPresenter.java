@@ -8,7 +8,6 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.FileDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
-import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
@@ -95,9 +94,9 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     }
     private void loadBreadcrumbs() {
         String path = mFileDataManager.getCurrentStorageContext();
-        if (path.startsWith(FileDataManager.FILES_CONTEXT_MY))
+        if (path.startsWith(FileDataManager.CONTEXT_MY))
             sendToView(view -> view.showBreadcrumbs(path, null));
-        else if (path.startsWith(FileDataManager.FILES_CONTEXT_COURSES))
+        else if (path.startsWith(FileDataManager.CONTEXT_COURSES))
             sendToView(view -> view.showBreadcrumbs(path,
                     mCourseDataManager.getCourseForId(path.split("/", 3)[1])));
     }
@@ -319,7 +318,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         String storageContext = mFileDataManager.getCurrentStorageContext();
 
         // first two parts are meta
-        if (storageContext.split("/", 3).length > 2) {
+        if (storageContext.split("/", 4).length > 3) {
             onDirectorySelected(PathUtil.parent(storageContext));
             return true;
         }

@@ -3,7 +3,7 @@ package org.schulcloud.mobile.test.common.injection.module;
 import android.app.Application;
 import android.content.Context;
 
-import javax.inject.Singleton;
+import com.google.gson.Gson;
 
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
@@ -17,6 +17,9 @@ import org.schulcloud.mobile.data.datamanagers.TopicDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.injection.ApplicationContext;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
@@ -53,6 +56,12 @@ public class ApplicationTestModule {
     }
 
     /************* MOCKS *************/
+
+    @Provides
+    @Singleton
+    Gson provideGson() {
+        return mock(Gson.class);
+    }
 
     @Provides
     @Singleton

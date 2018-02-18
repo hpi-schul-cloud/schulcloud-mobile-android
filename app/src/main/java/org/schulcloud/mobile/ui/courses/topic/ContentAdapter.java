@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.courses.topic;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -42,32 +43,8 @@ import okhttp3.Response;
 
 @ConfigPersistent
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseViewHolder> {
-    private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
-            + "<html>\n"
-            + "<head>\n"
-            + "  <meta charset=\"utf-8\" />\n"
-            + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-            + "  <style>\n"
-            + "    table {\n"
-            + "      table-layout: fixed;\n"
-            + "      width: 100%;\n"
-            + "    }\n"
-            + "    * {\n"
-            + "      max-width: 100%;\n"
-            + "    }\n"
-            + "  </style>\n"
-            + "</head>\n"
-            + "<body>";
-    private static final String CONTENT_SUFFIX = "<script>\n"
-            + "   for (tag of document.body.getElementsByTagName('*')) {\n"
-            + "     tag.style.width = '';\n"
-            + "     tag.style.height = '';\n"
-            + "   }\n"
-            + "  </script>\n"
-            + "</body>\n"
-            + "</html>\n";
     private static final String[] CONTENT_TYPES =
-            {Contents.COMPONENT_TEXT, Contents.COMPONENT_RESOURCES};
+            {Contents.COMPONENT_TEXT, Contents.COMPONENT_RESOURCES, Contents.COMPONENT_GEOGEBRA};
 
     private List<Contents> mContents;
 
@@ -96,6 +73,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             case 1:
                 return new ResourcesViewHolder(
                         inflater.inflate(R.layout.item_content_resources, parent, false));
+            case 2:
+                return new GeogebraViewHolder(
+                        inflater.inflate(R.layout.item_content_geogebra, parent, false));
 
             default:
                 return new UnsupportedViewHolder(
@@ -124,7 +104,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
     }
 
     public static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
-        public BaseViewHolder(View itemView) {
+        BaseViewHolder(View itemView) {
             super(itemView);
         }
 
@@ -136,14 +116,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         abstract void setContent(@NonNull Contents content);
     }
 
-    public class UnsupportedViewHolder extends BaseViewHolder {
+    class UnsupportedViewHolder extends BaseViewHolder {
 
         @BindView(R.id.contentUnsupported_tv_title)
         TextView vTv_title;
         @BindView(R.id.contentUnsupported_tv_message)
         TextView vTv_message;
 
-        public UnsupportedViewHolder(View itemView) {
+        UnsupportedViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -154,7 +134,32 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                     .getString(R.string.courses_contentUnsupported_message, content.component));
         }
     }
-    public class TextViewHolder extends BaseViewHolder {
+    class TextViewHolder extends BaseViewHolder {
+        private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>\n"
+                + "  <meta charset=\"utf-8\" />\n"
+                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+                + "  <style>\n"
+                + "    table {\n"
+                + "      table-layout: fixed;\n"
+                + "      width: 100%;\n"
+                + "    }\n"
+                + "    * {\n"
+                + "      max-width: 100%;\n"
+                + "    }\n"
+                + "  </style>\n"
+                + "</head>\n"
+                + "<body>";
+        private static final String CONTENT_SUFFIX = "<script>\n"
+                + "   for (tag of document.body.getElementsByTagName('*')) {\n"
+                + "     tag.style.width = '';\n"
+                + "     tag.style.height = '';\n"
+                + "   }\n"
+                + "  </script>\n"
+                + "</body>\n"
+                + "</html>\n";
+
         private final OkHttpClient CLIENT_INTERNAL;
         private final OkHttpClient CLIENT_EXTERNAL;
 
@@ -163,7 +168,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         @BindView(R.id.contentText_wv_content)
         WebView vWv_content;
 
-        public TextViewHolder(View itemView) {
+        TextViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -178,12 +183,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                     .build();
             CLIENT_EXTERNAL = new OkHttpClient();
         }
+        @SuppressLint("SetJavaScriptEnabled")
         @Override
         void setContent(@NonNull Contents content) {
             vTv_title.setText(content.title);
             ViewUtil.setVisibility(vTv_title, !TextUtils.isEmpty(content.title));
 
-            vWv_content.getSettings().setLoadsImagesAutomatically(true);
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.setWebViewClient(new WebViewClient() {
                 @Override
@@ -246,7 +251,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         @BindView(R.id.contentResources_rv)
         RecyclerView vRv;
 
-        public ResourcesViewHolder(View itemView) {
+        ResourcesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             ((BaseActivity) itemView.getContext()).activityComponent().inject(this);
@@ -260,6 +265,49 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                 return;
 
             mResourcesAdapter.setResources(content.content.resources);
+        }
+    }
+    class GeogebraViewHolder extends BaseViewHolder {
+        private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>\n"
+                + "  <meta charset=\"utf-8\" />\n"
+                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+                + "  <script src=\"/vendor/geoGebra/deployggb.js\"></script>\n"
+                + "</head>\n"
+                + "<body>\n"
+                + "  <div id=\"container\"></div>\n"
+                + "  <script>\n"
+                + "    var applet1 = new GGBApplet({material_id: \"";
+        private static final String CONTENT_SUFFIX =
+                "\", borderColor:\"transparent\", showFullscreenButton:true}, true);\n"
+                        + "    applet1.inject('container');\n"
+                        + "  </script>"
+                        + "</body>\n"
+                        + "</html>\n";
+
+        @BindView(R.id.contentGeogebra_tv_title)
+        TextView vTv_title;
+        @BindView(R.id.contentGeogebra_wv_content)
+        WebView vWv_content;
+
+        GeogebraViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                WebView.setWebContentsDebuggingEnabled(true);
+        }
+        @SuppressLint("SetJavaScriptEnabled")
+        @Override
+        void setContent(@NonNull Contents content) {
+            vTv_title.setText(content.title);
+            ViewUtil.setVisibility(vTv_title, !TextUtils.isEmpty(content.title));
+
+            vWv_content.getSettings().setJavaScriptEnabled(true);
+            vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
+                    CONTENT_PREFIX + (content.content.materialId) + CONTENT_SUFFIX,
+                    WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
         }
     }
 }

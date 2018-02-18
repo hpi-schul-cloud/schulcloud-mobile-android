@@ -14,18 +14,18 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/contentEtherpad_tv_title"
+            android:id="@+id/contentNexboard_tv_title"
             style="@style/Card.Header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/contentEtherpad_iv_open"
+            app:layout_constraintEnd_toStartOf="@+id/contentNexboard_iv_open"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Etherpad material name" />
+            tools:text="Nexboard material name" />
 
         <ImageView
-            android:id="@+id/contentEtherpad_iv_open"
+            android:id="@+id/contentNexboard_iv_open"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
@@ -35,7 +35,7 @@
             app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
         <TextView
-            android:id="@+id/contentEtherpad_tv_description"
+            android:id="@+id/contentNexboard_tv_description"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,11 +43,11 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/contentEtherpad_iv_open"
+            app:layout_constraintTop_toBottomOf="@+id/contentNexboard_iv_open"
             tools:text="Content...\n\n\nspanning\nmultiple\nlines" />
 
         <WebView
-            android:id="@+id/contentEtherpad_wv_content"
+            android:id="@+id/contentNexboard_wv_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
@@ -56,7 +56,7 @@
             app:layout_constraintDimensionRatio="H,4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contentEtherpad_tv_description"
+            app:layout_constraintTop_toBottomOf="@+id/contentNexboard_tv_description"
             app:layout_goneMarginTop="0dp"
             tools:ignore="WebViewLayout" />
 

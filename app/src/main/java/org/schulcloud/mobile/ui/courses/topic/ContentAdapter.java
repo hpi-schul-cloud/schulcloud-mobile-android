@@ -59,7 +59,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             Contents.COMPONENT_TEXT,
             Contents.COMPONENT_RESOURCES,
             Contents.COMPONENT_GEOGEBRA,
-            Contents.COMPONENT_ETHERPAD};
+            Contents.COMPONENT_ETHERPAD,
+            Contents.COMPONENT_NEXBOARD};
 
     private List<Contents> mContents;
 
@@ -96,6 +97,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             case 3:
                 return new EtherpadViewHolder(
                         inflater.inflate(R.layout.item_content_etherpad, parent, false));
+            case 4:
+                return new NexboardViewHolder(
+                        inflater.inflate(R.layout.item_content_nexboard, parent, false));
 
             default:
                 return new UnsupportedViewHolder(
@@ -367,9 +371,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                     new Intent(Intent.ACTION_VIEW,
                             Uri.parse(GEOGEBRA + getContent().content.materialId))));
 
-            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                WebView.setWebContentsDebuggingEnabled(true);
-
             vIv_preview.setOnClickListener(v -> load());
         }
         @SuppressLint("SetJavaScriptEnabled")
@@ -439,9 +440,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
 
             vIv_open.setOnClickListener(v -> getContext().startActivity(
                     new Intent(Intent.ACTION_VIEW, Uri.parse(getContent().content.url))));
-
-            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                WebView.setWebContentsDebuggingEnabled(true);
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
@@ -453,6 +451,38 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.loadUrl(getContent().content.url);
+        }
+    }
+    class NexboardViewHolder extends WebViewHolder {
+        private static final String URL_SUFFIX = "?username=Test&stickypad=false";
+
+        @BindView(R.id.contentNexboard_tv_title)
+        TextView vTv_title;
+        @BindView(R.id.contentNexboard_tv_description)
+        TextView vTv_description;
+        @BindView(R.id.contentNexboard_iv_open)
+        ImageView vIv_open;
+        @BindView(R.id.contentNexboard_wv_content)
+        WebView vWv_content;
+
+        NexboardViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+            vIv_open.setOnClickListener(v -> getContext().startActivity(
+                    new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(getContent().content.url + URL_SUFFIX))));
+        }
+        @SuppressLint("SetJavaScriptEnabled")
+        @Override
+        void onContentSet(@NonNull Contents content) {
+            vTv_title.setText(content.content.title);
+
+            vTv_description.setText(content.content.description);
+            ViewUtil.setVisibility(vTv_description, content.content.description != null);
+
+            vWv_content.getSettings().setJavaScriptEnabled(true);
+            vWv_content.loadUrl(getContent().content.url + URL_SUFFIX);
         }
     }
 }

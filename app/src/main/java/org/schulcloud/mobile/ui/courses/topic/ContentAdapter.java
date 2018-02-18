@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -227,8 +226,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         @SuppressLint("SetJavaScriptEnabled")
         @Override
         void onContentSet(@NonNull Contents content) {
-            vTv_title.setText(content.title);
-            ViewUtil.setVisibility(vTv_title, !TextUtils.isEmpty(content.title));
+            ViewUtil.setText(vTv_title, content.title);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.setWebViewClient(new WebViewClient() {
@@ -449,8 +447,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         void onContentSet(@NonNull Contents content) {
             vTv_title.setText(content.content.title);
 
-            vTv_description.setText(content.content.description);
-            ViewUtil.setVisibility(vTv_description, content.content.description != null);
+            ViewUtil.setText(vTv_description, content.content.description);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.loadUrl(getContent().content.url);
@@ -480,8 +477,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         void onContentSet(@NonNull Contents content) {
             vTv_title.setText(content.content.title);
 
-            vTv_description.setText(content.content.description);
-            ViewUtil.setVisibility(vTv_description, content.content.description != null);
+            ViewUtil.setText(vTv_description, content.content.description);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.loadUrl(getContent().content.url + URL_SUFFIX);

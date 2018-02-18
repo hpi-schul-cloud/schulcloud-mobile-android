@@ -3,6 +3,8 @@ package org.schulcloud.mobile.injection.component;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
@@ -76,6 +78,8 @@ public interface ApplicationComponent {
     Context context();
 
     Application application();
+
+    Gson gson();
 
     RestService restService();
 

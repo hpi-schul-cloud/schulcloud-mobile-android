@@ -40,7 +40,29 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:scrollbars="none"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/contentGeogebra_iv_open" />
+
+        <ImageView
+            android:id="@+id/contentGeogebra_iv_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contentGeogebra_iv_open" />
+
+        <ProgressBar
+            android:id="@+id/contentGeogebra_pb_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/contentGeogebra_iv_preview"
+            app:layout_constraintEnd_toEndOf="@id/contentGeogebra_iv_preview"
+            app:layout_constraintStart_toStartOf="@id/contentGeogebra_iv_preview"
+            app:layout_constraintTop_toTopOf="@id/contentGeogebra_iv_preview" />
 
     </android.support.constraint.ConstraintLayout>
 

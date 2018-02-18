@@ -1,10 +1,14 @@
 package org.schulcloud.mobile.util;
 
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import org.schulcloud.mobile.BuildConfig;
+import org.schulcloud.mobile.R;
 
 import java.io.IOException;
 
@@ -45,7 +49,8 @@ public final class WebUtil {
                             .build();
             try {
                 Response response = okHttpClient
-                        .newCall(new Request.Builder().url(PathUtil.combine(URL_BASE_API, url)).build())
+                        .newCall(new Request.Builder().url(PathUtil.combine(URL_BASE_API, url))
+                                .build())
                         .execute();
                 subscriber.onSuccess(Uri.parse(response.request().url().toString()));
             } catch (IOException e) {
@@ -53,5 +58,15 @@ public final class WebUtil {
                 subscriber.onError(e);
             }
         });
+    }
+
+    @NonNull
+    public static CustomTabsIntent newCustomTab(@NonNull Context context) {
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed));
+        return builder.build();
+    }
+    public static void openUrl(@NonNull Context context, @NonNull Uri url) {
+        newCustomTab(context).launchUrl(context, url);
     }
 }

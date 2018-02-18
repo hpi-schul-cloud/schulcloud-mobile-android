@@ -3,7 +3,6 @@ package org.schulcloud.mobile.ui.courses.topic;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -235,15 +234,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             vWv_content.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    openUrl(Uri.parse(url));
                     return true;
                 }
                 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public boolean shouldOverrideUrlLoading(WebView view,
-                        WebResourceRequest request) {
-                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, request.getUrl()));
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    openUrl(request.getUrl());
                     return true;
+                }
+                private void openUrl(@NonNull Uri url) {
+                    WebUtil.openUrl(getContext(), url);
                 }
 
                 @Override
@@ -367,9 +368,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            vIv_open.setOnClickListener(v -> getContext().startActivity(
-                    new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GEOGEBRA + getContent().content.materialId))));
+            vIv_open.setOnClickListener(v -> WebUtil
+                    .openUrl(getContext(), Uri.parse(GEOGEBRA + getContent().content.materialId)));
 
             vIv_preview.setOnClickListener(v -> load());
         }
@@ -441,8 +441,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            vIv_open.setOnClickListener(v -> getContext().startActivity(
-                    new Intent(Intent.ACTION_VIEW, Uri.parse(getContent().content.url))));
+            vIv_open.setOnClickListener(v ->
+                    WebUtil.openUrl(getContext(), Uri.parse(getContent().content.url)));
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
@@ -472,9 +472,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            vIv_open.setOnClickListener(v -> getContext().startActivity(
-                    new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(getContent().content.url + URL_SUFFIX))));
+            vIv_open.setOnClickListener(v -> WebUtil
+                    .openUrl(getContext(), Uri.parse(getContent().content.url + URL_SUFFIX)));
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override

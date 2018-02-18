@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.ui.courses.topic;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -63,8 +62,7 @@ public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.Reso
                 WebUtil.resolveRedirect(resource.url, mUserDataManager.getAccessToken())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(url -> context
-                                        .startActivity(new Intent(Intent.ACTION_VIEW, url)),
+                        .subscribe(url -> WebUtil.openUrl(context, url),
                                 throwable -> {
                                     Log.e(TAG, "onBindViewHolder: ", throwable);
                                     DialogFactory.createGenericErrorDialog(context,

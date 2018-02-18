@@ -27,8 +27,6 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
         implements TopicMvpView {
     private static final String ARGUMENT_TOPIC_ID = "ARGUMENT_TOPIC_ID";
 
-    private String mTopicId = null;
-
     @Inject
     TopicPresenter mTopicPresenter;
 

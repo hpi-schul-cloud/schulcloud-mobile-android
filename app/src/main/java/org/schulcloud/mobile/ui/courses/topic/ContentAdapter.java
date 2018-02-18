@@ -18,6 +18,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.schulcloud.mobile.BuildConfig;
@@ -285,9 +286,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                         + "  </script>"
                         + "</body>\n"
                         + "</html>\n";
+        private static final String GEOGEBRA = "https://www.geogebra.org/m/";
 
         @BindView(R.id.contentGeogebra_tv_title)
         TextView vTv_title;
+        @BindView(R.id.contentGeogebra_iv_open)
+        ImageView vIv_open;
         @BindView(R.id.contentGeogebra_wv_content)
         WebView vWv_content;
 
@@ -302,11 +306,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
         @Override
         void setContent(@NonNull Contents content) {
             vTv_title.setText(content.title);
-            ViewUtil.setVisibility(vTv_title, !TextUtils.isEmpty(content.title));
+
+            String materialId = content.content.materialId;
+            vIv_open.setOnClickListener(v -> getContext().startActivity(
+                    new Intent(Intent.ACTION_VIEW, Uri.parse(GEOGEBRA + materialId))));
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + (content.content.materialId) + CONTENT_SUFFIX,
+                    CONTENT_PREFIX + materialId + CONTENT_SUFFIX,
                     WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
         }
     }

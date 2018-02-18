@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Material.Card.Margin"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:contentPadding="0dp">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -14,19 +16,32 @@
         <TextView
             android:id="@+id/contentGeogebra_tv_title"
             style="@style/Card.Header"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/content_title_margin"
-            android:visibility="gone"
-            tools:text="Content name"
-            tools:visibility="visible" />
+            android:layout_margin="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/contentGeogebra_iv_open"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Geogebra material name" />
+
+        <ImageView
+            android:id="@+id/contentGeogebra_iv_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
         <WebView
             android:id="@+id/contentGeogebra_wv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none" />
+            android:layout_marginTop="4dp"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/contentGeogebra_iv_open" />
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

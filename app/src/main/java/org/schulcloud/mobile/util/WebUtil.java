@@ -19,9 +19,17 @@ import rx.Single;
 public final class WebUtil {
     private static final String TAG = WebUtil.class.getSimpleName();
 
-    private static final String HEADER_LOCATION = "Location";
+    public static final String HEADER_COOKIE = "cookie";
+    public static final String HEADER_CONTENT_TYPE = "content-type";
+    public static final String HEADER_CONTENT_ENCODING = "content-encoding";
 
-    private static final String URL_BASE = BuildConfig.URL_ENDPOINT;
+    public static final String MIME_TEXT_PLAIN = "text/plain";
+    public static final String MIME_TEXT_HTML = "text/html";
+
+    public static final String ENCODING_UTF_8 = "utf-8";
+
+    public static final String URL_BASE_API = BuildConfig.URL_ENDPOINT;
+    public static final String URL_BASE = "https://schul-cloud.org";
 
     @NonNull
     public static Single<Uri> resolveRedirect(@NonNull String url, @NonNull String accessToken) {
@@ -32,11 +40,11 @@ public final class WebUtil {
             OkHttpClient okHttpClient =
                     new OkHttpClient().newBuilder().addInterceptor(chain -> chain
                             .proceed(chain.request().newBuilder()
-                                    .addHeader("Cookie", "jwt=" + accessToken).build()))
+                                    .addHeader(HEADER_COOKIE, "jwt=" + accessToken).build()))
                             .build();
             try {
                 Response response = okHttpClient
-                        .newCall(new Request.Builder().url(PathUtil.combine(URL_BASE, url)).build())
+                        .newCall(new Request.Builder().url(PathUtil.combine(URL_BASE_API, url)).build())
                         .execute();
                 subscriber.onSuccess(Uri.parse(response.request().url().toString()));
             } catch (IOException e) {

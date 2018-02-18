@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -28,6 +27,7 @@ import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
 import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.WebUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @ConfigPersistent
-public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentViewHolder> {
+public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseViewHolder> {
     private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
             + "<html>\n"
             + "<head>\n"
@@ -66,164 +66,200 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ContentV
             + "  </script>\n"
             + "</body>\n"
             + "</html>\n";
+    private static final String[] CONTENT_TYPES =
+            {Contents.COMPONENT_TEXT, Contents.COMPONENT_RESOURCES};
 
-    private List<Contents> mContent;
+    private List<Contents> mContents;
 
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
-
     @Inject
     UserDataManager mUserDataManger;
 
     @Inject
     public ContentAdapter() {
-        mContent = new ArrayList<>();
+        mContents = new ArrayList<>();
     }
 
-    public void setContent(@NonNull List<Contents> content) {
-        mContent = content;
+    public void setContents(@NonNull List<Contents> contents) {
+        mContents = contents;
         notifyDataSetChanged();
     }
 
     @Override
-    public ContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ContentViewHolder holder = new ContentViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_content, parent, false));
-
-        holder.vResources_rv.setAdapter(holder.mResourcesAdapter);
-        holder.vResources_rv
-                .setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-
-        return holder;
-    }
-    @Override
-    public void onBindViewHolder(ContentViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
-        Contents contents = mContent.get(position);
-
-        holder.vTv_title.setText(contents.title);
-        ViewUtil.setVisibility(holder.vTv_title, !TextUtils.isEmpty(contents.title));
-
-        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            WebView.setWebContentsDebuggingEnabled(true);
-
-        boolean supported = true;
-        switch (contents.component) {
-            case Contents.COMPONENT_TEXT:
-                ViewUtil.setVisibility(holder.vText_card, true);
-                ViewUtil.setVisibility(holder.vResources_rv, false);
-
-                holder.vWv_content.getSettings().setLoadsImagesAutomatically(true);
-                holder.vWv_content.getSettings().setJavaScriptEnabled(true);
-                holder.vWv_content.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                        return true;
-                    }
-                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view,
-                            WebResourceRequest request) {
-                        context.startActivity(new Intent(Intent.ACTION_VIEW, request.getUrl()));
-                        return true;
-                    }
-
-                    @Override
-                    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                        return handleRequest(url);
-                    }
-                    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                    @Override
-                    public WebResourceResponse shouldInterceptRequest(WebView view,
-                            WebResourceRequest request) {
-                        return handleRequest(request.getUrl().toString());
-                    }
-                    @Nullable
-                    private WebResourceResponse handleRequest(@NonNull String url) {
-                        try {
-                            OkHttpClient okHttpClient;
-                            if (url.startsWith("https://schul-cloud.org"))
-                                okHttpClient =
-                                        new OkHttpClient().newBuilder()
-                                                .addInterceptor(chain -> chain
-                                                        .proceed(
-                                                                chain.request().newBuilder()
-                                                                        .addHeader("Cookie",
-                                                                                "jwt="
-                                                                                        + mUserDataManger
-                                                                                        .getAccessToken())
-                                                                        .build()))
-                                                .build();
-                            else
-                                okHttpClient = new OkHttpClient();
-
-                            Response response =
-                                    okHttpClient.newCall(new Request.Builder().url(url).build())
-                                            .execute();
-                            return new WebResourceResponse(
-                                    response.header("content-type", "text/plain"),
-                                    response.header("content-encoding", "utf-8"),
-                                    response.body().byteStream()
-                            );
-                        } catch (Exception e) {
-                            return null;
-                        }
-                    }
-                });
-                holder.vWv_content.loadDataWithBaseURL("https://schul-cloud.org",
-                        CONTENT_PREFIX + (contents.content.text != null ? contents.content.text
-                                : "")
-                                + CONTENT_SUFFIX, "text/html",
-                        "utf-8", null);
-                break;
-
-            case Contents.COMPONENT_RESOURCES:
-                ViewUtil.setVisibility(holder.vText_card, false);
-                ViewUtil.setVisibility(holder.vResources_rv, true);
-
-                if (contents.content == null)
-                    break;
-                holder.mResourcesAdapter.setResources(contents.content.resources);
-                break;
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        switch (viewType) {
+            case 0:
+                return new TextViewHolder(
+                        inflater.inflate(R.layout.item_content_text, parent, false));
+            case 1:
+                return new ResourcesViewHolder(
+                        inflater.inflate(R.layout.item_content_resources, parent, false));
 
             default:
-                supported = false;
-                break;
+                return new UnsupportedViewHolder(
+                        inflater.inflate(R.layout.item_content_unsupported, parent, false));
         }
-
-        // Show error if content type is not supported
-        holder.vTv_notSupported.setText(
-                context.getString(R.string.courses_content_error_notSupported, contents.component));
-        ViewUtil.setVisibility(holder.vTv_notSupported, !supported);
-        ViewUtil.setVisibility(holder.vWv_content, supported);
+    }
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        Contents content = mContents.get(position);
+        boolean hidden = content.hidden != null ? content.hidden : false;
+        ViewUtil.setVisibility(holder.itemView, !hidden);
+        if (!hidden)
+            holder.setContent(content);
     }
     @Override
     public int getItemCount() {
-        return mContent.size();
+        return mContents.size();
+    }
+    @Override
+    public int getItemViewType(int position) {
+        String component = mContents.get(position).component.toLowerCase();
+        for (int i = 0; i < CONTENT_TYPES.length; i++)
+            if (component.equalsIgnoreCase(CONTENT_TYPES[i]))
+                return i;
+        return -1;
     }
 
-    public class ContentViewHolder extends RecyclerView.ViewHolder {
+    public static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
+        public BaseViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @NonNull
+        public Context getContext() {
+            return itemView.getContext();
+        }
+
+        abstract void setContent(@NonNull Contents content);
+    }
+
+    public class UnsupportedViewHolder extends BaseViewHolder {
+
+        @BindView(R.id.contentUnsupported_tv_title)
+        TextView vTv_title;
+        @BindView(R.id.contentUnsupported_tv_message)
+        TextView vTv_message;
+
+        public UnsupportedViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+        @Override
+        void setContent(@NonNull Contents content) {
+            vTv_title.setText(content.title);
+            vTv_message.setText(getContext()
+                    .getString(R.string.courses_contentUnsupported_message, content.component));
+        }
+    }
+    public class TextViewHolder extends BaseViewHolder {
+        private final OkHttpClient CLIENT_INTERNAL;
+        private final OkHttpClient CLIENT_EXTERNAL;
+
+        @BindView(R.id.contentText_tv_title)
+        TextView vTv_title;
+        @BindView(R.id.contentText_wv_content)
+        WebView vWv_content;
+
+        public TextViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                WebView.setWebContentsDebuggingEnabled(true);
+
+            CLIENT_INTERNAL = new OkHttpClient().newBuilder().addInterceptor(chain ->
+                    chain.proceed(chain.request().newBuilder()
+                            .addHeader(WebUtil.HEADER_COOKIE,
+                                    "jwt=" + mUserDataManger.getAccessToken())
+                            .build()))
+                    .build();
+            CLIENT_EXTERNAL = new OkHttpClient();
+        }
+        @Override
+        void setContent(@NonNull Contents content) {
+            vTv_title.setText(content.title);
+            ViewUtil.setVisibility(vTv_title, !TextUtils.isEmpty(content.title));
+
+            vWv_content.getSettings().setLoadsImagesAutomatically(true);
+            vWv_content.getSettings().setJavaScriptEnabled(true);
+            vWv_content.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+                }
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view,
+                        WebResourceRequest request) {
+                    getContext().startActivity(new Intent(Intent.ACTION_VIEW, request.getUrl()));
+                    return true;
+                }
+
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                    return handleRequest(url);
+                }
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view,
+                        WebResourceRequest request) {
+                    return handleRequest(request.getUrl().toString());
+                }
+                @Nullable
+                private WebResourceResponse handleRequest(@NonNull String url) {
+                    try {
+                        OkHttpClient okHttpClient;
+                        if (url.startsWith(WebUtil.URL_BASE))
+                            okHttpClient = CLIENT_INTERNAL;
+                        else
+                            okHttpClient = CLIENT_EXTERNAL;
+
+                        Response response =
+                                okHttpClient.newCall(new Request.Builder().url(url).build())
+                                        .execute();
+                        return new WebResourceResponse(
+                                response.header(WebUtil.HEADER_CONTENT_TYPE,
+                                        WebUtil.MIME_TEXT_PLAIN),
+                                response.header(WebUtil.HEADER_CONTENT_TYPE,
+                                        WebUtil.ENCODING_UTF_8),
+                                response.body().byteStream()
+                        );
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+            });
+            vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
+                    CONTENT_PREFIX + (content.content.text != null ? content.content.text : "")
+                            + CONTENT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
+        }
+    }
+    public class ResourcesViewHolder extends BaseViewHolder {
 
         @Inject
         ResourcesAdapter mResourcesAdapter;
 
-        @BindView(R.id.content_text_card)
-        CardView vText_card;
-        @BindView(R.id.content_tv_title)
-        TextView vTv_title;
-        @BindView(R.id.content_tv_notSupported)
-        TextView vTv_notSupported;
-        @BindView(R.id.content_wv_content)
-        WebView vWv_content;
+        @BindView(R.id.contentResources_rv)
+        RecyclerView vRv;
 
-        @BindView(R.id.content_resources_rv)
-        RecyclerView vResources_rv;
-
-        public ContentViewHolder(View itemView) {
+        public ResourcesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             ((BaseActivity) itemView.getContext()).activityComponent().inject(this);
+
+            vRv.setAdapter(mResourcesAdapter);
+            vRv.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+        }
+        @Override
+        void setContent(@NonNull Contents content) {
+            if (content.content == null)
+                return;
+
+            mResourcesAdapter.setResources(content.content.resources);
         }
     }
 }

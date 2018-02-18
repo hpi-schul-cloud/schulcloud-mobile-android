@@ -85,7 +85,7 @@
 
     <!--Courses-->
     <string name="courses_title">Kurse</string>
-    <string name="courses_content_error_notSupported">%s wird zurzeit nicht unterstützt</string>
+    <string name="courses_contentUnsupported_message">%s wird zurzeit nicht unterstützt</string>
     <string name="courses_loading_error">Leider gab es ein Problem beim Laden der Kurse</string>
     <string name="courses_course_title">Kurs</string>
     <string name="courses_course_loading_error">Leider gab es ein Problem beim Laden des Kurses</string>

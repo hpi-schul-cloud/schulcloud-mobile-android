@@ -76,7 +76,7 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
         recyclerView.setAdapter(mContentAdapter);
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        int spans = metrics.widthPixels / ViewUtil.dpToPx(440);
+        int spans = Math.max(1, metrics.widthPixels / ViewUtil.dpToPx(440));
         StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL);
         layoutManager

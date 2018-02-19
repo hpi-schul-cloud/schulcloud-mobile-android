@@ -64,6 +64,8 @@ public final class WebUtil {
     public static CustomTabsIntent newCustomTab(@NonNull Context context) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         builder.setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed));
+        builder.setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left);
+        builder.setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right);
         return builder.build();
     }
     public static void openUrl(@NonNull Context context, @NonNull Uri url) {

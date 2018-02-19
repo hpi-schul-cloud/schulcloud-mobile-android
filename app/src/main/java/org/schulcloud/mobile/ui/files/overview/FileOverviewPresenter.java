@@ -20,6 +20,7 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
     private final CourseDataManager mCourseDataManager;
     private Subscription mCoursesSubscription;
     private boolean mIsFirstLoad = true;
+    private boolean mSwitchDirectoryOnCreate;
 
     @Inject
     public FileOverviewPresenter(FileDataManager fileDataManager,
@@ -35,6 +36,9 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
         RxUtil.unsubscribe(mCoursesSubscription);
     }
 
+    public void switchDirectoryOnCreate(boolean switchDir) {
+        mSwitchDirectoryOnCreate = switchDir;
+    }
     public void load() {
         RxUtil.unsubscribe(mCoursesSubscription);
         mCoursesSubscription = mCourseDataManager.getCourses()
@@ -45,7 +49,8 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
                 );
 
         // Open folder directly if it is already set (e.g. from a previous session)
-        if (mIsFirstLoad && mFileDataManager.getCurrentStorageContext().split("/", 3).length > 2) {
+        if (mIsFirstLoad && mSwitchDirectoryOnCreate
+                && mFileDataManager.getCurrentStorageContext().split("/", 3).length > 2) {
             mIsFirstLoad = false;
             getViewOrThrow().showDirectory();
             return;

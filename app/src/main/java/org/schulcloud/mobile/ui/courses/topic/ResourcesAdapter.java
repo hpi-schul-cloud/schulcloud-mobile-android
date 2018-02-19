@@ -13,6 +13,7 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Resource;
+import org.schulcloud.mobile.ui.base.BaseAdapter;
 import org.schulcloud.mobile.util.WebUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
@@ -29,7 +30,7 @@ import rx.schedulers.Schedulers;
 /**
  * Date: 2/17/2018
  */
-public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.ResourceViewHolder> {
+public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewHolder> {
     private static final String TAG = ResourcesAdapter.class.getSimpleName();
 
     private final UserDataManager mUserDataManager;
@@ -62,7 +63,7 @@ public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.Reso
                 WebUtil.resolveRedirect(resource.url, mUserDataManager.getAccessToken())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(url -> WebUtil.openUrl(context, url),
+                        .subscribe(url -> WebUtil.openUrl(getMainActivity(), url),
                                 throwable -> {
                                     Log.e(TAG, "onBindViewHolder: ", throwable);
                                     DialogFactory.createGenericErrorDialog(context,

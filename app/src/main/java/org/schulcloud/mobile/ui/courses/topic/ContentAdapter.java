@@ -31,6 +31,7 @@ import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.data.model.responseBodies.GeogebraResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.base.BaseAdapter;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.WebUtil;
@@ -52,7 +53,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @ConfigPersistent
-public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseViewHolder> {
+public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
     private static final String[] CONTENT_TYPES = {
             Contents.COMPONENT_TEXT,
             Contents.COMPONENT_RESOURCES,
@@ -242,7 +243,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
                     return true;
                 }
                 private void openUrl(@NonNull Uri url) {
-                    WebUtil.openUrl(getContext(), url);
+                    WebUtil.openUrl(getMainActivity(), url);
                 }
 
                 @Override
@@ -367,7 +368,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil
-                    .openUrl(getContext(), Uri.parse(GEOGEBRA + getContent().content.materialId)));
+                    .openUrl(getMainActivity(), Uri.parse(GEOGEBRA + getContent().content.materialId)));
 
             vIv_preview.setOnClickListener(v -> load());
         }
@@ -440,7 +441,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v ->
-                    WebUtil.openUrl(getContext(), Uri.parse(getContent().content.url)));
+                    WebUtil.openUrl(getMainActivity(), Uri.parse(getContent().content.url)));
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
@@ -470,7 +471,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.BaseView
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil
-                    .openUrl(getContext(), Uri.parse(getContent().content.url + URL_SUFFIX)));
+                    .openUrl(getMainActivity(), Uri.parse(getContent().content.url + URL_SUFFIX)));
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override

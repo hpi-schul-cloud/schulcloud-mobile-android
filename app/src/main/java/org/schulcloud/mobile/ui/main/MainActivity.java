@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.main;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.util.NetworkUtil;
+import org.schulcloud.mobile.util.WebUtil;
 
 import java.util.List;
 
@@ -46,14 +48,14 @@ public final class MainActivity
     //    private static final int TAB_ADMINISTRATION = R.id.main_navigation_administration;
 
     @Inject
-    MainPresenter<MainFragment> mMainPresenter;
+    MainPresenter<MainFragment> mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        setPresenter(mMainPresenter);
-        mMainPresenter.checkSignedIn(this);
+        setPresenter(mPresenter);
+        mPresenter.checkSignedIn(this);
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -66,9 +68,11 @@ public final class MainActivity
 
         ((BottomNavigationView) findViewById(R.id.navigation)).setOnNavigationItemSelectedListener(
                 item -> {
-                    mMainPresenter.onTabSelected(getTabIndexById(item.getItemId()));
+                    mPresenter.onTabSelected(getTabIndexById(item.getItemId()));
                     return true;
                 });
+
+        mPresenter.setStartUrl(getIntent().getData());
     }
     private int getTabIndexById(@IdRes int tabId) {
         switch (tabId) {
@@ -87,6 +91,12 @@ public final class MainActivity
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getData() != null)
+            WebUtil.openUrl(this, intent.getData());
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -112,16 +122,21 @@ public final class MainActivity
     @NonNull
     @Override
     protected String provideDetailedFeedbackContext() {
-        int currentViewId = mMainPresenter.getCurrentViewId();
+        int currentViewId = mPresenter.getCurrentViewId();
         return currentViewId + ", " + findFragment(currentViewId).getClass().getSimpleName();
     }
     @Override
     public void onBackPressed() {
-        mMainPresenter.onBackPressed();
+        mPresenter.onBackPressed();
     }
 
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
+    @Override
+    public void loadViewForUrl(@NonNull Uri url) {
+        WebUtil.openUrl(this, url);
+    }
+
     @Override
     public int getTabCount() {
         return 5;
@@ -171,7 +186,7 @@ public final class MainActivity
         else
             transaction.attach(findFragment(newViewId));
 
-        transaction.commit();
+        transaction.commitNow();
     }
     @Override
     public void removeViews(@NonNull List<Integer> viewIds) {
@@ -188,11 +203,15 @@ public final class MainActivity
     private MainFragment findFragment(int viewId) {
         return (MainFragment) getSupportFragmentManager().findFragmentByTag("" + viewId);
     }
+    @NonNull
+    public MainFragment getCurrentFragment() {
+        return findFragment(mPresenter.getCurrentViewId());
+    }
 
     public void addFragment(@NonNull MainFragment parent, @NonNull MainFragment child) {
-        mMainPresenter.addView(parent.getActivityId(), child.getActivityId(), child);
+        mPresenter.addView(parent.getActivityId(), child.getActivityId(), child);
     }
     public void removeFragment(@NonNull MainFragment fragment) {
-        mMainPresenter.removeView(fragment.getActivityId());
+        mPresenter.removeView(fragment.getActivityId());
     }
 }

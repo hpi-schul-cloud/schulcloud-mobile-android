@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.main;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -28,11 +29,13 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
     private static final int TAB_LEVEL_LAST = -1;
     private static final int TAB_LEVEL_ONE_BACK = -2;
 
-    private Subscription mCurrentUserSubscription;
     private final UserDataManager mUserDataManager;
+    private Subscription mCurrentUserSubscription;
+
+    private Uri mStartUrl = null;
 
     private Stack<Integer>[] mViewIds;
-    private Integer mCurrentViewId;
+    private int mCurrentViewId;
     private int mCurrentTabIndex;
     private int mCurrentLevel;
 
@@ -48,7 +51,13 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
                 mViewIds[i] = new Stack<>();
 
             showView(0, TAB_LEVEL_TOP, null, false);
+            if (mStartUrl != null)
+                v.loadViewForUrl(mStartUrl);
         });
+    }
+
+    public void setStartUrl(@Nullable Uri startUrl) {
+        mStartUrl = startUrl;
     }
 
     /**
@@ -138,7 +147,8 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
      * @param level        The level of the view. {@link #TAB_LEVEL_TOP}, {@link #TAB_LEVEL_LAST}
      *                     and {@link #TAB_LEVEL_ONE_BACK} are allowed.
      * @param closeIfEmpty If set to true and the other parameters would lead to the top level view
-     *                     being removed, the app will be closed. Handy for back navigation, but not
+     *                     being removed, the app will be closed. Handy for back navigation, but
+     *                     not
      *                     if a view tries to remove itself.
      * @return True if the view identified by {@code tabIndex} and {@code level} is now displayed,
      * false otherwise (e.g., if that would have closed the app and that isn't permitted).

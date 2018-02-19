@@ -22,6 +22,12 @@ public final class PathUtil {
         return trimTrailingSlash(trimLeadingSlash(path));
     }
     @NonNull
+    public static String ensureLeadingSlash(@NonNull String path) {
+        if (path.length() == 0 || path.charAt(0) != File.separatorChar)
+            return File.separator + path;
+        return path;
+    }
+    @NonNull
     public static String ensureTrailingSlash(@NonNull String path) {
         if (path.length() == 0 || path.charAt(path.length() - 1) != File.separatorChar)
             return path + File.separator;

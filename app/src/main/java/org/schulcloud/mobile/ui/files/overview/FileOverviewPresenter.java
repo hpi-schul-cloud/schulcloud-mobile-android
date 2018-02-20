@@ -50,17 +50,17 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
 
         // Open folder directly if it is already set (e.g. from a previous session)
         if (mIsFirstLoad && mSwitchDirectoryOnCreate
-                && mFileDataManager.getCurrentStorageContext().split("/", 3).length > 2) {
+                && mFileDataManager.getStorageContext().split("/", 3).length > 2) {
             mIsFirstLoad = false;
             getViewOrThrow().showDirectory();
             return;
         }
 
-        mFileDataManager.setCurrentStorageContextToRoot();
+        mFileDataManager.setStorageContextToRoot();
     }
 
     public void showMyFiles() {
-        mFileDataManager.setCurrentStorageContextToMy();
+        mFileDataManager.setStorageContextToMy();
         getViewOrThrow().showDirectory();
     }
     public void showCourseDirectory(@NonNull String courseId) {

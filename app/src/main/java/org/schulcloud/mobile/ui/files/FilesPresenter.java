@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
@@ -46,7 +47,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
 
     @Inject
     FilesPresenter(FileDataManager fileDataManager, UserDataManager userDataManager,
-                   CourseDataManager courseDataManager) {
+            CourseDataManager courseDataManager) {
         mFileDataManager = fileDataManager;
         mUserDataManager = userDataManager;
         mCourseDataManager = courseDataManager;
@@ -80,25 +81,26 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     private void loadPermissions() {
         RxUtil.unsubscribe(mCurrentUserSubscription);
         mCurrentUserSubscription = mUserDataManager.getCurrentUser()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(currentUser -> sendToView(v -> {
-                v.showCanUploadFile(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FILE_CREATE));
-                v.showCanDeleteFiles(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FILE_DELETE));
-                v.showCanCreateDirectories(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FOLDER_CREATE));
-                v.showCanDeleteDirectories(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FOLDER_DELETE));
-            }));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(currentUser -> sendToView(v -> {
+                    v.showCanUploadFile(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FILE_CREATE));
+                    v.showCanDeleteFiles(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FILE_DELETE));
+                    v.showCanCreateDirectories(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FOLDER_CREATE));
+                    v.showCanDeleteDirectories(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FOLDER_DELETE));
+                }));
     }
     private void loadBreadcrumbs() {
-        String path = mFileDataManager.getCurrentStorageContext();
-        if (path.startsWith(FileDataManager.CONTEXT_MY))
+        String path = mFileDataManager.getStorageContext();
+        String courseId = mFileDataManager.isStorageContextCourse();
+        if (mFileDataManager.isStorageContextMy())
             sendToView(view -> view.showBreadcrumbs(path, null));
-        else if (path.startsWith(FileDataManager.CONTEXT_COURSES))
-            sendToView(view -> view.showBreadcrumbs(path,
-                    mCourseDataManager.getCourseForId(path.split("/", 3)[1])));
+        else if (courseId != null)
+            sendToView(view ->
+                    view.showBreadcrumbs(path, mCourseDataManager.getCourseForId(courseId)));
     }
 
     private void loadFiles() {
@@ -174,7 +176,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     public void onFileUploadSelected(@NonNull java.io.File file) {
         sendToView(FilesMvpView::showFileUploadStarted);
         String uploadPath = PathUtil
-                .combine(mFileDataManager.getCurrentStorageContext(), file.getName());
+                .combine(mFileDataManager.getStorageContext(), file.getName());
 
         SignedUrlRequest signedUrlRequest = new SignedUrlRequest(
                 SignedUrlRequest.ACTION_PUT,
@@ -201,8 +203,9 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
             @NonNull SignedUrlResponse signedUrlResponse) {
         RxUtil.unsubscribe(mFileUploadSubscription);
         mFileUploadSubscription = mFileDataManager.uploadFile(file, signedUrlResponse)
-                .flatMap(responseBody -> mFileDataManager.persistFile(signedUrlResponse, file.getName(),
-                        FileUtils.getMimeType(file), file.length()))
+                .flatMap(responseBody -> mFileDataManager
+                        .persistFile(signedUrlResponse, file.getName(),
+                                FileUtils.getMimeType(file), file.length()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(view -> {
@@ -259,8 +262,11 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     public void onDirectorySelected(@NonNull Directory directory) {
         onDirectorySelected(PathUtil.combine(directory.path, directory.name));
     }
-    public void onDirectorySelected(@NonNull String path) {
-        mFileDataManager.setCurrentStorageContext(path);
+    public void onDirectorySelected(@Nullable String path) {
+        if (path == null)
+            return;
+
+        mFileDataManager.setStorageContext(path);
         loadBreadcrumbs();
         sendToView(view -> {
             view.reloadFiles();
@@ -273,7 +279,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         RxUtil.unsubscribe(mDirectoryCreateSubscription);
         mDirectoryCreateSubscription = mFileDataManager
                 .createDirectory(new CreateDirectoryRequest(
-                        PathUtil.combine(mFileDataManager.getCurrentStorageContext(), name)))
+                        PathUtil.combine(mFileDataManager.getStorageContext(), name)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         directory -> sendToView(view -> {
@@ -315,7 +321,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      * @return True if stepping back was successful, false if we are already in the root directory.
      */
     public boolean onBackSelected() {
-        String storageContext = mFileDataManager.getCurrentStorageContext();
+        String storageContext = mFileDataManager.getStorageContext();
 
         // first two parts are meta
         if (storageContext.split("/", 4).length > 3) {

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import org.schulcloud.mobile.BuildConfig;
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.datamanagers.FileDataManager;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
@@ -72,6 +73,7 @@ public final class WebUtil {
             PATH_INTERNAL_HOMEWORK_ARCHIVE};
 
     public static final String PATH_INTERNAL_FILES = "files";
+    public static final String PATH_INTERNAL_FILES_PARAM_DIR = "dir";
     public static final String PATH_INTERNAL_FILES_MY = "my";
     public static final String PATH_INTERNAL_FILES_COURSES = "courses";
     public static final String PATH_INTERNAL_FILES_SHARED = "shared";
@@ -172,6 +174,11 @@ public final class WebUtil {
                 case PATH_INTERNAL_FILES:
                     if (path.size() == 1)
                         newFragment = FileOverviewFragment.newInstance(false);
+                    else {
+                        String filePath = parseUrlPath(url);
+                        if (filePath != null)
+                            newFragment = FilesFragment.newInstance(filePath);
+                    }
                     break;
             }
             Log.i(TAG, "Chosen fragment: " + newFragment);
@@ -182,5 +189,37 @@ public final class WebUtil {
         }
 
         newCustomTab(mainActivity).launchUrl(mainActivity, url);
+    }
+    @Nullable
+    private static String parseUrlPath(@NonNull Uri url) {
+        List<String> segments = url.getPathSegments();
+        if (!segments.get(0).toLowerCase().equals(PATH_INTERNAL_FILES))
+            return null;
+
+        String path;
+        String dir;
+        switch (segments.get(1).toLowerCase()) {
+            case PATH_INTERNAL_FILES_MY:
+                path = FileDataManager.CONTEXT_MY;
+                dir = url.getQueryParameter(PATH_INTERNAL_FILES_PARAM_DIR);
+                if (dir != null)
+                    path = PathUtil.combine(path, dir);
+                break;
+
+            case PATH_INTERNAL_FILES_COURSES:
+                path = FileDataManager.CONTEXT_COURSES;
+                if (segments.size() > 2) {
+                    path = PathUtil.combine(path, segments.get(2));
+                    dir = url.getQueryParameter(PATH_INTERNAL_FILES_PARAM_DIR);
+                    if (dir != null)
+                        path = PathUtil.combine(path, dir);
+                }
+                break;
+
+            case PATH_INTERNAL_FILES_SHARED: // Not supported yet
+            default:
+                return null;
+        }
+        return path;
     }
 }

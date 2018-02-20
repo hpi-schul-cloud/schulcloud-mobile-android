@@ -95,6 +95,9 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
         else // If the user selects the same tab again, navigate back to the first view of the stack
             showView(tabIndex, TAB_LEVEL_TOP, null, false);
     }
+    public void addView(int childId, @NonNull V child) {
+        addView(getCurrentViewId(), childId, child);
+    }
     /**
      * Adds the view as the child of parent, and shows it. If parent already has a child (and
      * possibly sub-children), those are removed.
@@ -114,6 +117,9 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
             showView(tabIndex, TAB_LEVEL_LAST, child, false);
             break;
         }
+    }
+    public void navigateToView(int tabIndex, int level) {
+        showView(tabIndex, level, null, false);
     }
     /**
      * Removes the specified view from the hierarchy. Any child views will be removed too.
@@ -177,17 +183,21 @@ public class MainPresenter<V> extends BasePresenter<MainMvpView<V>> {
 
         popTabStack(tabStack, level + 1);
 
-        int viewId = tabStack.get(level);
-        V newViewFinal = newView;
-        sendToView(v ->
-                v.showView(mCurrentViewId, viewId, newViewFinal, mCurrentTabIndex, tabIndex));
+        final int oldViewId = mCurrentViewId;
+        final int viewId = tabStack.get(level);
+        final V newViewFinal = newView;
 
         mCurrentViewId = viewId;
         mCurrentTabIndex = tabIndex;
         mCurrentLevel = level;
+
+        sendToView(v -> v.showView(oldViewId, viewId, newViewFinal, mCurrentTabIndex, tabIndex));
         return true;
     }
     private void popTabStack(@NonNull Stack<Integer> tabStack, int endSize) {
+        if (endSize >= tabStack.size())
+            return;
+
         List<Integer> viewIds = new LinkedList<>();
         while (tabStack.size() > endSize)
             viewIds.add(tabStack.pop());

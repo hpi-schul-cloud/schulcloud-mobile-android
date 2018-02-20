@@ -119,9 +119,9 @@ public final class WebUtil {
     }
 
     public static void openUrl(@NonNull MainActivity mainActivity, @NonNull Uri url) {
-        openUrl(mainActivity, mainActivity.getCurrentFragment(), url);
+        openUrl(mainActivity, null, url);
     }
-    public static void openUrl(@NonNull MainActivity mainActivity, @NonNull MainFragment fragment,
+    public static void openUrl(@NonNull MainActivity mainActivity, @Nullable MainFragment fragment,
             @NonNull Uri url) {
         Log.i(TAG, "Opening url: " + url);
         String scheme = url.getScheme().toLowerCase();
@@ -144,8 +144,8 @@ public final class WebUtil {
             switch (pathPrefix) {
                 case PATH_INTERNAL_DASHBOARD:
                     if (!(fragment instanceof DashboardFragment))
-                        mainActivity.addFragment(fragment, DashboardFragment.newInstance());
-                    return;
+                        newFragment = DashboardFragment.newInstance();
+                    break;
 
                 case PATH_INTERNAL_NEWS:
                     if (path.size() == 1)
@@ -183,7 +183,10 @@ public final class WebUtil {
             }
             Log.i(TAG, "Chosen fragment: " + newFragment);
             if (newFragment != null) {
-                mainActivity.addFragment(fragment, newFragment);
+                if (fragment == null)
+                    mainActivity.addFragment(newFragment);
+                else
+                    mainActivity.addFragment(fragment, newFragment);
                 return;
             }
         }

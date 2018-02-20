@@ -50,6 +50,8 @@ public final class MainActivity
     @Inject
     MainPresenter<MainFragment> mPresenter;
 
+    boolean mIsTopLevelTransaction = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,9 +171,11 @@ public final class MainActivity
     }
 
     @Override
-    public void showView(int oldViewId, int newViewId, @Nullable MainFragment newView,
+    public synchronized void showView(int oldViewId, int newViewId, @Nullable MainFragment newView,
             int oldTabIndex, int newTabIndex) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        boolean isTopLevelTransaction = mIsTopLevelTransaction;
+        mIsTopLevelTransaction = false;
 
         if (newTabIndex > oldTabIndex)
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -186,7 +190,11 @@ public final class MainActivity
         else
             transaction.attach(findFragment(newViewId));
 
-        transaction.commitNow();
+        transaction.commit();
+        if (isTopLevelTransaction) {
+            getSupportFragmentManager().executePendingTransactions();
+            mIsTopLevelTransaction = true;
+        }
     }
     @Override
     public void removeViews(@NonNull List<Integer> viewIds) {
@@ -208,8 +216,14 @@ public final class MainActivity
         return findFragment(mPresenter.getCurrentViewId());
     }
 
+    public void addFragment(@NonNull MainFragment child) {
+        mPresenter.addView(child.getActivityId(), child);
+    }
     public void addFragment(@NonNull MainFragment parent, @NonNull MainFragment child) {
         mPresenter.addView(parent.getActivityId(), child.getActivityId(), child);
+    }
+    public void navigateToFragment(int tabIndex, int level) {
+        mPresenter.navigateToView(tabIndex, level);
     }
     public void removeFragment(@NonNull MainFragment fragment) {
         mPresenter.removeView(fragment.getActivityId());

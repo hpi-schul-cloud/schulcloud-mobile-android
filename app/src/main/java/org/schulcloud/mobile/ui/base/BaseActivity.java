@@ -40,7 +40,8 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
         extends AppCompatActivity implements MvpView {
     private static final String KEY_ACTIVITY_ID = "KEY_ACTIVITY_ID";
     private static final AtomicInteger sNextId = new AtomicInteger(0);
-    private static final SparseArray<ConfigPersistentComponent> sComponentsMap = new SparseArray<>();
+    private static final SparseArray<ConfigPersistentComponent> sComponentsMap =
+            new SparseArray<>();
 
     @Inject
     PreferencesHelper mPreferencesHelper;
@@ -66,13 +67,15 @@ public abstract class BaseActivity<V extends MvpView, P extends BasePresenter<V>
                 : sNextId.getAndIncrement();
         ConfigPersistentComponent configPersistentComponent;
         if (null == sComponentsMap.get(mActivityId)) {
-            Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
+            Timber.i("Creating new ConfigPersistentComponent id=%d, class=%s", mActivityId,
+                    getClass().getSimpleName());
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
                     .applicationComponent(SchulCloudApplication.get(this).getComponent())
                     .build();
             sComponentsMap.put(mActivityId, configPersistentComponent);
         } else {
-            Timber.i("Reusing ConfigPersistentComponent id=%d", mActivityId);
+            Timber.i("Reusing ConfigPersistentComponent id=%d, class=%s", mActivityId,
+                    getClass().getSimpleName());
             configPersistentComponent = sComponentsMap.get(mActivityId);
         }
         mActivityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));

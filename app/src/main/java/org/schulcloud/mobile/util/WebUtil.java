@@ -13,6 +13,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.datamanagers.FileDataManager;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
+import org.schulcloud.mobile.ui.courses.topic.TopicFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
 import org.schulcloud.mobile.ui.files.FilesFragment;
 import org.schulcloud.mobile.ui.files.overview.FileOverviewFragment;
@@ -159,8 +160,8 @@ public final class WebUtil {
                         newFragment = CourseFragment.newInstance();
                     else if (path.size() == 2)
                         newFragment = DetailedCourseFragment.newInstance(pathEnd);
-                    //else if (path.size() == 4)
-                    //    newFragment = TopicFragment.newInstance(pathEnd);
+                    else if (path.size() == 4)
+                        newFragment = TopicFragment.newInstance(pathEnd);
                     break;
 
                 case PATH_INTERNAL_HOMEWORK:

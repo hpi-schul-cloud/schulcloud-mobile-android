@@ -15,6 +15,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.List;
 
@@ -95,5 +96,10 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
     @Override
     public void showContent(@NonNull List<Contents> contents) {
         mContentAdapter.setContents(contents);
+    }
+    @Override
+    public void showError() {
+        DialogFactory.createGenericErrorDialog(getContext(), R.string.courses_topic_error).show();
+        finish();
     }
 }

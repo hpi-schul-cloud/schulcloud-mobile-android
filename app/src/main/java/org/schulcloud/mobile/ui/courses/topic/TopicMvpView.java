@@ -11,5 +11,6 @@ public interface TopicMvpView extends MvpView {
 
     void showName(@NonNull String name);
     void showContent(@NonNull List<Contents> contents);
+    void showError();
 
 }

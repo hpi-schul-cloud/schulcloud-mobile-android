@@ -50,7 +50,6 @@ public interface ActivityComponent {
     void inject(DetailedCourseFragment detailedCourseFragment);
     void inject(TopicFragment topicFragment);
 
-    void inject(ContentAdapter.WebViewHolder webViewHolder);
     void inject(ContentAdapter.ResourcesViewHolder resourcesViewHolder);
 
     //    Homework

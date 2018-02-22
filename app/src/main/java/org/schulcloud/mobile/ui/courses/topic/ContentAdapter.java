@@ -2,7 +2,6 @@ package org.schulcloud.mobile.ui.courses.topic;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.schulcloud.mobile.BuildConfig;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Contents;
@@ -53,7 +51,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @ConfigPersistent
-public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
+public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
     private static final String[] CONTENT_TYPES = {
             Contents.COMPONENT_TEXT,
             Contents.COMPONENT_RESOURCES,
@@ -85,19 +83,19 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case 0:
-                return new TextViewHolder(
+                return new TextViewHolder(mUserDataManger,
                         inflater.inflate(R.layout.item_content_text, parent, false));
             case 1:
                 return new ResourcesViewHolder(
                         inflater.inflate(R.layout.item_content_resources, parent, false));
             case 2:
-                return new GeogebraViewHolder(
+                return new GeogebraViewHolder(mUserDataManger,
                         inflater.inflate(R.layout.item_content_geogebra, parent, false));
             case 3:
-                return new EtherpadViewHolder(
+                return new EtherpadViewHolder(mUserDataManger,
                         inflater.inflate(R.layout.item_content_etherpad, parent, false));
             case 4:
-                return new NexboardViewHolder(
+                return new NexboardViewHolder(mUserDataManger,
                         inflater.inflate(R.layout.item_content_nexboard, parent, false));
 
             default:
@@ -107,7 +105,7 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
     }
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.setContent(mContents.get(position));
+        holder.setItem(mContents.get(position));
     }
     @Override
     public int getItemCount() {
@@ -122,56 +120,8 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         return -1;
     }
 
-    public static abstract class BaseViewHolder extends RecyclerView.ViewHolder {
-        private Contents mContent;
 
-        BaseViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @NonNull
-        public Context getContext() {
-            return itemView.getContext();
-        }
-
-        final void setContent(@NonNull Contents content) {
-            mContent = content;
-            boolean hidden = content.hidden != null ? content.hidden : false;
-            ViewUtil.setVisibility(itemView, !hidden);
-            if (!hidden)
-                onContentSet(content);
-        }
-        abstract void onContentSet(@NonNull Contents content);
-        @NonNull
-        final Contents getContent() {
-            return mContent;
-        }
-    }
-    public static abstract class WebViewHolder extends BaseViewHolder {
-        protected final OkHttpClient CLIENT_INTERNAL;
-        protected final OkHttpClient CLIENT_EXTERNAL;
-
-        @Inject
-        UserDataManager mUserDataManager;
-
-        WebViewHolder(View itemView) {
-            super(itemView);
-            ((BaseActivity) getContext()).activityComponent().inject(this);
-
-            if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                WebView.setWebContentsDebuggingEnabled(true);
-
-            CLIENT_INTERNAL = new OkHttpClient().newBuilder().addInterceptor(chain ->
-                    chain.proceed(chain.request().newBuilder()
-                            .addHeader(WebUtil.HEADER_COOKIE,
-                                    "jwt=" + mUserDataManager.getAccessToken())
-                            .build()))
-                    .build();
-            CLIENT_EXTERNAL = new OkHttpClient();
-        }
-    }
-
-    class UnsupportedViewHolder extends BaseViewHolder {
+    class UnsupportedViewHolder extends BaseViewHolder<Contents> {
 
         @BindView(R.id.contentUnsupported_tv_title)
         TextView vTv_title;
@@ -183,14 +133,14 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
             ButterKnife.bind(this, itemView);
         }
         @Override
-        void onContentSet(@NonNull Contents content) {
-            vTv_title.setText(content.title);
+        void onItemSet(@NonNull Contents item) {
+            vTv_title.setText(item.title);
             vTv_message.setText(getContext()
-                    .getString(R.string.courses_contentUnsupported_message, content.component));
+                    .getString(R.string.courses_contentUnsupported_message, item.component));
         }
     }
-    class TextViewHolder extends WebViewHolder {
-        private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
+    class TextViewHolder extends WebViewHolder<Contents> {
+        public static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "<head>\n"
                 + "  <meta charset=\"utf-8\" />\n"
@@ -206,7 +156,7 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
                 + "  </style>\n"
                 + "</head>\n"
                 + "<body>";
-        private static final String CONTENT_SUFFIX = "<script>\n"
+        public static final String CONTENT_SUFFIX = "<script>\n"
                 + "   for (tag of document.body.getElementsByTagName('*')) {\n"
                 + "     tag.style.width = '';\n"
                 + "     tag.style.height = '';\n"
@@ -220,14 +170,14 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         @BindView(R.id.contentText_wv_content)
         WebView vWv_content;
 
-        TextViewHolder(View itemView) {
-            super(itemView);
+        TextViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
+            super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
-        void onContentSet(@NonNull Contents content) {
-            ViewUtil.setText(vTv_title, content.title);
+        void onItemSet(@NonNull Contents item) {
+            ViewUtil.setText(vTv_title, item.title);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.setWebViewClient(new WebViewClient() {
@@ -281,11 +231,11 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
                 }
             });
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + (content.content.text != null ? content.content.text : "")
+                    CONTENT_PREFIX + (item.content.text != null ? item.content.text : "")
                             + CONTENT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
         }
     }
-    public class ResourcesViewHolder extends BaseViewHolder {
+    public class ResourcesViewHolder extends BaseViewHolder<Contents> {
 
         @Inject
         ResourcesAdapter mResourcesAdapter;
@@ -302,14 +252,14 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
             vRv.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
         }
         @Override
-        void onContentSet(@NonNull Contents content) {
-            if (content.content == null)
+        void onItemSet(@NonNull Contents item) {
+            if (item.content == null)
                 return;
 
-            mResourcesAdapter.setResources(content.content.resources);
+            mResourcesAdapter.setResources(item.content.resources);
         }
     }
-    class GeogebraViewHolder extends WebViewHolder {
+    class GeogebraViewHolder extends WebViewHolder<Contents> {
         private final String TAG = GeogebraViewHolder.class.getSimpleName();
 
         private static final String GEOGEBRA = "https://www.geogebra.org/m/";
@@ -363,19 +313,19 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         @BindView(R.id.contentGeogebra_pb_loading)
         ProgressBar vPb_loading;
 
-        GeogebraViewHolder(View itemView) {
-            super(itemView);
+        GeogebraViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
+            super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil
-                    .openUrl(getMainActivity(), Uri.parse(GEOGEBRA + getContent().content.materialId)));
+                    .openUrl(getMainActivity(), Uri.parse(GEOGEBRA + getItem().content.materialId)));
 
             vIv_preview.setOnClickListener(v -> load());
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
-        void onContentSet(@NonNull Contents content) {
-            vTv_title.setText(content.title);
+        void onItemSet(@NonNull Contents item) {
+            vTv_title.setText(item.title);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.setWebViewClient(new WebViewClient() {
@@ -394,7 +344,7 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
             ViewUtil.setVisibility(vIv_preview, true);
             ViewUtil.setVisibility(vPb_loading, false);
             ViewUtil.setVisibility(vWv_content, false);
-            Single.just(getContent().content.materialId)
+            Single.just(getItem().content.materialId)
                     .flatMap(materialId -> Single.<String>create(subscriber -> {
                         try {
                             Response responseRaw = CLIENT_EXTERNAL.newCall(new Request.Builder()
@@ -421,11 +371,11 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         private void load() {
             ViewUtil.setVisibility(vPb_loading, true);
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + getContent().content.materialId + CONTENT_SUFFIX,
+                    CONTENT_PREFIX + getItem().content.materialId + CONTENT_SUFFIX,
                     WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
         }
     }
-    class EtherpadViewHolder extends WebViewHolder {
+    class EtherpadViewHolder extends WebViewHolder<Contents> {
 
         @BindView(R.id.contentEtherpad_tv_title)
         TextView vTv_title;
@@ -436,25 +386,25 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         @BindView(R.id.contentEtherpad_wv_content)
         WebView vWv_content;
 
-        EtherpadViewHolder(View itemView) {
-            super(itemView);
+        EtherpadViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
+            super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v ->
-                    WebUtil.openUrl(getMainActivity(), Uri.parse(getContent().content.url)));
+                    WebUtil.openUrl(getMainActivity(), Uri.parse(getItem().content.url)));
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
-        void onContentSet(@NonNull Contents content) {
-            vTv_title.setText(content.content.title);
+        void onItemSet(@NonNull Contents item) {
+            vTv_title.setText(item.content.title);
 
-            ViewUtil.setText(vTv_description, content.content.description);
+            ViewUtil.setText(vTv_description, item.content.description);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
-            vWv_content.loadUrl(getContent().content.url);
+            vWv_content.loadUrl(getItem().content.url);
         }
     }
-    class NexboardViewHolder extends WebViewHolder {
+    class NexboardViewHolder extends WebViewHolder<Contents> {
         private static final String URL_SUFFIX = "?username=Test&stickypad=false";
 
         @BindView(R.id.contentNexboard_tv_title)
@@ -466,22 +416,22 @@ public class ContentAdapter extends BaseAdapter<ContentAdapter.BaseViewHolder> {
         @BindView(R.id.contentNexboard_wv_content)
         WebView vWv_content;
 
-        NexboardViewHolder(View itemView) {
-            super(itemView);
+        NexboardViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
+            super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil
-                    .openUrl(getMainActivity(), Uri.parse(getContent().content.url + URL_SUFFIX)));
+                    .openUrl(getMainActivity(), Uri.parse(getItem().content.url + URL_SUFFIX)));
         }
         @SuppressLint("SetJavaScriptEnabled")
         @Override
-        void onContentSet(@NonNull Contents content) {
-            vTv_title.setText(content.content.title);
+        void onItemSet(@NonNull Contents item) {
+            vTv_title.setText(item.content.title);
 
-            ViewUtil.setText(vTv_description, content.content.description);
+            ViewUtil.setText(vTv_description, item.content.description);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
-            vWv_content.loadUrl(getContent().content.url + URL_SUFFIX);
+            vWv_content.loadUrl(getItem().content.url + URL_SUFFIX);
         }
     }
 }

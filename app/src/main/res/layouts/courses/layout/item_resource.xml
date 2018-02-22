@@ -41,15 +41,14 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/resource_tv_description"
-            style="@style/TextAppearance.AppCompat.Body1"
+        <org.schulcloud.mobile.ui.courses.topic.PassiveWebView
+            android:id="@+id/resource_pwv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            tools:text="Content...\n\n\nspanning\nmultiple\nlines" />
+            android:scrollbars="none"
+            tools:ignore="WebViewLayout" />
 
         <TextView
             android:id="@+id/resource_tv_client"

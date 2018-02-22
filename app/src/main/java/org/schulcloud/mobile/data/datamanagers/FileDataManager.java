@@ -13,6 +13,7 @@ import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.PathUtil;
+import org.schulcloud.mobile.util.WebUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class FileDataManager {
     private final PreferencesHelper mPreferencesHelper;
     private final UserDataManager mUserDataManager;
 
-    public static final String CONTEXT_MY = "my";
+    public static final String CONTEXT_MY = WebUtil.PATH_INTERNAL_FILES_MY;
     private static final String CONTEXT_MY_API = "users";
     public static final String CONTEXT_COURSES = "courses";
 

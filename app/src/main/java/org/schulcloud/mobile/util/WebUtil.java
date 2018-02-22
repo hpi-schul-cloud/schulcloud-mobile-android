@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.schulcloud.mobile.BuildConfig;
 import org.schulcloud.mobile.R;
@@ -63,6 +64,9 @@ public final class WebUtil {
     public static final String PATH_INTERNAL_NEWS = "news";
 
     public static final String PATH_INTERNAL_COURSES = "courses";
+    public static final String PATH_INTERNAL_COURSES_TOPICS = "topics";
+    public static final String PATH_INTERNAL_COURSES_TOOLS = "tools";
+    public static final String PATH_INTERNAL_COURSES_GROUPS = "groups";
 
     public static final String PATH_INTERNAL_HOMEWORK = "homework";
     public static final String PATH_INTERNAL_HOMEWORK_ASKED = "asked";
@@ -78,6 +82,10 @@ public final class WebUtil {
     public static final String PATH_INTERNAL_FILES_MY = "my";
     public static final String PATH_INTERNAL_FILES_COURSES = "courses";
     public static final String PATH_INTERNAL_FILES_SHARED = "shared";
+    public static final String[] PATHS_INTERNAL_FILES = {
+            PATH_INTERNAL_FILES_MY,
+            PATH_INTERNAL_FILES_COURSES,
+            PATH_INTERNAL_FILES_SHARED};
 
     public static final String[] PATHS_INTERNAL = {
             PATH_INTERNAL_DASHBOARD,
@@ -116,6 +124,7 @@ public final class WebUtil {
         builder.setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed));
         builder.setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left);
         builder.setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right);
+        builder.addDefaultShareMenuItem();
         return builder.build();
     }
 
@@ -138,7 +147,7 @@ public final class WebUtil {
         // Internal links can be handled by the app/
         if ((scheme.equals(SCHEME_HTTP) || scheme.equals(SCHEME_HTTPS))
                 && (host.equals(HOST_SCHULCLOUD_ORG) || host.equals(HOST_SCHUL_CLOUD_ORG))
-                && path.size() >= 0
+                && path.size() > 0
                 && ListUtils.contains(PATHS_INTERNAL, pathPrefix)) {
             MainFragment newFragment = null;
             assert pathPrefix != null;
@@ -158,24 +167,25 @@ public final class WebUtil {
                 case PATH_INTERNAL_COURSES:
                     if (path.size() == 1)
                         newFragment = CourseFragment.newInstance();
-                    else if (path.size() == 2)
+                    else if (path.size() == 2 || path.size() == 3)
                         newFragment = DetailedCourseFragment.newInstance(pathEnd);
-                    else if (path.size() == 4)
+                    else if (path.size() == 4 && path.get(3).equals(PATH_INTERNAL_COURSES_TOPICS))
                         newFragment = TopicFragment.newInstance(pathEnd);
                     break;
 
                 case PATH_INTERNAL_HOMEWORK:
                     if (path.size() == 1)
                         newFragment = HomeworkFragment.newInstance();
-                    else if (path.size() == 2 && !ListUtils
-                            .contains(PATHS_INTERNAL_HOMEWORK, pathEnd))
+                    else if (path.size() == 2
+                            && !ListUtils.contains(PATHS_INTERNAL_HOMEWORK, pathEnd))
                         newFragment = DetailedHomeworkFragment.newInstance(pathEnd);
                     break;
 
                 case PATH_INTERNAL_FILES:
                     if (path.size() == 1)
                         newFragment = FileOverviewFragment.newInstance(false);
-                    else {
+                    else if (path.size() == 2
+                            && ListUtils.contains(PATHS_INTERNAL_FILES, pathEnd)) {
                         String filePath = parseUrlPath(url);
                         if (filePath != null)
                             newFragment = FilesFragment.newInstance(filePath);
@@ -188,6 +198,10 @@ public final class WebUtil {
                     mainActivity.addFragment(newFragment);
                 else
                     mainActivity.addFragment(fragment, newFragment);
+                return;
+            } else {
+                Toast.makeText(mainActivity, "Dieser Link kann aktuell nicht geöffnet werden",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
         }

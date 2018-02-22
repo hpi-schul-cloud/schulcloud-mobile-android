@@ -47,11 +47,16 @@
                 <data android:scheme="https" />
                 <data android:host="schulcloud.org" />
                 <data android:host="schul-cloud.org" />
+                <!-- Edit and others are not yet supported, therefore more precise matching -->
                 <data android:pathPrefix="/dashboard" />
-                <data android:pathPrefix="/news" />
-                <data android:pathPrefix="/courses" />
-                <data android:pathPrefix="/homework" />
-                <data android:pathPrefix="/files" />
+                <data android:path="/news/" />
+                <data android:pathPattern="/news/........................" />
+                <data android:pathPattern="/courses/........................" />
+                <data android:pathPattern="/courses/......................../topics/........................" />
+                <data android:path="/homework/" />
+                <data android:pathPattern="/homework/........................" />
+                <data android:path="/files/my" />
+                <data android:path="/files/courses" />
             </intent-filter>
 
         </activity>

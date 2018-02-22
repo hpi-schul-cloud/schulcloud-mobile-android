@@ -140,30 +140,6 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         }
     }
     class TextViewHolder extends WebViewHolder<Contents> {
-        public static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "<head>\n"
-                + "  <meta charset=\"utf-8\" />\n"
-                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-                + "  <style>\n"
-                + "    table {\n"
-                + "      table-layout: fixed;\n"
-                + "      width: 100%;\n"
-                + "    }\n"
-                + "    * {\n"
-                + "      max-width: 100%;\n"
-                + "    }\n"
-                + "  </style>\n"
-                + "</head>\n"
-                + "<body>";
-        public static final String CONTENT_SUFFIX = "<script>\n"
-                + "   for (tag of document.body.getElementsByTagName('*')) {\n"
-                + "     tag.style.width = '';\n"
-                + "     tag.style.height = '';\n"
-                + "   }\n"
-                + "  </script>\n"
-                + "</body>\n"
-                + "</html>\n";
 
         @BindView(R.id.contentText_tv_title)
         TextView vTv_title;
@@ -231,8 +207,9 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                 }
             });
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + (item.content.text != null ? item.content.text : "")
-                            + CONTENT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
+                    CONTENT_TEXT_PREFIX + (item.content.text != null ? item.content.text : "")
+                            + CONTENT_TEXT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
+                    null);
         }
     }
     public class ResourcesViewHolder extends BaseViewHolder<Contents> {
@@ -264,18 +241,20 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
 
         private static final String GEOGEBRA = "https://www.geogebra.org/m/";
         private static final String GEOGEBRA_API = "http://www.geogebra.org/api/json.php";
+        // language=json
         private static final String GEOGEBRA_REQUEST_PREFIX = "{ \"request\": {\n"
-                + "  \"-api\": \"1.0.0\",\n"
+                + "  \"-api\": \"1.0.0\"\n"
                 + "  \"task\": {\n"
                 + "    \"-type\": \"fetch\",\n"
                 + "    \"fields\": {\n"
                 + "      \"field\": [\n"
                 + "        { \"-name\": \"preview_url\" }\n"
                 + "      ]\n"
-                + "    },\n"
+                + "    }\n"
                 + "    \"filters\" : {\n"
                 + "      \"field\": [\n"
                 + "        { \"-name\":\"id\", \"#text\":\"";
+        // language=json
         private static final String GEOGEBRA_REQUEST_SUFFIX = "\" }\n"
                 + "      ]\n"
                 + "    },\n"
@@ -284,6 +263,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                 + "}\n"
                 + "}";
 
+        // language=HTML
         private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "<head>\n"
@@ -295,6 +275,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                 + "  <div id=\"container\"></div>\n"
                 + "  <script>\n"
                 + "    var applet1 = new GGBApplet({material_id: \"";
+        // language=HTML
         private static final String CONTENT_SUFFIX =
                 "\", borderColor:\"transparent\", showFullscreenButton:true}, true);\n"
                         + "    applet1.inject('container');\n"
@@ -318,7 +299,8 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil
-                    .openUrl(getMainActivity(), Uri.parse(GEOGEBRA + getItem().content.materialId)));
+                    .openUrl(getMainActivity(),
+                            Uri.parse(GEOGEBRA + getItem().content.materialId)));
 
             vIv_preview.setOnClickListener(v -> load());
         }

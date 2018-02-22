@@ -14,6 +14,33 @@ import javax.inject.Inject;
 import okhttp3.OkHttpClient;
 
 public abstract class WebViewHolder<T> extends BaseViewHolder<T> {
+    // language=HTML
+    public static final String CONTENT_TEXT_PREFIX = "<!DOCTYPE html>\n"
+            + "<html>\n"
+            + "<head>\n"
+            + "  <meta charset=\"utf-8\" />\n"
+            + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+            + "  <style>\n"
+            + "    table {\n"
+            + "      table-layout: fixed;\n"
+            + "      width: 100%;\n"
+            + "    }\n"
+            + "    * {\n"
+            + "      max-width: 100%;\n"
+            + "    }\n"
+            + "  </style>\n"
+            + "</head>\n"
+            + "<body>";
+    // language=HTML
+    public static final String CONTENT_TEXT_SUFFIX = "<script>\n"
+            + "   for (tag of document.body.getElementsByTagName('*')) {\n"
+            + "     tag.style.width = '';\n"
+            + "     tag.style.height = '';\n"
+            + "   }\n"
+            + "  </script>\n"
+            + "</body>\n"
+            + "</html>\n";
+
     protected final OkHttpClient CLIENT_INTERNAL;
     protected final OkHttpClient CLIENT_EXTERNAL;
 

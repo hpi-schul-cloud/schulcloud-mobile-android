@@ -32,8 +32,8 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static org.schulcloud.mobile.ui.courses.topic.ContentAdapter.TextViewHolder.CONTENT_PREFIX;
-import static org.schulcloud.mobile.ui.courses.topic.ContentAdapter.TextViewHolder.CONTENT_SUFFIX;
+import static org.schulcloud.mobile.ui.courses.topic.ContentAdapter.TextViewHolder.CONTENT_TEXT_PREFIX;
+import static org.schulcloud.mobile.ui.courses.topic.ContentAdapter.TextViewHolder.CONTENT_TEXT_SUFFIX;
 
 /**
  * Date: 2/17/2018
@@ -123,8 +123,8 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
                 }
             });
             vPwv_description.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + (item.description != null ? item.description : "")
-                            + CONTENT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
+                    CONTENT_TEXT_PREFIX + (item.description != null ? item.description : "")
+                            + CONTENT_TEXT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
             vTv_client
                     .setText(getContext().getString(R.string.courses_resource_client, item.client));
         }

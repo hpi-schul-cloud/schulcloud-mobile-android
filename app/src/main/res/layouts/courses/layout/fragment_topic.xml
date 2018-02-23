@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/topic_tv_title"
             style="@style/Content_Title.Margin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Topic name" />
 
@@ -23,6 +23,7 @@
             android:id="@+id/topic_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
             tools:listitem="@layout/item_content_unsupported" />
 
     </LinearLayout>

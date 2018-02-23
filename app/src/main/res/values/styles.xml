@@ -18,7 +18,7 @@
     </style>
 
 
-    <style name="Content"></style>
+    <style name="Content" />
     <style name="Content.Padding">
         <item name="android:padding">@dimen/content_padding</item>
     </style>
@@ -28,9 +28,9 @@
         <item name="android:textSize">@dimen/text_headline</item>
     </style>
     <style name="Content_Title.Margin">
-        <item name="android:layout_marginLeft">@dimen/content_title_margin</item>
-        <item name="android:layout_marginRight">@dimen/content_title_margin</item>
-        <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
     </style>
     <style name="Content_Title.MarginTop">
         <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
@@ -80,7 +80,7 @@
     <style name="SchulCloud.Content">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginBottom">48dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
     </style>
     <style name="SchulCloud.Content_Header" parent="Card.Header" />
     <style name="SchulCloud.Content_Header.WithLink">
@@ -93,7 +93,6 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
         <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="Card.Header" parent="TextAppearance.AppCompat.Headline">

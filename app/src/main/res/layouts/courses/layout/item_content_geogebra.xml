@@ -24,6 +24,7 @@
         style="@style/SchulCloud.Content_LinkExternal"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="@+id/contentGeogebra_tv_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/contentGeogebra_tv_title" />

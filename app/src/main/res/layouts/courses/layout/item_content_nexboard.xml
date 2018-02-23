@@ -1,65 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Material.Card.Margin"
+    android:id="@+id/contentNexboard_cl_wrapper"
+    style="@style/SchulCloud.Content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:contentPadding="0dp">
+    android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <TextView
+        android:id="@+id/contentNexboard_tv_title"
+        style="@style/SchulCloud.Content_Header.WithLink"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/contentNexboard_iv_open"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Nexboard title" />
+
+    <ImageView
+        android:id="@+id/contentNexboard_iv_open"
+        style="@style/SchulCloud.Content_LinkExternal"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/contentNexboard_tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contentNexboard_tv_title" />
+
+    <TextView
+        android:id="@+id/contentNexboard_tv_description"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/contentNexboard_tv_title"
+        tools:text="Description...\n\n\nspanning\nmultiple\nlines"
+        tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/contentNexboard_tv_title"
-            style="@style/Card.Header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/contentNexboard_iv_open"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Nexboard material name" />
+    <WebView
+        android:id="@+id/contentNexboard_wv_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,4:3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contentNexboard_tv_description"
+        app:layout_goneMarginTop="0dp"
+        tools:ignore="WebViewLayout" />
 
-        <ImageView
-            android:id="@+id/contentNexboard_iv_open"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
-
-        <TextView
-            android:id="@+id/contentNexboard_tv_description"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/contentNexboard_iv_open"
-            tools:text="Content...\n\n\nspanning\nmultiple\nlines" />
-
-        <WebView
-            android:id="@+id/contentNexboard_wv_content"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H,4:3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contentNexboard_tv_description"
-            app:layout_goneMarginTop="0dp"
-            tools:ignore="WebViewLayout" />
-
-    </android.support.constraint.ConstraintLayout>
-
-</android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

@@ -34,10 +34,10 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
     @Inject
     ContentAdapter mContentAdapter;
 
-    @BindView(R.id.topicName)
-    TextView topicName;
-    @BindView(R.id.topicRecycler)
-    RecyclerView recyclerView;
+    @BindView(R.id.topic_tv_title)
+    TextView vTv_title;
+    @BindView(R.id.topic_rv)
+    RecyclerView vRv;
 
     /**
      * Creates a new instance of this fragment.
@@ -74,15 +74,20 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
         ButterKnife.bind(this, view);
         setTitle(R.string.courses_topic_title);
 
-        recyclerView.setAdapter(mContentAdapter);
+        vRv.setAdapter(mContentAdapter);
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int spans = Math.max(1, metrics.widthPixels / ViewUtil.dpToPx(440));
         StaggeredGridLayoutManager layoutManager =
-                new StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL) {
+                    @Override
+                    public boolean canScrollVertically() {
+                        return false;
+                    }
+                };
         layoutManager
                 .setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        recyclerView.setLayoutManager(layoutManager);
+        vRv.setLayoutManager(layoutManager);
 
         return view;
     }
@@ -91,7 +96,7 @@ public class TopicFragment extends MainFragment<TopicMvpView, TopicPresenter>
     /***** MVP View methods implementation *****/
     @Override
     public void showName(@NonNull String name) {
-        topicName.setText(name);
+        vTv_title.setText(name);
     }
     @Override
     public void showContent(@NonNull List<Contents> contents) {

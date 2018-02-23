@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/resource_card"
-    style="@style/Material.Card.Margin"
+    style="@style/Material.Card.MarginVertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?android:attr/selectableItemBackground"
@@ -18,25 +18,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp">
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/resource_tv_title"
-                style="@style/Card.Header"
+                style="@style/SchulCloud.Content_Header.WithLink"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                tools:text="Resource name" />
+                android:background="@null"
+                android:textColor="@color/hpiRed"
+                tools:text="Resource title" />
 
             <ImageView
+                style="@style/SchulCloud.Content_LinkExternal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="12dp"
-                android:layout_marginStart="12dp"
+                android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
         </LinearLayout>
@@ -45,8 +44,9 @@
             android:id="@+id/resource_pwv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:scrollbars="none"
             tools:ignore="WebViewLayout" />
 
@@ -54,11 +54,14 @@
             android:id="@+id/resource_tv_client"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/sc_card_footer"
             android:ellipsize="end"
             android:lines="1"
-            android:padding="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             tools:text="via Client" />
 
     </LinearLayout>

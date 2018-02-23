@@ -53,6 +53,7 @@
                 <data android:pathPattern="/news/........................" />
                 <data android:pathPattern="/courses/........................" />
                 <data android:pathPattern="/courses/......................../topics/........................" />
+                <data android:pathPattern="/courses/......................../topics/......................../" />
                 <data android:path="/homework/" />
                 <data android:pathPattern="/homework/........................" />
                 <data android:path="/files/my" />

@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contentResources_rv"
+    android:id="@+id/contentResources_ll_wrapper"
+    style="@style/SchulCloud.Content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:listitem="@layout/item_resource" />
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/contentResources_tv_title"
+        style="@style/SchulCloud.Content_Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/content_title_margin"
+        android:visibility="gone"
+        tools:text="Resources title"
+        tools:visibility="visible" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/contentResources_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_resource" />
+
+</LinearLayout>

@@ -2,21 +2,25 @@ package org.schulcloud.mobile.ui.courses.topic;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -120,9 +124,15 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         return -1;
     }
 
+    private static boolean isHidden(@NonNull Contents content) {
+        return content.hidden != null ? content.hidden : false;
+    }
+
 
     class UnsupportedViewHolder extends BaseViewHolder<Contents> {
 
+        @BindView(R.id.contentUnsupported_ll_wrapper)
+        LinearLayout vLl_wrapper;
         @BindView(R.id.contentUnsupported_tv_title)
         TextView vTv_title;
         @BindView(R.id.contentUnsupported_tv_message)
@@ -134,6 +144,12 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         }
         @Override
         void onItemSet(@NonNull Contents item) {
+            boolean isVisible = !isHidden(item);
+            ViewUtil.setVisibility(vLl_wrapper, isVisible);
+            if (!isVisible)
+                return;
+
+            ViewUtil.setText(vTv_title, item.title);
             vTv_title.setText(item.title);
             vTv_message.setText(getContext()
                     .getString(R.string.courses_contentUnsupported_message, item.component));
@@ -141,19 +157,17 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
     }
     class TextViewHolder extends WebViewHolder<Contents> {
 
+        @BindView(R.id.contentText_ll_wrapper)
+        LinearLayout vLl_wrapper;
         @BindView(R.id.contentText_tv_title)
         TextView vTv_title;
         @BindView(R.id.contentText_wv_content)
         WebView vWv_content;
 
+        @SuppressLint("SetJavaScriptEnabled")
         TextViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
             super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
-        }
-        @SuppressLint("SetJavaScriptEnabled")
-        @Override
-        void onItemSet(@NonNull Contents item) {
-            ViewUtil.setText(vTv_title, item.title);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
             vWv_content.setWebViewClient(new WebViewClient() {
@@ -206,6 +220,20 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                     }
                 }
             });
+            vWv_content.setBackgroundColor(Color.TRANSPARENT);
+        }
+        @Override
+        void onItemSet(@NonNull Contents item) {
+            boolean isVisible = !isHidden(item);
+            ViewUtil.setVisibility(vLl_wrapper, isVisible);
+            if (!isVisible)
+                return;
+
+            ViewUtil.setText(vTv_title, item.title);
+
+            vWv_content
+                    .loadDataWithBaseURL(null, null, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
+                            null);
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
                     CONTENT_TEXT_PREFIX + (item.content.text != null ? item.content.text : "")
                             + CONTENT_TEXT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
@@ -217,6 +245,10 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         @Inject
         ResourcesAdapter mResourcesAdapter;
 
+        @BindView(R.id.contentResources_ll_wrapper)
+        LinearLayout vLl_wrapper;
+        @BindView(R.id.contentResources_tv_title)
+        TextView vTv_title;
         @BindView(R.id.contentResources_rv)
         RecyclerView vRv;
 
@@ -226,12 +258,21 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
             ((BaseActivity) itemView.getContext()).activityComponent().inject(this);
 
             vRv.setAdapter(mResourcesAdapter);
-            vRv.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+            vRv.setLayoutManager(new LinearLayoutManager(itemView.getContext()) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
         }
         @Override
         void onItemSet(@NonNull Contents item) {
-            if (item.content == null)
+            boolean isVisible = !isHidden(item);
+            ViewUtil.setVisibility(vLl_wrapper, isVisible);
+            if (!isVisible)
                 return;
+
+            ViewUtil.setText(vTv_title, item.title);
 
             mResourcesAdapter.setResources(item.content.resources);
         }
@@ -283,6 +324,8 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                         + "</body>\n"
                         + "</html>\n";
 
+        @BindView(R.id.contentGeogebra_cl_wrapper)
+        ConstraintLayout vCl_wrapper;
         @BindView(R.id.contentGeogebra_tv_title)
         TextView vTv_title;
         @BindView(R.id.contentGeogebra_iv_open)
@@ -294,22 +337,25 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         @BindView(R.id.contentGeogebra_pb_loading)
         ProgressBar vPb_loading;
 
+        @SuppressLint("SetJavaScriptEnabled")
         GeogebraViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
             super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
-            vIv_open.setOnClickListener(v -> WebUtil
-                    .openUrl(getMainActivity(),
-                            Uri.parse(GEOGEBRA + getItem().content.materialId)));
+            vIv_open.setOnClickListener(v -> WebUtil.openUrl(getMainActivity(),
+                    Uri.parse(GEOGEBRA + getItem().content.materialId)));
 
             vIv_preview.setOnClickListener(v -> load());
-        }
-        @SuppressLint("SetJavaScriptEnabled")
-        @Override
-        void onItemSet(@NonNull Contents item) {
-            vTv_title.setText(item.title);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
+            vWv_content.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    vWv_content.loadUrl(
+                            "javascript:MyApp.resize(document.body.getBoundingClientRect().height)");
+                }
+            });
+            vWv_content.addJavascriptInterface(this, "MyApp");
             vWv_content.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
@@ -318,6 +364,24 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                     ViewUtil.setVisibility(vWv_content, true);
                 }
             });
+        }
+        @JavascriptInterface
+        public void resize(final float height) {
+            getMainActivity().runOnUiThread(() -> vWv_content.setLayoutParams(
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+
+                            (int) (height * getContext().getResources()
+                                    .getDisplayMetrics().density))));
+        }
+        @Override
+        void onItemSet(@NonNull Contents item) {
+            boolean isVisible = !isHidden(item);
+            ViewUtil.setVisibility(vCl_wrapper, isVisible);
+            if (!isVisible)
+                return;
+
+            ViewUtil.setVisibility(vCl_wrapper, !isHidden(item));
+            ViewUtil.setText(vTv_title, item.title);
 
             loadPreviewImage();
         }
@@ -341,7 +405,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                                             GeogebraResponse.class);
                             subscriber.onSuccess(response.responses.response.item.previewUrl);
                         } catch (Exception e) {
-                            Log.e(TAG, "Error retrieving preview URL", e);
+                            Log.w(TAG, "Error retrieving preview URL", e);
                             subscriber.onError(e);
                         }
                     }))
@@ -352,6 +416,9 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         }
         private void load() {
             ViewUtil.setVisibility(vPb_loading, true);
+            vWv_content
+                    .loadDataWithBaseURL(null, null, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
+                            null);
             vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
                     CONTENT_PREFIX + getItem().content.materialId + CONTENT_SUFFIX,
                     WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
@@ -359,6 +426,8 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
     }
     class EtherpadViewHolder extends WebViewHolder<Contents> {
 
+        @BindView(R.id.contentEtherpad_cl_wrapper)
+        ConstraintLayout vCl_wrapper;
         @BindView(R.id.contentEtherpad_tv_title)
         TextView vTv_title;
         @BindView(R.id.contentEtherpad_tv_description)
@@ -368,27 +437,37 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         @BindView(R.id.contentEtherpad_wv_content)
         WebView vWv_content;
 
+        @SuppressLint("SetJavaScriptEnabled")
         EtherpadViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
             super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v ->
                     WebUtil.openUrl(getMainActivity(), Uri.parse(getItem().content.url)));
-        }
-        @SuppressLint("SetJavaScriptEnabled")
-        @Override
-        void onItemSet(@NonNull Contents item) {
-            vTv_title.setText(item.content.title);
-
-            ViewUtil.setText(vTv_description, item.content.description);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
+        }
+        @Override
+        void onItemSet(@NonNull Contents item) {
+            boolean isVisible = !isHidden(item);
+            ViewUtil.setVisibility(vCl_wrapper, isVisible);
+            if (!isVisible)
+                return;
+
+            ViewUtil.setText(vTv_title, item.title);
+            ViewUtil.setText(vTv_description, item.content.description);
+
+            vWv_content
+                    .loadDataWithBaseURL(null, null, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
+                            null);
             vWv_content.loadUrl(getItem().content.url);
         }
     }
     class NexboardViewHolder extends WebViewHolder<Contents> {
         private static final String URL_SUFFIX = "?username=Test&stickypad=false";
 
+        @BindView(R.id.contentNexboard_cl_wrapper)
+        ConstraintLayout vCl_wrapper;
         @BindView(R.id.contentNexboard_tv_title)
         TextView vTv_title;
         @BindView(R.id.contentNexboard_tv_description)
@@ -398,21 +477,29 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         @BindView(R.id.contentNexboard_wv_content)
         WebView vWv_content;
 
+        @SuppressLint("SetJavaScriptEnabled")
         NexboardViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
             super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil
                     .openUrl(getMainActivity(), Uri.parse(getItem().content.url + URL_SUFFIX)));
-        }
-        @SuppressLint("SetJavaScriptEnabled")
-        @Override
-        void onItemSet(@NonNull Contents item) {
-            vTv_title.setText(item.content.title);
-
-            ViewUtil.setText(vTv_description, item.content.description);
 
             vWv_content.getSettings().setJavaScriptEnabled(true);
+        }
+        @Override
+        void onItemSet(@NonNull Contents item) {
+            boolean isVisible = !isHidden(item);
+            ViewUtil.setVisibility(vCl_wrapper, isVisible);
+            if (!isVisible)
+                return;
+
+            ViewUtil.setText(vTv_title, item.title);
+            ViewUtil.setText(vTv_description, item.content.description);
+
+            vWv_content
+                    .loadDataWithBaseURL(null, null, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
+                            null);
             vWv_content.loadUrl(getItem().content.url + URL_SUFFIX);
         }
     }

@@ -1,28 +1,23 @@
 package org.schulcloud.mobile.ui.signin;
 
-import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
+import org.schulcloud.mobile.ui.signin.scloudWeb.ScloudWebClient;
+import org.schulcloud.mobile.ui.signin.scloudWeb.ScloudWebView;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
         implements SignInMvpView {
@@ -82,15 +77,17 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
     }
 
     public void openPasswordRecovery() {
-        WebView pwRecoveryView = new WebView(this);
+        ScloudWebView pwRecoveryView = new ScloudWebView(this);
+        ScloudWebClient webClient = new ScloudWebClient();
+        pwRecoveryView.setWebViewClient(webClient);
         WebSettings pwRecoverySettings = pwRecoveryView.getSettings();
         pwRecoverySettings.setJavaScriptEnabled(true);
         pwRecoveryView.loadUrl("http://schul-cloud.org");
         setContentView(pwRecoveryView);
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT){
-            pwRecoveryView.evaluateJavascript("ADD JAVASCRIPT",null);
+            pwRecoveryView.evaluateJavascript("document.getElementById(\"submit-pwrecovery\").click()",null);
         }else{
-            pwRecoveryView.loadUrl("javascript: ADD JAVASCRIPT");
+            pwRecoveryView.loadUrl("javascript: document.getElementById(\"submit-pwrecovery\").click()");
         }
     }
 

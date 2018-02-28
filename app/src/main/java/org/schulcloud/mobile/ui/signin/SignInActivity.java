@@ -2,16 +2,13 @@ package org.schulcloud.mobile.ui.signin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
-import org.schulcloud.mobile.ui.signin.scloudWeb.ScloudWebClient;
-import org.schulcloud.mobile.ui.signin.scloudWeb.ScloudWebView;
+import org.schulcloud.mobile.ui.scloudWeb.ScloudWebActivtiy;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import javax.inject.Inject;
@@ -77,18 +74,8 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
     }
 
     public void openPasswordRecovery() {
-        ScloudWebView pwRecoveryView = new ScloudWebView(this);
-        ScloudWebClient webClient = new ScloudWebClient();
-        pwRecoveryView.setWebViewClient(webClient);
-        WebSettings pwRecoverySettings = pwRecoveryView.getSettings();
-        pwRecoverySettings.setJavaScriptEnabled(true);
-        pwRecoveryView.loadUrl("http://schul-cloud.org");
-        setContentView(pwRecoveryView);
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT){
-            pwRecoveryView.evaluateJavascript("document.getElementById(\"submit-pwrecovery\").click()",null);
-        }else{
-            pwRecoveryView.loadUrl("javascript: document.getElementById(\"submit-pwrecovery\").click()");
-        }
+        Intent intent = new Intent(this,ScloudWebActivtiy.class);
+        startActivity(intent);
     }
 
     @Override

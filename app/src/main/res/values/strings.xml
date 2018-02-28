@@ -163,6 +163,7 @@
     <string name="web_protocol_http" translatable="false">http://</string>
     <string name="web_protocol_https" translatable="false">https://</string>
     <string name="website">https://schul-cloud.org</string>
+    <string name="client_wrong_url">Dieser Browser kann die Webseite https://schul-cloud.org nicht verlassen.</string>
 
     <!--Generic dialogs-->
     <string name="dialog_action_ok">OK</string>

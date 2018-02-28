@@ -15,6 +15,7 @@ import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
+import org.schulcloud.mobile.ui.scloudWeb.ScloudWebActivtiy;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.ui.signin.SignInActivity;
 import org.schulcloud.mobile.ui.start.StartActivity;
@@ -69,5 +70,8 @@ public interface ActivityComponent {
 
     //    Feedback
     void inject(FeedbackDialog feedbackDialog);
+
+    //    Web
+    void inject(ScloudWebActivtiy scloudWebActivtiy);
 
 }

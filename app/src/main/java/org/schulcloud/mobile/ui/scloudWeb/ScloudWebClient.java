@@ -1,7 +1,6 @@
-package org.schulcloud.mobile.ui.signin.scloudWeb;
+package org.schulcloud.mobile.ui.scloudWeb;
 
 
-import android.content.Context;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 

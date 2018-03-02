@@ -55,7 +55,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @ConfigPersistent
-public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
+public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
     private static final String[] CONTENT_TYPES = {
             Contents.COMPONENT_TEXT,
             Contents.COMPONENT_RESOURCES,
@@ -83,7 +83,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder<Contents> onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case 0:
@@ -108,7 +108,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
         }
     }
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder<Contents> holder, int position) {
         holder.setItem(mContents.get(position));
     }
     @Override
@@ -381,7 +381,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
                 return;
 
             ViewUtil.setVisibility(vCl_wrapper, !isHidden(item));
-            ViewUtil.setText(vTv_title, item.title);
+            vTv_title.setText(item.title);
 
             loadPreviewImage();
         }
@@ -454,7 +454,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
             if (!isVisible)
                 return;
 
-            ViewUtil.setText(vTv_title, item.title);
+            vTv_title.setText(item.title);
             ViewUtil.setText(vTv_description, item.content.description);
 
             vWv_content
@@ -494,7 +494,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder> {
             if (!isVisible)
                 return;
 
-            ViewUtil.setText(vTv_title, item.title);
+            vTv_title.setText(item.title);
             ViewUtil.setText(vTv_description, item.content.description);
 
             vWv_content

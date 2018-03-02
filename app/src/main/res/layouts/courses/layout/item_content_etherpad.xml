@@ -29,6 +29,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/contentEtherpad_tv_title" />
 
+    <android.support.constraint.Barrier
+        android:id="@+id/contentEtherpad_b_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="contentEtherpad_tv_title,contentEtherpad_iv_open" />
+
     <TextView
         android:id="@+id/contentEtherpad_tv_description"
         style="@style/TextAppearance.AppCompat.Body1"
@@ -36,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/contentEtherpad_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/contentEtherpad_b_header"
         tools:text="Description...\n\n\nspanning\nmultiple\nlines"
         tools:visibility="visible" />
 

@@ -56,7 +56,7 @@ public class TopicsDatabaseHelper extends BaseDatabaseHelper {
 
             try {
                 realm = mRealmProvider.get();
-                realm.executeTransaction(realm1 -> realm1.copyToRealmOrUpdate(topic));
+                realm.executeTransaction(realm1 -> realm1.copyToRealm(topic));
             } catch (Exception e) {
                 Timber.e(e, "There was an error while adding in Realm.");
                 subscriber.onError(e);

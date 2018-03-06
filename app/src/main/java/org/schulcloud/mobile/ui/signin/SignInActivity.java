@@ -1,14 +1,17 @@
 package org.schulcloud.mobile.ui.signin;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.customtabs.CustomTabsIntent;
 import android.widget.Button;
 import android.widget.EditText;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
-import org.schulcloud.mobile.ui.scloudWeb.ScloudWebActivtiy;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import javax.inject.Inject;
@@ -37,7 +40,7 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);     
         activityComponent().inject(this);
         setPresenter(mSignInPresenter);
 
@@ -74,8 +77,13 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
     }
 
     public void openPasswordRecovery() {
-        Intent intent = new Intent(this,ScloudWebActivtiy.class);
-        startActivity(intent);
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(Color.RED);
+        builder.setCloseButtonIcon(BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.ic_clear_black_24dp));
+        builder.enableUrlBarHiding();
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.website)));
     }
 
     @Override

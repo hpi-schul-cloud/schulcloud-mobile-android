@@ -203,6 +203,9 @@ dependencies {
     testCompile 'org.powermock:powermock-core:1.6.4'
     testCompile 'org.robolectric:robolectric:3.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    //Chrome Custom Tabs expansion
+    compile 'com.android.support:customtabs:25.2.0'
 }
 
 // Log out test results to console

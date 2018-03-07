@@ -4,7 +4,12 @@ import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.UserDatabaseHelper;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
+import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
+import org.schulcloud.mobile.data.model.responseBodies.AccountResponse;
+import org.schulcloud.mobile.data.model.responseBodies.ProfileResponse;
+import org.schulcloud.mobile.data.model.responseBodies.UserResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.crypt.JWTUtil;
 
@@ -16,6 +21,7 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 @Singleton
 public class UserDataManager{
@@ -101,5 +107,43 @@ public class UserDataManager{
     }
     public Single<Boolean> isInDemoMode() {
         return Single.just(mPreferencesHelper.isInDemoMode());
+    }
+
+    public Observable<UserResponse> changeUserInfo(UserRequest userRequest) {
+        return mRestService.changeUserInfo(
+                getAccessToken(),
+                userRequest)
+                .concatMap(new Func1<UserResponse, Observable<UserResponse>>() {
+                    @Override
+                    public Observable<UserResponse> call(UserResponse userResponse) {
+                        return Observable.just(userResponse);
+                    }
+                });
+    }
+
+    public Observable<AccountResponse> changeAccountInfo(AccountRequest accountRequest) {
+        return mRestService.changeAccountInfo(
+                getAccessToken(),
+                accountRequest)
+                .concatMap(new Func1<AccountResponse, Observable<? extends AccountResponse>>() {
+                    @Override
+                    public Observable<AccountResponse> call(AccountResponse accountResponse) {
+                        return Observable.just(accountResponse);
+                    }
+                });
+    }
+
+    public Observable<ProfileResponse> changeProfileInfo(AccountRequest accountRequest,
+                                                         UserRequest userRequest) {
+        Observable<AccountResponse> accountResponseObservable = changeAccountInfo(accountRequest);
+        Observable<UserResponse> userResponseObservable = changeUserInfo(userRequest);
+        Observable<ProfileResponse> profileResponseObservable = Observable
+                .zip(accountResponseObservable, userResponseObservable, new Func2<AccountResponse, UserResponse, ProfileResponse>() {
+                    @Override
+                    public ProfileResponse call(AccountResponse accountResponse, UserResponse userResponse) {
+                        return new ProfileResponse(userResponse, accountResponse);
+                    }
+                });
+        return profileResponseObservable;
     }
 }

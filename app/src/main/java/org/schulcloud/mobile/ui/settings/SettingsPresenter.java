@@ -239,7 +239,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     /* Profile */
     public void loadProfile()
     {
-        mProfileSubscription = mDataManager.getCurrentUser()
+        mProfileSubscription = mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         currentUser -> {
@@ -265,7 +265,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
             return;
         }
 
-        CurrentUser currentUser = mDataManager.getCurrentUser().toBlocking().value();
+        CurrentUser currentUser = mUserDataManager.getCurrentUser().toBlocking().value();
         String displayName = currentUser.displayName;
         String _id = currentUser._id;
         String schoolID = currentUser.schoolId;
@@ -273,12 +273,12 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
         AccountRequest accountRequest = new AccountRequest(displayName,newPassword);
         UserRequest userRequest = new UserRequest(_id,firstName,lastName,email,schoolID,gender);
 
-        mDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
+        mUserDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
             sendToView(v -> v.showPasswordChangeFailed());
             return;
         });
 
-        mProfileSubscription = mDataManager.changeProfileInfo(accountRequest,userRequest)
+        mProfileSubscription = mUserDataManager.changeProfileInfo(accountRequest,userRequest)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userResponse -> {},
                         throwable -> Log.e("Profile","OnError",throwable),

@@ -36,12 +36,6 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
     private NotificationDataManager mNotificationDataManager;
     private UserDataManager mUserDataManager;
 
-    @Override
-    public void detachView() {
-        super.detachView();
-        RxUtil.unsubscribe(mSubscription);
-    }
-
     /* Notifications */
     public void registerDevice() {
         if (mNotificationDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
@@ -65,7 +59,6 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
     public void loadDevices() {
         RxUtil.unsubscribe(mDevicesSubscription);
         mDevicesSubscription = mNotificationDataManager.getDevices()
-
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         devices -> {

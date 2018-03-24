@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -14,7 +15,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -23,11 +26,11 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
+import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
-import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
 import org.schulcloud.mobile.util.CalendarContentUtil;
@@ -67,8 +70,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     // Notifications
     @BindView(R.id.notifications)
     LinearLayout notifications;
-    @BindView(R.id.btn_create_device)
-    BootstrapButton btn_create_device;
     @BindView(R.id.btn_view_devices)
     BootstrapButton btn_view_devices;
 
@@ -132,6 +133,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadContributors(getResources());
     }
+
     @Override
     public void onReadArguments(Intent intent) {
         if (intent.getBooleanExtra(EXTRA_TRIGGER_SYNC, true)) {
@@ -238,9 +240,10 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         DevicesFragment devicesFragment = new DevicesFragment();
         Bundle args = new Bundle();
         devicesFragment.setArguments(args);
-        FragmentManager fragmentTransaction = getSupportFragmentManager();
-        fragmentTransaction.beginTransaction()
-                .add(R.id.fragment_devices_overlay,devicesFragment)
+        devicesFragment.getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_devices_overlay,devicesFragment)
+                .addToBackStack(null)
+                .show(devicesFragment)
                 .commit();
     }
 

@@ -7,7 +7,6 @@ import org.schulcloud.mobile.ui.base.MvpView;
 
 import java.util.List;
 
-
 public interface DevicesMvpView extends MvpView {
     // Notifications
     void showDevices(@NonNull List<Device> devices);

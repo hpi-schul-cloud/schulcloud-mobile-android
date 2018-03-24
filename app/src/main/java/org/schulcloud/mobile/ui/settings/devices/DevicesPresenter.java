@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.schulcloud.mobile.data.DataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
@@ -46,6 +45,7 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
     /* Notifications */
     public void registerDevice() {
         if (mNotificationDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
+
             String token = FirebaseInstanceId.getInstance().getToken();
             Log.d("FirebaseID", "Refreshed token: " + token);
 
@@ -59,12 +59,13 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
                     .subscribe(
                             deviceResponse -> {},
                             throwable -> {},
-                            () -> sendToView(SettingsMvpView::reloadDevices));
+                            () -> sendToView(DevicesMvpView::reloadDevices));
         }
     }
     public void loadDevices() {
         RxUtil.unsubscribe(mDevicesSubscription);
         mDevicesSubscription = mNotificationDataManager.getDevices()
+
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         devices -> {
@@ -72,6 +73,7 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
                                 // TODO: Show something
                             } else
                                 sendToView(view -> view.showDevices(devices));
+
                         },
                         //TODO: Show error
                         throwable -> Timber.e(throwable, "There was an error loading the users."));
@@ -84,7 +86,7 @@ public class DevicesPresenter extends BasePresenter<DevicesMvpView> {
                         voidResponse -> {},
                         throwable -> {},
                         () -> {
-                            sendToView(SettingsMvpView::reloadDevices);
+                            sendToView(DevicesMvpView::reloadDevices);
                             mNotificationDataManager.getPreferencesHelper()
                                     .clear(PreferencesHelper.PREFERENCE_MESSAGING_TOKEN);
                         });

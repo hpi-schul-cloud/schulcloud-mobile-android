@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<LinearLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -42,18 +42,8 @@
                 app:buttonMode="regular"
                 app:roundedCorners="true"
                 app:showOutline="false" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/devices_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="6dp"
-                android:scrollbars="vertical"
-                tools:listitem="@layout/item_device"/>
         </LinearLayout>
     </ScrollView>
 
 </android.support.v4.widget.SwipeRefreshLayout>
-</FrameLayout>
+</LinearLayout>

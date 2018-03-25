@@ -7,17 +7,13 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,17 +24,19 @@ import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
+import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.sync.DeviceSyncService;
 import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.devices.DevicesFragment;
+import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -70,8 +68,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     // Notifications
     @BindView(R.id.notifications)
     LinearLayout notifications;
-    @BindView(R.id.btn_view_devices)
-    BootstrapButton btn_view_devices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +96,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             mPreferencesHelper.saveCalendarSyncEnabled(isChecked);
             updateCalendarSwitch(isChecked, mPreferencesHelper.getCalendarSyncName());
         });
-
-        // Notifications
-        btn_view_devices.setOnClickListener(view -> openDevicesView());
 
         // About
         findViewById(R.id.settings_about_contributors).setOnLongClickListener(v -> {
@@ -231,20 +224,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     // Notifications
     @Override
     public void showSupportsNotifications(boolean supportsNotifications) {
-        ViewUtil.setVisibility(notifications, supportsNotifications);
-    }
-
-    @Override
-    public void openDevicesView()
-    {
-        DevicesFragment devicesFragment = new DevicesFragment();
-        Bundle args = new Bundle();
-        devicesFragment.setArguments(args);
-        devicesFragment.getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_devices_overlay,devicesFragment)
-                .addToBackStack(null)
-                .show(devicesFragment)
-                .commit();
+        //ViewUtil.setVisibility(notifications, supportsNotifications);
     }
 
     // About
@@ -274,5 +254,24 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         startActivity(new Intent(Intent.ACTION_VIEW, data));
     }
 
+    @Override
+    public void showDevices(@NonNull List<Device> devices) {
+        mDevicesAdapter.setDevices(devices);
+        mDevicesAdapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void reloadDevices() {
+        mSettingsPresenter.loadDevices();
+    }
+
+    @Override
+    public void showDevicesEmpty() {
+        mDevicesAdapter.setDevices(Collections.emptyList());
+        mDevicesAdapter.notifyDataSetChanged();
+    }
+
+    public void showDevicesError() {
+        DialogFactory.createGenericErrorDialog(this, "Leider gab es ein problem beim Laden der Geräte");
+    }
 }

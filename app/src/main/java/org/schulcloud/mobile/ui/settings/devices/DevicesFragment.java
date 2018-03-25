@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,7 +37,7 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
     @Inject
     DevicesAdapter mDevicesAdapter;
 
-    @BindView(R.id.devices_recycler_view)
+    @Nullable @BindView(R.id.devices_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swiperefresh;
@@ -85,6 +86,7 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
 
                 Handler handler = new Handler();
                 handler.postDelayed(() -> {
+
                     mDevicesPresenter.loadDevices();
 
                     swiperefresh.setRefreshing(false);
@@ -119,4 +121,5 @@ public class DevicesFragment extends BaseFragment implements DevicesMvpView {
     public void showDevicesError() {
         DialogFactory.createGenericErrorDialog(getContext(), "Leider gab es ein problem beim Laden der Geräte");
     }
+
 }

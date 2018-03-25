@@ -1,10 +1,12 @@
 package org.schulcloud.mobile.ui.settings;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.AwesomeTextView;
@@ -79,6 +81,83 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DevicesV
         public DevicesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public class ExpandableListAdapter extends BaseExpandableListAdapter {
+
+        List<Device> mDevices;
+        Context mContext;
+
+        public void initExpandableListAdapter(Context context, List<Device> devices){
+            mDevices = devices;
+            mContext = context;
+        }
+
+        @Override
+        public int getGroupCount() {
+            return 1;
+        }
+
+        @Override
+        public int getChildrenCount(int group) {
+            return mDevices.size();
+        }
+
+        @Override
+        public Object getGroup(int group) {
+            return group;
+        }
+
+        @Override
+        public Object getChild(int group, int child) {
+            return child;
+        }
+
+        @Override
+        public long getGroupId(int groupPos) {
+            return groupPos;
+        }
+
+        @Override
+        public long getChildId(int group, int childPos) {
+            return childPos;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getGroupView(int group, boolean isExpanded, View view, ViewGroup viewGroup) {
+
+            if(view == null){
+                    LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+                    view = inflater.inflate(R.layout.list_header_devices,null);
+            }
+
+            return view;
+        }
+
+        @Override
+        public View getChildView(int group, int child, boolean isExpanded, View view, ViewGroup viewGroup) {
+            if(view == null){
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.item_device,viewGroup,false);
+                DevicesViewHolder holder = new DevicesAdapter.DevicesViewHolder(view);
+                holder.nameTextView.setText(mDevices.get(child).name);
+                holder.tokenText.setText(mDevices.get(child).token);
+                holder.awesomeTextView.setFontAwesomeIcon("fa_trash");
+                holder.awesomeTextView.setOnClickListener(v -> mDevicesPresenter.deleteDevice(mDevices.get(child)));
+            }
+
+            return view;
+        }
+
+        @Override
+        public boolean isChildSelectable(int i, int i1) {
+            return true;
         }
     }
 }

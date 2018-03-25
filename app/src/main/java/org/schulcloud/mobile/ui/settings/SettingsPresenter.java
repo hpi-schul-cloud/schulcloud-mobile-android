@@ -19,6 +19,7 @@ import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.ui.settings.devices.DevicesMvpView;
 import org.schulcloud.mobile.util.CalendarContentUtil;
 import org.schulcloud.mobile.util.DaysBetweenUtil;
 import org.schulcloud.mobile.util.RxUtil;
@@ -181,6 +182,56 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
     public String[] getContributors() {
         return mContributors;
+    }
+
+
+    /* Notifications */
+    public void registerDevice() {
+        if (mNotificationDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
+
+            String token = FirebaseInstanceId.getInstance().getToken();
+            Log.d("FirebaseID", "Refreshed token: " + token);
+
+            Log.d("FirebaseID", "sending registration to Server");
+            DeviceRequest deviceRequest = new DeviceRequest("firebase", "mobile",
+                    android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")",
+                    mUserDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
+
+            RxUtil.unsubscribe(mEventsSubscription);
+            mEventsSubscription = mNotificationDataManager.createDevice(deviceRequest, token)
+                    .subscribe(
+                            deviceResponse -> {},
+                            throwable -> {},
+                            () -> sendToView(SettingsMvpView::reloadDevices));
+        }
+    }
+    public void loadDevices() {
+        RxUtil.unsubscribe(mDevicesSubscription);
+        mDevicesSubscription = mNotificationDataManager.getDevices()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        devices -> {
+                            if (devices.isEmpty()) {
+                                // TODO: Show something
+                            } else
+                                sendToView(view -> view.showDevices(devices));
+
+                        },
+                        //TODO: Show error
+                        throwable -> Timber.e(throwable, "There was an error loading the users."));
+    }
+    public void deleteDevice(@NonNull Device device) {
+        RxUtil.unsubscribe(mDevicesSubscription);
+        mDevicesSubscription = mNotificationDataManager.deleteDevice(device.token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        voidResponse -> {},
+                        throwable -> {},
+                        () -> {
+                            sendToView(SettingsMvpView::reloadDevices);
+                            mNotificationDataManager.getPreferencesHelper()
+                                    .clear(PreferencesHelper.PREFERENCE_MESSAGING_TOKEN);
+                        });
     }
 
 }

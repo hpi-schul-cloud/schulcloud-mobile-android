@@ -23,10 +23,19 @@ public interface SettingsMvpView extends MvpView {
     // Notifications
     void showSupportsNotifications(boolean supportsNotifications);
 
-    void openDevicesView();
+
+
     // About
     void showContributors(@NonNull String[] contributors);
 
     void showExternalContent(@NonNull Uri uri);
+
+    void showDevices(@NonNull List<Device> devices);
+
+    void reloadDevices();
+
+    void showDevicesEmpty();
+
+    void showDevicesError();
 
 }

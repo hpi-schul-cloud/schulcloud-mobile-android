@@ -58,6 +58,7 @@
                 <data android:pathPattern="/homework/........................" />
                 <data android:path="/files/my" />
                 <data android:path="/files/courses" />
+                <data android:path="/files/file" />
             </intent-filter>
 
         </activity>

@@ -45,6 +45,8 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     private Subscription mDirectoryCreateSubscription;
     private Subscription mDirectoryDeleteSubscription;
 
+    private String fileToOpen = null;
+
     @Inject
     FilesPresenter(FileDataManager fileDataManager, UserDataManager userDataManager,
             CourseDataManager courseDataManager) {
@@ -108,7 +110,21 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         mFileSubscription = mFileDataManager.getFiles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        files -> sendToView(view -> view.showFiles(files)),
+                        files -> {
+                            sendToView(view -> view.showFiles(files));
+
+                            if (fileToOpen == null)
+                                return;
+                            for (File file : files)
+                                if (file.name.equals(fileToOpen)) {
+                                    onFileSelected(file);
+                                    fileToOpen = null;
+                                    return;
+                                }
+
+                            sendToView(v -> v.showFileError_notFound(fileToOpen));
+                            fileToOpen = null;
+                        },
                         error -> {
                             Timber.e(error, "There was an error loading the files.");
                             sendToView(FilesMvpView::showFilesLoadError);
@@ -260,11 +276,13 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      * @param directory The selected directory
      */
     public void onDirectorySelected(@NonNull Directory directory) {
-        onDirectorySelected(PathUtil.combine(directory.path, directory.name));
+        onDirectorySelected(PathUtil.combine(directory.path, directory.name), null);
     }
-    public void onDirectorySelected(@Nullable String path) {
+    public void onDirectorySelected(@Nullable String path, @Nullable String file) {
         if (path == null)
             return;
+
+        fileToOpen = file;
 
         mFileDataManager.setStorageContext(path);
         loadBreadcrumbs();
@@ -325,7 +343,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
 
         // first two parts are meta
         if (storageContext.split("/", 4).length > 3) {
-            onDirectorySelected(PathUtil.parent(storageContext));
+            onDirectorySelected(PathUtil.parent(storageContext), null);
             return true;
         }
         return false;

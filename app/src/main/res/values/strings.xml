@@ -60,6 +60,7 @@
     <string name="files_file_action_delete">Löschen</string>
     <string name="files_directory_action_delete">@string/files_file_action_delete</string>
     <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
+    <string name="files_fileLoad_error_notFound">Die Datei \'%1$s\' wurde nicht gefunden</string>
     <string name="files_fileDownload_progress">Die Datei wird geladen&#8230;</string>
     <string name="files_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
     <string name="files_fileDownload_error">Die Datei konnte nicht geladen werden</string>
@@ -161,6 +162,7 @@
     <string name="web_protocol_http" translatable="false">http://</string>
     <string name="web_protocol_https" translatable="false">https://</string>
     <string name="website">https://schul-cloud.org</string>
+    <string name="web_error_linkNotSupported">Dieser Link kann aktuell nicht geöffnet werden</string>
 
     <!--Generic dialogs-->
     <string name="dialog_action_ok">OK</string>

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -79,13 +81,17 @@ public final class WebUtil {
 
     public static final String PATH_INTERNAL_FILES = "files";
     public static final String PATH_INTERNAL_FILES_PARAM_DIR = "dir";
+    public static final String PATH_INTERNAL_FILES_PARAM_PATH = "path";
+    public static final String PATH_INTERNAL_FILES_PARAM_FILE = "file";
     public static final String PATH_INTERNAL_FILES_MY = "my";
     public static final String PATH_INTERNAL_FILES_COURSES = "courses";
     public static final String PATH_INTERNAL_FILES_SHARED = "shared";
+    public static final String PATH_INTERNAL_FILES_FILE = "file";
     public static final String[] PATHS_INTERNAL_FILES = {
             PATH_INTERNAL_FILES_MY,
             PATH_INTERNAL_FILES_COURSES,
-            PATH_INTERNAL_FILES_SHARED};
+            PATH_INTERNAL_FILES_SHARED,
+            PATH_INTERNAL_FILES_FILE};
 
     public static final String[] PATHS_INTERNAL = {
             PATH_INTERNAL_DASHBOARD,
@@ -144,7 +150,7 @@ public final class WebUtil {
             pathEnd = path.get(path.size() - 1).toLowerCase();
         }
 
-        // Internal links can be handled by the app/
+        // Internal links can be handled by the app
         if ((scheme.equals(SCHEME_HTTP) || scheme.equals(SCHEME_HTTPS))
                 && (host.equals(HOST_SCHULCLOUD_ORG) || host.equals(HOST_SCHUL_CLOUD_ORG))
                 && path.size() > 0
@@ -186,9 +192,9 @@ public final class WebUtil {
                         newFragment = FileOverviewFragment.newInstance(false);
                     else if (path.size() == 2
                             && ListUtils.contains(PATHS_INTERNAL_FILES, pathEnd)) {
-                        String filePath = parseUrlPath(url);
+                        String[] filePath = parseUrlPath(url);
                         if (filePath != null)
-                            newFragment = FilesFragment.newInstance(filePath);
+                            newFragment = FilesFragment.newInstance(filePath[0], filePath[1]);
                     }
                     break;
             }
@@ -200,7 +206,7 @@ public final class WebUtil {
                     mainActivity.addFragment(fragment, newFragment);
                 return;
             } else {
-                Toast.makeText(mainActivity, "Dieser Link kann aktuell nicht geöffnet werden",
+                Toast.makeText(mainActivity, R.string.web_error_linkNotSupported,
                         Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -209,12 +215,13 @@ public final class WebUtil {
         newCustomTab(mainActivity).launchUrl(mainActivity, url);
     }
     @Nullable
-    private static String parseUrlPath(@NonNull Uri url) {
+    private static String[] parseUrlPath(@NonNull Uri url) {
         List<String> segments = url.getPathSegments();
         if (!segments.get(0).toLowerCase().equals(PATH_INTERNAL_FILES))
             return null;
 
         String path;
+        String file = null;
         String dir;
         switch (segments.get(1).toLowerCase()) {
             case PATH_INTERNAL_FILES_MY:
@@ -234,10 +241,20 @@ public final class WebUtil {
                 }
                 break;
 
+            case PATH_INTERNAL_FILES_FILE:
+                path = url.getQueryParameter(PATH_INTERNAL_FILES_PARAM_FILE);
+                if (TextUtils.isEmpty(path))
+                    path = url.getQueryParameter(PATH_INTERNAL_FILES_PARAM_PATH);
+
+                String[] pathSegments = PathUtil.getAllParts(path);
+                file = pathSegments[pathSegments.length - 1];
+                path = PathUtil.combine(Arrays.copyOf(pathSegments, pathSegments.length - 1));
+                break;
+
             case PATH_INTERNAL_FILES_SHARED: // Not supported yet
             default:
                 return null;
         }
-        return path;
+        return new String[]{path, file};
     }
 }

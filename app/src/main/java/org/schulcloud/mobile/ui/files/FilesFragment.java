@@ -55,6 +55,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
         implements FilesMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
     private static final String ARGUMENT_PATH = "ARGUMENT_PATH";
+    private static final String ARGUMENT_FILE = "ARGUMENT_FILE";
 
     @Inject
     FilesPresenter mPresenter;
@@ -90,11 +91,11 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
 
     @NonNull
     public static FilesFragment newInstance() {
-        return newInstance(true, null);
+        return newInstance(true, null, null);
     }
     @NonNull
-    public static FilesFragment newInstance(@NonNull String path) {
-        return newInstance(true, path);
+    public static FilesFragment newInstance(@NonNull String path, String file) {
+        return newInstance(true, path, file);
     }
     /**
      * Creates a new instance of this fragment.
@@ -105,12 +106,13 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
      */
     @NonNull
     public static FilesFragment newInstance(boolean triggerDataSyncOnCreate,
-            @Nullable String path) {
+            @Nullable String path, @Nullable String file) {
         FilesFragment filesFragment = new FilesFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_TRIGGER_SYNC, triggerDataSyncOnCreate);
         args.putString(ARGUMENT_PATH, path);
+        args.putString(ARGUMENT_FILE, file);
         filesFragment.setArguments(args);
 
         return filesFragment;
@@ -132,7 +134,8 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
             restartService(FileSyncService.getStartIntent(getContext()));
             restartService(DirectorySyncService.getStartIntent(getContext()));
         }
-        mPresenter.onDirectorySelected(args.getString(ARGUMENT_PATH));
+        mPresenter.onDirectorySelected(args.getString(ARGUMENT_PATH),
+                args.getString(ARGUMENT_FILE));
     }
     @Nullable
     @Override
@@ -247,7 +250,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
 
         @Override
         public void onClick(View widget) {
-            mPresenter.onDirectorySelected(mPath);
+            mPresenter.onDirectorySelected(mPath, null);
         }
         @Override
         public void updateDrawState(TextPaint ds) {
@@ -302,6 +305,11 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
             DialogFactory.createGenericErrorDialog(getContext(),
                     getString(R.string.files_fileDownload_error_cantResolve, extension))
                     .show();
+    }
+    @Override
+    public void showFileError_notFound(@NonNull String fileName) {
+        DialogFactory.createGenericErrorDialog(getContext(),
+                getString(R.string.files_fileLoad_error_notFound, fileName)).show();
     }
     @Override
     public void saveFile(@NonNull String fileName, @NonNull ResponseBody body) {

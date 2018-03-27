@@ -19,7 +19,9 @@ import timber.log.Timber;
 @Singleton
 public class CourseDatabaseHelper extends BaseDatabaseHelper {
     @Inject
-    CourseDatabaseHelper(Provider<Realm> realmProvider) {super(realmProvider);}
+    CourseDatabaseHelper(Provider<Realm> realmProvider) {
+        super(realmProvider);
+    }
 
     public Observable<Course> setCourses(final Collection<Course> newCourse) {
         return Observable.create(subscriber -> {
@@ -50,7 +52,7 @@ public class CourseDatabaseHelper extends BaseDatabaseHelper {
     }
 
     public Course getCourseForId(String courseId) {
-        final Realm realm = mRealmProvider.get();
-        return realm.where(Course.class).equalTo("_id", courseId).findFirst();
+        Realm realm = mRealmProvider.get();
+        return realm.copyFromRealm(realm.where(Course.class).equalTo("_id", courseId).findFirst());
     }
 }

@@ -315,7 +315,9 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
-            vCl_wrapper.setOnClickListener(v -> show());
+            vCl_wrapper.setOnClickListener(v -> WebUtil
+                    .openUrl(getMainActivity(),
+                            Uri.parse(GEOGEBRA + getItem().content.materialId)));
         }
         @Override
         void onItemSet(@NonNull Contents item) {
@@ -354,10 +356,6 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(uri -> Picasso.with(getContext()).load(uri).into(vIv_preview),
                             throwable -> {});
-        }
-        private void show() {
-            WebUtil.openUrl(getMainActivity(),
-                    Uri.parse(GEOGEBRA + getItem().content.materialId));
         }
     }
     class EtherpadViewHolder extends WebViewHolder<Contents> {

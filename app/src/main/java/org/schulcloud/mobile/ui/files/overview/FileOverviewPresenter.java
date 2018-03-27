@@ -29,7 +29,12 @@ public class FileOverviewPresenter extends BasePresenter<FileOverviewMvpView> {
         mCourseDataManager = courseDataManager;
         sendToView(v -> load());
     }
-
+    @Override
+    public void onViewAttached(@NonNull FileOverviewMvpView view) {
+        super.onViewAttached(view);
+        if (!mIsFirstLoad)
+            mFileDataManager.setStorageContextToRoot();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

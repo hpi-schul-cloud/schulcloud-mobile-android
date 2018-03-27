@@ -100,22 +100,24 @@ public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, File
         setTitle(R.string.files_title);
 
         ViewUtil.initSwipeRefreshColors(vSwipeRefresh);
-        vSwipeRefresh.setOnRefreshListener(
-                () -> {
-                    startService(CourseSyncService.getStartIntent(getContext()));
+        vSwipeRefresh.setOnRefreshListener(() -> {
+            startService(CourseSyncService.getStartIntent(getContext()));
+            new Handler().postDelayed(() -> {
+                mFileOverviewPresenter.load();
 
-                    new Handler().postDelayed(() -> {
-                        mFileOverviewPresenter.load();
-
-                        vSwipeRefresh.setRefreshing(false);
-                    }, 3000);
-                }
-        );
+                vSwipeRefresh.setRefreshing(false);
+            }, 3000);
+        });
 
         vC_myWrapper.setOnClickListener(v -> mFileOverviewPresenter.showMyFiles());
 
         vRv_coursesList.setAdapter(mCourseDirectoryAdapter);
-        vRv_coursesList.setLayoutManager(new LinearLayoutManager(getContext()));
+        vRv_coursesList.setLayoutManager(new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
 
         return view;
     }

@@ -45,7 +45,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     private Subscription mDirectoryCreateSubscription;
     private Subscription mDirectoryDeleteSubscription;
 
-    private String fileToOpen = null;
+    private String mFileToOpen = null;
 
     @Inject
     FilesPresenter(FileDataManager fileDataManager, UserDataManager userDataManager,
@@ -113,17 +113,17 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
                         files -> {
                             sendToView(view -> view.showFiles(files));
 
-                            if (fileToOpen == null)
+                            if (mFileToOpen == null)
                                 return;
                             for (File file : files)
-                                if (file.name.equals(fileToOpen)) {
+                                if (file.name.equals(mFileToOpen)) {
                                     onFileSelected(file);
-                                    fileToOpen = null;
+                                    mFileToOpen = null;
                                     return;
                                 }
 
-                            sendToView(v -> v.showFileError_notFound(fileToOpen));
-                            fileToOpen = null;
+                            sendToView(v -> v.showFileError_notFound(mFileToOpen));
+                            mFileToOpen = null;
                         },
                         error -> {
                             Timber.e(error, "There was an error loading the files.");
@@ -282,7 +282,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         if (path == null)
             return;
 
-        fileToOpen = file;
+        mFileToOpen = file;
 
         mFileDataManager.setStorageContext(path);
         loadBreadcrumbs();

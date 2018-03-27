@@ -284,14 +284,14 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
         private static final String GEOGEBRA_API = "http://www.geogebra.org/api/json.php";
         // language=json
         private static final String GEOGEBRA_REQUEST_PREFIX = "{ \"request\": {\n"
-                + "  \"-api\": \"1.0.0\"\n"
+                + "  \"-api\": \"1.0.0\",\n"
                 + "  \"task\": {\n"
                 + "    \"-type\": \"fetch\",\n"
                 + "    \"fields\": {\n"
                 + "      \"field\": [\n"
                 + "        { \"-name\": \"preview_url\" }\n"
                 + "      ]\n"
-                + "    }\n"
+                + "    },\n"
                 + "    \"filters\" : {\n"
                 + "      \"field\": [\n"
                 + "        { \"-name\":\"id\", \"#text\":\"";
@@ -304,74 +304,18 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
                 + "}\n"
                 + "}";
 
-        // language=HTML
-        private static final String CONTENT_PREFIX = "<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "<head>\n"
-                + "  <meta charset=\"utf-8\" />\n"
-                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-                + "  <script src=\"/vendor/geoGebra/deployggb.js\"></script>\n"
-                + "</head>\n"
-                + "<body>\n"
-                + "  <div id=\"container\"></div>\n"
-                + "  <script>\n"
-                + "    var applet1 = new GGBApplet({material_id: \"";
-        // language=HTML
-        private static final String CONTENT_SUFFIX =
-                "\", borderColor:\"transparent\", showFullscreenButton:true}, true);\n"
-                        + "    applet1.inject('container');\n"
-                        + "  </script>"
-                        + "</body>\n"
-                        + "</html>\n";
-
         @BindView(R.id.contentGeogebra_cl_wrapper)
         ConstraintLayout vCl_wrapper;
         @BindView(R.id.contentGeogebra_tv_title)
         TextView vTv_title;
-        @BindView(R.id.contentGeogebra_iv_open)
-        ImageView vIv_open;
-        @BindView(R.id.contentGeogebra_wv_content)
-        WebView vWv_content;
         @BindView(R.id.contentGeogebra_iv_preview)
         ImageView vIv_preview;
-        @BindView(R.id.contentGeogebra_pb_loading)
-        ProgressBar vPb_loading;
 
-        @SuppressLint("SetJavaScriptEnabled")
         GeogebraViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
             super(userDataManager, itemView);
             ButterKnife.bind(this, itemView);
 
-            vIv_open.setOnClickListener(v -> WebUtil.openUrl(getMainActivity(),
-                    Uri.parse(GEOGEBRA + getItem().content.materialId)));
-
-            vIv_preview.setOnClickListener(v -> load());
-
-            vWv_content.getSettings().setJavaScriptEnabled(true);
-            vWv_content.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    vWv_content.loadUrl(
-                            "javascript:MyApp.resize(document.body.getBoundingClientRect().height)");
-                }
-            });
-            vWv_content.addJavascriptInterface(this, "MyApp");
-            vWv_content.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    ViewUtil.setVisibility(vIv_preview, false);
-                    ViewUtil.setVisibility(vPb_loading, false);
-                    ViewUtil.setVisibility(vWv_content, true);
-                }
-            });
-        }
-        @JavascriptInterface
-        public void resize(final float height) {
-            getMainActivity().runOnUiThread(() -> vWv_content.setLayoutParams(
-                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-
-                            (int) (height * getContext().getResources()
-                                    .getDisplayMetrics().density))));
+            vCl_wrapper.setOnClickListener(v -> show());
         }
         @Override
         void onItemSet(@NonNull Contents item) {
@@ -380,7 +324,6 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             if (!isVisible)
                 return;
 
-            ViewUtil.setVisibility(vCl_wrapper, !isHidden(item));
             vTv_title.setText(item.title);
 
             loadPreviewImage();
@@ -388,8 +331,6 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
 
         private void loadPreviewImage() {
             ViewUtil.setVisibility(vIv_preview, true);
-            ViewUtil.setVisibility(vPb_loading, false);
-            ViewUtil.setVisibility(vWv_content, false);
             Single.just(getItem().content.materialId)
                     .flatMap(materialId -> Single.<String>create(subscriber -> {
                         try {
@@ -412,16 +353,11 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(uri -> Picasso.with(getContext()).load(uri).into(vIv_preview),
-                            throwable -> load());
+                            throwable -> {});
         }
-        private void load() {
-            ViewUtil.setVisibility(vPb_loading, true);
-            vWv_content
-                    .loadDataWithBaseURL(null, null, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
-                            null);
-            vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_PREFIX + getItem().content.materialId + CONTENT_SUFFIX,
-                    WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
+        private void show() {
+            WebUtil.openUrl(getMainActivity(),
+                    Uri.parse(GEOGEBRA + getItem().content.materialId));
         }
     }
     class EtherpadViewHolder extends WebViewHolder<Contents> {

@@ -7,6 +7,7 @@
     style="@style/SchulCloud.Content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <TextView
@@ -24,7 +25,6 @@
         style="@style/SchulCloud.Content_LinkExternal"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="@+id/contentGeogebra_tv_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/contentGeogebra_tv_title" />
@@ -36,34 +36,13 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="contentGeogebra_tv_title,contentGeogebra_iv_open" />
 
-    <WebView
-        android:id="@+id/contentGeogebra_wv_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:scrollbars="none"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/contentGeogebra_b_header"
-        tools:ignore="WebViewLayout" />
-
     <ImageView
         android:id="@+id/contentGeogebra_iv_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contentGeogebra_b_header"
         tools:layout_height="192dp" />
-
-    <ProgressBar
-        android:id="@+id/contentGeogebra_pb_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/contentGeogebra_iv_preview"
-        app:layout_constraintEnd_toEndOf="@id/contentGeogebra_iv_preview"
-        app:layout_constraintStart_toStartOf="@id/contentGeogebra_iv_preview"
-        app:layout_constraintTop_toTopOf="@id/contentGeogebra_iv_preview" />
 
 </android.support.constraint.ConstraintLayout>

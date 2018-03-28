@@ -40,6 +40,12 @@
             android:label="@string/settings_title"
             android:parentActivityName=".ui.main.MainActivity" />
 
+        <activity
+            android:name=".ui.settings.changeProfile.ChangeProfileActivity"
+            android:label="@string/settings_title"
+            android:parentActivityName=".ui.settings.SettingsActivity"
+            android:noHistory="true"/>
+
         <service
             android:name=".util.firebase.MessagingService"
             android:enabled="true"

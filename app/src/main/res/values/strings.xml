@@ -153,7 +153,10 @@
     <string name="settings_user">Nutzer-Einstellungen</string>
     <string name="settings_newPasswordHint">Neues Passwort eingeben</string>
     <string name="settings_newPasswordRepeatHint">Neues Passwort wiederholen</string>
-    <string name="settings_showPasswordChangeFailed">Verändern des Passwortes fehlgeschlagen: Aktuelles Passwort ist falsch oder die neuen Passwörter gleichen einander nicht!</string>
+    <string name="settings_showPasswordChangeFailed">Verändern des Passwortes fehlgeschlagen: Aktuelles Passwort ist falsch oder die neuen Passwörter gleichen einander nicht!</string>4
+    <string name="settings_passwordControlFailed">Das Password muss mindestens 8 Zeichen lang sein, sowie kleine und große Buchstaben beinhalten.</string>
+    <string name="settings_profileChangeSuccess">Dein Profil wurde verändert</string>
+    <string name="settings_openChangeProfile">Profil verändern</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.data.remote;
 
+import android.accounts.Account;
+
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -134,4 +136,7 @@ public interface RestService {
 
     @PATCH("accounts/{_id}")
     Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
+
+    @GET("accounts?$populate[4]=userId")
+    Observable<List<AccountResponse>> getAccountInfo(@Header ("Authorization") String accessToken);
 }

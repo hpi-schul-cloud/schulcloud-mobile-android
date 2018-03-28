@@ -34,17 +34,15 @@ public interface SettingsMvpView extends MvpView {
     void showExternalContent(@NonNull Uri uri);
 
     //Profile
-    void showSupportsProfile(boolean supportsProfile);
+    void openChangeProfile();
 
     void showProfile(@NonNull CurrentUser user);
 
-    void showProfileError();
+    void reloadProfile();
 
     void showProfileChanged();
 
-    void reloadProfile();
+    void showProfileError();
 
-    void showPasswordChangeFailed();
-
-    void showPasswordBad();
+    void showSupportsProfile(boolean supportsProfile);
 }

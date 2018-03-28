@@ -251,6 +251,10 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
         @Override
         public void onClick(View widget) {
             mPresenter.onDirectorySelected(mPath, null);
+
+            // Realm doesn't trigger a notification if a table was and stays empty, so in case of a
+            // manual refresh in an empty directory the refresh indicator would never terminate.
+            new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
         }
         @Override
         public void updateDrawState(TextPaint ds) {

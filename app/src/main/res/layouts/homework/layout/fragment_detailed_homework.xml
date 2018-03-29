@@ -52,7 +52,7 @@
                 android:layout_below="@+id/homeworkDescription"
                 android:layout_marginEnd="@dimen/text_colon_space"
                 android:layout_marginRight="@dimen/text_colon_space"
-                android:text="@string/homework_homework_due" />
+                android:text="@string/homework_homework_date" />
 
             <RelativeLayout
                 android:id="@+id/nonPrivate"

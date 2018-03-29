@@ -105,7 +105,7 @@
     <string name="homework_homework_course_none">Keine Zuordnung</string>
     <string name="homework_homework_private">Private Aufgabe (nur für mich sichtbar)</string>
     <string name="homework_homework_description">Aufgabenstellung</string>
-    <string name="homework_homework_due">Abgabe bis:</string>
+    <string name="homework_homework_date">Abgabe bis: </string>
     <string name="homework_homework_processingTime">Bearbeitungszeit:</string>
     <string name="homework_homework_dateDash">&#8211;</string>
     <string name="homework_homework_publicSubmissions">Schülerabgaben untereinander sichtbar</string>

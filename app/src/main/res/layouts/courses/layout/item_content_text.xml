@@ -2,9 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentText_ll_wrapper"
     style="@style/SchulCloud.Content"
     android:layout_width="match_parent"
-    android:id="@+id/contentText_ll_wrapper"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -18,8 +18,8 @@
         tools:text="Content name"
         tools:visibility="visible" />
 
-    <WebView
-        android:id="@+id/contentText_wv_content"
+    <org.schulcloud.mobile.ui.common.ContentWebView
+        android:id="@+id/contentText_cwv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"

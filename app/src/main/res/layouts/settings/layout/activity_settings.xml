@@ -110,7 +110,7 @@
 
             </LinearLayout>
 
-            <org.schulcloud.mobile.ui.layouts.ListItemLayout
+            <org.schulcloud.mobile.ui.common.layouts.ListItemLayout
                 android:id="@+id/about_github"
                 style="@style/ListItemPreference"
                 android:layout_width="match_parent"
@@ -128,9 +128,9 @@
                     app:layout_position="endIcon"
                     app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
-            </org.schulcloud.mobile.ui.layouts.ListItemLayout>
+            </org.schulcloud.mobile.ui.common.layouts.ListItemLayout>
 
-            <org.schulcloud.mobile.ui.layouts.ListItemLayout
+            <org.schulcloud.mobile.ui.common.layouts.ListItemLayout
                 android:id="@+id/about_contact"
                 style="@style/ListItemPreference"
                 android:layout_width="match_parent"
@@ -148,9 +148,9 @@
                     app:layout_position="endIcon"
                     app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
-            </org.schulcloud.mobile.ui.layouts.ListItemLayout>
+            </org.schulcloud.mobile.ui.common.layouts.ListItemLayout>
 
-            <org.schulcloud.mobile.ui.layouts.ListItemLayout
+            <org.schulcloud.mobile.ui.common.layouts.ListItemLayout
                 android:id="@+id/about_imprint"
                 style="@style/ListItemPreference"
                 android:layout_width="match_parent"
@@ -168,9 +168,9 @@
                     app:layout_position="endIcon"
                     app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
-            </org.schulcloud.mobile.ui.layouts.ListItemLayout>
+            </org.schulcloud.mobile.ui.common.layouts.ListItemLayout>
 
-            <org.schulcloud.mobile.ui.layouts.ListItemLayout
+            <org.schulcloud.mobile.ui.common.layouts.ListItemLayout
                 android:id="@+id/about_privacyPolicy"
                 style="@style/ListItemPreference"
                 android:layout_width="match_parent"
@@ -188,7 +188,7 @@
                     app:layout_position="endIcon"
                     app:srcCompat="@drawable/ic_open_in_new_dark_24dp" />
 
-            </org.schulcloud.mobile.ui.layouts.ListItemLayout>
+            </org.schulcloud.mobile.ui.common.layouts.ListItemLayout>
 
         </LinearLayout>
 

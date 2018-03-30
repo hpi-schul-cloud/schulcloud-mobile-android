@@ -53,8 +53,8 @@ public abstract class WebViewHolder<T> extends BaseViewHolder<T> {
             + "</body>\n"
             + "</html>\n";
 
-    protected final OkHttpClient CLIENT_INTERNAL;
-    protected final OkHttpClient CLIENT_EXTERNAL;
+    public final OkHttpClient CLIENT_INTERNAL;
+    public final OkHttpClient CLIENT_EXTERNAL;
 
     @Inject
     UserDataManager mUserDataManager;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.schulcloud.mobile.ui.layouts.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.schulcloud.mobile.ui.common.layouts.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/directoryCourse_lil_wrapper"
@@ -22,4 +23,4 @@
         android:textColor="@color/hpiRed"
         tools:text="12 Math" />
 
-</org.schulcloud.mobile.ui.layouts.ListItemLayout>
+</org.schulcloud.mobile.ui.common.layouts.ListItemLayout>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Content"
     android:layout_width="match_parent"
@@ -7,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/homeworkName"
+        android:id="@+id/homeworkDetailed_tv_name"
         style="@style/Content_Title.Margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,47 +21,42 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             style="@style/Content.Padding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Wrapper is required, otherwise the WebView doesn't expand -->
+            <FrameLayout
+                android:id="@+id/homeworkDetailed_fl_descriptionWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <org.schulcloud.mobile.ui.common.ContentWebView
+                    android:id="@+id/homeworkDetailed_cwv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    tools:ignore="WebViewLayout"
+                    tools:text="Homework description\n\nmultiline" />
+            </FrameLayout>
 
             <TextView
-                android:id="@+id/homeworkDescription"
+                android:id="@+id/homeworkDetailed_tv_due"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                tools:text="HomeworkDescription" />
-
-
-            <TextView
-                android:id="@+id/homeworkDue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/homeworkDuePlaceholder"
-                android:layout_alignBottom="@+id/homeworkDuePlaceholder"
-                android:layout_toEndOf="@+id/homeworkDuePlaceholder"
-                android:layout_toRightOf="@+id/homeworkDuePlaceholder"
-                tools:text="01.01.2017 15:00" />
-
-            <TextView
-                android:id="@+id/homeworkDuePlaceholder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/homeworkDescription"
                 android:layout_marginEnd="@dimen/text_colon_space"
                 android:layout_marginRight="@dimen/text_colon_space"
-                android:text="@string/homework_homework_date" />
+                android:layout_marginTop="10dp"
+                android:text="@string/homework_homework_due"
+                app:layout_constraintTop_toBottomOf="@+id/homeworkDetailed_fl_descriptionWrapper" />
 
             <RelativeLayout
                 android:id="@+id/nonPrivate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/homeworkDue"
                 android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/homeworkDetailed_tv_due"
                 tools:visibility="visible">
 
                 <TextView
@@ -118,7 +115,7 @@
 
             </RelativeLayout>
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
 

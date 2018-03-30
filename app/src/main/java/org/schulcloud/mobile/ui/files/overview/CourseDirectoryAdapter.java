@@ -11,7 +11,7 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.injection.ConfigPersistent;
-import org.schulcloud.mobile.ui.layouts.ListItemLayout;
+import org.schulcloud.mobile.ui.common.layouts.ListItemLayout;
 
 import java.util.ArrayList;
 import java.util.List;

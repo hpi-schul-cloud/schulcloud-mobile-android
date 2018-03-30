@@ -1,12 +1,8 @@
 package org.schulcloud.mobile.ui.courses.topic;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,14 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -34,6 +25,7 @@ import org.schulcloud.mobile.data.model.responseBodies.GeogebraResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.base.BaseAdapter;
+import org.schulcloud.mobile.ui.common.ContentWebView;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.WebUtil;
@@ -68,8 +60,6 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
     @Inject
     DetailedCoursePresenter mDetailedCoursePresenter;
     @Inject
-    UserDataManager mUserDataManger;
-    @Inject
     Gson mGson;
 
     @Inject
@@ -87,19 +77,19 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case 0:
-                return new TextViewHolder(mUserDataManger,
+                return new TextViewHolder(
                         inflater.inflate(R.layout.item_content_text, parent, false));
             case 1:
                 return new ResourcesViewHolder(
                         inflater.inflate(R.layout.item_content_resources, parent, false));
             case 2:
-                return new GeogebraViewHolder(mUserDataManger,
+                return new GeogebraViewHolder(
                         inflater.inflate(R.layout.item_content_geogebra, parent, false));
             case 3:
-                return new EtherpadViewHolder(mUserDataManger,
+                return new EtherpadViewHolder(
                         inflater.inflate(R.layout.item_content_etherpad, parent, false));
             case 4:
-                return new NexboardViewHolder(mUserDataManger,
+                return new NexboardViewHolder(
                         inflater.inflate(R.layout.item_content_nexboard, parent, false));
 
             default:
@@ -155,72 +145,18 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
                     .getString(R.string.courses_contentUnsupported_message, item.component));
         }
     }
-    class TextViewHolder extends WebViewHolder<Contents> {
+    class TextViewHolder extends BaseViewHolder<Contents> {
 
         @BindView(R.id.contentText_ll_wrapper)
         LinearLayout vLl_wrapper;
         @BindView(R.id.contentText_tv_title)
         TextView vTv_title;
-        @BindView(R.id.contentText_wv_content)
-        WebView vWv_content;
+        @BindView(R.id.contentText_cwv_content)
+        ContentWebView vCwv_content;
 
-        @SuppressLint("SetJavaScriptEnabled")
-        TextViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
-            super(userDataManager, itemView);
+        TextViewHolder(@NonNull View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
-
-            vWv_content.getSettings().setJavaScriptEnabled(true);
-            vWv_content.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    openUrl(Uri.parse(url));
-                    return true;
-                }
-                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    openUrl(request.getUrl());
-                    return true;
-                }
-                private void openUrl(@NonNull Uri url) {
-                    WebUtil.openUrl(getMainActivity(), url);
-                }
-
-                @Override
-                public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                    return handleRequest(url);
-                }
-                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public WebResourceResponse shouldInterceptRequest(WebView view,
-                        WebResourceRequest request) {
-                    return handleRequest(request.getUrl().toString());
-                }
-                @Nullable
-                private WebResourceResponse handleRequest(@NonNull String url) {
-                    try {
-                        OkHttpClient okHttpClient;
-                        if (url.startsWith(WebUtil.URL_BASE))
-                            okHttpClient = CLIENT_INTERNAL;
-                        else
-                            okHttpClient = CLIENT_EXTERNAL;
-
-                        Response response =
-                                okHttpClient.newCall(new Request.Builder().url(url).build())
-                                        .execute();
-                        return new WebResourceResponse(
-                                response.header(WebUtil.HEADER_CONTENT_TYPE,
-                                        WebUtil.MIME_TEXT_PLAIN),
-                                response.header(WebUtil.HEADER_CONTENT_TYPE,
-                                        WebUtil.ENCODING_UTF_8),
-                                response.body().byteStream()
-                        );
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }
-            });
-            vWv_content.setBackgroundColor(Color.TRANSPARENT);
         }
         @Override
         void onItemSet(@NonNull Contents item) {
@@ -231,13 +167,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
 
             ViewUtil.setText(vTv_title, item.title);
 
-            vWv_content
-                    .loadDataWithBaseURL(null, null, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
-                            null);
-            vWv_content.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_TEXT_PREFIX + (item.content.text != null ? item.content.text : "")
-                            + CONTENT_TEXT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8,
-                    null);
+            vCwv_content.setContent(item.content.text);
         }
     }
     public class ResourcesViewHolder extends BaseViewHolder<Contents> {
@@ -277,7 +207,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             mResourcesAdapter.setResources(item.content.resources);
         }
     }
-    class GeogebraViewHolder extends WebViewHolder<Contents> {
+    class GeogebraViewHolder extends BaseViewHolder<Contents> {
         private final String TAG = GeogebraViewHolder.class.getSimpleName();
 
         private static final String GEOGEBRA = "https://www.geogebra.org/m/";
@@ -303,6 +233,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
                 + "  }\n"
                 + "}\n"
                 + "}";
+        private final OkHttpClient HTTP_CLIENT = new OkHttpClient();
 
         @BindView(R.id.contentGeogebra_cl_wrapper)
         ConstraintLayout vCl_wrapper;
@@ -311,14 +242,15 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
         @BindView(R.id.contentGeogebra_iv_preview)
         ImageView vIv_preview;
 
-        GeogebraViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
-            super(userDataManager, itemView);
+        GeogebraViewHolder(@NonNull View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
 
             vCl_wrapper.setOnClickListener(v -> WebUtil
                     .openUrl(getMainActivity(),
                             Uri.parse(GEOGEBRA + getItem().content.materialId)));
         }
+
         @Override
         void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
@@ -330,13 +262,12 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
 
             loadPreviewImage();
         }
-
         private void loadPreviewImage() {
             ViewUtil.setVisibility(vIv_preview, true);
             Single.just(getItem().content.materialId)
                     .flatMap(materialId -> Single.<String>create(subscriber -> {
                         try {
-                            Response responseRaw = CLIENT_EXTERNAL.newCall(new Request.Builder()
+                            Response responseRaw = HTTP_CLIENT.newCall(new Request.Builder()
                                     .url(GEOGEBRA_API)
                                     .post(RequestBody
                                             .create(MediaType.parse(WebUtil.MIME_APPLICATION_JSON),
@@ -358,7 +289,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
                             throwable -> {});
         }
     }
-    class EtherpadViewHolder extends WebViewHolder<Contents> {
+    class EtherpadViewHolder extends BaseViewHolder<Contents> {
 
         @BindView(R.id.contentEtherpad_cl_wrapper)
         ConstraintLayout vCl_wrapper;
@@ -372,8 +303,8 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
         WebView vWv_content;
 
         @SuppressLint("SetJavaScriptEnabled")
-        EtherpadViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
-            super(userDataManager, itemView);
+        EtherpadViewHolder(@NonNull View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v ->
@@ -397,7 +328,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             vWv_content.loadUrl(getItem().content.url);
         }
     }
-    class NexboardViewHolder extends WebViewHolder<Contents> {
+    class NexboardViewHolder extends BaseViewHolder<Contents> {
         private static final String URL_SUFFIX = "?username=Test&stickypad=false";
 
         @BindView(R.id.contentNexboard_cl_wrapper)
@@ -412,8 +343,8 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
         WebView vWv_content;
 
         @SuppressLint("SetJavaScriptEnabled")
-        NexboardViewHolder(@NonNull UserDataManager userDataManager, @NonNull View itemView) {
-            super(userDataManager, itemView);
+        NexboardViewHolder(@NonNull View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
 
             vIv_open.setOnClickListener(v -> WebUtil

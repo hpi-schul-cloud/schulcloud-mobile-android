@@ -74,6 +74,7 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
                     homework.courseId.name, homework.name));
         else
             holder.vTv_name.setText(homework.name);
+
         holder.vTv_description.setText(Html.fromHtml(homework.description));
 
         Date untilDate = null;
@@ -82,11 +83,9 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ViewUtil.setVisibility(holder.vTv_date, untilDate != null);
+        ViewUtil.setVisibility(holder.vTv_due, untilDate != null);
         if (untilDate != null) {
-            holder.vTv_date.setText(dateFormatDeux.format(untilDate));
-
-            String dateTitle = context.getString(R.string.homework_homework_date);
+            String dateTitle = context.getString(R.string.homework_homework_due);
             SpannableString dateText =
                     new SpannableString(dateTitle + dateFormatDeux.format(untilDate));
             if (new Date().before(untilDate))
@@ -99,6 +98,7 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
                 holder.vCard
                         .setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray_dark));
             }
+            holder.vTv_due.setText(dateText);
         }
 
         ViewUtil.setVisibility(holder.vAtv_private,
@@ -124,8 +124,8 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
         AwesomeTextView vAtv_private;
         @BindView(R.id.homework_card)
         CardView vCard;
-        @BindView(R.id.homework_tv_date)
-        TextView vTv_date;
+        @BindView(R.id.homework_tv_due)
+        TextView vTv_due;
 
         public HomeworkViewHolder(View itemView) {
             super(itemView);

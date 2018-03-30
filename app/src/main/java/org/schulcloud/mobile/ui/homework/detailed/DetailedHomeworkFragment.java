@@ -1,12 +1,15 @@
 package org.schulcloud.mobile.ui.homework.detailed;
 
-import android.graphics.Paint;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,9 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Comment;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.ui.common.ContentWebView;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,12 +45,12 @@ public class DetailedHomeworkFragment
     @Inject
     CommentsAdapter mCommentsAdapter;
 
-    @BindView(R.id.homeworkName)
-    TextView homeworkName;
-    @BindView(R.id.homeworkDescription)
-    TextView homeworkDescription;
-    @BindView(R.id.homeworkDue)
-    TextView homeworkDueDate;
+    @BindView(R.id.homeworkDetailed_tv_name)
+    TextView vTv_name;
+    @BindView(R.id.homeworkDetailed_cwv_description)
+    ContentWebView vCwv_description;
+    @BindView(R.id.homeworkDetailed_tv_due)
+    TextView vTv_due;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.grade)
@@ -83,6 +88,7 @@ public class DetailedHomeworkFragment
     public void onReadArguments(Bundle args) {
         mDetailedHomeworkPresenter.loadHomework(getArguments().getString(ARGUMENT_HOMEWORK_ID));
     }
+    @SuppressLint("AddJavascriptInterface")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -97,7 +103,7 @@ public class DetailedHomeworkFragment
     }
 
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
     @Override
     public void showHomework(@NonNull Homework homework) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -110,19 +116,24 @@ public class DetailedHomeworkFragment
             e.printStackTrace();
         }
 
-        if (untilDate.before(new Date()))
-            homeworkDueDate
-                    .setPaintFlags(homeworkDueDate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
         if (homework.courseId != null && homework.courseId.name != null)
-            homeworkName.setText(getString(R.string.homework_homework_name_format,
+            vTv_name.setText(getString(R.string.homework_homework_name_format,
                     homework.courseId.name, homework.name));
         else
-            homeworkName.setText(homework.name);
-        homeworkDescription.setText(Html.fromHtml(homework.description));
+            vTv_name.setText(homework.name);
 
-        if (untilDate != null)
-            homeworkDueDate.setText(dateFormatDeux.format(untilDate));
+        vCwv_description.setContent(homework.description);
+
+        ViewUtil.setVisibility(vTv_due, untilDate != null);
+        if (untilDate != null) {
+            String dateTitle = getContext().getString(R.string.homework_homework_due);
+            SpannableString dateText =
+                    new SpannableString(dateTitle + dateFormatDeux.format(untilDate));
+            if (untilDate.before(new Date()))
+                dateText.setSpan(new StrikethroughSpan(), dateTitle.length(), dateText.length(),
+                        Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            vTv_due.setText(dateText);
+        }
     }
 
     @Override

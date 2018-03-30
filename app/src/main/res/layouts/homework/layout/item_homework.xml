@@ -45,7 +45,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="3"
             android:textSize="@dimen/text_body_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/homework_v_color"
@@ -53,7 +53,7 @@
             tools:text="Description...\n..." />
 
         <TextView
-            android:id="@+id/homework_tv_date"
+            android:id="@+id/homework_tv_due"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -64,16 +64,18 @@
 
         <com.beardedhen.androidbootstrap.AwesomeTextView
             android:id="@+id/homework_atv_private"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="10dp"
             android:layout_marginEnd="@dimen/text_colon_space"
             android:layout_marginRight="@dimen/text_colon_space"
+            android:textSize="15dp"
             app:fontAwesomeIcon="fa_lock"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/homework_tv_date"
-            app:layout_constraintTop_toBottomOf="@id/homework_tv_description" />
+            app:layout_constraintEnd_toStartOf="@id/homework_tv_due"
+            app:layout_constraintTop_toBottomOf="@id/homework_tv_description"
+            tools:ignore="SpUsage" />
 
     </android.support.constraint.ConstraintLayout>
 

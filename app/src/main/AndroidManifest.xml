@@ -10,8 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <!-- TODO: Re-implement all supported links -->
-
     <application
         android:name=".SchulCloudApplication"
         android:icon="@mipmap/ic_launcher"

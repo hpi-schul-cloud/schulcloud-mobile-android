@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.courses.topic;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.net.Uri;
 import android.os.Build;
@@ -32,9 +33,6 @@ import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static org.schulcloud.mobile.ui.courses.topic.ContentAdapter.TextViewHolder.CONTENT_TEXT_PREFIX;
-import static org.schulcloud.mobile.ui.courses.topic.ContentAdapter.TextViewHolder.CONTENT_TEXT_SUFFIX;
-
 /**
  * Date: 2/17/2018
  */
@@ -46,7 +44,7 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
     private List<Resource> mResources;
 
     @Inject
-    public ResourcesAdapter(UserDataManager userDataManager) {
+    ResourcesAdapter(UserDataManager userDataManager) {
         mUserDataManager = userDataManager;
         mResources = new ArrayList<>();
     }
@@ -60,7 +58,7 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
     public ResourceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_resource, parent, false);
-        return new ResourceViewHolder(mUserDataManager, itemView);
+        return new ResourceViewHolder(itemView);
     }
     @Override
     public void onBindViewHolder(ResourceViewHolder holder, int position) {
@@ -71,7 +69,7 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
         return mResources.size();
     }
 
-    class ResourceViewHolder extends WebViewHolder<Resource> {
+    class ResourceViewHolder extends BaseViewHolder<Resource> {
 
         @BindView(R.id.resource_card)
         CardView vCard;
@@ -82,9 +80,9 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
         @BindView(R.id.resource_tv_client)
         TextView vTv_client;
 
-        public ResourceViewHolder(@NonNull UserDataManager userDataManager,
-                @NonNull View itemView) {
-            super(userDataManager, itemView);
+        @SuppressLint("ClickableViewAccessibility")
+        ResourceViewHolder(@NonNull View itemView) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
 
             vCard.setOnClickListener(v ->
@@ -105,7 +103,6 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
             vTv_title.setText(item.title);
             ViewUtil.setText(vTv_title, item.title);
 
-            vPwv_description.getSettings().setJavaScriptEnabled(true);
             vPwv_description.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -122,9 +119,7 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
                     WebUtil.openUrl(getMainActivity(), url);
                 }
             });
-            vPwv_description.loadDataWithBaseURL(WebUtil.URL_BASE,
-                    CONTENT_TEXT_PREFIX + (item.description != null ? item.description : "")
-                            + CONTENT_TEXT_SUFFIX, WebUtil.MIME_TEXT_HTML, WebUtil.ENCODING_UTF_8, null);
+            vPwv_description.setContent(item.description);
             vTv_client
                     .setText(getContext().getString(R.string.courses_resource_client, item.client));
         }

@@ -2,6 +2,7 @@ package org.schulcloud.mobile.injection.component;
 
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.injection.scope.PerActivity;
+import org.schulcloud.mobile.ui.common.ContentWebView;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.courses.topic.ContentAdapter;
@@ -66,5 +67,8 @@ public interface ActivityComponent {
 
     //    Feedback
     void inject(FeedbackDialog feedbackDialog);
+
+    //    Others
+    void inject(ContentWebView contentWebView);
 
 }

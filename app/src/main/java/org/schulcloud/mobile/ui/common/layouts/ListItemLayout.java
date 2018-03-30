@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.ui.layouts;
+package org.schulcloud.mobile.ui.common.layouts;
 
 import android.annotation.TargetApi;
 import android.content.Context;

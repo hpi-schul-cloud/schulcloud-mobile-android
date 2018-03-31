@@ -1,10 +1,11 @@
 package org.schulcloud.mobile.data.local;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.util.FormatUtil;
 import org.schulcloud.mobile.util.Pair;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -16,15 +17,19 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import timber.log.Timber;
 
 @Singleton
 public class HomeworkDatabaseHelper extends BaseDatabaseHelper {
     @Inject
-    HomeworkDatabaseHelper(Provider<Realm> realmProvider) {super(realmProvider);}
+    HomeworkDatabaseHelper(Provider<Realm> realmProvider) {
+        super(realmProvider);
+    }
 
-    public Observable<Homework> setHomework(final Collection<Homework> newHomework) {
+    @NonNull
+    public Observable<Homework> setHomework(@NonNull Collection<Homework> newHomework) {
         return Observable.create(subscriber -> {
             if (subscriber.isUnsubscribed())
                 return;
@@ -44,49 +49,42 @@ public class HomeworkDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    @NonNull
     public Observable<List<Homework>> getHomework() {
-        final Realm realm = mRealmProvider.get();
+        Realm realm = mRealmProvider.get();
         return realm.where(Homework.class).findAllAsync().asObservable()
-                .filter(homework -> homework.isLoaded())
-                .map(homework -> realm.copyFromRealm(homework));
+                .filter(RealmResults::isLoaded)
+                .map(realm::copyFromRealm);
     }
 
-    public Homework getHomeworkForId(String homeworkId) {
-        final Realm realm = mRealmProvider.get();
-        return realm.where(Homework.class).equalTo("_id", homeworkId).findFirst();
+    public Homework getHomeworkForId(@NonNull String homeworkId) {
+        Realm realm = mRealmProvider.get();
+        return realm
+                .copyFromRealm(realm.where(Homework.class).equalTo("_id", homeworkId).findFirst());
     }
 
-    public Pair<String, String> getOpenHomeworks() {
-        final Realm realm = mRealmProvider.get();
+    @NonNull
+    public Pair<Integer, Date> getOpenHomeworks() {
+        Realm realm = mRealmProvider.get();
         Collection<Homework> homeworks = realm.where(Homework.class).findAll();
 
-        Date nextDueDate = null;
+        Date now = new Date();
         int amount = 0;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
         Calendar calendar = new GregorianCalendar(9999, 12, 31, 23, 59);
-        try {
-            nextDueDate = dateFormat.parse(dateFormat.format(calendar.getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        Date nullDate = FormatUtil.parseDate(FormatUtil.toApiString(calendar.getTime()));
+        Date nextDueDate = nullDate;
         for (Homework homework : homeworks) {
-            Date untilDate = null;
-            try {
-                untilDate = dateFormat.parse(homework.dueDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Date untilDate = FormatUtil.parseDate(homework.dueDate);
+            if (untilDate != null && now.after(untilDate))
+                continue;
 
-            if (untilDate.after(new Date())) {
-                amount++;
-
-                if (untilDate.before(nextDueDate))
-                    nextDueDate = untilDate;
-            }
+            amount++;
+            if (untilDate != null && untilDate.before(nextDueDate))
+                nextDueDate = untilDate;
         }
 
-        return new Pair<String, String>(Integer.toString(amount), dateFormat.format(nextDueDate));
+        if (nextDueDate == null)
+            throw new IllegalStateException();
+        return new Pair<>(amount, nextDueDate != nullDate ? nextDueDate : null);
     }
 }

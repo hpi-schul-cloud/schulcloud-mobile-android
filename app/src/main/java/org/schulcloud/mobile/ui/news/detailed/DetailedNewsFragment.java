@@ -12,10 +12,7 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.ui.main.MainFragment;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.schulcloud.mobile.util.FormatUtil;
 
 import javax.inject.Inject;
 
@@ -74,19 +71,10 @@ public class DetailedNewsFragment extends MainFragment<DetailedNewsMvpView, Deta
         return view;
     }
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
     @Override
     public void showNews(@NonNull News news) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        SimpleDateFormat dateFormatDeux = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date newsDate = null;
-        try {
-            newsDate = dateFormat.parse(news.createdAt);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        date.setText(dateFormatDeux.format(newsDate));
+        date.setText(FormatUtil.apiToDate(news.createdAt));
         title.setText(Html.fromHtml(news.title));
         description.setText(Html.fromHtml(news.content));
     }

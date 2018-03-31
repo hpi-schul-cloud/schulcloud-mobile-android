@@ -21,11 +21,10 @@ import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.FormatUtil;
 import org.schulcloud.mobile.util.Pair;
 import org.schulcloud.mobile.util.ViewUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -105,37 +104,28 @@ public class DashboardFragment extends MainFragment<DashboardMvpView, DashboardP
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
         swipeRefresh.setOnRefreshListener(() -> {
-                    startService(CourseSyncService.getStartIntent(getContext()));
-                    startService(HomeworkSyncService.getStartIntent(getContext()));
-                    startService(EventSyncService.getStartIntent(getContext()));
+            startService(CourseSyncService.getStartIntent(getContext()));
+            startService(HomeworkSyncService.getStartIntent(getContext()));
+            startService(EventSyncService.getStartIntent(getContext()));
 
-                    new Handler().postDelayed(() -> {
-                        mDashboardPresenter.reload();
+            new Handler().postDelayed(() -> {
+                mDashboardPresenter.reload();
 
-                        swipeRefresh.setRefreshing(false);
-                    }, 3000);
-                }
-        );
+                swipeRefresh.setRefreshing(false);
+            }, 3000);
+        });
 
         return view;
     }
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
     @Override
-    public void showOpenHomework(@NonNull Pair<String, String> openHomework) {
-        Date date = null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        SimpleDateFormat simpleDateFormatDeux = new SimpleDateFormat("yyyy-MM-dd  HH:mm");
-        try {
-            date = simpleDateFormat.parse(openHomework.getSecond());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void showOpenHomework(@NonNull Pair<Integer, Date> openHomework) {
         openTasks.setText(openHomework.getFirst());
-        if (openHomework.getSecond().equals("10000-01-31T23:59"))
+        if (openHomework.getSecond() == null)
             dueTillDate.setText("...");
         else
-            dueTillDate.setText(simpleDateFormatDeux.format(date));
+            dueTillDate.setText(FormatUtil.toUserString(openHomework.getSecond()));
         cardViewHomework.setOnClickListener(v -> addFragment(HomeworkFragment.newInstance()));
     }
     @Override

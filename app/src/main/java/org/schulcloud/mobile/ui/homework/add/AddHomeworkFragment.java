@@ -19,11 +19,10 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.sync.HomeworkSyncService;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.FormatUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,7 +38,6 @@ public class AddHomeworkFragment extends MainFragment<AddHomeworkMvpView, AddHom
     @Inject
     AddHomeworkPresenter mAddHomeworkPresenter;
 
-    private DateFormat mDateFormat;
     private Calendar mAvailableDateCalendar;
     private Calendar mDueDateCalendar;
 
@@ -71,7 +69,6 @@ public class AddHomeworkFragment extends MainFragment<AddHomeworkMvpView, AddHom
         activityComponent().inject(this);
         setPresenter(mAddHomeworkPresenter);
 
-        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mAvailableDateCalendar = Calendar.getInstance();
         mDueDateCalendar = Calendar.getInstance();
         mDueDateCalendar.add(Calendar.DATE, 7);
@@ -101,31 +98,26 @@ public class AddHomeworkFragment extends MainFragment<AddHomeworkMvpView, AddHom
     }
 
     private void initDateButton(Calendar calendar, TextView button) {
-        button.setText(mDateFormat.format(calendar.getTime()));
-        button.setOnClickListener((v) ->
-        {
+        button.setText(FormatUtil.toUserString(calendar.getTime()));
+        button.setOnClickListener(v -> {
             try {
-                calendar.setTime(mDateFormat.parse(button.getText().toString()));
+                calendar.setTime(FormatUtil.DATE_FORMAT_USER.parse(button.getText().toString()));
             } catch (ParseException e) {
                 Timber.e(e, "There was an error loading the courses.");
             }
-            new DatePickerDialog(getActivity(),
-                    (dialog, year, month, dayOfMonth) ->
-                    {
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        new TimePickerDialog(getActivity(),
-                                (view, hourOfDay, minute) ->
-                                {
-                                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                    calendar.set(Calendar.MINUTE, minute);
-                                    button.setText(mDateFormat.format(calendar.getTime()));
-                                },
-                                calendar.get(Calendar.HOUR_OF_DAY),
-                                calendar.get(Calendar.MINUTE), true)
-                                .show();
-                    },
+            new DatePickerDialog(getActivity(), (dialog, year, month, dayOfMonth) -> {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                new TimePickerDialog(getActivity(), (view, hourOfDay, minute) -> {
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calendar.set(Calendar.MINUTE, minute);
+                    button.setText(FormatUtil.toUserString(calendar.getTime()));
+                },
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE), true)
+                        .show();
+            },
                     calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH))
                     .show();
@@ -134,9 +126,7 @@ public class AddHomeworkFragment extends MainFragment<AddHomeworkMvpView, AddHom
 
     @Override
     public void setCourses(@NonNull List<String> courses) {
-        for (int i = 0; i < courses.size(); i++)
-            if (courses.get(i) == null)
-                courses.set(i, getString(R.string.homework_homework_course_none));
+        courses.add(0, getString(R.string.homework_homework_course_none));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, courses);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

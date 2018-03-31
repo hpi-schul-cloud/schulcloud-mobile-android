@@ -12,10 +12,9 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.News;
 import org.schulcloud.mobile.injection.ConfigPersistent;
+import org.schulcloud.mobile.util.FormatUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,20 +50,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(NewsAdapter.NewsViewHolder holder, int position) {
         News news = mNews.get(position);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        SimpleDateFormat dateFormatDeux = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date createdDate = null;
-        try {
-            createdDate = dateFormat.parse(news.createdAt);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
 
         holder.title.setText(news.title);
+
         if (news.content != null)
             holder.description.setText(Html.fromHtml(news.content));
+
         if (news.createdAt != null)
-            holder.date.setText(dateFormatDeux.format(createdDate));
+            holder.date.setText(FormatUtil.apiToDate(news.createdAt));
+
         holder.cardView.setOnClickListener(v -> mNewsPresenter.showNewsDetail(news._id));
 
         int pos = holder.description.getText().toString().indexOf("\n\n");

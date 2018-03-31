@@ -8,6 +8,7 @@ import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.remote.RestService;
 import org.schulcloud.mobile.util.Pair;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,7 +59,7 @@ public class HomeworkDataManager {
         return mDatabaseHelper.getHomeworkForId(homeworkId);
     }
 
-    public Pair<String, String> getOpenHomeworks() {
+    public Pair<Integer, Date> getOpenHomeworks() {
         return mDatabaseHelper.getOpenHomeworks();
     }
 

@@ -11,12 +11,11 @@ import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.requestBodies.AddHomeworkRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
+import org.schulcloud.mobile.util.FormatUtil;
 import org.schulcloud.mobile.util.RxUtil;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,19 +38,16 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
 
     private List<Course> mCourses;
 
-    private DateFormat mDateFormat;
-
     @Inject
     public AddHomeworkPresenter(CourseDataManager courseDataManager,
-                                HomeworkDataManager homeworkDataManager,
-                                UserDataManager userDataManager,
-                                PreferencesHelper preferencesHelper) {
+            HomeworkDataManager homeworkDataManager,
+            UserDataManager userDataManager,
+            PreferencesHelper preferencesHelper) {
         mCourseDataManager = courseDataManager;
         mHomeworkDataManager = homeworkDataManager;
         mUserDataManager = userDataManager;
         mPreferencesHelper = preferencesHelper;
 
-        mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         loadData();
     }
 
@@ -64,25 +60,19 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
     }
 
     public void loadData() {
-        mCourses = new ArrayList<>();
-        mCourses.add(null);
-        List<String> names = new ArrayList<>();
-        names.add(null);
-
         RxUtil.unsubscribe(mCoursesSubscription);
         mCoursesSubscription = mCourseDataManager.getCourses()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        courses -> {
-                            mCourses.addAll(courses);
-                            for (Course course : courses)
-                                names.add(course.name);
-                            sendToView(view -> view.setCourses(names));
-                        },
-                        throwable -> {
-                            Timber.e(throwable, "There was an error loading the courses.");
-                            sendToView(AddHomeworkMvpView::showCourseLoadingError);
-                        });
+                .subscribe(courses -> {
+                    mCourses = courses;
+                    List<String> names = new LinkedList<>();
+                    for (Course course : courses)
+                        names.add(course.name);
+                    sendToView(view -> view.setCourses(names));
+                }, throwable -> {
+                    Timber.e(throwable, "There was an error loading the courses.");
+                    sendToView(AddHomeworkMvpView::showCourseLoadingError);
+                });
 
         RxUtil.unsubscribe(mCurrentUserSubscription);
         mCurrentUserSubscription = mUserDataManager.getCurrentUser()
@@ -109,17 +99,16 @@ public class AddHomeworkPresenter extends BasePresenter<AddHomeworkMvpView> {
                     name,
                     course == null ? null : course._id,
                     description,
-                    mDateFormat.format(availableDate.getTime()),
-                    mDateFormat.format(dueDate.getTime()),
+                    FormatUtil.toApiString(availableDate.getTime()),
+                    FormatUtil.toApiString(dueDate.getTime()),
                     publicSubmissions,
                     isPrivate);
 
             RxUtil.unsubscribe(mSubscription);
             mSubscription = mHomeworkDataManager.addHomework(addHomeworkRequest)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            addHomeworkResponse -> sendToView(
-                                    AddHomeworkMvpView::reloadHomeworkList),
+                    .subscribe(addHomeworkResponse ->
+                                    sendToView(AddHomeworkMvpView::reloadHomeworkList),
                             throwable -> sendToView(AddHomeworkMvpView::showSaveError),
                             () -> sendToView(AddHomeworkMvpView::showHomeworkSaved));
         }

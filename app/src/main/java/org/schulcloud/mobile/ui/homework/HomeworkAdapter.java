@@ -21,10 +21,9 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseAdapter;
+import org.schulcloud.mobile.util.FormatUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,9 +62,6 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
         Context context = holder.itemView.getContext();
         Homework homework = mHomework.get(position);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        SimpleDateFormat dateFormatDeux = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
         if (homework.courseId != null && homework.courseId.color != null)
             holder.vV_color.setBackgroundColor(Color.parseColor(homework.courseId.color));
 
@@ -77,26 +73,20 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
 
         holder.vTv_description.setText(Html.fromHtml(homework.description));
 
-        Date untilDate = null;
-        try {
-            untilDate = dateFormat.parse(homework.dueDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        ViewUtil.setVisibility(holder.vTv_due, untilDate != null);
-        if (untilDate != null) {
+        Date dueDate = FormatUtil.parseDate(homework.dueDate);
+        ViewUtil.setVisibility(holder.vTv_due, dueDate != null);
+        if (dueDate != null) {
             String dateTitle = context.getString(R.string.homework_homework_due);
             SpannableString dateText =
-                    new SpannableString(dateTitle + dateFormatDeux.format(untilDate));
-            if (new Date().before(untilDate))
-                holder.vCard
-                        .setCardBackgroundColor(
-                                ContextCompat.getColor(context, android.R.color.white));
+                    new SpannableString(dateTitle + FormatUtil.toUserString(dueDate));
+            if (new Date().before(dueDate))
+                holder.vCard.setCardBackgroundColor(
+                        ContextCompat.getColor(context, android.R.color.white));
             else {
                 dateText.setSpan(new StrikethroughSpan(), dateTitle.length(), dateText.length(),
                         Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-                holder.vCard
-                        .setCardBackgroundColor(ContextCompat.getColor(context, R.color.gray_dark));
+                holder.vCard.setCardBackgroundColor(
+                        ContextCompat.getColor(context, R.color.gray_dark));
             }
             holder.vTv_due.setText(dateText);
         }

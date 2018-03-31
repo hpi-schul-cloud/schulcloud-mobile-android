@@ -106,11 +106,13 @@
     <string name="homework_homework_private">Private Aufgabe (nur für mich sichtbar)</string>
     <string name="homework_homework_description">Aufgabenstellung</string>
     <string name="homework_homework_due">Abgabe bis:&#160;</string>
+    <string name="homework_homework_dates">%1$s\nbis: %2$s</string>
     <string name="homework_homework_processingTime">Bearbeitungszeit:</string>
     <string name="homework_homework_dateDash">&#8211;</string>
     <string name="homework_homework_publicSubmissions">Schülerabgaben untereinander sichtbar</string>
     <string name="homework_homework_grading">Benotung</string>
-    <string name="homework_homework_grade">Note:</string>
+    <string name="homework_homework_grade">Du hast <b>%1$d%%</b> richtig gelöst.</string>
+    <string name="homework_homework_gradeComment_none">Kein Bewertungstext vorhanden.</string>
     <string name="homework_homework_comments">Kommentare</string>
     <string name="homework_homework_comments_none">Derzeit keine Kommentare</string>
     <string name="homework_homework_notSubmitted">Hausaufgabe noch nicht eingereicht</string>

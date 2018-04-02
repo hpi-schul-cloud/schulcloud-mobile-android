@@ -54,7 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/settings_name_TextView"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="10dp"/>
 
                 <TextView
                     style="@style/Material.ListItem_TextPrimary"
@@ -69,7 +70,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/settings_last_name_TextView"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="10dp"/>
 
                 <TextView
                     style="@style/Material.ListItem_TextPrimary"
@@ -85,7 +87,10 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginLeft="6dp"
                     android:id="@+id/settings_gender_spinner"
-                    android:clickable="false" />
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"/>
 
                 <TextView
                     style="@style/Material.ListItem_TextPrimary"
@@ -100,7 +105,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/settings_email_TextView"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="10dp"/>
 
 
                 <LinearLayout

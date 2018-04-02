@@ -50,6 +50,7 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     private Subscription mDemoModeSubscription;
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
+    private Subscription mProfileSubscription;
 
     private String[] mContributors;
 
@@ -235,5 +236,21 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
     public String[] getContributors() {
         return mContributors;
+    }
+
+    /* Profile */
+    public void loadProfile()
+    {
+        mProfileSubscription = mUserDataManager.getCurrentUser()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        currentUser -> {
+                            sendToView(v -> v.showProfile(currentUser));
+                        },
+                        throwable -> {
+                            Timber.e(throwable, "An error occured while loading the profile"
+                            );
+                            sendToView(v -> v.showProfileError());
+                        });
     }
 }

@@ -85,11 +85,11 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     @BindView(R.id.settings_add_if_not_in_demo_mode)
     LinearLayout addIfNotDemoMode;
     @BindView(R.id.settings_name_TextView)
-    EditText name_textView;
+    TextView name_textView;
     @BindView(R.id.settings_last_name_TextView)
-    EditText lastName_textView;
+    TextView lastName_textView;
     @BindView(R.id.settings_email_TextView)
-    EditText email_textView;
+    TextView email_textView;
     @BindView(R.id.settings_change_profile)
     Button openChangeProfile;
     @BindView(R.id.settings_gender_spinner)
@@ -167,6 +167,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
             mSettingsPresenter.loadEvents(false);
         mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
+        mSettingsPresenter.loadProfile();
     }
 
     @Override
@@ -315,6 +316,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     @Override
     public void openChangeProfile(){
         Intent profileIntent = new Intent(this, ChangeProfileActivity.class);
+        startActivity(profileIntent);
     }
 
     @Override

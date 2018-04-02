@@ -35,23 +35,19 @@ implements ChangeProfileMvpView{
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
 
-    @BindView(R.id.settings_add_if_not_in_demo_mode)
+    @BindView(R.id.change_profile_add_if_not_in_demo_mode)
     LinearLayout addIfNotDemoMode;
-    @BindView(R.id.settings_gender_spinner)
+    @BindView(R.id.change_profile_gender_spinner)
     Spinner gender_spinner;
-    @BindView(R.id.settings_name_EditText)
-    EditText name_editText;
-    @BindView(R.id.settings_last_name_EditText)
-    EditText lastName_editText;
-    @BindView(R.id.settings_email_EditText)
+    @BindView(R.id.change_profile_email_EditText)
     EditText email_EditText;
-    @BindView(R.id.settings_password_editText)
+    @BindView(R.id.change_profile_password_editText)
     EditText password_editText;
-    @BindView(R.id.settings_newPassword_editText)
+    @BindView(R.id.change_profile_newPassword_editText)
     EditText newPassword_editText;
-    @BindView(R.id.settings_newPasswordRepeat_editText)
+    @BindView(R.id.change_profile_newPasswordRepeat_editText)
     EditText newPasswordRepeat_editText;
-    @BindView(R.id.settings_submit)
+    @BindView(R.id.change_profile_submit)
     Button settings_submit;
 
     @Override
@@ -64,10 +60,8 @@ implements ChangeProfileMvpView{
 
         // Profile
         settings_submit.setOnClickListener(listener -> {
-            String name = name_editText.getText().toString() != null ?
-                    name_editText.getText().toString() : mCurrentUser.firstName;
-            String last_name = lastName_editText.getText().toString() != null ?
-                    lastName_editText.getText().toString() : mCurrentUser.lastName;
+            String name = mCurrentUser.getFirstName();
+            String last_name = mCurrentUser.getLastName();
             String email = email_EditText.getText().toString() != null?
                     email_EditText.getText().toString() : mCurrentUser.email;
             String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
@@ -94,8 +88,6 @@ implements ChangeProfileMvpView{
     @Override
     public void showProfile(CurrentUser user) {
         mCurrentUser = user;
-        name_editText.setText(mCurrentUser.firstName);
-        lastName_editText.setText(mCurrentUser.lastName);
         email_EditText.setText(mCurrentUser.email);
         List<String> genderReferenceArray =
                 Arrays.asList(getResources().getStringArray(R.array.genderArrayPosReference));

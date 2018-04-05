@@ -138,5 +138,5 @@ public interface RestService {
     Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
 
     @GET("accounts?$populate[4]=userId")
-    Observable<List<AccountResponse>> getAccountInfo(@Header ("Authorization") String accessToken);
+    Observable<List<AccountResponse>> getAccounts(@Header ("Authorization") String accessToken);
 }

@@ -22,6 +22,7 @@ public class PreferencesHelper {
     public static final String PREFERENCE_CALENDAR_SYNC_ENABLED = "calendarSyncEnabled";
     public static final String PREFERENCE_CALENDAR_SYNC_NAME = "calendarSyncName";
     public static final String PREFERENCE_IS_IN_DEMO_MODE = "IS_IN_DEMO_MODE";
+    public static final String PREFERENCE_ACCOUNT_ID = "currentAccount";
 
     private final ObscuredSharedPreferences mPref;
 
@@ -69,6 +70,16 @@ public class PreferencesHelper {
         editor.putString(PREFERENCE_USERNAME, username);
         if (editor.commit()) {
             return username;
+        }
+
+        return null;
+    }
+
+    public String saveCurrentAccountId(String accountId) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putString(PREFERENCE_ACCOUNT_ID, accountId);
+        if(editor.commit()) {
+            return accountId;
         }
 
         return null;

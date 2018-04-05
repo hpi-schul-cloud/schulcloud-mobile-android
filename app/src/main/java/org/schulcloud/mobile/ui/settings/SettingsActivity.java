@@ -168,6 +168,8 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         mSettingsPresenter.loadDevices();
         mSettingsPresenter.loadContributors(getResources());
         mSettingsPresenter.loadProfile();
+        gender_spinner.setClickable(false);
+        gender_spinner.setEnabled(false);
     }
 
     @Override

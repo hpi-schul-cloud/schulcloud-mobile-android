@@ -2,6 +2,7 @@ package org.schulcloud.mobile.data.datamanagers;
 
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.UserDatabaseHelper;
+import org.schulcloud.mobile.data.model.CurrentAccount;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
@@ -145,5 +146,9 @@ public class UserDataManager{
                     }
                 });
         return profileResponseObservable;
+    }
+
+    public Single<CurrentAccount> getCurrentAccount(){
+        return mUserDatabaseHelper.getCurrentAccount();
     }
 }

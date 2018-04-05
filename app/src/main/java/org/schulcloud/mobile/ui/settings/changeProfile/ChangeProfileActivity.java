@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
@@ -56,10 +57,13 @@ implements ChangeProfileMvpView{
         activityComponent().inject(this);
         setContentView(R.layout.activity_change_profile);
         ButterKnife.bind(this);
+        setPresenter(mChangeProfilePresenter);
 
 
         // Profile
+        mChangeProfilePresenter.loadProfile();
         settings_submit.setOnClickListener(listener -> {
+            mCurrentUser = mChangeProfilePresenter.getCurrentUser();
             String name = mCurrentUser.getFirstName();
             String last_name = mCurrentUser.getLastName();
             String email = email_EditText.getText().toString() != null?
@@ -82,7 +86,6 @@ implements ChangeProfileMvpView{
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         gender_spinner.setAdapter(spinner_adapter);
 
-        mChangeProfilePresenter.loadProfile();
     }
 
     @Override
@@ -113,6 +116,7 @@ implements ChangeProfileMvpView{
     @Override
     public void showChangeSuccess(){
         DialogFactory.createProgressDialog(this,R.string.settings_profileChangeSuccess).show();
+        mChangeProfilePresenter.loadProfile();
         finish();
     }
 

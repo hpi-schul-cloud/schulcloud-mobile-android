@@ -7,6 +7,7 @@ import android.util.Log;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
+import org.schulcloud.mobile.data.model.CurrentAccount;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
@@ -69,9 +70,10 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
         }
 
         CurrentUser currentUser = mUserDataManager.getCurrentUser().toBlocking().value();
+        CurrentAccount currentAccount = mUserDataManager.getCurrentAccount().toBlocking().value();
         String displayName = currentUser.displayName;
         String userId = currentUser.get_id();
-        String accountId = currentUser.get_id();
+        String accountId = currentAccount.accountId;
         String schoolID = currentUser.schoolId;
 
         AccountRequest accountRequest = new AccountRequest(displayName,newPassword,userId);
@@ -89,5 +91,9 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
                         {Log.e("Profile","OnError",throwable);
                          sendToView(v -> v.showProfileError());},
                         () -> sendToView(v -> v.showChangeSuccess()));
+    }
+
+    public CurrentUser getCurrentUser(){
+        return mUserDataManager.getCurrentUser().toBlocking().value();
     }
 }

@@ -1,6 +1,9 @@
 package org.schulcloud.mobile.data.local;
 
+import android.accounts.Account;
+
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.CurrentAccount;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
 
@@ -99,5 +102,11 @@ public class UserDatabaseHelper extends BaseDatabaseHelper {
     public Single<CurrentUser> getCurrentUser() {
         final Realm realm = mRealmProvider.get();
         return Single.just(realm.where(CurrentUser.class).findFirst());
+    }
+
+    //TODO: Make a function that returns the current Account so you can use the ID
+    public Single<CurrentAccount> getCurrentAccount() {
+        final Realm realm = mRealmProvider.get();
+        return Single.just(realm.where(CurrentAccount.class).findFirst());
     }
 }

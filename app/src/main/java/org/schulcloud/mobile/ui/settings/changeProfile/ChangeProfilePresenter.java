@@ -56,6 +56,28 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
                         });
     }
 
+    public String checkNewPassword(String newPassword, String newPasswordRepeat){
+        String status = "";
+
+        if(newPassword == "" || newPasswordRepeat == ""){
+            return "PASSWORD_EMPTY";
+        }
+
+        if(!newPassword.equals(newPasswordRepeat)){
+            status += "PASSWORDS_UNEQUAL;";
+        }else if(newPassword.length() < 8){
+            status += "PASSWORD_TOO_SHORT;";
+        }else if(Pattern.matches("[a-zA-Z]+",newPassword)){
+            status += "PASSWORD_DOES_NOT_CONTAIN_NUMBERS;";
+        }else if(newPassword.equals(newPassword.toLowerCase())){
+            status += "PASSWORD_DOES_NOT_CONTAIN_LOWER_AND_UPERRCASE;";
+        }else{
+            status += "PASSWORD_OKAY";
+        }
+
+        return status;
+    }
+
     public void changeProfile(@NonNull String firstName, @NonNull String lastName,
                               @NonNull String email, @NonNull String gender,
                               @Nullable String currentPassword,
@@ -70,10 +92,10 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
         }
 
         CurrentUser currentUser = mUserDataManager.getCurrentUser().toBlocking().value();
-        CurrentAccount currentAccount = mUserDataManager.getCurrentAccount().toBlocking().value();
+        //CurrentAccount currentAccount = mUserDataManager.getCurrentAccount().toBlocking().value();
         String displayName = currentUser.displayName;
         String userId = currentUser.get_id();
-        String accountId = currentAccount.accountId;
+        String accountId = currentUser.get_id();//currentAccount.accountId;
         String schoolID = currentUser.schoolId;
 
         AccountRequest accountRequest = new AccountRequest(displayName,newPassword,userId);

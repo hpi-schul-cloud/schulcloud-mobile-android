@@ -103,10 +103,4 @@ public class UserDatabaseHelper extends BaseDatabaseHelper {
         final Realm realm = mRealmProvider.get();
         return Single.just(realm.where(CurrentUser.class).findFirst());
     }
-
-    //TODO: Make a function that returns the current Account so you can use the ID
-    public Single<CurrentAccount> getCurrentAccount() {
-        final Realm realm = mRealmProvider.get();
-        return Single.just(realm.where(CurrentAccount.class).findFirst());
-    }
 }

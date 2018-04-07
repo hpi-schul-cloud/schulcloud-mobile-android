@@ -115,6 +115,42 @@
                     android:hint=""
                     android:inputType="textPassword"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/settings_passwords_doNotMatch"
+                    android:textColor="@color/hpiRed"
+                    android:id="@+id/change_profile_passwordsDoNotMatch"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/settings_passwordControlFailed"
+                    android:textColor="@color/hpiRed"
+                    android:id="@+id/change_profile_passwordControlFailed"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/settings_passwordTooShort"
+                    android:textColor="@color/hpiRed"
+                    android:id="@+id/change_profile_passwordTooShort"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/settings_passwordNeedsNumbers"
+                    android:textColor="@color/hpiRed"
+                    android:id="@+id/change_profile_passwordNeedsNumbers"/>
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

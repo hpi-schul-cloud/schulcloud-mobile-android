@@ -1,37 +1,37 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.CurrentUser;
-import org.schulcloud.mobile.injection.component.ActivityComponent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.ui.settings.SettingsActivity;
-import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.VISIBLE;
+
 public class ChangeProfileActivity extends BaseActivity<ChangeProfileMvpView,ChangeProfilePresenter>
 implements ChangeProfileMvpView{
 
     private CurrentUser mCurrentUser;
     private ArrayAdapter<CharSequence> spinner_adapter;
+    private boolean passwordIsOkay;
     
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
@@ -50,6 +50,14 @@ implements ChangeProfileMvpView{
     EditText newPasswordRepeat_editText;
     @BindView(R.id.change_profile_submit)
     Button settings_submit;
+    @BindView(R.id.change_profile_passwordsDoNotMatch)
+    TextView passwordsDoNotMatch;
+    @BindView(R.id.change_profile_passwordTooShort)
+    TextView passwordTooShort;
+    @BindView(R.id.change_profile_passwordControlFailed)
+    TextView passwordControlFailed;
+    @BindView(R.id.change_profile_passwordNeedsNumbers)
+    TextView passwordNeedsNumbers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -62,6 +70,10 @@ implements ChangeProfileMvpView{
 
         // Profile
         mChangeProfilePresenter.loadProfile();
+        passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+        passwordTooShort.setVisibility(View.INVISIBLE);
+        passwordControlFailed.setVisibility(View.INVISIBLE);
+        passwordNeedsNumbers.setVisibility(View.INVISIBLE);
         settings_submit.setOnClickListener(listener -> {
             mCurrentUser = mChangeProfilePresenter.getCurrentUser();
             String name = mCurrentUser.getFirstName();
@@ -86,6 +98,43 @@ implements ChangeProfileMvpView{
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         gender_spinner.setAdapter(spinner_adapter);
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        String newPassword = newPassword_editText.getText().toString();
+        String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
+
+        if(newPassword == "" || newPasswordRepeat == ""){
+            passwordIsOkay = false;
+            return super.onTouchEvent(event);
+        }
+
+        if(!newPassword.equals(newPasswordRepeat)){
+            passwordsDoNotMatch.setVisibility(VISIBLE);
+        }else{
+            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+        }
+
+        if(newPassword.length() < 8){
+            passwordsDoNotMatch.setVisibility(VISIBLE);
+        }else{
+            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+        }
+
+        if(Pattern.matches("[a-zA-Z]+",newPassword)){
+            passwordsDoNotMatch.setVisibility(VISIBLE);
+        }else{
+            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+        }
+
+        if(newPassword.equals(newPassword.toLowerCase())){
+            passwordsDoNotMatch.setVisibility(VISIBLE);
+        }else{
+            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+        }
+
+        return super.onTouchEvent(event);
     }
 
     @Override

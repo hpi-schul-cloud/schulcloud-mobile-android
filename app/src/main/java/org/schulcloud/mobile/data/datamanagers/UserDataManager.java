@@ -148,7 +148,7 @@ public class UserDataManager{
         return profileResponseObservable;
     }
 
-    public Single<CurrentAccount> getCurrentAccount(){
+    /*public Single<CurrentAccount> getCurrentAccount(){
         return mUserDatabaseHelper.getCurrentAccount();
-    }
+    }*/
 }

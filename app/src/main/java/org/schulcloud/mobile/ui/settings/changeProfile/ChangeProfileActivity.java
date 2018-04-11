@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -91,6 +92,21 @@ implements ChangeProfileMvpView{
             mChangeProfilePresenter.changeProfile(name,last_name,email,gender,password,newPassword,
                     newPasswordRepeat);
         });
+
+        EditText.OnEditorActionListener listener = new EditText.OnEditorActionListener(){
+                @Override
+                public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent){
+                    String newPassword = newPassword_editText.getText().toString();
+                    String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
+                    checkPasswords(newPassword, newPasswordRepeat);
+                    return true;
+                }
+        };
+
+        settings_submit.setTranslationX(newPasswordRepeat_editText.getX() + 20);
+        newPassword_editText.setOnEditorActionListener(listener);
+        newPasswordRepeat_editText.setOnEditorActionListener(listener);
+
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
         newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
         spinner_adapter = ArrayAdapter.createFromResource(this, R.array.genderArray,
@@ -101,40 +117,48 @@ implements ChangeProfileMvpView{
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        String newPassword = newPassword_editText.getText().toString();
-        String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-
+    public void checkPasswords(String newPassword, String newPasswordRepeat){
         if(newPassword == "" || newPasswordRepeat == ""){
             passwordIsOkay = false;
-            return super.onTouchEvent(event);
+            return;
         }
 
+        //TODO: FIND OTHER WAY TO MAKE A DYNAMIC PASSWORD INFORMATION SYSTEM
+
+        float minY = newPassword_editText.getY() + 10;
+        float maxY = newPassword_editText.getY() + 60;
+
         if(!newPassword.equals(newPasswordRepeat)){
-            passwordsDoNotMatch.setVisibility(VISIBLE);
+            passwordsDoNotMatch.setVisibility(View.VISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() + 10);
         }else{
             passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() - 10);
         }
 
         if(newPassword.length() < 8){
             passwordsDoNotMatch.setVisibility(VISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() + 10);
         }else{
             passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() - 10);
         }
 
         if(Pattern.matches("[a-zA-Z]+",newPassword)){
             passwordsDoNotMatch.setVisibility(VISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() + 10);
         }else{
             passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() - 10);
         }
 
         if(newPassword.equals(newPassword.toLowerCase())){
             passwordsDoNotMatch.setVisibility(VISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() + 10);
         }else{
             passwordsDoNotMatch.setVisibility(View.INVISIBLE);
+            settings_submit.setTranslationY(settings_submit.getY() - 10);
         }
-
-        return super.onTouchEvent(event);
     }
 
     @Override

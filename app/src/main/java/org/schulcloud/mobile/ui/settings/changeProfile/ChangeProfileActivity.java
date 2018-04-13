@@ -2,8 +2,9 @@ package org.schulcloud.mobile.ui.settings.changeProfile;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Handler;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -25,14 +27,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.view.View.VISIBLE;
-
 public class ChangeProfileActivity extends BaseActivity<ChangeProfileMvpView,ChangeProfilePresenter>
 implements ChangeProfileMvpView{
 
     private CurrentUser mCurrentUser;
     private ArrayAdapter<CharSequence> spinner_adapter;
-    private boolean passwordIsOkay;
+    private boolean passwordIsOkay = false;
+    private Animation animationScaleIn;
+    private Animation animationScaleOut;
     
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
@@ -59,6 +61,10 @@ implements ChangeProfileMvpView{
     TextView passwordControlFailed;
     @BindView(R.id.change_profile_passwordNeedsNumbers)
     TextView passwordNeedsNumbers;
+    @BindView(R.id.passwordInfoLayout)
+    LinearLayout passwordInfo;
+    @BindView(R.id.change_profile_passwordOkay)
+    TextView passwordOkay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -68,44 +74,47 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
+        animationScaleIn = AnimationUtils.loadAnimation(this,R.anim.resize_height_0_to_100);
+        animationScaleIn.setFillAfter(true);
+        animationScaleOut = AnimationUtils.loadAnimation(this,R.anim.resize_height_100_to_0);
+        animationScaleOut.setFillAfter(true);
 
         // Profile
         mChangeProfilePresenter.loadProfile();
-        passwordsDoNotMatch.setVisibility(View.INVISIBLE);
-        passwordTooShort.setVisibility(View.INVISIBLE);
-        passwordControlFailed.setVisibility(View.INVISIBLE);
-        passwordNeedsNumbers.setVisibility(View.INVISIBLE);
         settings_submit.setOnClickListener(listener -> {
-            mCurrentUser = mChangeProfilePresenter.getCurrentUser();
-            String name = mCurrentUser.getFirstName();
-            String last_name = mCurrentUser.getLastName();
-            String email = email_EditText.getText().toString() != null?
-                    email_EditText.getText().toString() : mCurrentUser.email;
-            String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
-                    R.layout.item_gender_spinner)
-                    .getItem(gender_spinner.getSelectedItemPosition()).toString();
-            if(gender.equals("Choose Gender"))
-                gender = null;
-            String password = password_editText.getText().toString();
-            String newPassword = newPassword_editText.getText().toString();
-            String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-            mChangeProfilePresenter.changeProfile(name,last_name,email,gender,password,newPassword,
-                    newPasswordRepeat);
+            if(passwordIsOkay) {
+                mCurrentUser = mChangeProfilePresenter.getCurrentUser();
+                String name = mCurrentUser.getFirstName();
+                String last_name = mCurrentUser.getLastName();
+                String email = email_EditText.getText().toString() != null ?
+                        email_EditText.getText().toString() : mCurrentUser.email;
+                String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
+                        R.layout.item_gender_spinner)
+                        .getItem(gender_spinner.getSelectedItemPosition()).toString();
+                if (gender.equals("Choose Gender"))
+                    gender = null;
+                String password = password_editText.getText().toString();
+                String newPassword = newPassword_editText.getText().toString();
+                mChangeProfilePresenter.changeProfile(name, last_name, email, gender, password, newPassword);
+            }
         });
 
-        EditText.OnEditorActionListener listener = new EditText.OnEditorActionListener(){
+        View.OnFocusChangeListener listener = new View.OnFocusChangeListener(){
                 @Override
-                public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent){
-                    String newPassword = newPassword_editText.getText().toString();
-                    String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-                    checkPasswords(newPassword, newPasswordRepeat);
-                    return true;
+                public void onFocusChange(View view, boolean hasFocus){
+                    if(!hasFocus) {
+                        String newPassword = newPassword_editText.getText().toString();
+                        String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
+                        passwordIsOkay = checkPasswords(newPassword, newPasswordRepeat);
+                    }
                 }
         };
 
         settings_submit.setTranslationX(newPasswordRepeat_editText.getX() + 20);
-        newPassword_editText.setOnEditorActionListener(listener);
-        newPasswordRepeat_editText.setOnEditorActionListener(listener);
+        newPassword_editText.setOnFocusChangeListener(listener);
+        newPasswordRepeat_editText.setOnFocusChangeListener(listener);
+
+        passwordInfo.removeAllViews();
 
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
         newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
@@ -117,48 +126,53 @@ implements ChangeProfileMvpView{
     }
 
     @Override
-    public void checkPasswords(String newPassword, String newPasswordRepeat){
+    public boolean checkPasswords(String newPassword, String newPasswordRepeat){
+        boolean passwordOkayBool = true;
+
         if(newPassword == "" || newPasswordRepeat == ""){
-            passwordIsOkay = false;
-            return;
+            return false;
         }
 
-        //TODO: FIND OTHER WAY TO MAKE A DYNAMIC PASSWORD INFORMATION SYSTEM
+        passwordInfo.removeAllViews();
 
-        float minY = newPassword_editText.getY() + 10;
-        float maxY = newPassword_editText.getY() + 60;
-
+        passwordsDoNotMatch.clearAnimation();
         if(!newPassword.equals(newPasswordRepeat)){
-            passwordsDoNotMatch.setVisibility(View.VISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() + 10);
+            passwordInfo.addView(passwordsDoNotMatch);
+            passwordsDoNotMatch.startAnimation(animationScaleIn);
         }else{
-            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() - 10);
+            passwordOkayBool = false;
         }
 
+        passwordTooShort.clearAnimation();
         if(newPassword.length() < 8){
-            passwordsDoNotMatch.setVisibility(VISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() + 10);
+            passwordInfo.addView(passwordTooShort);
+            passwordTooShort.startAnimation(animationScaleIn);
         }else{
-            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() - 10);
+            passwordOkayBool = false;
         }
 
+        passwordNeedsNumbers.clearAnimation();
         if(Pattern.matches("[a-zA-Z]+",newPassword)){
-            passwordsDoNotMatch.setVisibility(VISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() + 10);
+            passwordInfo.addView(passwordNeedsNumbers);
+            passwordNeedsNumbers.startAnimation(animationScaleIn);
         }else{
-            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() - 10);
+            passwordOkayBool = false;
         }
 
+        passwordControlFailed.clearAnimation();
         if(newPassword.equals(newPassword.toLowerCase())){
-            passwordsDoNotMatch.setVisibility(VISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() + 10);
+            passwordInfo.addView(passwordControlFailed);
+            passwordControlFailed.startAnimation(animationScaleIn);
         }else{
-            passwordsDoNotMatch.setVisibility(View.INVISIBLE);
-            settings_submit.setTranslationY(settings_submit.getY() - 10);
+            passwordOkayBool = false;
         }
+
+        if(this.passwordIsOkay == true) {
+            passwordInfo.addView(passwordOkay);
+            passwordOkay.startAnimation(animationScaleIn);
+        }
+
+        return passwordOkayBool;
     }
 
     @Override
@@ -179,11 +193,6 @@ implements ChangeProfileMvpView{
     @Override
     public void showPasswordChangeFailed(){
         DialogFactory.createGenericErrorDialog(this,R.string.settings_showPasswordChangeFailed).show();
-    }
-
-    @Override
-    public void showPasswordBad(){
-        DialogFactory.createGenericErrorDialog(this,R.string.settings_passwordControlFailed).show();
     }
 
     @Override

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -115,41 +116,58 @@
                     android:hint=""
                     android:inputType="textPassword"/>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/settings_passwords_doNotMatch"
-                    android:textColor="@color/hpiRed"
-                    android:id="@+id/change_profile_passwordsDoNotMatch"/>
+                    android:orientation="vertical"
+                    android:id="@+id/passwordInfoLayout">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/settings_passwordControlFailed"
-                    android:textColor="@color/hpiRed"
-                    android:id="@+id/change_profile_passwordControlFailed"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/settings_passwords_doNotMatch"
+                        android:textColor="@color/hpiRed"
+                        android:id="@+id/change_profile_passwordsDoNotMatch"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/settings_passwordTooShort"
-                    android:textColor="@color/hpiRed"
-                    android:id="@+id/change_profile_passwordTooShort"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/settings_passwordControlFailed"
+                        android:textColor="@color/hpiRed"
+                        android:id="@+id/change_profile_passwordControlFailed"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/settings_passwordNeedsNumbers"
-                    android:textColor="@color/hpiRed"
-                    android:id="@+id/change_profile_passwordNeedsNumbers"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/settings_passwordTooShort"
+                        android:textColor="@color/hpiRed"
+                        android:id="@+id/change_profile_passwordTooShort"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/settings_passwordNeedsNumbers"
+                        android:textColor="@color/hpiRed"
+                        android:id="@+id/change_profile_passwordNeedsNumbers"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/settings_passwordOkay"
+                        android:textColor="@color/green_light"
+                        android:id="@+id/change_profile_passwordOkay"/>
+
+                </LinearLayout>
 
                 <Button
                     android:layout_width="wrap_content"

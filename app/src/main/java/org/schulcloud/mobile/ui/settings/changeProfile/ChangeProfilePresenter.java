@@ -81,15 +81,7 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
     public void changeProfile(@NonNull String firstName, @NonNull String lastName,
                               @NonNull String email, @NonNull String gender,
                               @Nullable String currentPassword,
-                              @Nullable String newPassword, @Nullable String newPasswordRepeat) {
-        if(newPassword.length() < 8 || newPassword.equals(newPassword.toLowerCase()) || newPassword
-                .equals(newPassword.toUpperCase()) || Pattern.matches("[a-zA-Z]+",newPassword)){
-            sendToView(v -> v.showPasswordBad());
-        }
-        if(newPassword.equals("") || newPassword.equals(currentPassword) || !(newPassword.equals(newPasswordRepeat))) {
-            sendToView(v -> v.showPasswordChangeFailed());
-            return;
-        }
+                              @Nullable String newPassword) {
 
         CurrentUser currentUser = mUserDataManager.getCurrentUser().toBlocking().value();
         //CurrentAccount currentAccount = mUserDataManager.getCurrentAccount().toBlocking().value();

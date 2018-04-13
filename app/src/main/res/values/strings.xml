@@ -160,6 +160,7 @@
     <string name="settings_passwords_doNotMatch">*Die Passwörter stimmen nicht überein.</string>
     <string name="settings_passwordTooShort">*Das neue Passwort ist zu kurz.</string>
     <string name="settings_passwordNeedsNumbers">*Das Passwort muss mindestens eine Zahl beinhalten</string>
+    <string name="settings_passwordOkay">Das Passwort entspricht den Anforderungen</string>
 
     <!--Logout-->
     <string name="logout_title">Logout</string>

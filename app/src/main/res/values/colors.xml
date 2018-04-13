@@ -18,6 +18,8 @@
     <color name="blue_light">#1989AC</color>
     <color name="turquoise">#00B8A9</color>
 
+    <color name="green_light">#20a300</color>
+
     <!--Material-->
     <color name="material_control_activated">#FFFFFFFF</color>
     <color name="material_control_normal">#B3FFFFFF</color>

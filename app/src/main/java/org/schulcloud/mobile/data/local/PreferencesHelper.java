@@ -150,6 +150,8 @@ public class PreferencesHelper {
         return mPref.getString(PREFERENCE_USER_ID, "null");
     }
 
+    public String getCurrentAccountId(){return mPref.getString(PREFERENCE_ACCOUNT_ID,"null");}
+
     public String getCurrentUsername() {
         return mPref.getString(PREFERENCE_USERNAME, "null");
     }

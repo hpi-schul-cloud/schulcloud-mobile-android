@@ -4,6 +4,7 @@ import android.accounts.Account;
 
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.Course;
+import org.schulcloud.mobile.data.model.CurrentAccount;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Directory;
@@ -138,5 +139,5 @@ public interface RestService {
     Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
 
     @GET("accounts")
-    Observable<String> getCurrentAccountId(@Header ("Authorization") String accessToken, @Body String userId);
+    Observable<CurrentAccount> getCurrentAccount(@Header ("Authorization") String accessToken, @Query("userId") String userId);
 }

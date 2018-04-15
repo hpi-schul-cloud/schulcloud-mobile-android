@@ -1,8 +1,8 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -19,7 +19,6 @@ import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Handler;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -35,6 +34,7 @@ implements ChangeProfileMvpView{
     private boolean passwordIsOkay = false;
     private Animation animationScaleIn;
     private Animation animationScaleOut;
+    private boolean oldPasswordEntered = false;
     
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
@@ -65,6 +65,10 @@ implements ChangeProfileMvpView{
     LinearLayout passwordInfo;
     @BindView(R.id.change_profile_passwordOkay)
     TextView passwordOkay;
+    @BindView(R.id.change_profile_oldPasswordInfoLayout)
+    LinearLayout oldPasswordInfo;
+    @BindView(R.id.change_profile_oldPasswordEmpty)
+    TextView passwordEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -82,7 +86,7 @@ implements ChangeProfileMvpView{
         // Profile
         mChangeProfilePresenter.loadProfile();
         settings_submit.setOnClickListener(listener -> {
-            if(passwordIsOkay) {
+            if(passwordIsOkay && oldPasswordEntered) {
                 mCurrentUser = mChangeProfilePresenter.getCurrentUser();
                 String name = mCurrentUser.getFirstName();
                 String last_name = mCurrentUser.getLastName();
@@ -99,20 +103,53 @@ implements ChangeProfileMvpView{
             }
         });
 
-        View.OnFocusChangeListener listener = new View.OnFocusChangeListener(){
-                @Override
-                public void onFocusChange(View view, boolean hasFocus){
-                    if(!hasFocus) {
-                        String newPassword = newPassword_editText.getText().toString();
-                        String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-                        passwordIsOkay = checkPasswords(newPassword, newPasswordRepeat);
-                    }
-                }
+        TextWatcher listener = new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String newPassword = newPassword_editText.getText().toString();
+                String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
+                passwordIsOkay = checkPasswords(newPassword, newPasswordRepeat);
+            }
         };
 
+        password_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                passwordEmpty.clearAnimation();
+                if(password_editText.equals("")){
+                    oldPasswordInfo.addView(passwordEmpty);
+                    passwordEmpty.startAnimation(animationScaleIn);
+                }else{
+                    passwordEmpty.startAnimation(animationScaleOut);
+                    oldPasswordInfo.removeView(passwordEmpty);
+                    oldPasswordEntered = true;
+                }
+            }
+        });
+
         settings_submit.setTranslationX(newPasswordRepeat_editText.getX() + 20);
-        newPassword_editText.setOnFocusChangeListener(listener);
-        newPasswordRepeat_editText.setOnFocusChangeListener(listener);
+        newPassword_editText.addTextChangedListener(listener);
+        newPasswordRepeat_editText.addTextChangedListener(listener);
 
         passwordInfo.removeAllViews();
 
@@ -129,45 +166,39 @@ implements ChangeProfileMvpView{
     public boolean checkPasswords(String newPassword, String newPasswordRepeat){
         boolean passwordOkayBool = true;
 
-        if(newPassword == "" || newPasswordRepeat == ""){
+        passwordInfo.removeAllViews();
+        passwordsDoNotMatch.setText("");//TODO: find reason for passwordDoNotMatch being drawn after removal from layout
+
+        if(newPassword.equals("") || newPasswordRepeat.equals("")){
             return false;
         }
 
-        passwordInfo.removeAllViews();
-
-        passwordsDoNotMatch.clearAnimation();
-        if(!newPassword.equals(newPasswordRepeat)){
+        if(!newPassword.equals(newPasswordRepeat)) {
             passwordInfo.addView(passwordsDoNotMatch);
+            passwordsDoNotMatch.setText(R.string.settings_passwords_doNotMatch);
             passwordsDoNotMatch.startAnimation(animationScaleIn);
-        }else{
             passwordOkayBool = false;
         }
 
-        passwordTooShort.clearAnimation();
-        if(newPassword.length() < 8){
+        if(newPassword.length() < 8) {
             passwordInfo.addView(passwordTooShort);
             passwordTooShort.startAnimation(animationScaleIn);
-        }else{
             passwordOkayBool = false;
         }
 
-        passwordNeedsNumbers.clearAnimation();
         if(Pattern.matches("[a-zA-Z]+",newPassword)){
             passwordInfo.addView(passwordNeedsNumbers);
             passwordNeedsNumbers.startAnimation(animationScaleIn);
-        }else{
             passwordOkayBool = false;
         }
 
-        passwordControlFailed.clearAnimation();
         if(newPassword.equals(newPassword.toLowerCase())){
             passwordInfo.addView(passwordControlFailed);
             passwordControlFailed.startAnimation(animationScaleIn);
-        }else{
             passwordOkayBool = false;
         }
 
-        if(this.passwordIsOkay == true) {
+        if(passwordOkayBool == true) {
             passwordInfo.addView(passwordOkay);
             passwordOkay.startAnimation(animationScaleIn);
         }

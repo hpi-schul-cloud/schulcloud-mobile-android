@@ -148,15 +148,12 @@ public class UserDataManager{
         return profileResponseObservable;
     }
 
-    public Observable<CurrentAccount> syncCurrentAccount(){
-        String userId = getCurrentUserId();
-        return mRestService.getCurrentAccount(getAccessToken(),userId)
-                .concatMap(new Func1<CurrentAccount, Observable<CurrentAccount>>(){
-
+    public Observable<List<AccountResponse>> getAccounts(){
+        mRestService.getAccounts(getAccessToken())
+                .concatMap(new Func1<List<AccountResponse>, Observable<?>>() {
                     @Override
-                    public Observable<CurrentAccount> call(CurrentAccount currentAccount) {
-                        mPreferencesHelper.saveCurrentAccountId(currentAccount.accountId);
-                        return mUserDatabaseHelper.setCurrentAccount(currentAccount);
+                    public Observable<List<AccountResponse>> call(List<AccountResponse> accountResponses) {
+                        return Observable.just(accountResponses);
                     }
                 });
     }
@@ -165,7 +162,7 @@ public class UserDataManager{
         return mPreferencesHelper.getCurrentAccountId();
     }
 
-    public Single<CurrentAccount> getCurrentAccount(){
-        return mUserDatabaseHelper.getCurrentAccount();
+    public void saveCurrentAccountId(String _id){
+        mPreferencesHelper.saveCurrentAccountId(_id);
     }
 }

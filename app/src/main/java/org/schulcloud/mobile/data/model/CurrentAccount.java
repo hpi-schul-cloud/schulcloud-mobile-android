@@ -3,8 +3,7 @@ package org.schulcloud.mobile.data.model;
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
 
-public class CurrentAccount implements RealmModel {
-    @PrimaryKey
+public class CurrentAccount{
     public String userId;
     public String accountId;
     public String username;

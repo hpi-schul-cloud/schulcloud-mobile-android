@@ -4,17 +4,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.schulcloud.mobile.data.datamanagers.EventDataManager;
-import org.schulcloud.mobile.data.datamanagers.NotificationDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
-import org.schulcloud.mobile.data.model.CurrentAccount;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
+import org.schulcloud.mobile.data.model.responseBodies.AccountResponse;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
-import java.util.regex.Pattern;
-
+import java.util.List;
 import javax.inject.Inject;
 
 import rx.Subscription;
@@ -43,6 +40,9 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
     /* Profile */
     public void loadProfile()
     {
+        syncCurrentAccount();
+        if(!mProfileSubscription.isUnsubscribed())
+            mProfileSubscription.unsubscribe();
         mProfileSubscription = mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -56,11 +56,22 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
                         });
     }
 
+    public void syncCurrentAccount(){
+        mProfileSubscription = mUserDataManager.getAccounts()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(accounts->{
+                    for(AccountResponse account : accounts){
+                        if(account.userId == mUserDataManager.getCurrentUserId()){
+                            mUserDataManager.saveCurrentAccountId(account._id);
+                        }
+                    }
+                });
+    }
+
     public void changeProfile(@NonNull String firstName, @NonNull String lastName,
                               @NonNull String email, @NonNull String gender,
                               @Nullable String currentPassword,
                               @Nullable String newPassword) {
-        mUserDataManager.syncCurrentAccount();
         CurrentUser currentUser = mUserDataManager.getCurrentUser().toBlocking().value();
         String displayName = currentUser.displayName;
         String userId = currentUser.get_id();

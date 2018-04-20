@@ -103,30 +103,4 @@ public class UserDatabaseHelper extends BaseDatabaseHelper {
         final Realm realm = mRealmProvider.get();
         return Single.just(realm.where(CurrentUser.class).findFirst());
     }
-
-    public Observable<CurrentAccount> setCurrentAccount(final CurrentAccount currentAccount){
-        return Observable.create(subscriber -> {
-            if(subscriber.isUnsubscribed())
-                return;
-            Realm realm = null;
-
-            try {
-                realm = mRealmProvider.get();
-                realm.executeTransaction(realm1 -> realm1.copyToRealm(currentAccount));
-            } catch (Exception e){
-                Timber.e(e,"there was an error while adding this Realm.");
-                subscriber.onError(e);
-            } finally {
-                if(realm != null){
-                    subscriber.onCompleted();;
-                    realm.close();
-                }
-            }
-        });
-    }
-
-    public Single<CurrentAccount> getCurrentAccount(){
-        final Realm realm = mRealmProvider.get();
-        return Single.just(realm.where(CurrentAccount.class).findFirst());
-    }
 }

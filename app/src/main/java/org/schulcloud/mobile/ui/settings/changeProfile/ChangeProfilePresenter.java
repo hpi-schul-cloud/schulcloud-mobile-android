@@ -26,6 +26,7 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
     private Subscription mEventsSubscription;
     private Subscription mDevicesSubscription;
     private Subscription mProfileSubscription;
+    private Subscription mAccountSubscription;
 
     @Inject
     public ChangeProfilePresenter(UserDataManager userDataManager) {
@@ -41,8 +42,6 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
     public void loadProfile()
     {
         syncCurrentAccount();
-        if(!mProfileSubscription.isUnsubscribed())
-            mProfileSubscription.unsubscribe();
         mProfileSubscription = mUserDataManager.getCurrentUser()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -57,14 +56,11 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
     }
 
     public void syncCurrentAccount(){
-        mProfileSubscription = mUserDataManager.getAccounts()
+        mAccountSubscription = mUserDataManager.getAccount()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(accounts->{
-                    for(AccountResponse account : accounts){
-                        if(account.userId == mUserDataManager.getCurrentUserId()){
-                            mUserDataManager.saveCurrentAccountId(account._id);
-                        }
-                    }
+                    mUserDataManager.saveCurrentAccountId(accounts.get(0)._id);
+                    mUserDataManager.saveCurrentAccountName(accounts.get(0).username);
                 });
     }
 
@@ -73,13 +69,13 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
                               @Nullable String currentPassword,
                               @Nullable String newPassword) {
         CurrentUser currentUser = mUserDataManager.getCurrentUser().toBlocking().value();
-        String displayName = currentUser.displayName;
+        String displayName = mUserDataManager.getCurrentAccountName();
         String userId = currentUser.get_id();
         String accountId = mUserDataManager.getCurrentAccountId();
         String schoolID = currentUser.schoolId;
 
-        AccountRequest accountRequest = new AccountRequest(displayName,newPassword,userId);
-        UserRequest userRequest = new UserRequest(accountId,firstName,lastName,email,schoolID,gender);
+        AccountRequest accountRequest = new AccountRequest(displayName,newPassword,accountId);
+        UserRequest userRequest = new UserRequest(userId,firstName,lastName,email,schoolID,gender);
 
         mUserDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
             sendToView(v -> v.showPasswordChangeFailed());

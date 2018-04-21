@@ -126,7 +126,7 @@ public class UserDataManager{
         return mRestService.changeAccountInfo(
                 getAccessToken(),
                 accountRequest)
-                .concatMap(new Func1<AccountResponse, Observable<? extends AccountResponse>>() {
+                .concatMap(new Func1<AccountResponse, Observable<AccountResponse>>() {
                     @Override
                     public Observable<AccountResponse> call(AccountResponse accountResponse) {
                         return Observable.just(accountResponse);
@@ -148,9 +148,9 @@ public class UserDataManager{
         return profileResponseObservable;
     }
 
-    public Observable<List<AccountResponse>> getAccounts(){
-        mRestService.getAccounts(getAccessToken())
-                .concatMap(new Func1<List<AccountResponse>, Observable<?>>() {
+    public Observable<List<AccountResponse>> getAccount(){
+        return mRestService.getAccount(getAccessToken(),getCurrentUserId())
+                .concatMap(new Func1<List<AccountResponse>, Observable<? extends List<AccountResponse>>>() {
                     @Override
                     public Observable<List<AccountResponse>> call(List<AccountResponse> accountResponses) {
                         return Observable.just(accountResponses);
@@ -164,5 +164,13 @@ public class UserDataManager{
 
     public void saveCurrentAccountId(String _id){
         mPreferencesHelper.saveCurrentAccountId(_id);
+    }
+
+    public void saveCurrentAccountName(String displayName) {
+        mPreferencesHelper.saveCurrentAccountName(displayName);
+    }
+
+    public String getCurrentAccountName(){
+        return mPreferencesHelper.getCurrentAccountName();
     }
 }

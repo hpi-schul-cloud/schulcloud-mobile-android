@@ -55,7 +55,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.nameTextView.setText(course.name);
         holder.descriptionTextView.setText(course.description);
 
-        holder.colorView.setBackgroundColor(Color.parseColor(course.color));
+        if(course.color!=null)
+            holder.colorView.setBackgroundColor(Color.parseColor(course.color));
+        else
+            holder.colorView.setBackgroundColor(Color.GRAY);
 
         holder.cardView.setOnClickListener(v -> mCoursePresenter.showCourseDetail(course._id));
     }

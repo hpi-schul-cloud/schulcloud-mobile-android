@@ -10,7 +10,7 @@ public class ProfileResponse {
     public String gender;
 
     public ProfileResponse(UserResponse userResponse, AccountResponse accountResponse){
-        this.displayName = accountResponse.displayName;
+        this.displayName = accountResponse.username;
         this._id = userResponse._id;
         this.firstName = userResponse.firstName;
         this.lastName = userResponse.lastName;

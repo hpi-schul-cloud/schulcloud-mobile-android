@@ -23,6 +23,7 @@ public class PreferencesHelper {
     public static final String PREFERENCE_CALENDAR_SYNC_NAME = "calendarSyncName";
     public static final String PREFERENCE_IS_IN_DEMO_MODE = "IS_IN_DEMO_MODE";
     public static final String PREFERENCE_ACCOUNT_ID = "currentAccount";
+    public static final String PREFERENCE_ACCOUNT_NAME = "currentAccountName";
 
     private final ObscuredSharedPreferences mPref;
 
@@ -82,6 +83,15 @@ public class PreferencesHelper {
             return accountId;
         }
 
+        return null;
+    }
+
+    public String saveCurrentAccountName(String displayName){
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putString(PREFERENCE_ACCOUNT_NAME,displayName);
+
+        if(editor.commit())
+            return displayName;
         return null;
     }
 
@@ -150,7 +160,13 @@ public class PreferencesHelper {
         return mPref.getString(PREFERENCE_USER_ID, "null");
     }
 
-    public String getCurrentAccountId(){return mPref.getString(PREFERENCE_ACCOUNT_ID,"null");}
+    public String getCurrentAccountId(){
+        return mPref.getString(PREFERENCE_ACCOUNT_ID,"null");
+    }
+
+    public String getCurrentAccountName(){
+        return mPref.getString(PREFERENCE_ACCOUNT_NAME,"null");
+    }
 
     public String getCurrentUsername() {
         return mPref.getString(PREFERENCE_USERNAME, "null");

@@ -132,11 +132,11 @@ public interface RestService {
     @GET("news?$sort=createdAt:1")
     Observable<FeathersResponse<News>> getNews(@Header("Authorization") String accessToken);
 
-    @PATCH("users/{_id}")
-    Observable<UserResponse> changeUserInfo(@Header("Authorization") String accessToken, @Body UserRequest userRequest);
+    @PATCH("users/{id}")
+    Observable<UserResponse> changeUserInfo(@Header("Authorization") String accessToken, @Body UserRequest userRequest,@Path("id") String _id);
 
-    @PATCH("accounts/{_id}")
-    Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest);
+    @PATCH("accounts/{id}")
+    Observable<AccountResponse> changeAccountInfo(@Header ("Authorization") String accessToken, @Body AccountRequest accountRequest,@Path("id") String _id);
 
     @GET("accounts")
     Observable<List<AccountResponse>> getAccount(@Header("Authorization") String accessToken,@Query("userId") String userId);

@@ -74,7 +74,7 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
         String accountId = mUserDataManager.getCurrentAccountId();
         String schoolID = currentUser.schoolId;
 
-        AccountRequest accountRequest = new AccountRequest(displayName,newPassword,accountId);
+        AccountRequest accountRequest = new AccountRequest(displayName,newPassword,accountId,currentPassword);
         UserRequest userRequest = new UserRequest(userId,firstName,lastName,email,schoolID,gender);
 
         mUserDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
@@ -87,7 +87,7 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
                 .subscribe(userResponse -> {},
                         throwable ->
                         {Log.e("Profile","OnError",throwable);
-                         sendToView(v -> v.showProfileError());},
+                         sendToView(v -> v.showProfileChangeFailed());},
                         () -> sendToView(v -> v.showChangeSuccess()));
     }
 

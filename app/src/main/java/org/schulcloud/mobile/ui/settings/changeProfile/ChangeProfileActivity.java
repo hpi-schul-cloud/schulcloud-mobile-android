@@ -136,7 +136,7 @@ implements ChangeProfileMvpView{
             @Override
             public void afterTextChanged(Editable editable) {
                 passwordEmpty.clearAnimation();
-                if(password_editText.equals("")){
+                if(editable.toString().equals("")){
                     oldPasswordInfo.addView(passwordEmpty);
                     passwordEmpty.startAnimation(animationScaleIn);
                 }else{
@@ -167,7 +167,7 @@ implements ChangeProfileMvpView{
         boolean passwordOkayBool = true;
 
         passwordInfo.removeAllViews();
-        passwordsDoNotMatch.setText("");//TODO: find reason for passwordDoNotMatch being drawn after removal from layout
+        passwordsDoNotMatch.setText("");
 
         if(newPassword.equals("") || newPasswordRepeat.equals("")){
             return false;

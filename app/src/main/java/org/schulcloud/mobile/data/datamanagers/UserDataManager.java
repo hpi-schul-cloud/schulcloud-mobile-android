@@ -113,7 +113,8 @@ public class UserDataManager{
     public Observable<UserResponse> changeUserInfo(UserRequest userRequest) {
         return mRestService.changeUserInfo(
                 getAccessToken(),
-                userRequest)
+                userRequest,
+                userRequest._id)
                 .concatMap(new Func1<UserResponse, Observable<UserResponse>>() {
                     @Override
                     public Observable<UserResponse> call(UserResponse userResponse) {
@@ -125,7 +126,8 @@ public class UserDataManager{
     public Observable<AccountResponse> changeAccountInfo(AccountRequest accountRequest) {
         return mRestService.changeAccountInfo(
                 getAccessToken(),
-                accountRequest)
+                accountRequest,
+                accountRequest._id)
                 .concatMap(new Func1<AccountResponse, Observable<AccountResponse>>() {
                     @Override
                     public Observable<AccountResponse> call(AccountResponse accountResponse) {

@@ -50,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_email"
                 android:textSize="17sp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:inputType="textEmailAddress"/>
 
             <EditText
                 style="@style/Material.ListItem_TextPrimary"

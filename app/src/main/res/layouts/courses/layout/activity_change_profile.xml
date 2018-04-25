@@ -192,7 +192,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="30dp"
                     android:id="@+id/change_profile_submit"
-                    style="@style/Widget.AppCompat.Button.Colored"/>
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:paddingBottom="10dp"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.animation.Animation;
@@ -119,6 +121,7 @@ implements ChangeProfileMvpView{
                 String newPassword = newPassword_editText.getText().toString();
                 String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
                 passwordIsOkay = checkPasswords(newPassword, newPasswordRepeat);
+                checkPasswordStates();
             }
         };
 
@@ -139,11 +142,13 @@ implements ChangeProfileMvpView{
                 if(editable.toString().equals("")){
                     oldPasswordInfo.addView(passwordEmpty);
                     passwordEmpty.startAnimation(animationScaleIn);
+                    oldPasswordEntered = false;
                 }else{
                     passwordEmpty.startAnimation(animationScaleOut);
                     oldPasswordInfo.removeView(passwordEmpty);
                     oldPasswordEntered = true;
                 }
+                checkPasswordStates();
             }
         });
 
@@ -236,5 +241,13 @@ implements ChangeProfileMvpView{
     @Override
     public void showProfileChangeFailed(){
         DialogFactory.createGenericErrorDialog(this,R.string.settings_profile_changing_error).show();
+    }
+
+    @Override
+    public void checkPasswordStates(){
+        if(!oldPasswordEntered || !passwordIsOkay)
+            settings_submit.setBackgroundColor(Color.GRAY);
+        else
+            settings_submit.setBackgroundColor(ContextCompat.getColor(this,R.color.hpiRed));
     }
 }

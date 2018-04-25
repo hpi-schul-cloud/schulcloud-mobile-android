@@ -19,4 +19,6 @@ public interface ChangeProfileMvpView extends MvpView {
 
     boolean checkPasswords(String newPassword, String newPasswordRepeat);
 
+    void checkPasswordStates();
+
 }

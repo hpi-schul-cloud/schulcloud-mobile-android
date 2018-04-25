@@ -95,26 +95,23 @@ public class HomeworkFragment extends MainFragment<HomeworkMvpView, HomeworkPres
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
-        swipeRefresh.setOnRefreshListener(
-                () -> {
-                    startService(HomeworkSyncService.getStartIntent(getContext()));
-                    startService(SubmissionSyncService.getStartIntent(getContext()));
+        swipeRefresh.setOnRefreshListener(() -> {
+            //startService(HomeworkSyncService.getStartIntent(getContext()));
+            startService(SubmissionSyncService.getStartIntent(getContext()));
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(() -> {
-                        mHomeworkPresenter.loadHomework();
-
-                        swipeRefresh.setRefreshing(false);
-                    }, 3000);
-                }
-        );
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                mHomeworkPresenter.loadHomework();
+                swipeRefresh.setRefreshing(false);
+            }, 3000);
+        });
 
         fabAddHomework.setOnClickListener(v -> addFragment(AddHomeworkFragment.newInstance()));
 
         return view;
     }
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
     @Override
     public void showHomework(@NonNull List<Homework> homework) {
         mHomeworkAdapter.setHomework(homework);

@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.local;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.util.FormatUtil;
@@ -56,11 +57,11 @@ public class HomeworkDatabaseHelper extends BaseDatabaseHelper {
                 .filter(RealmResults::isLoaded)
                 .map(realm::copyFromRealm);
     }
-
+    @Nullable
     public Homework getHomeworkForId(@NonNull String homeworkId) {
         Realm realm = mRealmProvider.get();
-        return realm
-                .copyFromRealm(realm.where(Homework.class).equalTo("_id", homeworkId).findFirst());
+        return realm.copyFromRealm(
+                realm.where(Homework.class).equalTo("_id", homeworkId).findFirst());
     }
 
     @NonNull

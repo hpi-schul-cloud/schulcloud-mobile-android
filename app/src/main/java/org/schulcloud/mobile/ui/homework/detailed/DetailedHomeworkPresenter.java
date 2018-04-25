@@ -28,7 +28,6 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
         mSubmissionDataManager = submissionDataManager;
         mUserDataManager = userDataManager;
     }
-
     @Override
     public void onViewAttached(@NonNull DetailedHomeworkMvpView view) {
         super.onViewAttached(view);

@@ -27,6 +27,7 @@ import org.schulcloud.mobile.util.ViewUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -110,7 +111,6 @@ public class DashboardFragment extends MainFragment<DashboardMvpView, DashboardP
 
             new Handler().postDelayed(() -> {
                 mDashboardPresenter.reload();
-
                 swipeRefresh.setRefreshing(false);
             }, 3000);
         });
@@ -121,7 +121,7 @@ public class DashboardFragment extends MainFragment<DashboardMvpView, DashboardP
     /* MVP View methods implementation */
     @Override
     public void showOpenHomework(@NonNull Pair<Integer, Date> openHomework) {
-        openTasks.setText(openHomework.getFirst());
+        openTasks.setText(String.format(Locale.GERMANY, "%d", openHomework.getFirst()));
         if (openHomework.getSecond() == null)
             dueTillDate.setText("...");
         else

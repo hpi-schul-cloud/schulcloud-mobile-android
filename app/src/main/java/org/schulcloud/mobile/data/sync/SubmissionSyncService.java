@@ -9,13 +9,12 @@ import android.os.IBinder;
 
 import org.schulcloud.mobile.SchulCloudApplication;
 import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
-import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.util.AndroidComponentUtil;
 import org.schulcloud.mobile.util.NetworkUtil;
+import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
 
-import rx.Observer;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -51,33 +50,24 @@ public class SubmissionSyncService extends Service {
             return START_NOT_STICKY;
         }
 
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
+        RxUtil.unsubscribe(mSubscription);
         mSubscription = mSubmissionDataManager.syncSubmissions()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Submission>() {
-                    @Override
-                    public void onCompleted() {
-                        Timber.i("Synced successfully!");
-                        stopSelf(startId);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.w(e, "Error syncing.");
-                        stopSelf(startId);
-                    }
-
-                    @Override
-                    public void onNext(Submission submission) {
-                    }
-                });
+                .subscribe(submission -> {},
+                        throwable -> {
+                            Timber.w(throwable, "Error syncing.");
+                            stopSelf(startId);
+                        }, () -> {
+                            Timber.i("Synced successfully!");
+                            stopSelf(startId);
+                        });
 
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        if (mSubscription != null) mSubscription.unsubscribe();
+        RxUtil.unsubscribe(mSubscription);
         super.onDestroy();
     }
 

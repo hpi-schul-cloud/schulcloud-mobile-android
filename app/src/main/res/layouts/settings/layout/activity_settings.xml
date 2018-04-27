@@ -9,7 +9,11 @@
     android:orientation="vertical"
     tools:context=".ui.settings.SettingsActivity">
 
-    <include layout="@layout/action_bar" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/settings_toolbar"
+        style="@style/Material.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"

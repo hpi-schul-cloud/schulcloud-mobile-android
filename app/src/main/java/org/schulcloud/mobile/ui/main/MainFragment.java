@@ -2,7 +2,9 @@ package org.schulcloud.mobile.ui.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.widget.Toolbar;
 
 import org.schulcloud.mobile.ui.base.BaseFragment;
 import org.schulcloud.mobile.ui.base.BasePresenter;
@@ -34,6 +36,12 @@ public abstract class MainFragment<V extends MvpView, P extends BasePresenter<V>
     public final MainActivity getMainActivity() {
         return mMainActivity;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getParentFragment() == null)
+            getMainActivity().setToolbar(getToolbar());
+    }
 
     /**
      * This method is called when the user presses the back button while this fragment is visible.
@@ -46,6 +54,10 @@ public abstract class MainFragment<V extends MvpView, P extends BasePresenter<V>
 
     public void setTitle(@StringRes int titleId) {
         getMainActivity().setTitle(titleId);
+    }
+    @Nullable
+    protected Toolbar getToolbar() {
+        return null;
     }
     public void addFragment(@NonNull MainFragment fragment) {
         getMainActivity().addFragment(this, fragment);

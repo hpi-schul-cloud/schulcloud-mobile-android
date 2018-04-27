@@ -4,11 +4,11 @@
 
     <!--Base-->
     <string name="base_action_feedback">Feedback geben</string>
-    <string name="base_offline">(offline)</string>
 
     <!--Main-->
     <string name="main_action_settings">@string/settings_title</string>
     <string name="main_action_logout">Logout</string>
+    <string name="main_offline">(offline)</string>
     <string name="main_navigation_dashboard">@string/dashboard_title</string>
     <string name="main_navigation_courses">@string/courses_title</string>
     <string name="main_navigation_news">@string/news_title</string>

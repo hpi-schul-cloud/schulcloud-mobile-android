@@ -185,6 +185,13 @@
         <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
     </style>
 
+    <!-- TabLayout -->
+    <style name="Material.TabLayout">
+        <item name="tabIndicatorColor">@color/material_control_activated</item>
+        <item name="tabTextColor">@color/material_control_normal</item>
+        <item name="tabSelectedTextColor">@color/material_control_activated</item>
+    </style>
+
     <!-- Card -->
     <style name="Material.Card">
         <item name="contentPadding">@dimen/material_card_padding</item>

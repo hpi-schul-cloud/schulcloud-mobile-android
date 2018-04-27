@@ -12,8 +12,6 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.base.BaseActivity;
@@ -24,12 +22,14 @@ import org.schulcloud.mobile.ui.homework.HomeworkFragment;
 import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.settings.SettingsActivity;
 import org.schulcloud.mobile.util.NetworkUtil;
+import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.WebUtil;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -52,6 +52,9 @@ public final class MainActivity
 
     boolean mIsTopLevelTransaction = true;
 
+    @BindView(R.id.main_toolbar)
+    Toolbar vToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +65,8 @@ public final class MainActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        if (!NetworkUtil.isNetworkConnected(this)) {
-            TextView offline = (TextView) findViewById(R.id.offlineBadge);
-            offline.setVisibility(View.VISIBLE);
-        }
+        if (!NetworkUtil.isNetworkConnected(this))
+            vToolbar.setSubtitle(R.string.main_offline);
 
         ((BottomNavigationView) findViewById(R.id.navigation)).setOnNavigationItemSelectedListener(
                 item -> {
@@ -227,5 +227,13 @@ public final class MainActivity
     }
     public void removeFragment(@NonNull MainFragment fragment) {
         mPresenter.removeView(fragment.getActivityId());
+    }
+
+    public void setToolbar(@Nullable Toolbar toolbar) {
+        if (toolbar == null)
+            setSupportActionBar(vToolbar);
+        else
+            setSupportActionBar(toolbar);
+        ViewUtil.setVisibility(vToolbar, toolbar == null);
     }
 }

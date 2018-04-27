@@ -82,7 +82,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.settings_toolbar));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(true);

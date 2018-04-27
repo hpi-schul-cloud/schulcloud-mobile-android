@@ -83,7 +83,7 @@ public class DetailedCourseFragment
         return view;
     }
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
     @Override
     public void showCourseName(@NonNull String name) {
         courseName.setText(name);

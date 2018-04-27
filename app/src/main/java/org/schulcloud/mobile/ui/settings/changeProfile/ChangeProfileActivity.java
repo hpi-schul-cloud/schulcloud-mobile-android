@@ -37,7 +37,7 @@ implements ChangeProfileMvpView{
     private Animation animationScaleIn;
     private Animation animationScaleOut;
     private boolean oldPasswordEntered = false;
-    
+
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
 
@@ -84,37 +84,18 @@ implements ChangeProfileMvpView{
         animationScaleIn.setFillAfter(true);
         animationScaleOut = AnimationUtils.loadAnimation(this,R.anim.resize_height_100_to_0);
         animationScaleOut.setFillAfter(true);
+        settings_submit.setBackgroundColor(Color.GRAY);
 
         // Profile
         mChangeProfilePresenter.loadProfile();
-        settings_submit.setOnClickListener(listener -> {
-            if(passwordIsOkay && oldPasswordEntered) {
-                mCurrentUser = mChangeProfilePresenter.getCurrentUser();
-                String name = mCurrentUser.getFirstName();
-                String last_name = mCurrentUser.getLastName();
-                String email = email_EditText.getText().toString() != null ?
-                        email_EditText.getText().toString() : mCurrentUser.email;
-                String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
-                        R.layout.item_gender_spinner)
-                        .getItem(gender_spinner.getSelectedItemPosition()).toString();
-                if (gender.equals("Choose Gender"))
-                    gender = null;
-                String password = password_editText.getText().toString();
-                String newPassword = newPassword_editText.getText().toString();
-                mChangeProfilePresenter.changeProfile(name, last_name, email, gender, password, newPassword);
-            }
-        });
+        settings_submit.setOnClickListener(listener -> callProfileChange());
 
         TextWatcher listener = new TextWatcher(){
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -127,14 +108,10 @@ implements ChangeProfileMvpView{
 
         password_editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -165,6 +142,27 @@ implements ChangeProfileMvpView{
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         gender_spinner.setAdapter(spinner_adapter);
 
+    }
+
+    @Override
+    public void callProfileChange(){
+        if(oldPasswordEntered) {
+            if(!passwordIsOkay && !newPassword_editText.getText().toString().equals(""))
+                return;
+            mCurrentUser = mChangeProfilePresenter.getCurrentUser();
+            String name = mCurrentUser.getFirstName();
+            String last_name = mCurrentUser.getLastName();
+            String email = email_EditText.getText().toString() != null ?
+                    email_EditText.getText().toString() : mCurrentUser.email;
+            String gender = ArrayAdapter.createFromResource(this, R.array.genderArrayPosReference,
+                    R.layout.item_gender_spinner)
+                    .getItem(gender_spinner.getSelectedItemPosition()).toString();
+            if (gender.equals("Choose Gender"))
+                gender = null;
+            String password = password_editText.getText().toString();
+            String newPassword = newPassword_editText.getText().toString();
+            mChangeProfilePresenter.changeProfile(name, last_name, email, gender, password, newPassword);
+        }
     }
 
     @Override
@@ -232,22 +230,15 @@ implements ChangeProfileMvpView{
     }
 
     @Override
-    public void showChangeSuccess(){
-        DialogFactory.createProgressDialog(this,R.string.settings_profileChangeSuccess).show();
-        mChangeProfilePresenter.loadProfile();
-        finish();
-    }
-
-    @Override
     public void showProfileChangeFailed(){
         DialogFactory.createGenericErrorDialog(this,R.string.settings_profile_changing_error).show();
     }
 
     @Override
     public void checkPasswordStates(){
-        if(!oldPasswordEntered || !passwordIsOkay)
-            settings_submit.setBackgroundColor(Color.GRAY);
-        else
+        if(oldPasswordEntered && (passwordIsOkay || newPassword_editText.getText().toString().equals("")))
             settings_submit.setBackgroundColor(ContextCompat.getColor(this,R.color.hpiRed));
+        else
+            settings_submit.setBackgroundColor(Color.GRAY);
     }
 }

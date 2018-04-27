@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
+import org.schulcloud.mobile.data.model.CurrentAccount;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.requestBodies.AccountRequest;
 import org.schulcloud.mobile.data.model.requestBodies.UserRequest;
@@ -27,6 +28,7 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
     private Subscription mDevicesSubscription;
     private Subscription mProfileSubscription;
     private Subscription mAccountSubscription;
+    private Subscription mSignInSubscription;
 
     @Inject
     public ChangeProfilePresenter(UserDataManager userDataManager) {
@@ -74,21 +76,37 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
         String accountId = mUserDataManager.getCurrentAccountId();
         String schoolID = currentUser.schoolId;
 
+
         AccountRequest accountRequest = new AccountRequest(displayName,newPassword,accountId,currentPassword);
         UserRequest userRequest = new UserRequest(userId,firstName,lastName,email,schoolID,gender);
 
-        mUserDataManager.signIn(currentUser.displayName,currentPassword).doOnError(throwable -> {
-            sendToView(v -> v.showPasswordChangeFailed());
-            return;
-        });
+        boolean loginBad = false;
 
-        mProfileSubscription = mUserDataManager.changeProfileInfo(accountRequest,userRequest)
+        mUserDataManager.signIn(currentUser.displayName,currentPassword)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userResponse -> {},
-                        throwable ->
-                        {Log.e("Profile","OnError",throwable);
-                         sendToView(v -> v.showProfileChangeFailed());},
-                        () -> sendToView(v -> v.showChangeSuccess()));
+                .toBlocking()
+                .subscribe(CurrentAccount->{}, throwable->{
+                    Log.e("Authentication","onError",throwable);
+                    sendToView(v -> v.showPasswordChangeFailed());
+                });
+
+
+        if(!newPassword.equals(""))
+            mProfileSubscription = mUserDataManager.changeProfileInfo(accountRequest,userRequest)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(userResponse -> {},
+                            throwable ->
+                            {Log.e("Profile","OnError",throwable);
+                             sendToView(v -> v.showProfileChangeFailed());},
+                            () -> {});
+        else
+            mProfileSubscription = mUserDataManager.changeUserInfo(userRequest)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(userResponse -> {},
+                            throwable ->
+                            {Log.e("Profile","OnError",throwable);
+                                sendToView(v -> v.showProfileChangeFailed());},
+                            () -> {});
     }
 
     public CurrentUser getCurrentUser(){

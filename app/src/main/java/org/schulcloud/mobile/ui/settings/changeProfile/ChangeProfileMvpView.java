@@ -13,12 +13,12 @@ public interface ChangeProfileMvpView extends MvpView {
 
     void showPasswordChangeFailed();
 
-    void showChangeSuccess();
-
     void showProfileChangeFailed();
 
     boolean checkPasswords(String newPassword, String newPasswordRepeat);
 
     void checkPasswordStates();
+
+    void callProfileChange();
 
 }

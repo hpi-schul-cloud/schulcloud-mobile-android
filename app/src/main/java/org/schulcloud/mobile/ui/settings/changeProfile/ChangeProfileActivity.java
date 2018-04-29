@@ -17,6 +17,7 @@ import android.widget.TextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.ui.base.BaseActivity;
+import org.schulcloud.mobile.ui.settings.SettingsPresenter;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.Arrays;
@@ -40,6 +41,8 @@ implements ChangeProfileMvpView{
 
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
+    @Inject
+    SettingsPresenter mSettingsPresenter;
 
     @BindView(R.id.change_profile_add_if_not_in_demo_mode)
     LinearLayout addIfNotDemoMode;
@@ -71,6 +74,8 @@ implements ChangeProfileMvpView{
     LinearLayout oldPasswordInfo;
     @BindView(R.id.change_profile_oldPasswordEmpty)
     TextView passwordEmpty;
+    @BindView(R.id.settings_current_password)
+    TextView currentPasswordTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -99,6 +104,15 @@ implements ChangeProfileMvpView{
 
             @Override
             public void afterTextChanged(Editable editable) {
+                if(!editable.toString().equals("") && oldPasswordInfo.getChildCount() == 0){
+                    oldPasswordInfo.addView(currentPasswordTextView);
+                    oldPasswordInfo.addView(password_editText);
+                    oldPasswordInfo.addView(passwordEmpty);
+                    oldPasswordInfo.startAnimation(animationScaleIn);
+                }else if(editable.toString().equals("") && oldPasswordInfo.getChildCount() != 0){
+                    oldPasswordInfo.setAnimation(animationScaleOut);
+                    oldPasswordInfo.animate().setDuration(700).withEndAction(() -> oldPasswordInfo.removeAllViews());
+                }
                 String newPassword = newPassword_editText.getText().toString();
                 String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
                 passwordIsOkay = checkPasswords(newPassword, newPasswordRepeat);
@@ -121,15 +135,16 @@ implements ChangeProfileMvpView{
                     passwordEmpty.startAnimation(animationScaleIn);
                     oldPasswordEntered = false;
                 }else{
-                    passwordEmpty.startAnimation(animationScaleOut);
-                    oldPasswordInfo.removeView(passwordEmpty);
+                    passwordEmpty.setAnimation(animationScaleOut);
+                    passwordEmpty.animate().withEndAction(() -> {oldPasswordInfo.removeView(passwordEmpty);});
                     oldPasswordEntered = true;
                 }
                 checkPasswordStates();
             }
         });
 
-        settings_submit.setTranslationX(newPasswordRepeat_editText.getX() + 20);
+        oldPasswordInfo.removeAllViews();
+
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
@@ -232,6 +247,12 @@ implements ChangeProfileMvpView{
     @Override
     public void showProfileChangeFailed(){
         DialogFactory.createGenericErrorDialog(this,R.string.settings_profile_changing_error).show();
+    }
+
+    @Override
+    public void finishChange(){
+        mSettingsPresenter.sendToView(v -> v.reloadProfile());
+        finish();
     }
 
     @Override

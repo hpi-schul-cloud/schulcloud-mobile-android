@@ -151,9 +151,9 @@
     <string name="settings_profile_changing_error">Es gab einen Fehler beim Verändern deines Profiles</string>
     <string name="settings_newPassword">Neues Passwort</string>
     <string name="settings_user">Nutzer-Einstellungen</string>
-    <string name="settings_newPasswordHint">Neues Passwort eingeben</string>
-    <string name="settings_newPasswordRepeatHint">Neues Passwort wiederholen</string>
-    <string name="settings_showPasswordChangeFailed">Das Verändern des Passwortes ist fehlgeschlagen: Aktuelles Passwort ist falsch.</string>
+    <string name="settings_newPasswordHint">Neues Passwort eingeben (optional)</string>
+    <string name="settings_newPasswordRepeatHint">Neues Passwort wiederholen (optional)</string>
+    <string name="settings_showPasswordChangeFailed">Das Verändern des Passwortes ist fehlgeschlagen: Ist das Passwort richtig?.</string>
     <string name="settings_passwordControlFailed">*Das Password muss kleine und große Buchstaben beinhalten.</string>
     <string name="settings_profileChangeSuccess">Dein Profil wurde verändert.</string>
     <string name="settings_openChangeProfile">Profil verändern</string>

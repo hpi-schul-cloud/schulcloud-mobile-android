@@ -40,8 +40,6 @@ public interface SettingsMvpView extends MvpView {
 
     void reloadProfile();
 
-    void showProfileChanged();
-
     void showProfileError();
 
     void showSupportsProfile(boolean supportsProfile);

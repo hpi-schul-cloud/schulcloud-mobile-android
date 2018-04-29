@@ -74,6 +74,8 @@ public class UserDataManager{
                     return syncCurrentUser(currentUser);
                 });
     }
+
+
     public void signOut() {
         mUserDatabaseHelper.clearAll();
         mPreferencesHelper.clear();

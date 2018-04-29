@@ -82,31 +82,23 @@ public class ChangeProfilePresenter extends BasePresenter<ChangeProfileMvpView>{
 
         boolean loginBad = false;
 
-        mUserDataManager.signIn(currentUser.displayName,currentPassword)
-                .observeOn(AndroidSchedulers.mainThread())
-                .toBlocking()
-                .subscribe(CurrentAccount->{}, throwable->{
-                    Log.e("Authentication","onError",throwable);
-                    sendToView(v -> v.showPasswordChangeFailed());
-                });
-
-
         if(!newPassword.equals(""))
             mProfileSubscription = mUserDataManager.changeProfileInfo(accountRequest,userRequest)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(userResponse -> {},
-                            throwable ->
-                            {Log.e("Profile","OnError",throwable);
-                             sendToView(v -> v.showProfileChangeFailed());},
-                            () -> {});
-        else
-            mProfileSubscription = mUserDataManager.changeUserInfo(userRequest)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(userResponse -> {},
+                    .subscribe(userResponse -> {sendToView(v -> v.finishChange());},
                             throwable ->
                             {Log.e("Profile","OnError",throwable);
                                 sendToView(v -> v.showProfileChangeFailed());},
                             () -> {});
+        else
+            mProfileSubscription = mUserDataManager.changeUserInfo(userRequest)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(userResponse -> {sendToView(v -> v.finishChange());},
+                            throwable ->
+                            {Log.e("Profile","OnError",throwable);
+                                sendToView(v -> v.showPasswordChangeFailed());},
+                            () -> {});
+
     }
 
     public CurrentUser getCurrentUser(){

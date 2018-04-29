@@ -327,12 +327,6 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     }
 
     @Override
-    public void showProfileChanged() {
-        reloadProfile();
-        Toast.makeText(this, R.string.settings_profile_changing_error, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void reloadProfile() {
         Intent intent = new Intent(this, SettingsActivity.class);
         this.startActivity(intent);

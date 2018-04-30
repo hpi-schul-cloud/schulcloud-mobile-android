@@ -23,4 +23,6 @@ public interface ChangeProfileMvpView extends MvpView {
 
     void finishChange();
 
+    void checkAnimationLogic();
+
 }

@@ -21,14 +21,19 @@ public class SubmissionPresenter extends BasePresenter<SubmissionMvpView> {
     public SubmissionPresenter(SubmissionDataManager dataManager) {
         mDataManager = dataManager;
     }
+    @Override
+    public void onViewAttached(@NonNull SubmissionMvpView view) {
+        super.onViewAttached(view);
+        showSubmission();
+    }
 
     void loadSubmission(@NonNull String homeworkId, @NonNull String studentId) {
         mSubmission = mDataManager.getSubmission(homeworkId, studentId);
         if (mSubmission == null)
             sendToView(SubmissionMvpView::showError_notFound);
-        showComment();
+        showSubmission();
     }
-    private void showComment() {
+    private void showSubmission() {
         sendToView(v -> {
             if (mSubmission == null)
                 return;

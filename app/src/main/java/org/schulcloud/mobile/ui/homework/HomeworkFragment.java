@@ -96,7 +96,7 @@ public class HomeworkFragment extends MainFragment<HomeworkMvpView, HomeworkPres
 
         ViewUtil.initSwipeRefreshColors(swipeRefresh);
         swipeRefresh.setOnRefreshListener(() -> {
-            //startService(HomeworkSyncService.getStartIntent(getContext()));
+            startService(HomeworkSyncService.getStartIntent(getContext()));
             startService(SubmissionSyncService.getStartIntent(getContext()));
 
             Handler handler = new Handler();

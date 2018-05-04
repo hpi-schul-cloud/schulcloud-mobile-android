@@ -26,6 +26,7 @@ public class DetailsPresenter extends BasePresenter<DetailsMvpView> {
         super.onViewAttached(view);
         showDescription();
     }
+
     void loadHomework(@NonNull String id) {
         mHomework = mDataManager.getHomeworkForId(id);
     }

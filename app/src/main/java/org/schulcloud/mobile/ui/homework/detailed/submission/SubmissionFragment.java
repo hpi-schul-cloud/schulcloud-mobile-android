@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.ui.common.ContentWebView;
 import org.schulcloud.mobile.ui.main.MainFragment;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -24,6 +26,9 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
 
     @Inject
     SubmissionPresenter mPresenter;
+
+    @BindView(R.id.homeworkDetailedSubmission_cwv_content)
+    ContentWebView vCwv_content;
 
     @NonNull
     public static SubmissionFragment newInstance(@NonNull String homeworkId,
@@ -51,7 +56,7 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
         if (homeworkId == null)
             throw new IllegalArgumentException("homeworkId must not be null");
 
-        String studentId = getArguments().getString(ARGUMENT_HOMEWORK_ID);
+        String studentId = getArguments().getString(ARGUMENT_STUDENT_ID);
         if (studentId == null)
             throw new IllegalArgumentException("studentId must not be null");
 
@@ -60,7 +65,8 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_homework_detailed_details, container, false);
+        View view =
+                inflater.inflate(R.layout.fragment_homework_detailed_submission, container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -74,6 +80,6 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
     }
     @Override
     public void showComment(@Nullable String comment) {
-
+        vCwv_content.setContent(comment);
     }
 }

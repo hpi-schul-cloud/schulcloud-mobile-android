@@ -63,7 +63,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/change_profile_add_if_not_in_demo_mode"
+                android:id="@+id/change_profile_newPassword_Layout"
                 android:orientation="vertical">
                 <TextView
                     style="@style/Material.ListItem_TextPrimary"
@@ -185,17 +185,16 @@
                         android:text="@string/settings_old_password_empty"/>
 
                 </LinearLayout>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings_submit"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
-                    android:id="@+id/change_profile_submit"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_marginBottom="30dp"/>
             </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_submit"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:id="@+id/change_profile_submit"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_marginBottom="30dp"/>
 
         </LinearLayout>
         </LinearLayout>

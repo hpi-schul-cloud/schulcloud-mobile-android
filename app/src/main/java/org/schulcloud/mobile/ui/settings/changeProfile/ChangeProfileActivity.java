@@ -5,10 +5,13 @@ import android.animation.TimeInterpolator;
 import android.graphics.Color;
 import android.graphics.Interpolator;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -24,8 +27,13 @@ import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.SettingsPresenter;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -42,6 +50,8 @@ implements ChangeProfileMvpView{
     private Animation animationScaleIn;
     private Animation animationScaleOut;
     private boolean oldPasswordEntered = false;
+    private ArrayList<AnimationLogic> animationLogics = new ArrayList<AnimationLogic>();
+
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
     @Inject
@@ -94,6 +104,33 @@ implements ChangeProfileMvpView{
         animationScaleOut.setFillAfter(true);
         settings_submit.setBackgroundColor(Color.GRAY);
 
+        // Animation Logic
+        ViewGroup parent = (ViewGroup)findViewById(R.id.change_profile_newPassword_Layout);
+
+        animationLogics.add(new AnimationLogic(oldPasswordInfo,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(0).setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))? true : false);
+
+        animationLogics.add(new AnimationLogic(passwordEmpty,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(1).setLogic(() -> (password_editText.getText().toString().equals(""))?true:false);
+
+        animationLogics.add(new AnimationLogic(passwordInfo,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(2).setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))? true : false);
+
+        animationLogics.add(new AnimationLogic(passwordsDoNotMatch,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(3).setLogic(() -> (!newPassword_editText.getText().equals(newPasswordRepeat_editText.getText())?true:false));
+
+        animationLogics.add(new AnimationLogic(passwordTooShort,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(4).setLogic(() -> (newPassword_editText.getText().toString().length() < 8)?true:false);
+
+        animationLogics.add(new AnimationLogic(passwordNeedsNumbers,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(5).setLogic(() -> (Pattern.matches("[a-zA-Z]+",newPassword_editText.getText().toString()))?true:false);
+
+        animationLogics.add(new AnimationLogic(passwordControlFailed,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(6).setLogic(() -> (newPassword_editText.equals(newPassword_editText.getText().toString().toLowerCase()))?true:false);
+
+        animationLogics.add(new AnimationLogic(passwordOkay,parent,animationScaleIn,animationScaleOut));
+        animationLogics.get(7).setLogic(() -> (passwordIsOkay));
+
         // Profile
         mChangeProfilePresenter.loadProfile();
         settings_submit.setOnClickListener(listener -> callProfileChange());
@@ -109,48 +146,13 @@ implements ChangeProfileMvpView{
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if((!newPassword_editText.getText().toString().equals("")
-                        || !newPasswordRepeat_editText.getText().toString().equals(""))
-                        && oldPasswordInfo.getChildCount() == 0){
-                    oldPasswordInfo.addView(currentPasswordTextView);
-                    oldPasswordInfo.addView(password_editText);
-                    oldPasswordInfo.addView(passwordEmpty);
-                    oldPasswordInfo.startAnimation(animationScaleIn);
-                }else if(newPassword_editText.getText().toString().equals("") && newPasswordRepeat_editText.getText().toString().equals("")){
-                    animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> oldPasswordInfo.removeAllViews()));
-                    oldPasswordInfo.startAnimation(animationScaleOut);
-                }
-                String newPassword = newPassword_editText.getText().toString();
-                String newPasswordRepeat = newPasswordRepeat_editText.getText().toString();
-                passwordIsOkay = checkPasswords(newPassword, newPasswordRepeat);
-                checkPasswordStates();
+                checkAnimationLogic();
             }
         };
 
-        password_editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        parent.removeView(oldPasswordInfo);
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(editable.toString().equals("") && oldPasswordInfo.getChildCount() == 0){
-                    oldPasswordInfo.addView(passwordEmpty);
-                    passwordEmpty.startAnimation(animationScaleIn);
-                    oldPasswordEntered = false;
-                }else if(!editable.toString().equals("")){
-                    animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> oldPasswordInfo.removeAllViews()));
-                    passwordEmpty.startAnimation(animationScaleOut);
-                    oldPasswordEntered = true;
-                }
-                checkPasswordStates();
-            }
-        });
-
-        oldPasswordInfo.removeAllViews();
-
+        password_editText.addTextChangedListener(listener);
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
@@ -162,7 +164,6 @@ implements ChangeProfileMvpView{
                 R.layout.item_gender_spinner);
         spinner_adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         gender_spinner.setAdapter(spinner_adapter);
-
     }
 
     @Override
@@ -184,67 +185,6 @@ implements ChangeProfileMvpView{
             String newPassword = newPassword_editText.getText().toString();
             mChangeProfilePresenter.changeProfile(name, last_name, email, gender, password, newPassword);
         }
-    }
-
-    @Override
-    public boolean checkPasswords(String newPassword, String newPasswordRepeat){
-        boolean passwordOkayBool = true;
-
-        //TODO: fix severly broken animation logic
-
-        passwordInfo.removeAllViews();
-
-        if(newPassword.equals("") || newPasswordRepeat.equals("")){
-            //animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> passwordInfo.removeAllViews()));
-            //passwordInfo.startAnimation(animationScaleOut);
-            return false;
-        }
-
-        if(!newPassword.equals(newPasswordRepeat)){ //&& passwordsDoNotMatch.getParent() == null) {
-            passwordInfo.addView(passwordsDoNotMatch);
-            passwordsDoNotMatch.startAnimation(animationScaleIn);
-            passwordOkayBool = false;
-        }/*else if(newPassword.equals(newPasswordRepeat)){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> passwordInfo.removeView(passwordsDoNotMatch)));
-            passwordsDoNotMatch.startAnimation(animationScaleOut);
-        }*/
-
-        if(newPassword.length() < 8){ //&& passwordTooShort.getParent() != null) {
-            passwordInfo.addView(passwordTooShort);
-            passwordTooShort.startAnimation(animationScaleIn);
-            passwordOkayBool = false;
-        }/*else if(newPassword.length() > 8){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> passwordInfo.removeView(passwordTooShort)));
-            passwordTooShort.startAnimation(animationScaleOut);
-        }*/
-
-        if(Pattern.matches("[a-zA-Z]+",newPassword)){ //&& passwordNeedsNumbers.getParent() == null){
-            passwordInfo.addView(passwordNeedsNumbers);
-            passwordNeedsNumbers.startAnimation(animationScaleIn);
-            passwordOkayBool = false;
-        }/*else if(!Pattern.matches("[a-zA-Z]+",newPassword)){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> passwordInfo.removeView(passwordNeedsNumbers)));
-            passwordNeedsNumbers.startAnimation(animationScaleOut);
-        }*/
-
-        if(newPassword.equals(newPassword.toLowerCase())){ //&& passwordControlFailed.getParent() == null){
-            passwordInfo.addView(passwordControlFailed);
-            passwordControlFailed.startAnimation(animationScaleIn);
-            passwordOkayBool = false;
-        }/*else if(!newPassword.equals(newPassword.toLowerCase())){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> passwordInfo.removeView(passwordControlFailed)));
-            passwordControlFailed.startAnimation(animationScaleOut);
-        }*/
-
-        if(passwordOkayBool){ //&& passwordOkay.getParent() == null) {
-            passwordInfo.addView(passwordOkay);
-            passwordOkay.startAnimation(animationScaleIn);
-        }/*else if (!passwordOkayBool){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> passwordInfo.removeView(passwordOkay)));
-            passwordOkay.startAnimation(animationScaleOut);
-        }*/
-
-        return passwordOkayBool;
     }
 
     @Override
@@ -280,61 +220,91 @@ implements ChangeProfileMvpView{
 
     @Override
     public void checkPasswordStates(){
+    }
+
+    @Override
+    public void checkAnimationLogic(){
+
+        for(int i = 0; i < animationLogics.size(); i++){
+            try {
+                animationLogics.get(i).checkLogic();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Submit button
         if(oldPasswordEntered && (passwordIsOkay || newPassword_editText.getText().toString().equals("")))
             settings_submit.setBackgroundColor(ContextCompat.getColor(this,R.color.hpiRed));
         else
             settings_submit.setBackgroundColor(Color.GRAY);
     }
 
-    @Override
-    public void checkAnimationLogic(){
-        //for animation of oldPasswordInfo
-        if((!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))
-                && oldPasswordInfo.getChildCount() == 0){
-            oldPasswordInfo.addView(currentPasswordTextView);
-            oldPasswordInfo.addView(password_editText);
-            oldPasswordInfo.addView(passwordEmpty);
-            oldPasswordInfo.startAnimation(animationScaleIn);
-        }else if(newPassword_editText.getText().toString().equals("") && newPasswordRepeat_editText.getText().toString().equals("")){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> oldPasswordInfo.removeAllViews()));
-            oldPasswordInfo.startAnimation(animationScaleOut);
-        }
-        //For animation of oldPasswordEmtpy
-        if(password_editText.getText().toString().equals("") && oldPasswordInfo.getChildCount() == 0){
-            oldPasswordInfo.addView(passwordEmpty);
-            passwordEmpty.startAnimation(animationScaleIn);
-            oldPasswordEntered = false;
-        }else if(password_editText.getText().toString().equals("")){
-            animationScaleOut.setAnimationListener(new scaleAnimationListener(() -> oldPasswordInfo.removeAllViews()));
-            passwordEmpty.startAnimation(animationScaleOut);
-            oldPasswordEntered = true;
+    public class AnimationLogic{
+        View mView;
+        ViewGroup mViewParent;
+        Callable<Boolean> mLogic;
+        Runnable mActionEnd;
+        Runnable mActionStart;
+        Runnable mActionRepeat;
+        Runnable mActionAdd;
+        Runnable mActionRemove;
+
+        Animation mTransIn;
+        Animation mTransOut;
+
+        public AnimationLogic(View view,ViewGroup parent, Animation transIn, Animation transOut){
+            mView = view;
+            mViewParent = parent;
+            mTransIn = transIn;
+            mTransOut = transOut;
+
+            mActionAdd =  () -> parent.addView(view);
+            mActionRemove = () -> parent.removeView(view);
+
+            mTransIn.setAnimationListener(new AnimationListener(null,null,null));
+            mTransOut.setAnimationListener(new AnimationListener(null,null, mActionRemove));
+
         }
 
+        public void setLogic(Callable<Boolean> logic){
+            mLogic = logic;
+        }
+
+        public void setActionAdd(Runnable actionAdd){
+            mActionAdd = actionAdd;
+        }
+
+        public void setActionRemove(Runnable actionRemove){
+            mActionRemove = actionRemove;
+        }
+
+        public void checkLogic() throws Exception {
+            if(mLogic.call()){
+                if(mViewParent.findViewById(mView.getId()) == null){
+                    mActionAdd.run();
+                    mView.startAnimation(mTransOut);
+                }
+            }else{
+                mView.startAnimation(mTransOut);
+            }
+        }
     }
 
-    public class scaleAnimationListener implements Animation.AnimationListener{
-        Runnable mActionEnd = null;
-        /*Runnable mActionStart = null;
-        Runnable mActionRepeat = null;*/
+    public class AnimationListener implements Animation.AnimationListener{
+        private Runnable mActionStart;
+        private Runnable mActionRepeat;
+        private Runnable mActionEnd;
 
-        public scaleAnimationListener(Runnable actionOnEnd){
-            setActionOnEnd(actionOnEnd);
+        public AnimationListener(@Nullable Runnable actionStart, @Nullable Runnable actionRepeat, @Nullable Runnable actionEnd){
+            mActionStart = actionStart != null ? actionStart : () -> {return;};
+            mActionRepeat = actionRepeat != null ? actionRepeat : () -> {return;};
+            mActionEnd = actionEnd != null ? actionEnd : () -> {return;};
         }
-
-        public void setActionOnEnd(Runnable action){
-            mActionEnd = action;
-        }
-
-        /*public void setActionOnStart(Runnable action){
-            mActionStart = action;
-        }
-
-        public void setActionOnRepeat(Runnable action){
-            mActionRepeat = action;
-        }*/
 
         @Override
         public void onAnimationStart(Animation animation) {
+            mActionStart.run();
         }
 
         @Override
@@ -344,6 +314,7 @@ implements ChangeProfileMvpView{
 
         @Override
         public void onAnimationRepeat(Animation animation) {
+            mActionRepeat.run();
         }
     }
 }

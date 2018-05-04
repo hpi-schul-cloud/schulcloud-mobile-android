@@ -1,9 +1,13 @@
 package org.schulcloud.mobile.data.model;
 
+import io.realm.RealmList;
 import io.realm.RealmModel;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
+/**
+ * Required for avoiding population of the whole course object
+ */
 @RealmClass
 public class CourseHomework implements RealmModel {
     @PrimaryKey
@@ -12,4 +16,5 @@ public class CourseHomework implements RealmModel {
     public String name;
     public String description;
     public String color;
+    public RealmList<RealmString> substitutionIds;
 }

@@ -8,7 +8,7 @@ import org.schulcloud.mobile.ui.base.MvpView;
 
 public interface DetailedHomeworkMvpView extends MvpView {
 
-    void showHomework(@NonNull Homework homework);
+    void showHomework(@NonNull Homework homework, @NonNull String userId);
 
     void showSubmission(@NonNull Submission submission, String userId);
 

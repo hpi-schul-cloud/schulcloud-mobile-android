@@ -1,12 +1,14 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.SubmissionDatabaseHelper;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.remote.RestService;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -40,7 +42,12 @@ public class SubmissionDataManager {
                 .doOnError(throwable -> Log.w(TAG, "Error while syncing submissions", throwable));
     }
 
-    public Submission getSubmissionForId(String homeworkId) {
-        return mDatabaseHelper.getSubmissionForId(homeworkId);
+    @Nullable
+    public Submission getSubmission(@NonNull String homeworkId, @NonNull String studentId) {
+        return mDatabaseHelper.getSubmission(homeworkId, studentId);
+    }
+    @NonNull
+    public Observable<List<Submission>> getSubmissionsForHomework(@NonNull String homeworkId) {
+        return mDatabaseHelper.getSubmissionsForHomework(homeworkId);
     }
 }

@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.local;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.schulcloud.mobile.data.model.Submission;
 
@@ -18,8 +19,11 @@ import timber.log.Timber;
 
 @Singleton
 public class SubmissionDatabaseHelper extends BaseDatabaseHelper {
+
     @Inject
-    SubmissionDatabaseHelper(Provider<Realm> realmProvider) {super(realmProvider);}
+    SubmissionDatabaseHelper(Provider<Realm> realmProvider) {
+        super(realmProvider);
+    }
 
     public Observable<Submission> setSubmissions(@NonNull Collection<Submission> newSubmission) {
         return Observable.create(subscriber -> {
@@ -49,8 +53,19 @@ public class SubmissionDatabaseHelper extends BaseDatabaseHelper {
                 .map(realm::copyFromRealm);
     }
 
-    public Submission getSubmissionForId(@NonNull String homeworkId) {
-        final Realm realm = mRealmProvider.get();
-        return realm.where(Submission.class).equalTo("homeworkId", homeworkId).findFirst();
+    @Nullable
+    public Submission getSubmission(@NonNull String homeworkId, @NonNull String studentId) {
+        return mRealmProvider.get().where(Submission.class)
+                .equalTo("homeworkId", homeworkId)
+                .equalTo("studentId", studentId)
+                .findFirst();
+    }
+    @NonNull
+    public Observable<List<Submission>> getSubmissionsForHomework(@NonNull String homeworkId) {
+        Realm realm = mRealmProvider.get();
+        return realm.where(Submission.class).equalTo("homeworkId", homeworkId)
+                .findAllAsync().asObservable()
+                .filter(RealmResults::isLoaded)
+                .map(realm::copyFromRealm);
     }
 }

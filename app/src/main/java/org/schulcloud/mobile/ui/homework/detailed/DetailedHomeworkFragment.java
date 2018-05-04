@@ -5,8 +5,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +44,7 @@ public class DetailedHomeworkFragment
     @Inject
     CommentsAdapter mCommentsAdapter;
 
-    @BindView(R.id.homeworkDetailed_v_color)
+    /*@BindView(R.id.homeworkDetailed_v_color)
     View vV_color;
     @BindView(R.id.homeworkDetailed_tv_name)
     TextView vTv_name;
@@ -56,7 +59,15 @@ public class DetailedHomeworkFragment
     @BindView(R.id.homeworkDetailed_cwv_gradeComment)
     ContentWebView vCwv_gradeComment;
     @BindView(R.id.nonPrivate)
-    LinearLayout nonPrivate;
+    LinearLayout nonPrivate;*/
+
+    @BindView(R.id.homeworkDetailed_toolbar)
+    Toolbar vToolbar;
+    @BindView(R.id.homeworkDetailed_tl_tabs)
+    TabLayout vTl_tabs;
+    @BindView(R.id.homeworkDetailed_vp_content)
+    ViewPager vVp_content;
+    HomeworkPagerAdapter mPagerAdapter;
 
     /**
      * Creates a new instance of this fragment.
@@ -86,25 +97,35 @@ public class DetailedHomeworkFragment
     public void onReadArguments(Bundle args) {
         mDetailedHomeworkPresenter.loadHomework(getArguments().getString(ARGUMENT_HOMEWORK_ID));
     }
-    @SuppressLint("AddJavascriptInterface")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detailed_homework, container, false);
+        View view = inflater.inflate(R.layout.fragment_homework_detailed, container, false);
         ButterKnife.bind(this, view);
         setTitle(R.string.homework_homework_title);
 
-        recyclerView.setAdapter(mCommentsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //recyclerView.setAdapter(mCommentsAdapter);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mPagerAdapter = new HomeworkPagerAdapter(getContext(), getChildFragmentManager());
+        vVp_content.setAdapter(mPagerAdapter);
+        vTl_tabs.setupWithViewPager(vVp_content);
 
         return view;
+    }
+    @Nullable
+    @Override
+    protected Toolbar getToolbar() {
+        return vToolbar;
     }
 
 
     /* MVP View methods implementation */
     @Override
-    public void showHomework(@NonNull Homework homework) {
-        if (homework.courseId != null) {
+    public void showHomework(@NonNull Homework homework, @NonNull String userId) {
+        mPagerAdapter.setHomework(homework, userId);
+
+        /*if (homework.courseId != null) {
             vV_color.setBackgroundColor(Color.parseColor(homework.courseId.color));
             vV_color.setVisibility(View.VISIBLE);
         }
@@ -122,12 +143,12 @@ public class DetailedHomeworkFragment
         ViewUtil.setVisibility(vTv_dates, dueDate != null && availableDate != null);
         if (dueDate != null && availableDate != null)
             vTv_dates.setText(getContext().getString(R.string.homework_homework_dates,
-                    FormatUtil.toUserString(availableDate), FormatUtil.toUserString(dueDate)));
+                    FormatUtil.toUserString(availableDate), FormatUtil.toUserString(dueDate)));*/
     }
 
     @Override
     public void showSubmission(@Nullable Submission submission, String userId) {
-        nonPrivate.setVisibility(View.VISIBLE);
+        /*nonPrivate.setVisibility(View.VISIBLE);
 
         if (submission == null) {
             submission = new Submission();
@@ -149,6 +170,6 @@ public class DetailedHomeworkFragment
             vCwv_description.setContent(submission.gradeComment);
 
         mCommentsAdapter.setComments(submission.comments);
-        mCommentsAdapter.setUserId(userId);
+        mCommentsAdapter.setUserId(userId);*/
     }
 }

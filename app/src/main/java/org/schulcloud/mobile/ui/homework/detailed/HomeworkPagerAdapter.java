@@ -13,6 +13,7 @@ import org.schulcloud.mobile.data.model.RealmString;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.homework.detailed.details.DetailsFragment;
+import org.schulcloud.mobile.ui.homework.detailed.feedback.FeedbackFragment;
 import org.schulcloud.mobile.ui.homework.detailed.submission.SubmissionFragment;
 import org.schulcloud.mobile.util.ListUtils;
 
@@ -64,8 +65,8 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
                 return SubmissionFragment.newInstance(mHomework._id, mUserId);
             case TAB_SUBMISSIONS: // TODO: 4/27/2018
                 return DetailsFragment.newInstance(mHomework._id);
-            case TAB_FEEDBACK: // TODO: 4/27/2018
-                return DetailsFragment.newInstance(mHomework._id);
+            case TAB_FEEDBACK:
+                return FeedbackFragment.newInstance(mHomework._id, mUserId);
 
             case TAB_INVALID:
             default:

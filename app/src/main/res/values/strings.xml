@@ -124,8 +124,10 @@
     <string name="homework_addHomework_error_datesInvalid">Die Datumsangaben sind ungültig</string>
     <string name="homework_detailed_details">Details</string>
     <string name="homework_detailed_submission">Abgabe</string>
-    <string name="homework_detailed_submissions">Abgaben</string>
     <string name="homework_detailed_feedback">Feedback</string>
+    <string name="homework_detailed_feedback_grade">Du hast &lt;b&gt;%1$d%%&lt;/b&gt; richtig gelöst.</string>
+    <string name="homework_detailed_feedback_gradeComment_none">Kein Bewertungstext vorhanden.</string>
+    <string name="homework_detailed_submissions">Abgaben</string>
 
     <!--Settings-->
     <string name="settings_title">Einstellungen</string>

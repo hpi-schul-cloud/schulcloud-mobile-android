@@ -2,6 +2,7 @@ package org.schulcloud.mobile.data.local;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.schulcloud.mobile.data.model.Submission;
 
@@ -19,6 +20,7 @@ import timber.log.Timber;
 
 @Singleton
 public class SubmissionDatabaseHelper extends BaseDatabaseHelper {
+    private static final String TAG = SubmissionDatabaseHelper.class.getSimpleName();
 
     @Inject
     SubmissionDatabaseHelper(Provider<Realm> realmProvider) {
@@ -62,10 +64,16 @@ public class SubmissionDatabaseHelper extends BaseDatabaseHelper {
     }
     @NonNull
     public Observable<List<Submission>> getSubmissionsForHomework(@NonNull String homeworkId) {
+        List<Submission> s =
+                mRealmProvider.get().where(Submission.class).equalTo("homeworkId", homeworkId)
+                        .findAll();
         Realm realm = mRealmProvider.get();
         return realm.where(Submission.class).equalTo("homeworkId", homeworkId)
                 .findAllAsync().asObservable()
                 .filter(RealmResults::isLoaded)
-                .map(realm::copyFromRealm);
+                .map(realm::copyFromRealm)
+                .doOnEach(notification -> {
+                    Log.d(TAG, notification.toString());
+                });
     }
 }

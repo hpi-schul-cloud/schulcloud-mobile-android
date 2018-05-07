@@ -1,8 +1,9 @@
-package org.schulcloud.mobile.ui.homework.detailed;
+package org.schulcloud.mobile.ui.homework.detailed.submissions;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,10 +11,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.RealmString;
-import org.schulcloud.mobile.ui.homework.detailed.details.DetailsFragment;
+import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.homework.detailed.feedback.FeedbackFragment;
 import org.schulcloud.mobile.ui.homework.detailed.submission.SubmissionFragment;
-import org.schulcloud.mobile.ui.homework.detailed.submissions.SubmissionsFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,48 +22,45 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Date: 4/25/2018
  */
-public class HomeworkPagerAdapter extends FragmentPagerAdapter {
+public class EvaluationPagerAdapter extends FragmentPagerAdapter {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
             TAB_INVALID,
-            TAB_DETAILS,
             TAB_SUBMISSION,
-            TAB_SUBMISSIONS,
             TAB_FEEDBACK})
     public @interface Tab {}
 
     private static final int TAB_INVALID = 0;
-    private static final int TAB_DETAILS = 1;
-    private static final int TAB_SUBMISSION = 2;
-    private static final int TAB_SUBMISSIONS = 3;
-    private static final int TAB_FEEDBACK = 4;
+    private static final int TAB_SUBMISSION = 1;
+    private static final int TAB_FEEDBACK = 2;
 
     private Context mContext;
-    private String mUserId;
+    private String mCurrentUserId;
+    private User mStudent;
     private Homework mHomework;
+    private Submission mSubmission;
 
-    public HomeworkPagerAdapter(@NonNull Context context, @NonNull FragmentManager fm) {
+    public EvaluationPagerAdapter(@NonNull Context context, @NonNull FragmentManager fm) {
         super(fm);
         mContext = context;
     }
 
-    public void setHomework(@NonNull Homework homework, @NonNull String userId) {
-        mUserId = userId;
+    public void setSubmission(@NonNull String currentUserId, @NonNull User student,
+            @NonNull Homework homework, @Nullable Submission submission) {
+        mCurrentUserId = currentUserId;
+        mStudent = student;
         mHomework = homework;
+        mSubmission = submission;
         notifyDataSetChanged();
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (getTabType(position)) {
-            case TAB_DETAILS:
-                return DetailsFragment.newInstance(mHomework._id);
             case TAB_SUBMISSION:
-                return SubmissionFragment.newInstance(mHomework._id, mUserId);
-            case TAB_SUBMISSIONS:
-                return SubmissionsFragment.newInstance(mHomework._id);
+                return SubmissionFragment.newInstance(mHomework._id, mStudent._id);
             case TAB_FEEDBACK:
-                return FeedbackFragment.newInstance(mHomework._id, mUserId);
+                return FeedbackFragment.newInstance(mHomework._id, mStudent._id);
 
             case TAB_INVALID:
             default:
@@ -73,14 +71,8 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         int titleId;
         switch (getTabType(position)) {
-            case TAB_DETAILS:
-                titleId = R.string.homework_detailed_details;
-                break;
             case TAB_SUBMISSION:
                 titleId = R.string.homework_detailed_submission;
-                break;
-            case TAB_SUBMISSIONS:
-                titleId = R.string.homework_detailed_submissions;
                 break;
             case TAB_FEEDBACK:
                 titleId = R.string.homework_detailed_feedback;
@@ -107,20 +99,11 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
             return TAB_INVALID;
 
         if (position == 0)
-            return TAB_DETAILS;
+            return TAB_SUBMISSION;
 
         boolean isTeacher = isTeacher();
-        if (position == 1)
-            if (isTeacher)
-                return TAB_SUBMISSIONS;
-            else
-                return TAB_SUBMISSION;
-
-        if (position == 2 && !isTeacher)
+        if (isTeacher && position == 1)
             return TAB_FEEDBACK;
-        if (position == 3 && !isTeacher && mHomework.publicSubmissions != null
-                && mHomework.publicSubmissions)
-            return TAB_SUBMISSIONS;
 
         return TAB_INVALID;
     }
@@ -128,11 +111,11 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
      * @return Whether the user is the teacher or one of the substitution teachers associated with the current homework.
      */
     private boolean isTeacher() {
-        if (mHomework.teacherId != null && mHomework.teacherId.equalsIgnoreCase(mUserId))
+        if (mHomework.teacherId != null && mHomework.teacherId.equalsIgnoreCase(mCurrentUserId))
             return true;
         if (mHomework.courseId.substitutionIds != null)
             for (RealmString substitution : mHomework.courseId.substitutionIds)
-                if (substitution.getValue().equalsIgnoreCase(mUserId))
+                if (substitution.getValue().equalsIgnoreCase(mCurrentUserId))
                     return true;
         return false;
     }

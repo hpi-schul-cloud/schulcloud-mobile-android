@@ -128,6 +128,8 @@
     <string name="homework_detailed_feedback_grade">Du hast &lt;b&gt;%1$d%%&lt;/b&gt; richtig gelöst.</string>
     <string name="homework_detailed_feedback_gradeComment_none">Kein Bewertungstext vorhanden.</string>
     <string name="homework_detailed_submissions">Abgaben</string>
+    <string name="homework_detailed_submissions_submission_name">%2$s, %1$s</string>
+    <string name="homework_submission_grade">%1$d%%</string>
 
     <!--Settings-->
     <string name="settings_title">Einstellungen</string>

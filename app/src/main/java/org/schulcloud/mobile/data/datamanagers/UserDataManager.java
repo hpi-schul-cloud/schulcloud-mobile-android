@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.data.datamanagers;
 
+import android.support.annotation.NonNull;
+
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.UserDatabaseHelper;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -15,10 +17,9 @@ import javax.inject.Singleton;
 
 import rx.Observable;
 import rx.Single;
-import rx.functions.Func1;
 
 @Singleton
-public class UserDataManager{
+public class UserDataManager {
 
     private final RestService mRestService;
     private final UserDatabaseHelper mUserDatabaseHelper;
@@ -32,22 +33,20 @@ public class UserDataManager{
 
     @Inject
     public UserDataManager(RestService restService, PreferencesHelper preferencesHelper,
-                       UserDatabaseHelper userDatabaseHelper) {
+            UserDatabaseHelper userDatabaseHelper) {
         mRestService = restService;
         mPreferencesHelper = preferencesHelper;
         mUserDatabaseHelper = userDatabaseHelper;
     }
 
+    @NonNull
     public Observable<User> syncUsers() {
         return mRestService.getUsers(getAccessToken())
-                .concatMap(new Func1<List<User>, Observable<User>>() {
-                    @Override
-                    public Observable<User> call(List<User> users) {
-                        return mUserDatabaseHelper.setUsers(users);
-                    }
-                }).doOnError(Throwable::printStackTrace);
+                .concatMap(mUserDatabaseHelper::setUsers)
+                .doOnError(Throwable::printStackTrace);
     }
 
+    @NonNull
     public Observable<List<User>> getUsers() {
         return mUserDatabaseHelper.getUsers().distinctUntilChanged();
     }
@@ -56,6 +55,7 @@ public class UserDataManager{
         return mPreferencesHelper.getAccessToken();
     }
 
+    @NonNull
     public Observable<CurrentUser> signIn(String username, String password) {
         return mRestService.signIn(new Credentials(username, password))
                 .concatMap(accessToken -> {
@@ -72,18 +72,17 @@ public class UserDataManager{
         mPreferencesHelper.clear();
     }
 
+    @NonNull
     public Observable<CurrentUser> syncCurrentUser(String userId) {
-        return mRestService.getUser(getAccessToken(), userId).concatMap(
-                new Func1<CurrentUser, Observable<CurrentUser>>() {
-                    @Override
-                    public Observable<CurrentUser> call(CurrentUser currentUser) {
-                        mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
-                        mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
-                        return mUserDatabaseHelper.setCurrentUser(currentUser);
-                    }
+        return mRestService.getUser(getAccessToken(), userId)
+                .concatMap(currentUser -> {
+                    mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
+                    mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
+                    return mUserDatabaseHelper.setCurrentUser(currentUser);
                 }).doOnError(Throwable::printStackTrace);
     }
 
+    @NonNull
     public Single<CurrentUser> getCurrentUser() {
         return mUserDatabaseHelper.getCurrentUser();
     }
@@ -99,6 +98,7 @@ public class UserDataManager{
     public void setInDemoMode(boolean isInDemoMode) {
         mPreferencesHelper.saveIsInDemoMode(isInDemoMode);
     }
+    @NonNull
     public Single<Boolean> isInDemoMode() {
         return Single.just(mPreferencesHelper.isInDemoMode());
     }

@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.homework.detailed.details;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

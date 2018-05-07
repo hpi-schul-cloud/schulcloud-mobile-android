@@ -7,6 +7,7 @@ import android.webkit.WebView;
 
 import org.schulcloud.mobile.BuildConfig;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
+import org.schulcloud.mobile.ui.base.BaseViewHolder;
 import org.schulcloud.mobile.util.WebUtil;
 
 import javax.inject.Inject;

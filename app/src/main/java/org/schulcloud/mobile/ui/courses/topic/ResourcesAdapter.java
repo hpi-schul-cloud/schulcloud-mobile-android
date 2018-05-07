@@ -19,6 +19,7 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Resource;
 import org.schulcloud.mobile.ui.base.BaseAdapter;
+import org.schulcloud.mobile.ui.base.BaseViewHolder;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.WebUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
@@ -99,7 +100,7 @@ public class ResourcesAdapter extends BaseAdapter<ResourcesAdapter.ResourceViewH
         }
 
         @Override
-        void onItemSet(@NonNull Resource item) {
+        public void onItemSet(@NonNull Resource item) {
             vTv_title.setText(item.title);
             ViewUtil.setText(vTv_title, item.title);
 

@@ -17,6 +17,7 @@ import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
 import org.schulcloud.mobile.ui.homework.detailed.details.DetailsFragment;
 import org.schulcloud.mobile.ui.homework.detailed.feedback.FeedbackFragment;
 import org.schulcloud.mobile.ui.homework.detailed.submission.SubmissionFragment;
+import org.schulcloud.mobile.ui.homework.detailed.submissions.SubmissionsFragment;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.ui.news.NewsFragment;
 import org.schulcloud.mobile.ui.news.detailed.DetailedNewsFragment;
@@ -64,6 +65,7 @@ public interface ActivityComponent {
     void inject(DetailsFragment detailsFragment);
     void inject(SubmissionFragment submissionFragment);
     void inject(FeedbackFragment feedbackFragment);
+    void inject(SubmissionsFragment submissionsFragment);
 
     //    File
     void inject(FileOverviewFragment fileOverviewFragment);

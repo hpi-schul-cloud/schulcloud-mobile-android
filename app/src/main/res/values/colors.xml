@@ -28,4 +28,7 @@
     <color name="material_text_hint">#61000000</color>
     <color name="material_divider">#1F000000</color>
 
+    <color name="material_green_500">#4CAF50</color>
+    <color name="material_red_500">#F44336</color>
+
 </resources>

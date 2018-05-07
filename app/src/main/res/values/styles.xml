@@ -108,6 +108,7 @@
     <style name="Material.Icon">
         <item name="android:width">48dp</item>
         <item name="android:height">48dp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
         <item name="android:color">?android:attr/textColorPrimary</item>
     </style>

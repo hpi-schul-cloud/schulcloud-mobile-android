@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.ui.courses.topic;
+package org.schulcloud.mobile.ui.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,7 +8,7 @@ import android.view.View;
 public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
     private T mItem;
 
-    BaseViewHolder(View itemView) {
+    public BaseViewHolder(View itemView) {
         super(itemView);
     }
 
@@ -17,15 +17,13 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
         return itemView.getContext();
     }
 
-    void setItem(@NonNull T item) {
+    public void setItem(@NonNull T item) {
         mItem = item;
-        //boolean hidden = item.hidden != null ? item.hidden : false;
-        //ViewUtil.setVisibility(itemView, !hidden);
         onItemSet(item);
     }
-    abstract void onItemSet(@NonNull T item);
+    protected abstract void onItemSet(@NonNull T item);
     @NonNull
-    final T getItem() {
+    public final T getItem() {
         return mItem;
     }
 }

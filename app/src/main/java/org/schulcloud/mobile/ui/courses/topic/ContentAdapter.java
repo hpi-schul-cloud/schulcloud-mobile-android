@@ -19,12 +19,12 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Contents;
 import org.schulcloud.mobile.data.model.responseBodies.GeogebraResponse;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.base.BaseAdapter;
+import org.schulcloud.mobile.ui.base.BaseViewHolder;
 import org.schulcloud.mobile.ui.common.ContentWebView;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCoursePresenter;
 import org.schulcloud.mobile.util.ViewUtil;
@@ -133,7 +133,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             ButterKnife.bind(this, itemView);
         }
         @Override
-        void onItemSet(@NonNull Contents item) {
+        public void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
             ViewUtil.setVisibility(vLl_wrapper, isVisible);
             if (!isVisible)
@@ -159,7 +159,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             ButterKnife.bind(this, itemView);
         }
         @Override
-        void onItemSet(@NonNull Contents item) {
+        public void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
             ViewUtil.setVisibility(vLl_wrapper, isVisible);
             if (!isVisible)
@@ -196,7 +196,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             });
         }
         @Override
-        void onItemSet(@NonNull Contents item) {
+        public void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
             ViewUtil.setVisibility(vLl_wrapper, isVisible);
             if (!isVisible)
@@ -252,7 +252,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
         }
 
         @Override
-        void onItemSet(@NonNull Contents item) {
+        public void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
             ViewUtil.setVisibility(vCl_wrapper, isVisible);
             if (!isVisible)
@@ -313,7 +313,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             vWv_content.getSettings().setJavaScriptEnabled(true);
         }
         @Override
-        void onItemSet(@NonNull Contents item) {
+        public void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
             ViewUtil.setVisibility(vCl_wrapper, isVisible);
             if (!isVisible)
@@ -353,7 +353,7 @@ public class ContentAdapter extends BaseAdapter<BaseViewHolder<Contents>> {
             vWv_content.getSettings().setJavaScriptEnabled(true);
         }
         @Override
-        void onItemSet(@NonNull Contents item) {
+        public void onItemSet(@NonNull Contents item) {
             boolean isVisible = !isHidden(item);
             ViewUtil.setVisibility(vCl_wrapper, isVisible);
             if (!isVisible)

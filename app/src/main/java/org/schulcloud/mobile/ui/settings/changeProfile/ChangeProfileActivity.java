@@ -1,12 +1,8 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
-import android.animation.Animator;
-import android.animation.TimeInterpolator;
 import android.graphics.Color;
-import android.graphics.Interpolator;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,16 +19,14 @@ import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.CurrentUser;
+import org.schulcloud.mobile.ui.animation.AnimationLogicListener;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.settings.SettingsPresenter;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
@@ -50,15 +44,13 @@ implements ChangeProfileMvpView{
     private Animation animationScaleIn;
     private Animation animationScaleOut;
     private boolean oldPasswordEntered = false;
-    private ArrayList<AnimationLogic> animationLogics = new ArrayList<AnimationLogic>();
+    private ArrayList<AnimationLogicListener> animationLogics = new ArrayList<AnimationLogicListener>();
 
     @Inject
     ChangeProfilePresenter mChangeProfilePresenter;
     @Inject
     SettingsPresenter mSettingsPresenter;
 
-    @BindView(R.id.change_profile_add_if_not_in_demo_mode)
-    LinearLayout addIfNotDemoMode;
     @BindView(R.id.change_profile_gender_spinner)
     Spinner gender_spinner;
     @BindView(R.id.change_profile_email_EditText)
@@ -100,42 +92,42 @@ implements ChangeProfileMvpView{
 
         animationScaleIn = AnimationUtils.loadAnimation(this,R.anim.resize_height_0_to_100);
         animationScaleIn.setFillAfter(true);
+        animationScaleIn.setRepeatCount(0);
         animationScaleOut = AnimationUtils.loadAnimation(this,R.anim.resize_height_100_to_0);
         animationScaleOut.setFillAfter(true);
+        animationScaleOut.setRepeatCount(0);
         settings_submit.setBackgroundColor(Color.GRAY);
 
         // Animation Logic
         ViewGroup parent = (ViewGroup)findViewById(R.id.change_profile_newPassword_Layout);
 
-        animationLogics.add(new AnimationLogic(oldPasswordInfo,parent,animationScaleIn,animationScaleOut));
-        animationLogics.get(0).setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))? true : false);
+        animationLogics.add(new AnimationLogicListener(oldPasswordInfo,animationScaleIn,animationScaleOut));
+        animationLogics.get(0).setLogic(() -> ((!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals("")))? true : false);
 
-        animationLogics.add(new AnimationLogic(passwordEmpty,parent,animationScaleIn,animationScaleOut));
+        animationLogics.add(new AnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut));
         animationLogics.get(1).setLogic(() -> (password_editText.getText().toString().equals(""))?true:false);
 
-        animationLogics.add(new AnimationLogic(passwordInfo,parent,animationScaleIn,animationScaleOut));
-        animationLogics.get(2).setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))? true : false);
+        animationLogics.add(new AnimationLogicListener(passwordInfo,animationScaleIn,animationScaleOut));
+        animationLogics.get(2).setLogic(() -> ((!newPassword_editText.getText().toString().equals(""))? true : false));
 
-        animationLogics.add(new AnimationLogic(passwordsDoNotMatch,parent,animationScaleIn,animationScaleOut));
-        animationLogics.get(3).setLogic(() -> (!newPassword_editText.getText().equals(newPasswordRepeat_editText.getText())?true:false));
+        animationLogics.add(new AnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut));
+        animationLogics.get(3).setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString())?true:false));
 
-        animationLogics.add(new AnimationLogic(passwordTooShort,parent,animationScaleIn,animationScaleOut));
+        animationLogics.add(new AnimationLogicListener(passwordTooShort,animationScaleIn,animationScaleOut));
         animationLogics.get(4).setLogic(() -> (newPassword_editText.getText().toString().length() < 8)?true:false);
 
-        animationLogics.add(new AnimationLogic(passwordNeedsNumbers,parent,animationScaleIn,animationScaleOut));
+        animationLogics.add(new AnimationLogicListener(passwordNeedsNumbers,animationScaleIn,animationScaleOut));
         animationLogics.get(5).setLogic(() -> (Pattern.matches("[a-zA-Z]+",newPassword_editText.getText().toString()))?true:false);
 
-        animationLogics.add(new AnimationLogic(passwordControlFailed,parent,animationScaleIn,animationScaleOut));
-        animationLogics.get(6).setLogic(() -> (newPassword_editText.equals(newPassword_editText.getText().toString().toLowerCase()))?true:false);
+        animationLogics.add(new AnimationLogicListener(passwordControlFailed,animationScaleIn,animationScaleOut));
+        animationLogics.get(6).setLogic(() -> ((newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())))?true:false);
 
-        animationLogics.add(new AnimationLogic(passwordOkay,parent,animationScaleIn,animationScaleOut));
+        animationLogics.add(new AnimationLogicListener(passwordOkay,animationScaleIn,animationScaleOut));
         animationLogics.get(7).setLogic(() -> (passwordIsOkay));
 
         // Profile
         mChangeProfilePresenter.loadProfile();
         settings_submit.setOnClickListener(listener -> callProfileChange());
-
-        //TODO: clean up logic
 
         TextWatcher listener = new TextWatcher(){
             @Override
@@ -150,13 +142,13 @@ implements ChangeProfileMvpView{
             }
         };
 
-        parent.removeView(oldPasswordInfo);
-
         password_editText.addTextChangedListener(listener);
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
         passwordInfo.removeAllViews();
+        ViewGroup oldPasswordParent = (ViewGroup)oldPasswordInfo.getParent();
+        oldPasswordParent.removeView(oldPasswordInfo);
 
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
         newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
@@ -225,6 +217,7 @@ implements ChangeProfileMvpView{
     @Override
     public void checkAnimationLogic(){
 
+        //Password information for new and old psasword
         for(int i = 0; i < animationLogics.size(); i++){
             try {
                 animationLogics.get(i).checkLogic();
@@ -240,81 +233,4 @@ implements ChangeProfileMvpView{
             settings_submit.setBackgroundColor(Color.GRAY);
     }
 
-    public class AnimationLogic{
-        View mView;
-        ViewGroup mViewParent;
-        Callable<Boolean> mLogic;
-        Runnable mActionEnd;
-        Runnable mActionStart;
-        Runnable mActionRepeat;
-        Runnable mActionAdd;
-        Runnable mActionRemove;
-
-        Animation mTransIn;
-        Animation mTransOut;
-
-        public AnimationLogic(View view,ViewGroup parent, Animation transIn, Animation transOut){
-            mView = view;
-            mViewParent = parent;
-            mTransIn = transIn;
-            mTransOut = transOut;
-
-            mActionAdd =  () -> parent.addView(view);
-            mActionRemove = () -> parent.removeView(view);
-
-            mTransIn.setAnimationListener(new AnimationListener(null,null,null));
-            mTransOut.setAnimationListener(new AnimationListener(null,null, mActionRemove));
-
-        }
-
-        public void setLogic(Callable<Boolean> logic){
-            mLogic = logic;
-        }
-
-        public void setActionAdd(Runnable actionAdd){
-            mActionAdd = actionAdd;
-        }
-
-        public void setActionRemove(Runnable actionRemove){
-            mActionRemove = actionRemove;
-        }
-
-        public void checkLogic() throws Exception {
-            if(mLogic.call()){
-                if(mViewParent.findViewById(mView.getId()) == null){
-                    mActionAdd.run();
-                    mView.startAnimation(mTransOut);
-                }
-            }else{
-                mView.startAnimation(mTransOut);
-            }
-        }
-    }
-
-    public class AnimationListener implements Animation.AnimationListener{
-        private Runnable mActionStart;
-        private Runnable mActionRepeat;
-        private Runnable mActionEnd;
-
-        public AnimationListener(@Nullable Runnable actionStart, @Nullable Runnable actionRepeat, @Nullable Runnable actionEnd){
-            mActionStart = actionStart != null ? actionStart : () -> {return;};
-            mActionRepeat = actionRepeat != null ? actionRepeat : () -> {return;};
-            mActionEnd = actionEnd != null ? actionEnd : () -> {return;};
-        }
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-            mActionStart.run();
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mActionEnd.run();
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-            mActionRepeat.run();
-        }
-    }
 }

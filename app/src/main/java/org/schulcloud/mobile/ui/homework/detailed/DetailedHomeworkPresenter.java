@@ -1,12 +1,11 @@
 package org.schulcloud.mobile.ui.homework.detailed;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 
-import org.schulcloud.mobile.data.model.Homework;
-import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
-import org.schulcloud.mobile.data.datamanagers.SubmissionDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
+import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -34,6 +33,10 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
     public void loadHomework(@NonNull String homeworkId) {
         mHomework = mHomeworkDataManager.getHomeworkForId(homeworkId);
         showHomework();
+    }
+    @NonNull
+    public Pair<Homework, String> getHomeworkAndUserId() {
+        return new Pair<>(mHomework, mUserDataManager.getCurrentUserId());
     }
     private void showHomework() {
         sendToView(v -> {

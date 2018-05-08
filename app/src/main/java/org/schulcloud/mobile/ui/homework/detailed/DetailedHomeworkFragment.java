@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -78,6 +79,9 @@ public class DetailedHomeworkFragment
         setTitle(R.string.homework_homework_title);
 
         mPagerAdapter = new HomeworkPagerAdapter(getContext(), getChildFragmentManager());
+        Pair<Homework, String> hwAndId = mPresenter.getHomeworkAndUserId();
+        mPagerAdapter.setHomework(hwAndId.first, hwAndId.second);
+
         vVp_content.setAdapter(mPagerAdapter);
         vTl_tabs.setupWithViewPager(vVp_content);
 

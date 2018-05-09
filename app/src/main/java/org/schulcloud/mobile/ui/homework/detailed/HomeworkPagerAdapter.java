@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.homework.detailed;
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -27,18 +28,23 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
             TAB_INVALID,
             TAB_DETAILS,
             TAB_SUBMISSION,
-            TAB_SUBMISSIONS,
-            TAB_FEEDBACK})
+            TAB_SUBMISSION_STUDENT,
+            TAB_FEEDBACK,
+            TAB_FEEDBACK_STUDENT,
+            TAB_SUBMISSIONS})
     public @interface Tab {}
 
     private static final int TAB_INVALID = 0;
     private static final int TAB_DETAILS = 1;
     private static final int TAB_SUBMISSION = 2;
-    private static final int TAB_SUBMISSIONS = 3;
+    private static final int TAB_SUBMISSION_STUDENT = 3;
     private static final int TAB_FEEDBACK = 4;
+    private static final int TAB_FEEDBACK_STUDENT = 5;
+    private static final int TAB_SUBMISSIONS = 6;
 
     private Context mContext;
     private String mUserId;
+    private String mStudentId;
     private Homework mHomework;
 
     public HomeworkPagerAdapter(@NonNull Context context, @NonNull FragmentManager fm) {
@@ -46,9 +52,10 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
         mContext = context;
     }
 
-    public void setHomework(@NonNull Homework homework, @NonNull String userId) {
-        mUserId = userId;
-        mHomework = homework;
+    public void setHomework(@NonNull ViewConfig viewConfig) {
+        mUserId = viewConfig.userId;
+        mHomework = viewConfig.homework;
+        mStudentId = viewConfig.studentId;
         notifyDataSetChanged();
     }
 
@@ -59,10 +66,14 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
                 return DetailsFragment.newInstance(mHomework._id);
             case TAB_SUBMISSION:
                 return SubmissionFragment.newInstance(mHomework._id, mUserId);
-            case TAB_SUBMISSIONS:
-                return SubmissionsFragment.newInstance(mHomework._id);
+            case TAB_SUBMISSION_STUDENT:
+                return SubmissionFragment.newInstance(mHomework._id, mStudentId);
             case TAB_FEEDBACK:
                 return FeedbackFragment.newInstance(mHomework._id, mUserId);
+            case TAB_FEEDBACK_STUDENT:
+                return FeedbackFragment.newInstance(mHomework._id, mStudentId);
+            case TAB_SUBMISSIONS:
+                return SubmissionsFragment.newInstance(mHomework._id);
 
             case TAB_INVALID:
             default:
@@ -77,13 +88,15 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
                 titleId = R.string.homework_detailed_details;
                 break;
             case TAB_SUBMISSION:
+            case TAB_SUBMISSION_STUDENT:
                 titleId = R.string.homework_detailed_submission;
+                break;
+            case TAB_FEEDBACK:
+            case TAB_FEEDBACK_STUDENT:
+                titleId = R.string.homework_detailed_feedback;
                 break;
             case TAB_SUBMISSIONS:
                 titleId = R.string.homework_detailed_submissions;
-                break;
-            case TAB_FEEDBACK:
-                titleId = R.string.homework_detailed_feedback;
                 break;
 
             case TAB_INVALID:
@@ -110,17 +123,25 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
             return TAB_DETAILS;
 
         boolean isTeacher = isTeacher();
-        if (position == 1)
-            if (isTeacher)
-                return TAB_SUBMISSIONS;
-            else
-                return TAB_SUBMISSION;
+        if (mStudentId != null && isTeacher) {
+            if (position == 1)
+                return TAB_SUBMISSION_STUDENT;
 
-        if (position == 2 && !isTeacher)
-            return TAB_FEEDBACK;
-        if (position == 3 && !isTeacher && mHomework.publicSubmissions != null
-                && mHomework.publicSubmissions)
-            return TAB_SUBMISSIONS;
+            if (position == 2)
+                return TAB_FEEDBACK_STUDENT;
+        } else {
+            if (position == 1)
+                if (isTeacher)
+                    return TAB_SUBMISSIONS;
+                else
+                    return TAB_SUBMISSION;
+
+            if (position == 2 && !isTeacher)
+                return TAB_FEEDBACK;
+            if (position == 3 && !isTeacher && mHomework.publicSubmissions != null
+                    && mHomework.publicSubmissions)
+                return TAB_SUBMISSIONS;
+        }
 
         return TAB_INVALID;
     }

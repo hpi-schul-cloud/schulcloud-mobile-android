@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,7 +16,49 @@
             style="@style/Material.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="0dp" />
+            android:elevation="0dp">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/homeworkDetailed_v_courseColor"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/homeworkDetailed_tv_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/homeworkDetailed_tv_title" />
+
+                <TextView
+                    android:id="@+id/homeworkDetailed_tv_title"
+                    style="@style/Material.Toolbar.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/material_listItemLayout_paddingHorizontal"
+                    android:layout_marginStart="@dimen/material_listItemLayout_paddingHorizontal"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/homeworkDetailed_v_courseColor"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="10.1 Mathe - test android submissions" />
+
+                <TextView
+                    android:id="@+id/homeworkDetailed_tv_subtitle"
+                    style="@style/Material.Toolbar.Subtitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/material_listItemLayout_paddingHorizontal"
+                    android:layout_marginStart="@dimen/material_listItemLayout_paddingHorizontal"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/homeworkDetailed_v_courseColor"
+                    app:layout_constraintTop_toBottomOf="@id/homeworkDetailed_tv_title"
+                    tools:text="Fall, Clara" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/homeworkDetailed_tl_tabs"

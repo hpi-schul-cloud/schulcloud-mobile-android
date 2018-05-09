@@ -185,6 +185,16 @@
         <item name="theme">@style/AppTheme.AppBarOverlay</item>
         <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
     </style>
+    <style name="Material.Toolbar.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/material_text_light_primary</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+    </style>
+    <style name="Material.Toolbar.Subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textColor">@color/material_text_light_secondary</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
 
     <!-- TabLayout -->
     <style name="Material.TabLayout">

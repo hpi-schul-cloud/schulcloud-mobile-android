@@ -1,11 +1,13 @@
 package org.schulcloud.mobile.ui.homework.detailed;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Homework;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 
@@ -17,6 +19,7 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
     private final HomeworkDataManager mHomeworkDataManager;
     private final UserDataManager mUserDataManager;
     private Homework mHomework;
+    private User mStudent;
 
     @Inject
     public DetailedHomeworkPresenter(HomeworkDataManager homeworkDataManager,
@@ -30,18 +33,26 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
         showHomework();
     }
 
-    public void loadHomework(@NonNull String homeworkId) {
+    public void init(@NonNull String homeworkId, @Nullable String studentId) {
         mHomework = mHomeworkDataManager.getHomeworkForId(homeworkId);
+        if (mHomework == null)
+            sendToView(DetailedHomeworkMvpView::showError_notFound);
+
+        mStudent = mUserDataManager.getUser(studentId);
         showHomework();
     }
-    @NonNull
-    public Pair<Homework, String> getHomeworkAndUserId() {
-        return new Pair<>(mHomework, mUserDataManager.getCurrentUserId());
+    @Nullable
+    public ViewConfig getViewConfig() {
+        if (mHomework == null)
+            return null;
+
+        return new ViewConfig(mHomework, mUserDataManager.getCurrentUserId(),
+                mStudent != null ? mStudent._id : null);
     }
     private void showHomework() {
         sendToView(v -> {
             if (mHomework != null)
-                v.showHomework(mHomework, mUserDataManager.getCurrentUserId());
+                v.showHomework(mHomework, mStudent);
         });
     }
 }

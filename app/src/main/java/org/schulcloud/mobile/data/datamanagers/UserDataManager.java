@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.datamanagers;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.local.UserDatabaseHelper;
@@ -49,6 +50,10 @@ public class UserDataManager {
     @NonNull
     public Observable<List<User>> getUsers() {
         return mUserDatabaseHelper.getUsers().distinctUntilChanged();
+    }
+    @Nullable
+    public User getUser(@Nullable String id) {
+        return mUserDatabaseHelper.getUser(id);
     }
 
     public String getAccessToken() {

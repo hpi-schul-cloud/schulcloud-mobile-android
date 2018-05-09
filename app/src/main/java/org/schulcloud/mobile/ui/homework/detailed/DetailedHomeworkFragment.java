@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.homework.detailed;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +11,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
-import org.schulcloud.mobile.data.model.Submission;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.ViewUtil;
+import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
 import javax.inject.Inject;
 
@@ -25,6 +29,7 @@ public class DetailedHomeworkFragment
         extends MainFragment<DetailedHomeworkMvpView, DetailedHomeworkPresenter>
         implements DetailedHomeworkMvpView {
     private static final String ARGUMENT_HOMEWORK_ID = "ARGUMENT_HOMEWORK_ID";
+    private static final String ARGUMENT_STUDENT_ID = "ARGUMENT_STUDENT_ID";
 
     @Inject
     DetailedHomeworkPresenter mPresenter;
@@ -34,6 +39,12 @@ public class DetailedHomeworkFragment
 
     @BindView(R.id.homeworkDetailed_toolbar)
     Toolbar vToolbar;
+    @BindView(R.id.homeworkDetailed_v_courseColor)
+    View vV_courseColor;
+    @BindView(R.id.homeworkDetailed_tv_title)
+    TextView vTv_title;
+    @BindView(R.id.homeworkDetailed_tv_subtitle)
+    TextView vTv_subtitle;
     @BindView(R.id.homeworkDetailed_tl_tabs)
     TabLayout vTl_tabs;
     @BindView(R.id.homeworkDetailed_vp_content)
@@ -48,10 +59,22 @@ public class DetailedHomeworkFragment
      */
     @NonNull
     public static DetailedHomeworkFragment newInstance(@NonNull String homeworkId) {
+        return newInstance(homeworkId, null);
+    }
+    /**
+     * Creates a new instance of this fragment showing the task and the submission of one student.
+     *
+     * @param homeworkId The ID of the homework to be shown.
+     * @return The new instance
+     */
+    @NonNull
+    public static DetailedHomeworkFragment newInstance(@NonNull String homeworkId,
+            @Nullable String studentId) {
         DetailedHomeworkFragment detailedHomeworkFragment = new DetailedHomeworkFragment();
 
         Bundle args = new Bundle();
         args.putString(ARGUMENT_HOMEWORK_ID, homeworkId);
+        args.putString(ARGUMENT_STUDENT_ID, studentId);
         detailedHomeworkFragment.setArguments(args);
 
         return detailedHomeworkFragment;
@@ -66,10 +89,11 @@ public class DetailedHomeworkFragment
     }
     @Override
     public void onReadArguments(Bundle args) {
-        String homeworkId = getArguments().getString(ARGUMENT_HOMEWORK_ID);
+        String homeworkId = args.getString(ARGUMENT_HOMEWORK_ID);
         if (homeworkId == null)
             throw new IllegalArgumentException("homeworkId must not be null");
-        mPresenter.loadHomework(homeworkId);
+        String studentId = args.getString(ARGUMENT_STUDENT_ID);
+        mPresenter.init(homeworkId, studentId);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,11 +103,17 @@ public class DetailedHomeworkFragment
         setTitle(R.string.homework_homework_title);
 
         mPagerAdapter = new HomeworkPagerAdapter(getContext(), getChildFragmentManager());
-        Pair<Homework, String> hwAndId = mPresenter.getHomeworkAndUserId();
-        mPagerAdapter.setHomework(hwAndId.first, hwAndId.second);
-
         vVp_content.setAdapter(mPagerAdapter);
         vTl_tabs.setupWithViewPager(vVp_content);
+
+        ViewConfig viewConfig = mPresenter.getViewConfig();
+        if (viewConfig != null) {
+            mPagerAdapter.setHomework(viewConfig);
+
+            // Showing specific submission -> switch to submission tab on initial load (details still shown on pos 0)
+            if (savedInstanceState == null && viewConfig.studentId != null)
+                vVp_content.setCurrentItem(1, false);
+        }
 
         return view;
     }
@@ -96,7 +126,20 @@ public class DetailedHomeworkFragment
 
     /* MVP View methods implementation */
     @Override
-    public void showHomework(@NonNull Homework homework, @NonNull String userId) {
-        mPagerAdapter.setHomework(homework, userId);
+    public void showError_notFound() {
+        DialogFactory
+                .createGenericErrorDialog(getContext(), "Die Hausaufgabe wurde nicht gefunden")
+                .show();
+    }
+    @Override
+    public void showHomework(@NonNull Homework homework, @Nullable User student) {
+        vV_courseColor.setBackgroundColor(Color.parseColor(homework.courseId.color));
+        ViewUtil.setText(vTv_title,
+                getString(R.string.homework_homework_name_format, homework.courseId.name,
+                        homework.name));
+        ViewUtil.setText(vTv_subtitle, student == null ? null
+                : (student.displayName != null ? student.displayName
+                        : getString(R.string.homework_detailed_submissions_submission_name,
+                                student.firstName, student.lastName)));
     }
 }

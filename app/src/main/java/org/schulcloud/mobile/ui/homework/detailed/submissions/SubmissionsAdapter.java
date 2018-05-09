@@ -19,6 +19,7 @@ import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseAdapter;
 import org.schulcloud.mobile.ui.base.BaseViewHolder;
+import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,6 @@ import butterknife.ButterKnife;
  */
 @ConfigPersistent
 public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.SubmissionViewHolder> {
-    private FragmentManager mFragmentManager;
     private Homework mHomework;
     private String mCurrentUserId;
     private List<Pair<User, Submission>> mSubmissions;
@@ -41,9 +41,6 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
     @Inject
     public SubmissionsAdapter() {
         mSubmissions = Collections.emptyList();
-    }
-    public void init(@NonNull FragmentManager fragmentManager) {
-        mFragmentManager = fragmentManager;
     }
     public void setSubmissions(@NonNull String currentUserId, @NonNull Homework homework,
             @NonNull List<Pair<User, Submission>> submissions) {
@@ -79,7 +76,7 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
 
     class SubmissionViewHolder extends BaseViewHolder<Pair<User, Submission>> {
 
-        @BindView(R.id.submission_ll_header)
+        @BindView(R.id.submission_ll_wrapper)
         LinearLayout vLl_header;
         @BindView(R.id.submission_tv_name)
         TextView vTv_name;
@@ -91,6 +88,12 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
         SubmissionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            vLl_header.setOnClickListener(v -> {
+                String studentId = mSubmissions.get(getAdapterPosition()).first._id;
+                getMainActivity().addFragment(
+                        DetailedHomeworkFragment.newInstance(mHomework._id, studentId));
+            });
         }
         @Override
         protected void onItemSet(@NonNull Pair<User, Submission> item) {

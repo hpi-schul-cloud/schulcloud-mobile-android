@@ -100,7 +100,7 @@
     <string name="homework_loading_error">Leider gab es ein Problem beim Laden der Hausaufgaben</string>
     <string name="homework_homework_title">Aufgabe</string>
     <string name="homework_homework_name">Titel</string>
-    <string name="homework_homework_name_format">[%1$s] %2$s</string>
+    <string name="homework_homework_name_format">%1$s - %2$s</string>
     <string name="homework_homework_course">Kurs:</string>
     <string name="homework_homework_course_none">Keine Zuordnung</string>
     <string name="homework_homework_private">Private Aufgabe (nur für mich sichtbar)</string>

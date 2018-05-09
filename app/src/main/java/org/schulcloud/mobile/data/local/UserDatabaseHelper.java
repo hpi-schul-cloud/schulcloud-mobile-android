@@ -1,5 +1,8 @@
 package org.schulcloud.mobile.data.local;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
@@ -12,6 +15,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Single;
 import timber.log.Timber;
@@ -20,7 +24,9 @@ import timber.log.Timber;
 public class UserDatabaseHelper extends BaseDatabaseHelper {
 
     @Inject
-    UserDatabaseHelper(Provider<Realm> realmProvider) {super(realmProvider);}
+    UserDatabaseHelper(Provider<Realm> realmProvider) {
+        super(realmProvider);
+    }
 
     public Observable<User> setUsers(final Collection<User> newUsers) {
         return Observable.create(subscriber -> {
@@ -42,11 +48,18 @@ public class UserDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    @NonNull
     public Observable<List<User>> getUsers() {
         final Realm realm = mRealmProvider.get();
         return realm.where(User.class).findAllAsync().asObservable()
-                .filter(users -> users.isLoaded())
-                .map(users -> realm.copyFromRealm(users));
+                .filter(RealmResults::isLoaded)
+                .map(realm::copyFromRealm);
+    }
+    @Nullable
+    public User getUser(@Nullable String id) {
+        if (id == null)
+            return null;
+        return mRealmProvider.get().where(User.class).equalTo("_id", id).findFirst();
     }
 
     public Observable<AccessToken> setAccessToken(final AccessToken newAccessToken) {

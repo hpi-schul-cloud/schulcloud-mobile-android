@@ -70,7 +70,6 @@ public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, Submis
                 inflater.inflate(R.layout.fragment_homework_detailed_submissions, container, false);
         ButterKnife.bind(this, view);
 
-        mAdapter.init(getChildFragmentManager());
         vRecycler.setAdapter(mAdapter);
         vRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 

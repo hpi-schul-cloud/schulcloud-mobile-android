@@ -1,10 +1,9 @@
 package org.schulcloud.mobile.ui.homework.detailed.submissions;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.util.Pair;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import net.cachapa.expandablelayout.ExpandableLayout;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
@@ -40,7 +37,6 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
     private Homework mHomework;
     private String mCurrentUserId;
     private List<Pair<User, Submission>> mSubmissions;
-    private int mExpandedSubmission = -1;
 
     @Inject
     public SubmissionsAdapter() {
@@ -60,12 +56,18 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
         mSubmissions = submissions;
         notifyDataSetChanged();
     }
-
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        mSubmissions.clear();
+        notifyDataSetChanged();
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
     @Override
     public SubmissionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SubmissionViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_submission, parent, false));
     }
+
     @Override
     public void onBindViewHolder(SubmissionViewHolder holder, int position) {
         holder.setItem(mSubmissions.get(position));
@@ -75,8 +77,8 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
         return mSubmissions.size();
     }
 
-    class SubmissionViewHolder extends BaseViewHolder<Pair<User, Submission>>
-            implements ExpandableLayout.OnExpansionUpdateListener {
+    class SubmissionViewHolder extends BaseViewHolder<Pair<User, Submission>> {
+
         @BindView(R.id.submission_ll_header)
         LinearLayout vLl_header;
         @BindView(R.id.submission_tv_name)
@@ -85,41 +87,10 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
         ImageView vIv_submitted;
         @BindView(R.id.submission_tv_grade)
         TextView vTv_grade;
-        @BindView(R.id.submission_iv_expand)
-        ImageView vIv_expanded;
-
-        @BindView(R.id.submission_expansion)
-        ExpandableLayout vExpansion;
-        @BindView(R.id.submission_tabs)
-        TabLayout vTabs;
-        @BindView(R.id.submission_vp_content)
-        ViewPager vVp_content;
-
-        EvaluationPagerAdapter mAdapter;
 
         SubmissionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-            vLl_header.setOnClickListener(v -> {
-                SubmissionViewHolder expandedHolder = (SubmissionViewHolder) getRecyclerView()
-                        .findViewHolderForAdapterPosition(mExpandedSubmission);
-                if (expandedHolder != null)
-                    expandedHolder.collapse();
-
-                int position = getAdapterPosition();
-                if (position == mExpandedSubmission)
-                    mExpandedSubmission = -1;
-                else {
-                    expand();
-                    mExpandedSubmission = position;
-                }
-            });
-
-            mAdapter = new EvaluationPagerAdapter(getContext(), mFragmentManager);
-            vVp_content.setOffscreenPageLimit(2); // Maximum: 3 Tabs
-            vVp_content.setAdapter(mAdapter);
-            vTabs.setupWithViewPager(vVp_content);
         }
         @Override
         protected void onItemSet(@NonNull Pair<User, Submission> item) {
@@ -134,32 +105,6 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
             vTv_grade.setText((submission != null && submission.grade != null)
                     ? getContext().getString(R.string.homework_submission_grade, submission.grade)
                     : "");
-
-            boolean expanded = getAdapterPosition() == mExpandedSubmission;
-            vExpansion.setExpanded(expanded, false);
-            updateExpandedIndicator(expanded);
-
-            mAdapter.setSubmission(mCurrentUserId, user, mHomework, submission);
-            mAdapter.notifyDataSetChanged();
-        }
-
-        void expand() {
-            vExpansion.expand();
-            updateExpandedIndicator(true);
-        }
-        void collapse() {
-            vExpansion.collapse();
-            updateExpandedIndicator(false);
-        }
-        private void updateExpandedIndicator(boolean expanded) {
-            vIv_expanded.setImageResource(expanded
-                    ? R.drawable.ic_expand_less_dark_24dp
-                    : R.drawable.ic_expand_more_dark_24dp);
-        }
-        @Override
-        public void onExpansionUpdate(float expansionFraction, int state) {
-            if (state == ExpandableLayout.State.EXPANDING)
-                getRecyclerView().smoothScrollToPosition(getAdapterPosition());
         }
     }
 }

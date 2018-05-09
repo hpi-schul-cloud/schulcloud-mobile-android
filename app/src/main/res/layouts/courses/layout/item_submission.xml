@@ -3,85 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/submission_ll_header"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="@dimen/material_listItemLayout_height"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <LinearLayout
-        android:id="@+id/submission_ll_header"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/material_listItemLayout_height"
-        android:background="@color/white"
-        android:foreground="?android:attr/selectableItemBackground">
+    <TextView
+        android:id="@+id/submission_tv_name"
+        style="@style/Material.ListItem_TextPrimary"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/material_listItemLayout_paddingHorizontal"
+        android:layout_marginStart="@dimen/material_listItemLayout_paddingHorizontal"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        tools:text="Fall, Clara" />
 
-        <TextView
-            android:id="@+id/submission_tv_name"
-            style="@style/Material.ListItem_TextPrimary"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/material_listItemLayout_paddingHorizontal"
-            android:layout_marginStart="@dimen/material_listItemLayout_paddingHorizontal"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            tools:text="Fall, Clara" />
+    <ImageView
+        android:id="@+id/submission_iv_submitted"
+        style="@style/Material.Icon"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/ic_check_green_24dp"
+        tools:srcCompat="@drawable/ic_close_red_24dp" />
 
-        <ImageView
-            android:id="@+id/submission_iv_submitted"
-            style="@style/Material.Icon"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_check_green_24dp"
-            tools:srcCompat="@drawable/ic_close_red_24dp" />
-
-        <TextView
-            android:id="@+id/submission_tv_grade"
-            style="@style/Material.ListItem_TextSecondary"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/material_listItemLayout_paddingHorizontal"
-            android:layout_marginStart="@dimen/material_listItemLayout_paddingHorizontal"
-            android:width="40sp"
-            android:gravity="center"
-            tools:text="90%" />
-
-        <ImageView
-            android:id="@+id/submission_iv_expand"
-            style="@style/Material.Icon"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_expand_more_dark_24dp"
-            tools:srcCompat="@drawable/ic_expand_less_dark_24dp" />
-
-    </LinearLayout>
-
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/submission_expansion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:el_expanded="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/submission_tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                app:tabGravity="fill"
-                app:tabMode="fixed" />
-
-            <org.schulcloud.mobile.ui.common.WrapHeightViewPager
-                android:id="@+id/submission_vp_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </net.cachapa.expandablelayout.ExpandableLayout>
+    <TextView
+        android:id="@+id/submission_tv_grade"
+        style="@style/Material.ListItem_TextSecondary"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/material_listItemLayout_paddingHorizontal"
+        android:layout_marginStart="@dimen/material_listItemLayout_paddingHorizontal"
+        android:width="40sp"
+        android:gravity="center"
+        tools:text="90%" />
 
 </LinearLayout>

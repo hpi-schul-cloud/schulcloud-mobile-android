@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.base.BaseFragment;
-import org.schulcloud.mobile.ui.common.ContentWebView;
 
 import java.util.Collections;
 import java.util.List;
@@ -75,8 +73,6 @@ public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, Submis
         mAdapter.init(getChildFragmentManager());
         vRecycler.setAdapter(mAdapter);
         vRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        vRecycler.addItemDecoration(
-                new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         return view;
     }

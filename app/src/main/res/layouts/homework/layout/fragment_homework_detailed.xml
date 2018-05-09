@@ -26,9 +26,10 @@
                     android:id="@+id/homeworkDetailed_v_courseColor"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/homeworkDetailed_tv_title"
+                    android:layout_marginTop="4sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/homeworkDetailed_tv_title" />
+                    app:layout_constraintTop_toTopOf="@+id/homeworkDetailed_tv_title"
+                    tools:background="@color/blue_light" />
 
                 <TextView
                     android:id="@+id/homeworkDetailed_tv_title"

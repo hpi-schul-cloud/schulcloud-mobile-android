@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fillEnabled="false">
+    android:ordering="sequentially">
 
     <scale
-        android:duration="700"
+        android:duration="350"
         android:fromYScale="0"
         android:toYScale="1.0"
         android:fromXScale="1.0"
@@ -11,5 +11,11 @@
         android:pivotX="50%"
         android:pivotY="0%">
     </scale>
+
+    <alpha
+        android:duration="350"
+        android:fromAlpha="0"
+        android:toAlpha="1.0">
+    </alpha>
 
 </set>

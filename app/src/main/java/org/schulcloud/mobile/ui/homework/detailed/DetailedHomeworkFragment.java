@@ -132,15 +132,12 @@ public class DetailedHomeworkFragment
                 .show();
     }
     @Override
-    public void showHomework(@NonNull Homework homework, @Nullable User student,
-            boolean switchToSubmission) {
-        ViewConfig viewConfig = mPresenter.getViewConfig();
-        if (viewConfig != null) {
-            // If a submission was just selected, switch to the submission tab
-            mPagerAdapter.setViewConfig(mPresenter.getViewConfig());
-            if (switchToSubmission && student != null)
-                vVp_content.setCurrentItem(2, false);
-        }
+    public void showHomework(@NonNull Homework homework, @NonNull String userId,
+            @Nullable User student, boolean switchToSubmission) {
+        // If a submission was just selected, switch to the submission tab
+        mPagerAdapter.setHomework(homework, userId, student);
+        if (switchToSubmission && student != null)
+            vVp_content.setCurrentItem(2, false);
 
         vV_courseColor.setBackgroundColor(Color.parseColor(homework.courseId.color));
 

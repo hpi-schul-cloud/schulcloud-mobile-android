@@ -2,16 +2,13 @@ package org.schulcloud.mobile.ui.homework.detailed;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 
 import org.schulcloud.mobile.data.datamanagers.HomeworkDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.model.Homework;
-import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
-import org.schulcloud.mobile.util.ListUtils;
 import org.schulcloud.mobile.util.RxUtil;
 
 import javax.inject.Inject;
@@ -70,18 +67,11 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
         mStudent = student;
         showHomework();
     }
-    @Nullable
-    public ViewConfig getViewConfig() {
-        if (mHomework == null)
-            return null;
-
-        return new ViewConfig(mHomework, mUserDataManager.getCurrentUserId(),
-                mStudent != null ? mStudent._id : null);
-    }
     private void showHomework() {
         sendToView(v -> {
             if (mHomework != null) {
-                v.showHomework(mHomework, mStudent, !mFirstLoad);
+                v.showHomework(mHomework, mUserDataManager.getCurrentUserId(), mStudent,
+                        !mFirstLoad);
                 mFirstLoad = false;
             }
         });

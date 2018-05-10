@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
-import org.schulcloud.mobile.data.model.RealmString;
+import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.homework.detailed.details.DetailsFragment;
 import org.schulcloud.mobile.ui.homework.detailed.feedback.FeedbackFragment;
 import org.schulcloud.mobile.ui.homework.detailed.submission.SubmissionFragment;
@@ -49,12 +49,13 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
         mContext = context;
     }
 
-    public void setViewConfig(@NonNull ViewConfig viewConfig) {
-        mUserId = viewConfig.userId;
-        mHomework = viewConfig.homework;
+    public void setHomework(@NonNull Homework homework, @NonNull String userId,
+            @Nullable User student) {
+        mUserId = userId;
+        mHomework = homework;
 
-        if (viewConfig.studentId != null)
-            mStudentId = viewConfig.studentId;
+        if (student != null)
+            mStudentId = student._id;
         else if (!ModelUtil.isTeacherOf(mUserId, mHomework))
             mStudentId = mUserId;
         notifyDataSetChanged();

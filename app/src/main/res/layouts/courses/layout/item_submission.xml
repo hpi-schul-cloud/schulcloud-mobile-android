@@ -39,4 +39,11 @@
         android:gravity="center"
         tools:text="90%" />
 
+    <ImageView
+        style="@style/Material.Icon"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        app:srcCompat="@drawable/ic_chevron_right_dark_24dp" />
+
 </LinearLayout>

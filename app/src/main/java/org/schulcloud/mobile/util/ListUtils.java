@@ -17,9 +17,18 @@ public final class ListUtils {
                 return true;
         return false;
     }
+    public static <T> boolean contains(@NonNull Collection<T> collection,
+            @NonNull Predicate<T> predicate) {
+        for (T item : collection)
+            if (predicate.apply(item))
+                return true;
+        return false;
+    }
+
     public static boolean equals(@Nullable Object a, @Nullable Object b) {
         return (a == b) || (a != null && a.equals(b));
     }
+
     @Nullable
     public static <T> T where(@NonNull Collection<T> collection, @NonNull Predicate<T> predicate) {
         for (T item : collection) {
@@ -27,5 +36,16 @@ public final class ListUtils {
                 return item;
         }
         return null;
+    }
+
+    public static <T> int indexOf(@NonNull Collection<T> collection,
+            @NonNull Predicate<T> predicate) {
+        int i = 0;
+        for (T item : collection) {
+            if (predicate.apply(item))
+                return i;
+            i++;
+        }
+        return -1;
     }
 }

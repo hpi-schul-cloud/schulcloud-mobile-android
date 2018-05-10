@@ -109,6 +109,7 @@ public class UserDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    @NonNull
     public Single<CurrentUser> getCurrentUser() {
         final Realm realm = mRealmProvider.get();
         return Single.just(realm.where(CurrentUser.class).findFirst());

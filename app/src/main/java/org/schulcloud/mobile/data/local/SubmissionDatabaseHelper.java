@@ -57,23 +57,19 @@ public class SubmissionDatabaseHelper extends BaseDatabaseHelper {
 
     @Nullable
     public Submission getSubmission(@NonNull String homeworkId, @NonNull String studentId) {
-        return mRealmProvider.get().where(Submission.class)
+        Realm realm = mRealmProvider.get();
+        Submission s = realm.where(Submission.class)
                 .equalTo("homeworkId", homeworkId)
                 .equalTo("studentId", studentId)
                 .findFirst();
+        return s == null ? null : realm.copyFromRealm(s);
     }
     @NonNull
     public Observable<List<Submission>> getSubmissionsForHomework(@NonNull String homeworkId) {
-        List<Submission> s =
-                mRealmProvider.get().where(Submission.class).equalTo("homeworkId", homeworkId)
-                        .findAll();
         Realm realm = mRealmProvider.get();
         return realm.where(Submission.class).equalTo("homeworkId", homeworkId)
                 .findAllAsync().asObservable()
                 .filter(RealmResults::isLoaded)
-                .map(realm::copyFromRealm)
-                .doOnEach(notification -> {
-                    Log.d(TAG, notification.toString());
-                });
+                .map(realm::copyFromRealm);
     }
 }

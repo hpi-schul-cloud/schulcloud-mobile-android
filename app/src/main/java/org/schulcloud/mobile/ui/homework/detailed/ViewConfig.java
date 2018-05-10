@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import org.schulcloud.mobile.data.model.Homework;
 
 /**
+ * This data class provides all information required by {@link HomeworkPagerAdapter} to decide which
+ * tabs to show and how to configure them.
+ * <p>
  * Date: 5/9/2018
  */
 public class ViewConfig {

@@ -25,4 +25,7 @@ public class Homework implements RealmModel {
     public boolean isPrivate() {
         return restricted == null || restricted;
     }
+    public boolean hasPrivateSubmissions() {
+        return publicSubmissions == null || publicSubmissions;
+    }
 }

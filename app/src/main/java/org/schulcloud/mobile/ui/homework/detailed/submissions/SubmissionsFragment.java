@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, SubmissionsPresenter>
         implements SubmissionsMvpView {
     private static final String ARGUMENT_HOMEWORK_ID = "ARGUMENT_HOMEWORK_ID";
+    private static final String ARGUMENT_SELECTED_STUDENT_ID = "ARGUMENT_SELECTED_STUDENT_ID";
 
     @Inject
     SubmissionsPresenter mPresenter;
@@ -39,11 +40,13 @@ public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, Submis
     RecyclerView vRecycler;
 
     @NonNull
-    public static SubmissionsFragment newInstance(@NonNull String homeworkId) {
+    public static SubmissionsFragment newInstance(@NonNull String homeworkId,
+            @Nullable String selectedStudentId) {
         SubmissionsFragment submissionsFragment = new SubmissionsFragment();
 
         Bundle args = new Bundle();
         args.putString(ARGUMENT_HOMEWORK_ID, homeworkId);
+        args.putString(ARGUMENT_SELECTED_STUDENT_ID, selectedStudentId);
         submissionsFragment.setArguments(args);
 
         return submissionsFragment;
@@ -58,10 +61,11 @@ public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, Submis
     }
     @Override
     public void onReadArguments(Bundle args) {
-        String id = getArguments().getString(ARGUMENT_HOMEWORK_ID);
+        String id = args.getString(ARGUMENT_HOMEWORK_ID);
         if (id == null)
             throw new IllegalArgumentException("id must not be null");
-        mPresenter.loadSubmissions(id);
+        String selectedUserId = args.getString(ARGUMENT_SELECTED_STUDENT_ID);
+        mPresenter.loadSubmissions(id, selectedUserId);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +74,11 @@ public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, Submis
                 inflater.inflate(R.layout.fragment_homework_detailed_submissions, container, false);
         ButterKnife.bind(this, view);
 
+        if (getParentFragment() instanceof SubmissionsAdapter.OnStudentSelectedListener) {
+            SubmissionsAdapter.OnStudentSelectedListener listener =
+                    (SubmissionsAdapter.OnStudentSelectedListener) getParentFragment();
+            mAdapter.setOnStudentSelectedListener(listener);
+        }
         vRecycler.setAdapter(mAdapter);
         vRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -84,12 +93,12 @@ public class SubmissionsFragment extends BaseFragment<SubmissionsMvpView, Submis
     }
     @Override
     public void showSubmissions(@NonNull String currentUserId, @NonNull Homework homework,
-            @NonNull List<Pair<User, Submission>> submissions) {
-        mAdapter.setSubmissions(currentUserId, homework, submissions);
+            @NonNull List<Pair<User, Submission>> submissions, @Nullable String selectedUserId) {
+        mAdapter.setSubmissions(currentUserId, homework, submissions, selectedUserId);
     }
     @Override
     public void showSubmissionsEmpty(@NonNull String currentUserId, @NonNull Homework homework) {
-        mAdapter.setSubmissions(currentUserId, homework, Collections.emptyList());
+        mAdapter.setSubmissions(currentUserId, homework, Collections.emptyList(), null);
         // TODO: Show message
     }
 }

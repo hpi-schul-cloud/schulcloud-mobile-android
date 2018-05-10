@@ -10,6 +10,7 @@ import org.schulcloud.mobile.ui.base.MvpView;
 public interface DetailedHomeworkMvpView extends MvpView {
 
     void showError_notFound();
-    void showHomework(@NonNull Homework homework, @Nullable User student);
+    void showHomework(@NonNull Homework homework, @Nullable User student,
+            boolean switchToSubmission);
 
 }

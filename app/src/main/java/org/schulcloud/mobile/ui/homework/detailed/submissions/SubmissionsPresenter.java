@@ -2,6 +2,7 @@ package org.schulcloud.mobile.ui.homework.detailed.submissions;
 
 import android.os.UserManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.util.Log;
 
@@ -39,6 +40,8 @@ public class SubmissionsPresenter extends BasePresenter<SubmissionsMvpView> {
     private final SubmissionDataManager mDataManager;
     private Subscription sSubmissions;
 
+    private boolean mFirstLoad = true;
+
     @Inject
     public SubmissionsPresenter(UserDataManager userDataManager,
             HomeworkDataManager homeworkDataManager, CourseDataManager courseDataManager,
@@ -53,7 +56,7 @@ public class SubmissionsPresenter extends BasePresenter<SubmissionsMvpView> {
         super.onDestroy();
         RxUtil.unsubscribe(sSubmissions);
     }
-    void loadSubmissions(@NonNull String homeworkId) {
+    void loadSubmissions(@NonNull String homeworkId, @Nullable String selectedUserId) {
         Homework homework = mHomeworkDataManager.getHomeworkForId(homeworkId);
         if (homework == null) {
             sendToView(SubmissionsMvpView::showError);
@@ -79,8 +82,10 @@ public class SubmissionsPresenter extends BasePresenter<SubmissionsMvpView> {
                             subs.add(new Pair<>(user, ListUtils.where(submissions,
                                     submission -> user._id
                                             .equalsIgnoreCase(submission.studentId))));
-                        sendToView(v -> v.showSubmissions(currentUserId, homework, subs));
+                        sendToView(v -> v.showSubmissions(currentUserId, homework, subs,
+                                mFirstLoad ? selectedUserId : null));
                     }
+                    mFirstLoad = false;
                 }, throwable -> {
                     Log.w(TAG, "Error getting submissions", throwable);
                     sendToView(SubmissionsMvpView::showError);

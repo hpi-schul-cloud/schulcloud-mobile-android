@@ -17,6 +17,7 @@ import com.beardedhen.androidbootstrap.AwesomeTextView;
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.User;
+import org.schulcloud.mobile.ui.homework.detailed.submissions.SubmissionsAdapter;
 import org.schulcloud.mobile.ui.main.MainFragment;
 import org.schulcloud.mobile.util.ModelUtil;
 import org.schulcloud.mobile.util.ViewUtil;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 
 public class DetailedHomeworkFragment
         extends MainFragment<DetailedHomeworkMvpView, DetailedHomeworkPresenter>
-        implements DetailedHomeworkMvpView {
+        implements DetailedHomeworkMvpView, SubmissionsAdapter.OnStudentSelectedListener {
     private static final String ARGUMENT_HOMEWORK_ID = "ARGUMENT_HOMEWORK_ID";
     private static final String ARGUMENT_STUDENT_ID = "ARGUMENT_STUDENT_ID";
 
@@ -110,15 +111,6 @@ public class DetailedHomeworkFragment
         vVp_content.setAdapter(mPagerAdapter);
         vTl_tabs.setupWithViewPager(vVp_content);
 
-        ViewConfig viewConfig = mPresenter.getViewConfig();
-        if (viewConfig != null) {
-            mPagerAdapter.setHomework(viewConfig);
-
-            // Showing specific submission -> switch to submission tab on initial load (details still shown on pos 0)
-            if (savedInstanceState == null && viewConfig.studentId != null)
-                vVp_content.setCurrentItem(1, false);
-        }
-
         return view;
     }
     @Nullable
@@ -127,6 +119,10 @@ public class DetailedHomeworkFragment
         return vToolbar;
     }
 
+    @Override
+    public void onStudentSelected(@NonNull User student) {
+        mPresenter.onStudentSelected(student);
+    }
 
     /* MVP View methods implementation */
     @Override
@@ -136,15 +132,27 @@ public class DetailedHomeworkFragment
                 .show();
     }
     @Override
-    public void showHomework(@NonNull Homework homework, @Nullable User student) {
+    public void showHomework(@NonNull Homework homework, @Nullable User student,
+            boolean switchToSubmission) {
+        ViewConfig viewConfig = mPresenter.getViewConfig();
+        if (viewConfig != null) {
+            // If a submission was just selected, switch to the submission tab
+            mPagerAdapter.setViewConfig(mPresenter.getViewConfig());
+            if (switchToSubmission && student != null)
+                vVp_content.setCurrentItem(2, false);
+        }
+
         vV_courseColor.setBackgroundColor(Color.parseColor(homework.courseId.color));
 
         ViewUtil.setVisibility(vAtv_private, homework.isPrivate());
 
-        vTv_title.setText(
-                getString(R.string.homework_homework_name_format, homework.courseId.name,
-                        homework.name));
+        vTv_title.setText(getString(R.string.homework_homework_name_format, homework.courseId.name,
+                homework.name));
 
-        ViewUtil.setText(vTv_subtitle, ModelUtil.getUserName(getContext(), student));
+        String studentName = ModelUtil.getUserName(getContext(), student);
+        ViewUtil.setVisibility(vTv_subtitle, studentName != null);
+        if (studentName != null)
+            vTv_subtitle
+                    .setText(getString(R.string.homework_detailed_submission_hint, studentName));
     }
 }

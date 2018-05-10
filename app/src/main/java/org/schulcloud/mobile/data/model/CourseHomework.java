@@ -17,4 +17,5 @@ public class CourseHomework implements RealmModel {
     public String description;
     public String color;
     public RealmList<RealmString> substitutionIds;
+    public RealmList<RealmString> userIds;
 }

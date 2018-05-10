@@ -21,4 +21,8 @@ public class Homework implements RealmModel {
     @SerializedName("private")
     public Boolean restricted;
     public Boolean publicSubmissions;
+
+    public boolean isPrivate() {
+        return restricted == null || restricted;
+    }
 }

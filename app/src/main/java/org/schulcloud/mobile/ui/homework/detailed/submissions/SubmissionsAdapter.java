@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.ui.homework.detailed.submissions;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,6 +19,7 @@ import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BaseAdapter;
 import org.schulcloud.mobile.ui.base.BaseViewHolder;
 import org.schulcloud.mobile.ui.homework.detailed.DetailedHomeworkFragment;
+import org.schulcloud.mobile.util.ModelUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -99,9 +99,7 @@ public class SubmissionsAdapter extends BaseAdapter<SubmissionsAdapter.Submissio
         protected void onItemSet(@NonNull Pair<User, Submission> item) {
             User user = item.first;
             Submission submission = item.second;
-            vTv_name.setText(!TextUtils.isEmpty(user.displayName) ? user.displayName : getContext()
-                    .getString(R.string.homework_detailed_submissions_submission_name,
-                            user.firstName, user.lastName));
+            vTv_name.setText(ModelUtil.getUserName(getContext(), user));
             vIv_submitted.setImageResource(submission != null
                     ? R.drawable.ic_check_green_24dp
                     : R.drawable.ic_close_red_24dp);

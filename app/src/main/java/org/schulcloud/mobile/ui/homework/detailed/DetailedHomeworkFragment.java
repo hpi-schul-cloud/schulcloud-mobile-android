@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -13,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.AwesomeTextView;
+
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.Homework;
 import org.schulcloud.mobile.data.model.User;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.ModelUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
@@ -41,6 +43,8 @@ public class DetailedHomeworkFragment
     Toolbar vToolbar;
     @BindView(R.id.homeworkDetailed_v_courseColor)
     View vV_courseColor;
+    @BindView(R.id.homeworkDetailed_atv_private)
+    AwesomeTextView vAtv_private;
     @BindView(R.id.homeworkDetailed_tv_title)
     TextView vTv_title;
     @BindView(R.id.homeworkDetailed_tv_subtitle)
@@ -134,12 +138,13 @@ public class DetailedHomeworkFragment
     @Override
     public void showHomework(@NonNull Homework homework, @Nullable User student) {
         vV_courseColor.setBackgroundColor(Color.parseColor(homework.courseId.color));
-        ViewUtil.setText(vTv_title,
+
+        ViewUtil.setVisibility(vAtv_private, homework.isPrivate());
+
+        vTv_title.setText(
                 getString(R.string.homework_homework_name_format, homework.courseId.name,
                         homework.name));
-        ViewUtil.setText(vTv_subtitle, student == null ? null
-                : (student.displayName != null ? student.displayName
-                        : getString(R.string.homework_detailed_submissions_submission_name,
-                                student.firstName, student.lastName)));
+
+        ViewUtil.setText(vTv_subtitle, ModelUtil.getUserName(getContext(), student));
     }
 }

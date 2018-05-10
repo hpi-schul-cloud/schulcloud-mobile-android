@@ -31,6 +31,21 @@
                     app:layout_constraintTop_toTopOf="@+id/homeworkDetailed_tv_title"
                     tools:background="@color/blue_light" />
 
+                <com.beardedhen.androidbootstrap.AwesomeTextView
+                    android:id="@+id/homeworkDetailed_atv_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="24dp"
+                    android:visibility="gone"
+                    app:bootstrapBrand="secondary"
+                    app:fontAwesomeIcon="fa_lock"
+                    app:layout_constraintEnd_toEndOf="@id/homeworkDetailed_v_courseColor"
+                    app:layout_constraintStart_toStartOf="@id/homeworkDetailed_v_courseColor"
+                    app:layout_constraintTop_toBottomOf="@id/homeworkDetailed_v_courseColor"
+                    tools:ignore="SpUsage" />
+
                 <TextView
                     android:id="@+id/homeworkDetailed_tv_title"
                     style="@style/Material.Toolbar.Title"

@@ -91,8 +91,7 @@ public class HomeworkAdapter extends BaseAdapter<HomeworkAdapter.HomeworkViewHol
             holder.vTv_due.setText(dateText);
         }
 
-        ViewUtil.setVisibility(holder.vAtv_private,
-                homework.restricted == null || !homework.restricted);
+        ViewUtil.setVisibility(holder.vAtv_private, homework.isPrivate());
 
         holder.vCard.setOnClickListener(v ->
                 mHomeworkPresenter.showHomeworkDetail(homework._id));

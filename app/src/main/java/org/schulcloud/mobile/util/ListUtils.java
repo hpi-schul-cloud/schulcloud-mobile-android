@@ -11,6 +11,10 @@ import java.util.Collection;
  * Date: 2/19/2018
  */
 public final class ListUtils {
+    public static <T> boolean isEmpty(@Nullable Collection<T> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
     public static <T> boolean contains(@NonNull T[] array, @Nullable T element) {
         for (T item : array)
             if (equals(item, element))

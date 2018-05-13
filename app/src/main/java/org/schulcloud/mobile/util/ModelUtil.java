@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.schulcloud.mobile.R;
-import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.Homework;
-import org.schulcloud.mobile.data.model.RealmString;
 import org.schulcloud.mobile.data.model.Submission;
 import org.schulcloud.mobile.data.model.User;
 
@@ -35,7 +33,7 @@ public final class ModelUtil {
         if (submission == null || submission.grade == null)
             return null;
 
-        return context.getString(R.string.homework_submission_grade, submission.grade);
+        return context.getString(R.string.homework_detailed_submission_grade, submission.grade);
     }
 
     /**

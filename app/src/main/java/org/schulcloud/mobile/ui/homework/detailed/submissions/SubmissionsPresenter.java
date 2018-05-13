@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.homework.detailed.submissions;
 
-import android.os.UserManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -58,13 +57,14 @@ public class SubmissionsPresenter extends BasePresenter<SubmissionsMvpView> {
     }
     void loadSubmissions(@NonNull String homeworkId, @Nullable String selectedUserId) {
         Homework homework = mHomeworkDataManager.getHomeworkForId(homeworkId);
-        if (homework == null) {
-            sendToView(SubmissionsMvpView::showError);
-            return;
-        }
+        assert homework != null;
         Course course = mCourseDataManager.getCourseForId(homework.courseId._id);
         if (course == null) {
-            sendToView(SubmissionsMvpView::showError);
+            sendToView(SubmissionsMvpView::showError_courseNotFound);
+            return;
+        }
+        if (ListUtils.isEmpty(course.userIds)) {
+            sendToView(SubmissionsMvpView::showError_courseEmpty);
             return;
         }
         String currentUserId = mUserDataManager.getCurrentUserId();
@@ -73,22 +73,16 @@ public class SubmissionsPresenter extends BasePresenter<SubmissionsMvpView> {
         sSubmissions = mDataManager.getSubmissionsForHomework(homeworkId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(submissions -> {
-                    if (submissions.isEmpty())
-                        sendToView(v -> v.showSubmissionsEmpty(currentUserId, homework));
-                    else {
-                        List<User> users = course.userIds;
-                        List<Pair<User, Submission>> subs = new ArrayList<>();
-                        for (User user : users)
-                            subs.add(new Pair<>(user, ListUtils.where(submissions,
-                                    submission -> user._id
-                                            .equalsIgnoreCase(submission.studentId))));
-                        sendToView(v -> v.showSubmissions(currentUserId, homework, subs,
-                                mFirstLoad ? selectedUserId : null));
-                    }
+                    List<Pair<User, Submission>> subs = new ArrayList<>();
+                    for (User user : course.userIds)
+                        subs.add(new Pair<>(user, ListUtils.where(submissions,
+                                submission -> user._id.equalsIgnoreCase(submission.studentId))));
+                    sendToView(v -> v.showSubmissions(currentUserId, homework, subs,
+                            mFirstLoad ? selectedUserId : null));
                     mFirstLoad = false;
                 }, throwable -> {
                     Log.w(TAG, "Error getting submissions", throwable);
-                    sendToView(SubmissionsMvpView::showError);
+                    sendToView(SubmissionsMvpView::showError_courseEmpty);
                 });
     }
 }

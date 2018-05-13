@@ -11,7 +11,6 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.common.ContentWebView;
 import org.schulcloud.mobile.ui.homework.detailed.StudentDependentFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
-import org.schulcloud.mobile.util.ViewUtil;
 
 import javax.inject.Inject;
 
@@ -83,11 +82,10 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
     /* MVP View methods implementation */
     @Override
     public void showError_notFound() {
-        ViewUtil.setVisibility(vCwv_content, false);
+        vCwv_content.setContent(getString(R.string.homework_detailed_submission_error_notFound));
     }
     @Override
     public void showComment(@Nullable String comment) {
-        ViewUtil.setVisibility(vCwv_content, true);
         vCwv_content.setContent(comment);
     }
 }

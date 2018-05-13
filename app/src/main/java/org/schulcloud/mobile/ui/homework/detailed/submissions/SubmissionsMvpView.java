@@ -16,9 +16,9 @@ import java.util.List;
  */
 public interface SubmissionsMvpView extends MvpView {
 
-    void showError();
+    void showError_courseNotFound();
+    void showError_courseEmpty();
     void showSubmissions(@NonNull String currentUserId, @NonNull Homework homework,
             @NonNull List<Pair<User, Submission>> submissions, @Nullable String selectedUserId);
-    void showSubmissionsEmpty(@NonNull String currentUserId, @NonNull Homework homework);
 
 }

@@ -94,6 +94,6 @@ public class FeedbackFragment extends MainFragment<FeedbackMvpView, FeedbackPres
                     Html.fromHtml(getString(R.string.homework_detailed_feedback_grade, grade)));
 
         vCwv_gradeComment.setContent(!TextUtils.isEmpty(gradeComment) ? gradeComment
-                : getString(R.string.homework_detailed_feedback_gradeComment_none));
+                : getString(R.string.homework_detailed_feedback_error_empty));
     }
 }

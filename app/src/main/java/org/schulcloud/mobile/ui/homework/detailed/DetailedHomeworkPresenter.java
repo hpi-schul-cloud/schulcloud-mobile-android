@@ -48,8 +48,10 @@ public class DetailedHomeworkPresenter extends BasePresenter<DetailedHomeworkMvp
 
     public void init(@NonNull String homeworkId, @Nullable String studentId) {
         mHomework = mHomeworkDataManager.getHomeworkForId(homeworkId);
-        if (mHomework == null)
+        if (mHomework == null) {
             sendToView(DetailedHomeworkMvpView::showError_notFound);
+            return;
+        }
 
         // Show the current user is a student of this course, show his submission directly if none is specified
         if (studentId == null && contains(mHomework.courseId.userIds,

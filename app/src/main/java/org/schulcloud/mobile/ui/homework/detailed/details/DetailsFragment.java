@@ -3,6 +3,7 @@ package org.schulcloud.mobile.ui.homework.detailed.details;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,9 @@ public class DetailsFragment extends MainFragment<DetailsMvpView, DetailsPresent
     /* MVP View methods implementation */
     @Override
     public void showDescription(@NonNull String description) {
-        vCwv_content.setContent(description);
+        if (TextUtils.isEmpty(description))
+            vCwv_content.setContent(getString(R.string.homework_detailed_details_error_empty));
+        else
+            vCwv_content.setContent(description);
     }
 }

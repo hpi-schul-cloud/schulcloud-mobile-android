@@ -111,11 +111,6 @@
     <string name="homework_homework_dateDash">&#8211;</string>
     <string name="homework_homework_publicSubmissions">Schülerabgaben untereinander sichtbar</string>
     <string name="homework_homework_grading">Benotung</string>
-    <string name="homework_homework_grade">Du hast <b>%1$d%%</b> richtig gelöst.</string>
-    <string name="homework_homework_gradeComment_none">Kein Bewertungstext vorhanden.</string>
-    <string name="homework_homework_comments">Kommentare</string>
-    <string name="homework_homework_comments_none">Derzeit keine Kommentare</string>
-    <string name="homework_homework_notSubmitted">Hausaufgabe noch nicht eingereicht</string>
     <string name="homework_addHomework_title">Aufgabe hinzufügen</string>
     <string name="homework_addHomework_saved">Die Hausaufgabe wurde gespeichert</string>
     <string name="homework_addHomework_error_saving">Es gab einen Fehler beim Speichern der Hausaufgabe. Bitte versuchen Sie es erneut</string>
@@ -123,13 +118,17 @@
     <string name="homework_addHomework_error_titleEmpty">Der Titel darf nicht leer sein</string>
     <string name="homework_addHomework_error_datesInvalid">Die Datumsangaben sind ungültig</string>
     <string name="homework_detailed_details">Details</string>
+    <string name="homework_detailed_details_error_empty">Keine Beschreibung vorhanden.</string>
     <string name="homework_detailed_submission">Abgabe</string>
     <string name="homework_detailed_submission_hint">Abgabe: %1$s</string>
+    <string name="homework_detailed_submission_error_notFound">Keine Abgabe vorhanden.</string>
+    <string name="homework_detailed_submission_grade">%1$d%%</string>
     <string name="homework_detailed_feedback">Feedback</string>
-    <string name="homework_detailed_feedback_grade">Du hast &lt;b&gt;%1$d%%&lt;/b&gt; richtig gelöst.</string>
-    <string name="homework_detailed_feedback_gradeComment_none">Kein Bewertungstext vorhanden.</string>
+    <string name="homework_detailed_feedback_grade">Du hast <b>%1$d%%</b> richtig gelöst.</string>
+    <string name="homework_detailed_feedback_error_empty">Kein Bewertungstext vorhanden.</string>
     <string name="homework_detailed_submissions">Abgaben</string>
-    <string name="homework_submission_grade">%1$d%%</string>
+    <string name="homework_detailed_submissions_error_courseNotFound">Der Kurs wurde nicht gefunden.</string>
+    <string name="homework_detailed_submissions_error_courseEmpty">Der Kurs enthält keine Schüler/innen.</string>
 
     <!--Settings-->
     <string name="settings_title">Einstellungen</string>

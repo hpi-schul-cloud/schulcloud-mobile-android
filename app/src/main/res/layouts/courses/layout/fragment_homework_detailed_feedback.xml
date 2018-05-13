@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/vertical_margin"
             android:gravity="center_horizontal"
-            android:text="@string/homework_homework_grade" />
+            android:text="@string/homework_detailed_feedback_grade" />
 
         <org.schulcloud.mobile.ui.common.ContentWebView
             android:id="@+id/homeworkDetailedFeedback_cwv_gradeComment"

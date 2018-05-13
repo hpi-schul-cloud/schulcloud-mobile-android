@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
 /**
@@ -27,24 +29,27 @@ public class AnimationLogicListener {
 
     Animation mTransIn;
     Animation mTransOut;
+    boolean mTransOutRunning;
+    boolean mTransInRunning;
     ObjectAnimator mTransInAnimator = new ObjectAnimator();
+
+    Handler mHandler;
 
     public AnimationLogicListener(View view, Animation transIn, Animation transOut) {
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
         mTransOut = transOut;
+        mTransInRunning = false;
+        mTransOutRunning = false;
+
 
         mActionAdd = () -> {mViewParent.addView(view); mView.clearAnimation();};
-        mActionRemove = () -> {mViewParent.removeView(view); mView.clearAnimation();};
+        mActionRemove = () -> { mTransOutRunning = false;mViewParent.removeView(view);};
 
-        new Handler().post(() -> {
-            try {
-                checkLogic();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        mHandler = new Handler();
+
+        startLogicLoop();
     }
 
     public void setAnimationIn(Animation animationIn){
@@ -68,22 +73,38 @@ public class AnimationLogicListener {
     }
 
     public void setActionRemove(Runnable actionRemove) {
-        mActionRemove = () -> {actionRemove.run(); mView.clearAnimation();};
+        mActionRemove = () -> {actionRemove.run();mTransOutRunning = false; mView.clearAnimation();};
     }
 
     public void checkLogic() throws Exception {
-        mView.clearAnimation();
         if (mLogic.call()) {
-            if (mViewParent.findViewById(mView.getId()) == null) {
+            if (mViewParent.findViewById(mView.getId()) == null && !mTransInRunning) {
                 mActionAdd.run();
+                mTransInRunning = true;
                 mView.startAnimation(mTransIn);
-                new Handler().postDelayed(() -> {mView.clearAnimation();},mTransIn.getDuration());
+                mHandler.postDelayed(() -> {mTransInRunning = false;}, mTransIn.getDuration()*2);
             }
         } else {
-            if(!mTransOut.hasStarted()) {
+            if(!mTransOutRunning) {
+                mTransOutRunning = true;
                 mView.startAnimation(mTransOut);
-                new Handler().postDelayed(mActionRemove, mTransOut.getDuration());
+                mHandler.postDelayed(mActionRemove, mTransOut.getDuration());
             }
         }
+    }
+
+    public void startLogicLoop(){
+        int delay = 62;
+
+        mHandler.postDelayed(new Runnable(){
+            public void run(){
+                try {
+                    checkLogic();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mHandler.postDelayed(this, delay);
+            }
+        }, delay);
     }
 }

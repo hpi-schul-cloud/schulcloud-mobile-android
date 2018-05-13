@@ -15,6 +15,7 @@ import javax.inject.Inject;
 @ConfigPersistent
 public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
     private final SubmissionDataManager mDataManager;
+    private String mHomeworkId;
     private Submission mSubmission;
 
     @Inject
@@ -27,8 +28,11 @@ public class FeedbackPresenter extends BasePresenter<FeedbackMvpView> {
         showSubmission();
     }
 
-    void loadSubmission(@NonNull String homeworkId, @NonNull String studentId) {
-        mSubmission = mDataManager.getSubmission(homeworkId, studentId);
+    void setHomework(@NonNull String homeworkId) {
+        mHomeworkId = homeworkId;
+    }
+    void setStudent(@NonNull String studentId) {
+        mSubmission = mDataManager.getSubmission(mHomeworkId, studentId);
         // No submission handled by view
         showSubmission();
     }

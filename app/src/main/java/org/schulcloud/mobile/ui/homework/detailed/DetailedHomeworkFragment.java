@@ -108,6 +108,8 @@ public class DetailedHomeworkFragment
         setTitle(R.string.homework_homework_title);
 
         mPagerAdapter = new HomeworkPagerAdapter(getContext(), getChildFragmentManager());
+        // all fragments must be loaded, otherwise they won't get updated
+        vVp_content.setOffscreenPageLimit(3);
         vVp_content.setAdapter(mPagerAdapter);
         vTl_tabs.setupWithViewPager(vVp_content);
 

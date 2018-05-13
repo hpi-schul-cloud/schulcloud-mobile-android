@@ -102,6 +102,13 @@ public class HomeworkPagerAdapter extends FragmentPagerAdapter {
         return mContext.getString(titleId);
     }
     @Override
+    public int getItemPosition(Object object) {
+        if (object instanceof StudentDependentFragment)
+            ((StudentDependentFragment) object).update(mStudentId);
+
+        return POSITION_UNCHANGED;
+    }
+    @Override
     public int getCount() {
         int count = 0;
         //noinspection StatementWithEmptyBody

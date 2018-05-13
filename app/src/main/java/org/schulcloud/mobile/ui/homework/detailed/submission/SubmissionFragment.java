@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.ui.common.ContentWebView;
+import org.schulcloud.mobile.ui.homework.detailed.StudentDependentFragment;
 import org.schulcloud.mobile.ui.main.MainFragment;
+import org.schulcloud.mobile.util.ViewUtil;
 
 import javax.inject.Inject;
 
@@ -20,7 +22,7 @@ import butterknife.ButterKnife;
  * Date: 4/27/2018
  */
 public class SubmissionFragment extends MainFragment<SubmissionMvpView, SubmissionPresenter>
-        implements SubmissionMvpView {
+        implements SubmissionMvpView, StudentDependentFragment {
     private static final String ARGUMENT_HOMEWORK_ID = "ARGUMENT_HOMEWORK_ID";
     private static final String ARGUMENT_STUDENT_ID = "ARGUMENT_STUDENT_ID";
 
@@ -55,12 +57,12 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
         String homeworkId = getArguments().getString(ARGUMENT_HOMEWORK_ID);
         if (homeworkId == null)
             throw new IllegalArgumentException("homeworkId must not be null");
+        mPresenter.setHomework(homeworkId);
 
         String studentId = getArguments().getString(ARGUMENT_STUDENT_ID);
         if (studentId == null)
             throw new IllegalArgumentException("studentId must not be null");
-
-        mPresenter.loadSubmission(homeworkId, studentId);
+        mPresenter.setStudent(studentId);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,14 +74,20 @@ public class SubmissionFragment extends MainFragment<SubmissionMvpView, Submissi
         return view;
     }
 
+    @Override
+    public void update(@NonNull String studentId) {
+        mPresenter.setStudent(studentId);
+    }
+
 
     /* MVP View methods implementation */
     @Override
     public void showError_notFound() {
-
+        ViewUtil.setVisibility(vCwv_content, false);
     }
     @Override
     public void showComment(@Nullable String comment) {
+        ViewUtil.setVisibility(vCwv_content, true);
         vCwv_content.setContent(comment);
     }
 }

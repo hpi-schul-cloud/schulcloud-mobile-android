@@ -1,27 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Schul-Cloud</string>
 
-    <!--Base-->
-    <string name="base_action_feedback">Feedback geben</string>
-    <string name="base_offline">(offline)</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="title_activity_main">MainActivity</string>
 
-    <!--Main-->
-    <string name="main_action_settings">@string/settings_title</string>
-    <string name="main_action_logout">Logout</string>
-    <string name="main_navigation_dashboard">@string/dashboard_title</string>
-    <string name="main_navigation_courses">@string/courses_title</string>
-    <string name="main_navigation_news">@string/news_title</string>
-    <string name="main_navigation_homework">@string/homework_title</string>
-    <string name="main_navigation_files">@string/files_title</string>
-    <string name="main_navigation_materials">Materialien</string>
-    <string name="main_navigation_administration">Verwaltung</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <!--Login-->
-    <string name="login_login">Login</string>
-    <string name="login_title">Login</string>
-    <string name="login_username">Benutzername</string>
-    <string name="login_password">Passwort</string>
+    <string name="action_settings">Settings</string>
+    <string name="login_with_credentials">Login with %1$s credentials:</string>
+    <string name="hint_email">E-Mail</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="login">Login</string>
+    <string name="button_new">Create new account</string>
+    <string name="or">or</string>
+
     <string name="login_demo">Du hast keinen Schul-Cloud-Account? Jetzt testen!</string>
     <string name="login_demo_student">Als Schüler einloggen</string>
     <string name="login_demo_student_username">demo-schueler@schul-cloud.org</string>
@@ -29,143 +34,12 @@
     <string name="login_demo_teacher">Als Lehrer einloggen</string>
     <string name="login_demo_teacher_username">demo-lehrer@schul-cloud.org</string>
     <string name="login_demo_teacher_password">schulcloud</string>
-    <string name="login_successful">Erfolgreich angemeldet!</string>
-    <string name="login_error">Falscher Nutzername oder Passwort</string>
 
-    <!--Dashboard-->
-    <string name="dashboard_title">Übersicht</string>
-    <string name="dashboard_hoursToday">Heutige Stunden</string>
-    <string name="dashboard_hours_none">Derzeit keine Stunden</string>
-    <string name="dashboard_homework">Aufgaben</string>
-    <string name="dashboard_homework_open">offene Aufgaben</string>
-    <string name="dashboard_homework_nextDue">Nächste fällig:</string>
-    <string name="dashboard_event_time">%1$tR - %2$tR</string>
+    <string name="error_email">Please insert valid E-Mail address.</string>
+    <string name="error_password">Please insert valid Password.</string>
 
-    <!--News-->
-    <string name="news_title">Neuigkeiten</string>
-    <string name="news_loading_error">Leider gab es ein Problem beim Laden der Neuigkeiten</string>
-    <string name="news_news_title">Neuigkeiten</string>
 
-    <!--Files-->
-    <string name="files_title">Dateien</string>
-    <string name="filesOverview_my">Persönliche Dateien</string>
-    <string name="filesOverview_my_description">Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzern teilen.</string>
-    <string name="filesOverview_courses">Kurs-Dateien</string>
-    <string name="filesOverview_courses_description">Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff.</string>
-    <string name="filesOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
-    <string name="files_action_directoryCreate">@string/files_directoryCreate_title</string>
-    <string name="files_breadcrumbs_divider">\u0020/\u0020</string>
-    <string name="files_breadcrumbs_my">@string/filesOverview_my</string>
-    <string name="files_directoryEmpty">Der Ordner ist leer</string>
-    <string name="files_file_action_delete">Löschen</string>
-    <string name="files_directory_action_delete">@string/files_file_action_delete</string>
-    <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
-    <string name="files_fileDownload_progress">Die Datei wird geladen&#8230;</string>
-    <string name="files_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
-    <string name="files_fileDownload_error">Die Datei konnte nicht geladen werden</string>
-    <string name="files_fileDownload_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
-    <string name="files_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
-    <string name="files_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
-    <string name="files_fileUpload_progress">Datei wird hochgeladen&#8230;</string>
-    <string name="files_fileUpload_success">Datei wurde hochgeladen</string>
-    <string name="files_fileUpload_error">Beim Hochladen der Datei ist etwas schiefgelaufen</string>
-    <string name="files_fileUpload_error_readPermissionDenied">Ohne die Berechtigung kann keine Datei zum Upload ausgewählt werden</string>
-    <string name="files_fileDelete_dialogTitle">Löschen</string>
-    <string name="files_fileDelete_request">Bist du dir sicher, dass du die Datei \'%1$s\' löschen möchtest?</string>
-    <string name="files_fileDelete_success">Datei wurde erfolgreich gelöscht.</string>
-    <string name="files_fileDelete_error">Beim Löschen der Datei ist etwas schiefgelaufen</string>
-    <string name="files_directoryLoad_error">Oops! Irgendwas ist beim Laden der Ordner schief gelaufen!</string>
-    <string name="files_directoryCreate_title">Neuer Ordner</string>
-    <string name="files_directoryCreate_success">Ordner wurde erstellt</string>
-    <string name="files_directoryCreate_error">Beim Erstellen des Ordners ist etwas schiefgelaufen</string>
-    <string name="files_directoryDelete_dialogTitle">Löschen</string>
-    <string name="files_directoryDelete_request">Bist du dir sicher, dass du den Ordner \'%1$s\' löschen möchtest?</string>
-    <string name="files_directoryDelete_success">Ordner wurde erfolgreich gelöscht</string>
-    <string name="files_directoryDelete_error">Beim Löschen des Ordners ist etwas schiefgelaufen</string>
-
-    <!--Courses-->
-    <string name="courses_title">Kurse</string>
-    <string name="courses_content_error_notSupported">%s wird zurzeit nicht unterstüzt.</string>
-    <string name="courses_loading_error">Leider gab es ein Problem beim Laden der Kurse</string>
-    <string name="courses_course_title">Kurs</string>
-    <string name="courses_course_loading_error">Leider gab es ein Problem beim Laden des Kurses</string>
-    <string name="courses_topic_title">Thema</string>
-
-    <!--Homework-->
-    <string name="homework_title">Aufgaben</string>
-    <string name="homework_loading_error">Leider gab es ein Problem beim Laden der Hausaufgaben</string>
-    <string name="homework_homework_title">Aufgabe</string>
-    <string name="homework_homework_name">Titel</string>
-    <string name="homework_homework_name_format">[%1$s] %2$s</string>
-    <string name="homework_homework_course">Kurs:</string>
-    <string name="homework_homework_course_none">Keine Zuordnung</string>
-    <string name="homework_homework_private">Private Aufgabe (nur für mich sichtbar)</string>
-    <string name="homework_homework_description">Aufgabenstellung</string>
-    <string name="homework_homework_due">Abgabe bis:</string>
-    <string name="homework_homework_processingTime">Bearbeitungszeit:</string>
-    <string name="homework_homework_dateDash">&#8211;</string>
-    <string name="homework_homework_publicSubmissions">Schülerabgaben untereinander sichtbar</string>
-    <string name="homework_homework_grading">Benotung</string>
-    <string name="homework_homework_grade">Note:</string>
-    <string name="homework_homework_comments">Kommentare</string>
-    <string name="homework_homework_comments_none">Derzeit keine Kommentare</string>
-    <string name="homework_homework_notSubmitted">Hausaufgabe noch nicht eingereicht</string>
-    <string name="homework_addHomework_title">Aufgabe hinzufügen</string>
-    <string name="homework_addHomework_saved">Die Hausaufgabe wurde gespeichert</string>
-    <string name="homework_addHomework_error_saving">Es gab einen Fehler beim Speichern der Hausaufgabe. Bitte versuchen Sie es erneut</string>
-    <string name="homework_addHomework_error_loadingCourses">Es gab einen Fehler beim Laden der Kurse</string>
-    <string name="homework_addHomework_error_titleEmpty">Der Titel darf nicht leer sein</string>
-    <string name="homework_addHomework_error_datesInvalid">Die Datumsangaben sind ungültig</string>
-
-    <!--Settings-->
-    <string name="settings_title">Einstellungen</string>
-    <string name="settings_calendar_title">Kalender</string>
-    <string name="settings_calendar_sync">Termine synchronisieren</string>
-    <string name="settings_calendar_sync_calenderChosen">Termine synchronisieren (%1$s)</string>
-    <string name="settings_calendar_sync_successful">Synchronisieren des Kalenders war erfolgreich!</string>
-    <string name="settings_calendar_choose">Kalender auf dem Gerät auswählen</string>
-    <string name="settings_notifications_title">Benachrichtigungen</string>
-    <string name="settings_notifications_registerDevice">Gerät registrieren</string>
-    <string name="settings_about_title">Über</string>
-    <string name="settings_about_contributors">Mitwirkende:</string>
-    <string name="settings_about_contributors_clipBoard_title">Schul-Cloud-Mitwirkende</string>
-    <string name="settings_about_contributors_clipBoard_notification">In die Zwischenablage kopiert</string>
-    <string name="settings_about_openSource">Diese App ist Open Source</string>
-    <string name="settings_about_openSource_website">https://github.com/schul-cloud/schulcloud-mobile-android</string>
-    <string name="settings_about_contact">Kontakt</string>
-    <string name="settings_about_contact_mail_to">schul-cloud@hpi.de</string>
-    <string name="settings_about_contact_mail_subject">Schul-Cloud Anfrage</string>
-    <string name="settings_about_imprint">Impressum</string>
-    <string name="settings_about_imprint_website">https://schul-cloud.org/impressum</string>
-    <string name="settings_about_privacyPolicy">Datenschutzerklärung</string>
-    <string name="settings_about_privacyPolicy_website">https://schul-cloud.org/impressum#data_security</string>
-
-    <!--Logout-->
-    <string name="logout_title">Logout</string>
-
-    <!--Feedback-->
-    <string name="feedback_title">Feedback</string>
-    <string name="feedback_hint_email">Ihre E-Mail-Adresse (optional)</string>
-    <string name="feedback_hint_opinion">Ihre Meinung</string>
-    <string name="feedback_send">Senden</string>
-    <string name="feedback_error_opinionEmpty">Bitte ausfüllen</string>
-    <string name="feedback_transmit_to">schul-cloud-support@hpi.de</string>
-    <string name="feedback_transmit_subject">Feedback Android</string>
-    <string name="feedback_transmit_format">User: %1$s\nE-Mail: %2$s\nFeedback geschickt von: %3$s\nUser schrieb folgendes: \n%4$s</string>
-    <string name="feedback_transmit_sent">Feedback erfolgreich gesendet</string>
-
-    <!--Web-->
-    <string name="web_protocol_http" translatable="false">http://</string>
-    <string name="web_protocol_https" translatable="false">https://</string>
-    <string name="website">https://schul-cloud.org</string>
-
-    <!--Generic dialogs-->
-    <string name="dialog_action_ok">OK</string>
-    <string name="dialog_action_cancel">Abbrechen</string>
-    <string name="dialog_error_title">Sorry</string>
-
-    <!--General-->
-    <string name="general_button_add">Hinzufügen</string>
-    <string name="general_list_separator">,&#160;</string>
+    <!-- Courses -->
+    <string name="title_list_courses">My Courses</string>
 
 </resources>

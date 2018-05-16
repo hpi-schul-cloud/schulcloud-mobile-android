@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/nav_group_1" android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_th_large"
+            android:title="Übersicht" />
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_newspaper"
+            android:title="Neuigkeiten" />
+        <item
+            android:id="@+id/nav_courses"
+            android:icon="@drawable/ic_graduation_cap"
+            android:title="Kurse" />
+        <item
+            android:id="@+id/nav_calendar"
+            android:icon="@drawable/ic_table"
+            android:title="Termine" />
+        <item
+            android:id="@+id/nav_assignments"
+            android:icon="@drawable/ic_tasks"
+            android:title="Aufgaben" />
+        <item
+            android:id="@+id/nav_files"
+            android:icon="@drawable/ic_folder_open"
+            android:title="Meine Dateien" />
+        <item
+            android:id="@+id/nav_learnstore"
+            android:icon="@drawable/ic_search"
+            android:title="Material" />
+    </group>
+
+    <group android:id="@+id/nav_group_2"  android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_sign_out_alt"
+            android:title="Abmelden" />
+    </group>
+
+</menu>

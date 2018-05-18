@@ -2,14 +2,11 @@ package org.schulcloud.mobile.ui.settings.changeProfile;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -100,30 +97,29 @@ implements ChangeProfileMvpView{
         settings_submit.setBackgroundColor(Color.GRAY);
 
         // Animation Logic
+        new AnimationLogicListener(oldPasswordInfo,animationScaleIn,animationScaleOut)
+                .setLogic(() -> ((!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals("")))? true : false);
 
-        /*animationLogics.add(new AnimationLogicListener(oldPasswordInfo,animationScaleIn,animationScaleOut));
-        animationLogics.get(0).setLogic(() -> ((!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals("")))? true : false);
-
-        animationLogics.add(new AnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut));
-        animationLogics.get(1).setLogic(() -> (password_editText.getText().toString().equals(""))?true:false);*/
+        new AnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
+                .setLogic(() -> (password_editText.getText().toString().equals(""))?true:false);
 
         new AnimationLogicListener(passwordInfo,animationScaleIn,animationScaleOut)
                 .setLogic(() -> ((!newPassword_editText.getText().toString().equals(""))? true : false));
 
-        /*animationLogics.add(new AnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut));
-        animationLogics.get(3).setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString())?true:false));
+        new AnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
+                .setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString())?true:false));
 
-        animationLogics.add(new AnimationLogicListener(passwordTooShort,animationScaleIn,animationScaleOut));
-        animationLogics.get(4).setLogic(() -> (newPassword_editText.getText().toString().length() < 8)?true:false);
+        new AnimationLogicListener(passwordTooShort,animationScaleIn,animationScaleOut)
+                .setLogic(() -> (newPassword_editText.getText().toString().length() < 8)?true:false);
 
-        animationLogics.add(new AnimationLogicListener(passwordNeedsNumbers,animationScaleIn,animationScaleOut));
-        animationLogics.get(5).setLogic(() -> (Pattern.matches("[a-zA-Z]+",newPassword_editText.getText().toString()))?true:false);
+        new AnimationLogicListener(passwordNeedsNumbers,animationScaleIn,animationScaleOut)
+                .setLogic(() -> (Pattern.matches("[a-zA-Z]+",newPassword_editText.getText().toString()))?true:false);
 
-        animationLogics.add(new AnimationLogicListener(passwordControlFailed,animationScaleIn,animationScaleOut));
-        animationLogics.get(6).setLogic(() -> ((newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())))?true:false);
+        new AnimationLogicListener(passwordControlFailed,animationScaleIn,animationScaleOut)
+                .setLogic(() -> ((newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())))?true:false);
 
-        animationLogics.add(new AnimationLogicListener(passwordOkay,animationScaleIn,animationScaleOut));
-        animationLogics.get(7).setLogic(() -> (passwordIsOkay));*/
+        new AnimationLogicListener(passwordOkay,animationScaleIn,animationScaleOut)
+                .setLogic(() -> (passwordIsOkay));
 
         // Profile
         mChangeProfilePresenter.loadProfile();
@@ -146,7 +142,7 @@ implements ChangeProfileMvpView{
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
-        //passwordInfo.removeAllViews();
+        passwordInfo.removeAllViews();
         ViewGroup oldPasswordParent = (ViewGroup)oldPasswordInfo.getParent();
         oldPasswordParent.removeView(oldPasswordInfo);
 
@@ -216,15 +212,6 @@ implements ChangeProfileMvpView{
 
     @Override
     public void checkAnimationLogic(){
-
-        //Password information for new and old psasword
-        /*for(int i = 0; i < animationLogics.size(); i++){
-            try {
-                animationLogics.get(i).checkLogic();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
 
         //Submit button
         if(oldPasswordEntered && (passwordIsOkay || newPassword_editText.getText().toString().equals("")))

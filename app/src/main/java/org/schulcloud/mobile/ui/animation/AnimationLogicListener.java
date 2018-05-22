@@ -1,16 +1,14 @@
 package org.schulcloud.mobile.ui.animation;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation;
-import android.view.animation.Interpolator;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
 /**
@@ -29,43 +27,52 @@ public class AnimationLogicListener {
     private View mView;
     private ViewGroup mViewParent;
     private Callable<Boolean> mLogic;
-    private Runnable mActionAdd;
-    private Runnable mActionRemove;
+    private ExtendedAnimatorListener mListener;
     private Activity mActivity;
 
     private boolean isRunning = false;
 
-    private Animation mTransIn;
-    private Animation mTransOut;
+    private Animator mTransIn;
+    private Animator mTransOut;
 
     private ObjectAnimator mTransInAnimator = new ObjectAnimator();
 
     private Handler mHandler;
 
-    public AnimationLogicListener(View view, Animation transIn, Animation transOut) {
+    public AnimationLogicListener(View view, Animator transIn, Animator transOut) {
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
         mTransOut = transOut;
 
+        mTransIn.setTarget(mView);
+        mTransOut.setTarget(mView);
+
         mActivity = (Activity) mView.getContext();
 
-        mActionAdd = () -> {mViewParent.addView(view); mView.clearAnimation();};
-        mActionRemove = () -> {mViewParent.removeView(view);};
+        mListener = new ExtendedAnimatorListener(null,null,null,null);
 
         mHandler = new Handler();
     }
 
-    public void setAnimationIn(Animation animationIn){
+    public void setAnimationIn(Animator animationIn){
         mTransIn = animationIn;
     }
 
-    public void setAnimationOut(Animation animationOut){
+    public void setAnimationOut(Animator animationOut){
         mTransOut = animationOut;
+    }
+
+    public void setAnimatorListener(ExtendedAnimatorListener listener){
+        mListener = listener;
     }
 
     public View getView(){
         return mView;
+    }
+
+    public ExtendedAnimatorListener getListener() {
+        return mListener;
     }
 
     public void setLogic(Callable<Boolean> logic) {
@@ -74,39 +81,20 @@ public class AnimationLogicListener {
             startLogicLoop();
     }
 
-    public void setActionAdd(Runnable actionAdd) {
-        mActionAdd = () -> {actionAdd.run(); mView.clearAnimation();};
-    }
-
-    public void setActionRemove(Runnable actionRemove) {
-        mActionRemove = () -> {actionRemove.run(); mView.clearAnimation();};
-    }
-
     public void checkLogic() throws Exception {
         if (mLogic.call()) {
-            if (mViewParent.findViewById(mView.getId()) == null && mView.hasTransientState()) {
-                mActionAdd.run();
-                mView.startAnimation(mTransIn);
-                mHandler.postDelayed(() -> mView.setHasTransientState(false),mTransIn.getDuration());
+            if (mViewParent.findViewById(mView.getId()) == null && mTransIn.isRunning()) {
+                mTransIn.start();
             }
         } else {
-            if(!mView.hasTransientState()) {
-                mView.startAnimation(mTransOut);
-                mHandler.postDelayed(() -> {mActionRemove.run(); mView.setHasTransientState(false);}, mTransOut.getDuration());
+            if(mTransOut.isRunning()) {
+                mTransOut.start();
             }
         }
     }
 
     public Callable<Boolean> getLogic(){
         return mLogic;
-    }
-
-    public Runnable getActionAdd(){
-        return mActionAdd;
-    }
-
-    public Runnable getActionRemove(){
-        return mActionRemove;
     }
 
     public void stop(){

@@ -1,10 +1,13 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -39,8 +42,8 @@ implements ChangeProfileMvpView{
     private CurrentUser mCurrentUser;
     private ArrayAdapter<CharSequence> spinner_adapter;
     private boolean passwordIsOkay = false;
-    private Animation animationScaleIn;
-    private Animation animationScaleOut;
+    private Animator animationScaleIn;
+    private Animator animationScaleOut;
     private boolean oldPasswordEntered = false;
     private ArrayList<AnimationLogicListener> animationLogics = new ArrayList<AnimationLogicListener>();
 
@@ -88,37 +91,34 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        animationScaleIn = AnimationUtils.loadAnimation(this,R.anim.resize_height_0_to_100);
-        animationScaleIn.setFillAfter(true);
-        animationScaleIn.setRepeatCount(0);
-        animationScaleOut = AnimationUtils.loadAnimation(this,R.anim.resize_height_100_to_0);
-        animationScaleOut.setFillAfter(true);
-        animationScaleOut.setRepeatCount(0);
+        animationScaleIn = AnimatorInflater.loadAnimator(this,R.animator.object_resize_in);
+        animationScaleOut = AnimatorInflater.loadAnimator(this,R.animator.object_resize_out);
+
         settings_submit.setBackgroundColor(Color.GRAY);
 
         // Animation Logic
-        new AnimationLogicListener(oldPasswordInfo,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(oldPasswordInfo,animationScaleIn,animationScaleOut)
                 .setLogic(() -> ((!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals("")))? true : false);
 
-        new AnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
                 .setLogic(() -> (password_editText.getText().toString().equals(""))?true:false);
 
-        new AnimationLogicListener(passwordInfo,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordInfo,animationScaleIn,animationScaleOut)
                 .setLogic(() -> ((!newPassword_editText.getText().toString().equals(""))? true : false));
 
-        new AnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString())?true:false));
 
-        new AnimationLogicListener(passwordTooShort,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordTooShort,animationScaleIn,animationScaleOut)
                 .setLogic(() -> (newPassword_editText.getText().toString().length() < 8)?true:false);
 
-        new AnimationLogicListener(passwordNeedsNumbers,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordNeedsNumbers,animationScaleIn,animationScaleOut)
                 .setLogic(() -> (Pattern.matches("[a-zA-Z]+",newPassword_editText.getText().toString()))?true:false);
 
-        new AnimationLogicListener(passwordControlFailed,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordControlFailed,animationScaleIn,animationScaleOut)
                 .setLogic(() -> ((newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())))?true:false);
 
-        new AnimationLogicListener(passwordOkay,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordOkay,animationScaleIn,animationScaleOut)
                 .setLogic(() -> (passwordIsOkay));
 
         // Profile
@@ -218,6 +218,18 @@ implements ChangeProfileMvpView{
             settings_submit.setBackgroundColor(ContextCompat.getColor(this,R.color.hpiRed));
         else
             settings_submit.setBackgroundColor(Color.GRAY);
+    }
+
+    public class profileAnimationLogicListener extends AnimationLogicListener {
+
+        public profileAnimationLogicListener(View view, Animator transIn, Animator transOut) {
+            super(view, transIn, transOut);
+
+            ViewGroup parent = (ViewGroup) view.getParent();
+
+            super.getListener().setActionStart(() -> {parent.addView(view);});
+            super.getListener().setActionEnd(() -> parent.removeView(view));
+        }
     }
 
 }

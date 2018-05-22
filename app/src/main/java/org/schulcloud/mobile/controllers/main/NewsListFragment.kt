@@ -11,9 +11,13 @@ import org.schulcloud.mobile.controllers.base.BaseFragment
 
 class NewsListFragment : BaseFragment() {
 
+    companion object {
+        val TAG: String = NewsListFragment::class.java.simpleName
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        activity?.title = getString(R.string.title_list_news)
         return inflater.inflate(R.layout.fragment_news_list, container, false)
     }
 

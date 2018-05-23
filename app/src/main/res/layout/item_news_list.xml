@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:gravity="center"
+            android:gravity="start"
             android:text="News Title"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -29,7 +29,7 @@
             android:id="@+id/news_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:text="TT.MM.JJJJ"
             android:textSize="12sp"
             android:maxLines="2"/>
@@ -39,8 +39,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="content content content"
+            android:gravity="start"
+            android:text="content content content content content content"
+            android:textSize="18sp"
             android:ellipsize="end"/>
 
     </LinearLayout>

@@ -1,8 +1,10 @@
 package org.schulcloud.mobile.ui.animation;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.os.Debug;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,28 +20,33 @@ import java.util.concurrent.Callable;
  * To use this class you simply have to initialize it and give it logic to work with via setLogic().
  * An example would be following
  *
- * new AnimationLogicListener(fooView,fooAnimationIn,fooAnimationOut).setLogic(() -> (bar==1)?true:false);
+ * new AnimationLogicListener(fooView,fooAnimatorIn,fooAnimatorOut).setLogic(() -> (bar==1)?true:false);
  *
  * Upon setting it, it will start iterating the logic given every 30 ms.
  * **/
 
 public class AnimationLogicListener {
-    private View mView;
-    private ViewGroup mViewParent;
+    protected View mView;
+    protected ViewGroup mViewParent;
     private Callable<Boolean> mLogic;
-    private ExtendedAnimatorListener mListener;
-    private Activity mActivity;
+    protected Activity mActivity;
 
     private boolean isRunning = false;
 
-    private Animator mTransIn;
-    private Animator mTransOut;
+    private Runnable mActionEnd;
+    private Runnable mActionStart;
 
-    private ObjectAnimator mTransInAnimator = new ObjectAnimator();
+    protected ExtendedAnimatorListener mListenerIn;
+    protected ExtendedAnimatorListener mListenerOut;
 
-    private Handler mHandler;
+    protected Animator mTransIn;
+    protected Animator mTransOut;
 
-    public AnimationLogicListener(View view, Animator transIn, Animator transOut) {
+    protected AnimatorSet mTransInAnimator = new AnimatorSet();
+
+    protected Handler mHandler;
+
+    public AnimationLogicListener(View view, AnimatorSet transIn, Animator transOut) {
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
@@ -50,7 +57,13 @@ public class AnimationLogicListener {
 
         mActivity = (Activity) mView.getContext();
 
-        mListener = new ExtendedAnimatorListener(null,null,null,null);
+        mActionEnd = () -> {return;};
+        mActionStart = () -> {return;};
+
+        mListenerIn = new ExtendedAnimatorListener(mActionStart,null,null,null);
+        mTransIn.addListener(mListenerIn);
+        mListenerOut = new ExtendedAnimatorListener(null,null,null,mActionEnd);
+        mTransOut.addListener(mListenerOut);
 
         mHandler = new Handler();
     }
@@ -63,31 +76,30 @@ public class AnimationLogicListener {
         mTransOut = animationOut;
     }
 
-    public void setAnimatorListener(ExtendedAnimatorListener listener){
-        mListener = listener;
+    public void setActionStart(Runnable actionStart){
+        mActionStart = actionStart;
+    }
+
+    public void setmActionEnd(Runnable actionEnd){
+        mActionEnd = mActionEnd;
     }
 
     public View getView(){
         return mView;
     }
 
-    public ExtendedAnimatorListener getListener() {
-        return mListener;
-    }
-
     public void setLogic(Callable<Boolean> logic) {
         mLogic = logic;
-        if(!isRunning)
-            startLogicLoop();
+        startLogicLoop();
     }
 
     public void checkLogic() throws Exception {
         if (mLogic.call()) {
-            if (mViewParent.findViewById(mView.getId()) == null && mTransIn.isRunning()) {
+            if (mViewParent.findViewById(mView.getId()) == null && !mTransIn.isRunning()) {
                 mTransIn.start();
             }
-        } else {
-            if(mTransOut.isRunning()) {
+         } else {
+            if(!mTransOut.isRunning()) {
                 mTransOut.start();
             }
         }
@@ -103,6 +115,7 @@ public class AnimationLogicListener {
 
     public void start(){
         isRunning = true;
+        startLogicLoop();
     }
 
     public void startLogicLoop(){

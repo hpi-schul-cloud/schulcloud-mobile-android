@@ -39,14 +39,12 @@ public class AnimationLogicListener {
     protected ExtendedAnimatorListener mListenerIn;
     protected ExtendedAnimatorListener mListenerOut;
 
-    protected Animator mTransIn;
-    protected Animator mTransOut;
-
-    protected AnimatorSet mTransInAnimator = new AnimatorSet();
+    protected ObjectAnimator mTransIn;
+    protected ObjectAnimator mTransOut;
 
     protected Handler mHandler;
 
-    public AnimationLogicListener(View view, AnimatorSet transIn, Animator transOut) {
+    public AnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
@@ -60,19 +58,19 @@ public class AnimationLogicListener {
         mActionEnd = () -> {return;};
         mActionStart = () -> {return;};
 
-        mListenerIn = new ExtendedAnimatorListener(mActionStart,null,null,null);
+        mListenerIn = new ExtendedAnimatorListener(mActionStart,null);
         mTransIn.addListener(mListenerIn);
-        mListenerOut = new ExtendedAnimatorListener(null,null,null,mActionEnd);
+        mListenerOut = new ExtendedAnimatorListener(null,mActionEnd);
         mTransOut.addListener(mListenerOut);
 
         mHandler = new Handler();
     }
 
-    public void setAnimationIn(Animator animationIn){
+    public void setAnimationIn(AnimatorSet animationIn){
         mTransIn = animationIn;
     }
 
-    public void setAnimationOut(Animator animationOut){
+    public void setAnimationOut(AnimatorSet animationOut){
         mTransOut = animationOut;
     }
 
@@ -80,7 +78,7 @@ public class AnimationLogicListener {
         mActionStart = actionStart;
     }
 
-    public void setmActionEnd(Runnable actionEnd){
+    public void setActionEnd(Runnable actionEnd){
         mActionEnd = mActionEnd;
     }
 

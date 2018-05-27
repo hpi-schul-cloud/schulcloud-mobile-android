@@ -3,6 +3,8 @@ package org.schulcloud.mobile.ui.settings.changeProfile;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -43,8 +45,6 @@ implements ChangeProfileMvpView{
     private CurrentUser mCurrentUser;
     private ArrayAdapter<CharSequence> spinner_adapter;
     private boolean passwordIsOkay = false;
-    private AnimatorSet animationScaleIn;
-    private AnimatorSet animationScaleOut;
     private boolean oldPasswordEntered = false;
     private ArrayList<AnimationLogicListener> animationLogics = new ArrayList<AnimationLogicListener>();
 
@@ -92,8 +92,11 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        animationScaleIn = (AnimatorSet) AnimatorInflater.loadAnimator(this,R.animator.object_resize_in);
-        animationScaleOut = (AnimatorSet) AnimatorInflater.loadAnimator(this,R.animator.object_resize_out);
+        ObjectAnimator animIn = new ObjectAnimator().ofFloat(null,"scaleX",1.0f,0.0f);
+        animIn.setDuration(500);
+
+        ObjectAnimator animOut = new ObjectAnimator().ofFloat(null,"scaleX",0.0f,1.0f);
+        animOut.setDuration(500);
 
         settings_submit.setBackgroundColor(Color.GRAY);
 
@@ -104,7 +107,7 @@ implements ChangeProfileMvpView{
         new profileAnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
                 .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
 
-        new profileAnimationLogicListener(passwordInfo,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(""))?true:false);
 
         /*new profileAnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
@@ -143,9 +146,9 @@ implements ChangeProfileMvpView{
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
-        //passwordInfo.removeAllViews();
+        passwordInfo.removeAllViews();
         ViewGroup oldPasswordParent = (ViewGroup)oldPasswordInfo.getParent();
-        //oldPasswordParent.removeView(oldPasswordInfo);
+        oldPasswordParent.removeView(oldPasswordInfo);
 
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
         newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
@@ -223,7 +226,7 @@ implements ChangeProfileMvpView{
 
     public class profileAnimationLogicListener extends AnimationLogicListener {
 
-        public profileAnimationLogicListener(View view, AnimatorSet transIn, AnimatorSet transOut) {
+        public profileAnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
             super(view, transIn, transOut);
 
             mListenerIn.setActionStart(() -> {mViewParent.addView(mView);});

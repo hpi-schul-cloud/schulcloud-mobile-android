@@ -1,6 +1,9 @@
 package org.schulcloud.mobile.controllers.main
 
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,9 +11,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.realm.RealmResults
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.models.course.CourseDao
 import org.schulcloud.mobile.models.news.News
+import org.schulcloud.mobile.viewmodels.NewsListViewModel
+import org.schulcloud.mobile.views.ItemOffsetDecoration
 
 class NewsListFragment : BaseFragment() {
 
@@ -19,16 +26,11 @@ class NewsListFragment : BaseFragment() {
     }
 
     private var newsListAdapter: NewsListAdapter? = null
-    //dummy data
-    private var newsData : List<News> = listOf (
-            News ("title 1", "01.01.2018", "content 1"),
-            News ("title 2", "02.02.2018", "content 2 content\n content\n content\n content content"),
-            News ("title 3", "03.03.2018", "content 3"),
-            News ("title 4", "04.04.2018", "content 4"))
+    private var newsListViewModel: NewsListViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //set viewModel here
+        newsListViewModel = ViewModelProviders.of(this).get(NewsListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -40,13 +42,13 @@ class NewsListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        newsListViewModel?.getNews()?.observe(this, Observer<RealmResults<News>> {
+            news -> newsListAdapter!!.update(news!!)
+        })
+
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view_news)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         newsListAdapter = NewsListAdapter()
-
-        //modify to handle ViewModels
-        newsListAdapter!!.update(newsData!!)
-
         recyclerView.adapter = newsListAdapter
     }
 

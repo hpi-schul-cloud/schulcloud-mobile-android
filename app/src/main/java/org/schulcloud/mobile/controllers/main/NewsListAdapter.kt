@@ -15,7 +15,7 @@ class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun update (newsList: List<News>){
         this.newsList=newsList
-        //notifyDataSetChanged()
+        notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news_list, parent, false)
@@ -32,7 +32,7 @@ class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.newsTitle.text = news.title
             holder.newsDate.text = news.createdAt
             if (news.content!= null) {
-                holder.newsContent.text = news.content!!.replace("\n", " ")
+                holder.newsContent.text = news.content!!
             }
         }
     }

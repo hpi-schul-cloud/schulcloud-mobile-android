@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import kotlinx.android.synthetic.main.item_news_list.view.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.news.News
 import java.text.ParseException
@@ -37,12 +36,12 @@ class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.newsTitle.text = news.title
 
             news.createdAt?.let{
-                val recievedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val receivedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val displayedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
                 var displayedDate: Date? = null
 
                 try{
-                    displayedDate=recievedFormat.parse(it)
+                    displayedDate=receivedFormat.parse(it)
                 }
                 catch(e: ParseException){
                     e.printStackTrace()
@@ -63,9 +62,9 @@ class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     class NewsViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        var newsTitle: TextView = view.findViewById(R.id.news_title)
-        var newsDate: TextView = view.findViewById(R.id.news_date)
-        var newsContent: TextView = view.findViewById(R.id.news_content)
+        val newsTitle: TextView = view.findViewById(R.id.news_title)
+        val newsDate: TextView = view.findViewById(R.id.news_date)
+        val newsContent: TextView = view.findViewById(R.id.news_content)
     }
 
 }

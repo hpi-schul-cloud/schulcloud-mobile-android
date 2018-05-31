@@ -5,7 +5,6 @@ import io.realm.Realm
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
-import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.network.ApiService
 import ru.gildor.coroutines.retrofit.awaitResponse
 
@@ -21,14 +20,14 @@ class ListUserNewsJob (callback: RequestJobCallback): RequestJob(callback) {
         if (response.isSuccessful){
 
             if (BuildConfig.DEBUG)
-                Log.i(TAG, "News recieved")
+                Log.i(TAG, "News received")
 
             //save news
-            val recievedNews = response.body()!!.data!!
+            val receivedNews = response.body()!!.data!!
 
             val realm = Realm.getDefaultInstance()
             realm.executeTransaction{
-                for (news in recievedNews){
+                for (news in receivedNews){
                     realm.copyToRealmOrUpdate(news)
                 }
 

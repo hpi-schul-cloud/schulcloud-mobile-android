@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -92,11 +93,12 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        ObjectAnimator animIn = new ObjectAnimator().ofFloat(null,"scaleX",1.0f,0.0f);
-        animIn.setDuration(500);
-
-        ObjectAnimator animOut = new ObjectAnimator().ofFloat(null,"scaleX",0.0f,1.0f);
-        animOut.setDuration(500);
+        AnimatorSet animInSet = new AnimatorSet();
+        ObjectAnimator animIn = new ObjectAnimator().ofFloat(null,View.SCALE_X,0f,1f);
+        animInSet.getChildAnimations().add(animIn);
+        AnimatorSet animOutSet = new AnimatorSet();
+        ObjectAnimator animOut = new ObjectAnimator().ofFloat(null,View.SCALE_X,1f,0f)
+        animOutSet.getChildAnimations().add(animOut);
 
         settings_submit.setBackgroundColor(Color.GRAY);
 
@@ -107,7 +109,7 @@ implements ChangeProfileMvpView{
         new profileAnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
                 .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
 
-        new profileAnimationLogicListener(passwordInfo,animIn,animOut)
+        new profileAnimationLogicListener(passwordInfo,animInSet,animOutSet)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(""))?true:false);
 
         /*new profileAnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
@@ -226,11 +228,11 @@ implements ChangeProfileMvpView{
 
     public class profileAnimationLogicListener extends AnimationLogicListener {
 
-        public profileAnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
+        public profileAnimationLogicListener(View view, AnimatorSet transIn, AnimatorSet transOut) {
             super(view, transIn, transOut);
-
-            mListenerIn.setActionStart(() -> {mViewParent.addView(mView);});
-            mListenerOut.setActionEnd(() -> {mViewParent.removeView(mView);});
+            //transIn.getChildAnimations();
+            setActionStart(() -> {mViewParent.addView(mView);});
+            setActionEnd(() -> {mViewParent.removeView(mView);});
         }
     }
 

@@ -17,7 +17,7 @@ class ListUserNewsJob (callback: RequestJobCallback): RequestJob(callback) {
 
     override suspend fun onRun() {
 
-       /* val response = ApiService.getInstance().listUserNews().awaitResponse();
+        val response = ApiService.getInstance().listUserNews().awaitResponse();
         if (response.isSuccessful){
 
             if (BuildConfig.DEBUG)
@@ -39,26 +39,7 @@ class ListUserNewsJob (callback: RequestJobCallback): RequestJob(callback) {
             if (BuildConfig.DEBUG)
                 Log.e(TAG, "Error while fetching news list")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
-        }*/
-
-        //creates Realm with dummy data
-
-            var news1: News = News()
-            news1.id = "1"; news1.title = "news 1"; news1.createdAt = "2018-03-01"; news1.content = "content of news 1"; news1.schoolId = "1"
-            var news2: News = News()
-            news2.id = "2"; news2.title = "news 2"; news2.createdAt = "2018-01-13"; news2.content = "content of news 2"; news2.schoolId = "2"
-            var news3: News = News()
-            news3.id = "3"; news3.title = "news 3"; news3.createdAt = "2018-03-02"; news3.schoolId = "3"
-        var recievedNews: List<News> = listOf(news1, news2, news3)
-
-        val realm = Realm.getDefaultInstance()
-        realm.executeTransaction{
-            for (news in recievedNews){
-                realm.copyToRealmOrUpdate(news)
-            }
-
         }
-        realm.close()
 
     }
 }

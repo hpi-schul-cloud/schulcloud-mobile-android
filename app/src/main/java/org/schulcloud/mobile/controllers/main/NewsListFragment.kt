@@ -42,14 +42,15 @@ class NewsListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        newsListViewModel?.getNews()?.observe(this, Observer<RealmResults<News>> {
-            news -> newsListAdapter!!.update(news!!)
-        })
-
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view_news)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         newsListAdapter = NewsListAdapter()
         recyclerView.adapter = newsListAdapter
+
+        newsListViewModel!!.getNews().observe(this, Observer<RealmResults<News>> {
+            news -> newsListAdapter!!.update(news!!)
+        })
+
     }
 
 

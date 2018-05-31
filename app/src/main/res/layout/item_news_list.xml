@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="TT.MM.JJJJ"
+            android:text="YYYY-MM-DD"
             android:textSize="12sp"
             android:maxLines="2"/>
 
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="start"
-            android:text="content content content content content content"
+            android:text="Content"
             android:textSize="18sp"
             android:ellipsize="end"/>
 

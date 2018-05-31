@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.os.Build
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,9 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.item_news_list.view.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.news.News
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -30,9 +35,29 @@ class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val news: News = newsList[position]
         if (holder is NewsViewHolder){
             holder.newsTitle.text = news.title
-            holder.newsDate.text = news.createdAt
-            if (news.content!= null) {
-                holder.newsContent.text = news.content!!
+
+            news.createdAt?.let{
+                val recievedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val displayedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                var displayedDate: Date? = null
+
+                try{
+                    displayedDate=recievedFormat.parse(it)
+                }
+                catch(e: ParseException){
+                    e.printStackTrace()
+                }
+                holder.newsDate.text = displayedFormat.format(displayedDate)
+            }
+
+            news.content?.let{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                    holder.newsContent.text  = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY)
+                }
+                else{
+                    @Suppress("DEPRECATION")
+                    holder.newsContent.text = Html.fromHtml(it)
+                }
             }
         }
     }

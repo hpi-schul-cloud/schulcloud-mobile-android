@@ -2,13 +2,10 @@ package org.schulcloud.mobile.ui.animation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.os.Debug;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,15 +31,15 @@ public class AnimationLogicListener {
 
     private boolean isRunning = false;
 
-    protected ExtendedAnimatorListener mListenerIn;
+    protected Runnable mActionIn;
     protected ExtendedAnimatorListener mListenerOut;
 
-    protected AnimatorSet mTransIn;
-    protected AnimatorSet mTransOut;
+    protected ValueAnimator mTransIn;
+    protected ValueAnimator mTransOut;
 
     protected Handler mHandler;
 
-    public AnimationLogicListener(View view, AnimatorSet transIn, AnimatorSet transOut) {
+    public AnimationLogicListener(View view, ValueAnimator transIn, ValueAnimator transOut) {
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
@@ -53,8 +50,8 @@ public class AnimationLogicListener {
 
         mActivity = (Activity) mView.getContext();
 
-        mListenerIn = new ExtendedAnimatorListener(null,null);
-        mTransIn.addListener(mListenerIn);
+        mActionIn = () -> {return;};
+
         mListenerOut = new ExtendedAnimatorListener(null,null);
         mTransOut.addListener(mListenerOut);
 
@@ -62,7 +59,7 @@ public class AnimationLogicListener {
     }
 
     public void setActionStart(Runnable actionStart){
-        mListenerIn.mActionStart = actionStart;
+        mActionIn = actionStart;
     }
 
     public void setActionEnd(Runnable actionEnd){
@@ -82,6 +79,7 @@ public class AnimationLogicListener {
         if (mLogic.call()) {
             if(mViewParent.findViewById(mView.getId()) == null) {
                 if (!mTransIn.isRunning()) {
+                    mActionIn.run();
                     mTransIn.start();
                 }
             }
@@ -125,10 +123,13 @@ public class AnimationLogicListener {
     private class ExtendedAnimatorListener extends AnimatorListenerAdapter {
         private Runnable mActionStart;
         private Runnable mActionEnd;
+        private Handler mHandler;
+        private int listenDelay = 16;
 
         public ExtendedAnimatorListener( Runnable actionStart, Runnable actionEnd){
             mActionStart = actionStart == null?() -> {return;}:actionStart;
             mActionEnd = actionEnd == null?() -> {return;}:actionEnd;
+            mHandler = new Handler();
         }
 
         @Override
@@ -137,12 +138,17 @@ public class AnimationLogicListener {
             mActionStart.run();
         }
 
-        @Override
-        public void onAnimationEnd(Animator animator) {
+        public void onAnimatorEnd() {
             //Debug.waitForDebugger();
-            super.onAnimationEnd(animator);
-            if(!animator.isRunning())
-                mActionEnd.run();
+            mActionEnd.run();
+        }
+
+        public void listenForEnd(){
+            mHandler.postDelayed(() -> {
+                if(mTransOut.getCurrentPlayTime() == mTransOut.getDuration()){
+                    onAnimatorEnd();
+                }
+            },listenDelay);
         }
     }
 }

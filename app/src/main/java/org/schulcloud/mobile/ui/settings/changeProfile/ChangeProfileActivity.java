@@ -1,9 +1,5 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -13,14 +9,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -32,8 +27,6 @@ import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -93,12 +86,8 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        AnimatorSet animInSet = new AnimatorSet();
-        ObjectAnimator animIn = new ObjectAnimator().ofFloat(null,View.SCALE_X,0f,1f);
-        animInSet.getChildAnimations().add(animIn);
-        AnimatorSet animOutSet = new AnimatorSet();
-        ObjectAnimator animOut = new ObjectAnimator().ofFloat(null,View.SCALE_X,1f,0f)
-        animOutSet.getChildAnimations().add(animOut);
+        ValueAnimator animIn = new ValueAnimator().ofPropertyValuesHolder(null,PropertyValuesHolder.ofFloat(View.SCALE_Y,0f,1f));
+        ValueAnimator animOut = new ValueAnimator().ofPropertyValuesHolder(null,PropertyValuesHolder.ofFloat(View.SCALE_Y,0f,1f));
 
         settings_submit.setBackgroundColor(Color.GRAY);
 
@@ -109,7 +98,7 @@ implements ChangeProfileMvpView{
         new profileAnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
                 .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
 
-        new profileAnimationLogicListener(passwordInfo,animInSet,animOutSet)
+        new profileAnimationLogicListener(passwordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(""))?true:false);
 
         /*new profileAnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
@@ -148,9 +137,11 @@ implements ChangeProfileMvpView{
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
-        passwordInfo.removeAllViews();
+        //passwordInfo.removeAllViews();
         ViewGroup oldPasswordParent = (ViewGroup)oldPasswordInfo.getParent();
         oldPasswordParent.removeView(oldPasswordInfo);
+        ViewGroup passwordInfoParent = (ViewGroup) passwordInfo.getParent();
+        passwordInfoParent.removeView(passwordInfo);
 
         newPassword_editText.setHint(R.string.settings_newPasswordHint);
         newPasswordRepeat_editText.setHint(R.string.settings_newPasswordRepeatHint);
@@ -228,7 +219,7 @@ implements ChangeProfileMvpView{
 
     public class profileAnimationLogicListener extends AnimationLogicListener {
 
-        public profileAnimationLogicListener(View view, AnimatorSet transIn, AnimatorSet transOut) {
+        public profileAnimationLogicListener(View view, ValueAnimator transIn, ValueAnimator transOut) {
             super(view, transIn, transOut);
             //transIn.getChildAnimations();
             setActionStart(() -> {mViewParent.addView(mView);});

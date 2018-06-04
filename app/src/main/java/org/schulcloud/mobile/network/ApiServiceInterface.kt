@@ -20,7 +20,6 @@ interface ApiServiceInterface {
     fun listUserCourses(): Call<FeathersResponse<List<Course>>>
 
     //News
-   //TODO: check URL
     @GET("news?\$sort=createdAt:1")
     fun listUserNews(): Call<FeathersResponse<List<News>>>
 }

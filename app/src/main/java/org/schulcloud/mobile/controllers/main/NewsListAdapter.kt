@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.news.News
+import java.text.DateFormat.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,8 +37,8 @@ class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             holder.newsTitle.text = news.title
 
             news.createdAt?.let{
-                val receivedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                val displayedFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+                val receivedFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                val displayedFormat = SimpleDateFormat("dd.MM.yyyy")
                 var displayedDate: Date? = null
 
                 try{

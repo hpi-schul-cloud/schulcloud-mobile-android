@@ -44,6 +44,7 @@ class NewsListFragment : BaseFragment() {
 
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view_news)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.addItemDecoration(ItemOffsetDecoration(context, R.dimen.linear_spacing))
         newsListAdapter = NewsListAdapter()
         recyclerView.adapter = newsListAdapter
 

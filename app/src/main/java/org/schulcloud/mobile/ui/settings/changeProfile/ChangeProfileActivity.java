@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
 import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -86,8 +86,10 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        ValueAnimator animIn = new ValueAnimator().ofPropertyValuesHolder(null,PropertyValuesHolder.ofFloat(View.SCALE_Y,0f,1f));
-        ValueAnimator animOut = new ValueAnimator().ofPropertyValuesHolder(null,PropertyValuesHolder.ofFloat(View.SCALE_Y,0f,1f));
+        ObjectAnimator animIn = new ObjectAnimator().ofFloat(null,View.SCALE_Y,0f,1f);
+        animIn.setDuration(500);
+        ObjectAnimator animOut = new ObjectAnimator().ofFloat(null,View.SCALE_Y,1,0f);
+        animOut.setDuration(500);
 
         settings_submit.setBackgroundColor(Color.GRAY);
 
@@ -219,10 +221,10 @@ implements ChangeProfileMvpView{
 
     public class profileAnimationLogicListener extends AnimationLogicListener {
 
-        public profileAnimationLogicListener(View view, ValueAnimator transIn, ValueAnimator transOut) {
+        public profileAnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
             super(view, transIn, transOut);
             //transIn.getChildAnimations();
-            setActionStart(() -> {mViewParent.addView(mView);});
+            setActionStart(() -> {if(mViewParent.findViewById(mView.getId()) == null) {mViewParent.addView(mView);}});
             setActionEnd(() -> {mViewParent.removeView(mView);});
         }
     }

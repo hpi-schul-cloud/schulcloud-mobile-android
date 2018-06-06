@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.http.*
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
+import org.schulcloud.mobile.models.Homework.Homework
 import org.schulcloud.mobile.models.course.Course
 
 interface ApiServiceInterface {
@@ -18,4 +19,7 @@ interface ApiServiceInterface {
     @GET("courses?\$populate[0]=teacherIds&\$populate[1]=userIds&\$populate[2]=substitutionIds")
     fun listUserCourses(): Call<FeathersResponse<List<Course>>>
 
+    // Homework
+    @GET("homework?\$limit=-1&\$populate=courseId&\$sort=dueDate:-1")
+    fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
 }

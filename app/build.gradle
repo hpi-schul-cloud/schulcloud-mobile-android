@@ -62,10 +62,4 @@ android {
 }
 
 apply from: 'dependencies.gradle'
-repositories {
-    mavenCentral()
-}
-dependencies {
-    implementation 'com.android.support:support-v4:27.1.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
+

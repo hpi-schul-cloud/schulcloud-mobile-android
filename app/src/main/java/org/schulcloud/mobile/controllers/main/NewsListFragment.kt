@@ -1,11 +1,8 @@
 package org.schulcloud.mobile.controllers.main
 
-
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,7 +11,6 @@ import android.view.ViewGroup
 import io.realm.RealmResults
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.models.course.CourseDao
 import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
@@ -53,6 +49,4 @@ class NewsListFragment : BaseFragment() {
         })
 
     }
-
-
 }

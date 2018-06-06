@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.jobs
 
 import android.util.Log
-import io.realm.Realm
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback

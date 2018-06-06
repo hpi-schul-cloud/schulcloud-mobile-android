@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.models.news
 
-import android.arch.lifecycle.LiveData
 import io.realm.Realm
 import org.schulcloud.mobile.jobs.ListUserNewsJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback

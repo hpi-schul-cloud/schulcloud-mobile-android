@@ -5,6 +5,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
 open class News : RealmObject(){
+
     @PrimaryKey
     @SerializedName("_id")
     var id: String = ""
@@ -13,6 +14,4 @@ open class News : RealmObject(){
     var title: String? = null
     var createdAt: String? = null
     var content: String? = null
-
-
 }

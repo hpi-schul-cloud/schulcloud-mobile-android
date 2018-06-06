@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.news.News
-import java.text.DateFormat.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*

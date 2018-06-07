@@ -62,3 +62,7 @@ android {
 }
 
 apply from: 'dependencies.gradle'
+
+dependencies {
+    implementation 'com.android.support:support-v4:27.+'
+}

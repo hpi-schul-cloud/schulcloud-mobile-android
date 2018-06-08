@@ -40,9 +40,9 @@
 
 
     <!-- Courses -->
-    <string name="title_list_courses">My Courses</string>
+    <string name="title_list_courses">Kurse</string>
 
     <!-- News -->
-    <string name="title_list_news">My News</string>
+    <string name="title_list_news">Neuigkeiten</string>
 
 </resources>

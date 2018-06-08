@@ -12,6 +12,6 @@ open class News : RealmObject(){
 
     var schoolId: String? = null
     var title: String? = null
-    var createdAt: String? = null
     var content: String? = null
+    var createdAt: String? = null
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.realm.RealmResults
+import kotlinx.android.synthetic.main.fragment_news_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.models.news.News
@@ -38,15 +39,13 @@ class NewsListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view_news)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.addItemDecoration(ItemOffsetDecoration(context, R.dimen.linear_spacing))
+        recycler_view_news.layoutManager = LinearLayoutManager(activity)
+        recycler_view_news.addItemDecoration(ItemOffsetDecoration(context, R.dimen.linear_spacing))
         newsListAdapter = NewsListAdapter()
-        recyclerView.adapter = newsListAdapter
+        recycler_view_news.adapter = newsListAdapter
 
         newsListViewModel!!.getNews().observe(this, Observer<RealmResults<News>> {
             news -> newsListAdapter!!.update(news!!)
         })
-
     }
 }

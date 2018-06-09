@@ -124,7 +124,5 @@ public interface ApplicationComponent {
 
     UserDataManager userDataManager();
 
-    LogicListenerThread logicListenerThread();
-
     RxEventBus eventBus();
 }

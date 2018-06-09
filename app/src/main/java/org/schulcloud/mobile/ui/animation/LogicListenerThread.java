@@ -1,51 +1,59 @@
 package org.schulcloud.mobile.ui.animation;
 
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-@Singleton
-public class LogicListenerThread extends Thread {
+public class LogicListenerThread{
     private Handler mHandler;
     private boolean isRunning = false;
 
-    private List<AnimationLogicListener> mListeners;
+    private static List<AnimationLogicListener> mListeners;
 
-    @Inject
     public LogicListenerThread(){
-        run();
+        mHandler = new Handler();
+        mListeners = new ArrayList<AnimationLogicListener>();
+        startLoop();
     }
 
-    public void addListener(AnimationLogicListener listener){
+    public static void addListener(AnimationLogicListener listener){
         mListeners.add(listener);
     }
 
-    public AnimationLogicListener getListener(int index){
+    public static AnimationLogicListener getListener(int index){
         return mListeners.get(index);
     }
 
-    public void removeListener(AnimationLogicListener listener){
+    public static void removeListener(AnimationLogicListener listener){
         mListeners.remove(listener);
     }
 
-    public void run(){
-        if(!isRunning) {
-            isRunning = true;
-            Looper.prepare();
+    public static AnimationLogicListener getListener(AnimationLogicListener listener){
+        return mListeners.get(mListeners.indexOf(listener));
+    }
 
-            mHandler = new Handler() {
-                public void handleLogics() throws Exception {
-                    for (int i = 0; i < mListeners.size(); i++) {
+    public void startLoop(){
+        isRunning = true;
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0; i < mListeners.size(); i++){
+                    try {
                         mListeners.get(i).checkLogic();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-            };
-
-            Looper.loop();
-        }
+                if(isRunning)
+                    mHandler.postDelayed(this,16);
+            }
+        });
     }
+
 }

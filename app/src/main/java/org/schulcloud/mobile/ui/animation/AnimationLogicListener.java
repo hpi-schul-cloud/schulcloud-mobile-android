@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -40,11 +41,10 @@ public class AnimationLogicListener {
     protected ObjectAnimator mTransOut;
 
     protected Handler mHandler;
-
-    @Inject
     LogicListenerThread listenerThread;
 
     public AnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
+        listenerThread = new LogicListenerThread();
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
@@ -55,12 +55,11 @@ public class AnimationLogicListener {
 
         mActivity = (Activity) mView.getContext();
 
-        mListenerIn = new ExtendedAnimatorListener(null,null);
-        mTransIn.addListener(mListenerIn);
-        mListenerOut = new ExtendedAnimatorListener(null,null);
-        mTransOut.addListener(mListenerOut);
+        mListenerIn = new ExtendedAnimatorListener(mTransIn,null,null);
+        mListenerOut = new ExtendedAnimatorListener(mTransOut,null,null);
 
         mHandler = new Handler();
+        LogicListenerThread.addListener(this);
     }
 
     public void setActionStart(Runnable actionStart){
@@ -117,22 +116,28 @@ public class AnimationLogicListener {
         private Runnable mActionEnd;
         private Handler mHandler;
         private int listenDelay = 16;
+        private ObjectAnimator mAnimator;
 
-        public ExtendedAnimatorListener( Runnable actionStart, Runnable actionEnd){
+        public ExtendedAnimatorListener(ObjectAnimator animator, Runnable actionStart, Runnable actionEnd){
+            mAnimator = animator;
             mActionStart = actionStart == null?() -> {return;}:actionStart;
             mActionEnd = actionEnd == null?() -> {return;}:actionEnd;
             mHandler = new Handler();
+            mAnimator.addListener(this);
         }
 
         @Override
         public void onAnimationStart(Animator animator) {
             super.onAnimationStart(animator);
             mActionStart.run();
+            mView.clearAnimation();
         }
 
         @Override
         public void onAnimationEnd(Animator animator) {
-            mActionEnd.run();
+            if(mAnimator.getCurrentPlayTime() == mAnimator.getDuration())
+                mActionEnd.run();
+            mView.clearAnimation();
         }
     }
 }

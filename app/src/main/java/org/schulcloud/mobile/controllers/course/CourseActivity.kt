@@ -11,6 +11,7 @@ import android.widget.Toast
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_course.*
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ActivityCourseBinding
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.viewmodels.CourseViewModel
@@ -47,11 +48,7 @@ class CourseActivity : BaseActivity() {
 
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        topicsAdapter = TopicListAdapter(object : TopicListAdapter.OnTopicSelectedCallback {
-            override fun onTopicSelected(id: String) {
-                Toast.makeText(this@CourseActivity, "Selected $id", Toast.LENGTH_SHORT).show()
-            }
-        })
+        topicsAdapter = TopicListAdapter(OnItemSelectedCallback { Toast.makeText(this@CourseActivity, "Selected $it", Toast.LENGTH_SHORT).show() })
         recycler_view.adapter = topicsAdapter
 
         viewModel?.topics?.observe(this, Observer<RealmResults<Topic>> { topics ->

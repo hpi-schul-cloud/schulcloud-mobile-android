@@ -3,13 +3,14 @@ package org.schulcloud.mobile.controllers.course
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemTopicBinding
 import org.schulcloud.mobile.models.topic.Topic
 
 /**
  * Date: 6/10/2018
  */
-class TopicListAdapter(private val selectedCallback: OnTopicSelectedCallback) : RecyclerView.Adapter<TopicListAdapter.TopicViewHolder>() {
+class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback) : RecyclerView.Adapter<TopicListAdapter.TopicViewHolder>() {
     private var topics: List<Topic> = emptyList()
 
     fun update(topicList: List<Topic>) {
@@ -32,8 +33,4 @@ class TopicListAdapter(private val selectedCallback: OnTopicSelectedCallback) : 
     }
 
     class TopicViewHolder(val binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root)
-
-    interface OnTopicSelectedCallback {
-        fun onTopicSelected(id: String)
-    }
 }

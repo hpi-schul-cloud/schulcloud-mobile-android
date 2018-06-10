@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import io.realm.RealmResults
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
@@ -46,7 +47,7 @@ class CourseListFragment : BaseFragment() {
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
-        courseListAdapter = CourseListAdapter { startActivity(CourseActivity.newIntent(context!!, it)) }
+        courseListAdapter = CourseListAdapter(OnItemSelectedCallback { startActivity(CourseActivity.newIntent(context!!, it)) })
         recyclerView.adapter = courseListAdapter
     }
 }

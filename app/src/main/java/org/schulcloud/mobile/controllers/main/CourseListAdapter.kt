@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.models.course.Course
 
-class CourseListAdapter(private val selectedCallback: (id: String) -> Unit) : RecyclerView.Adapter<CourseListAdapter.CourseViewHolder>() {
+class CourseListAdapter(private val selectedCallback: OnItemSelectedCallback) : RecyclerView.Adapter<CourseListAdapter.CourseViewHolder>() {
 
     private var courses: List<Course> = emptyList()
 
@@ -30,7 +31,7 @@ class CourseListAdapter(private val selectedCallback: (id: String) -> Unit) : Re
 
     override fun onBindViewHolder(holder: CourseListAdapter.CourseViewHolder, position: Int) {
         courses[position].apply {
-            holder.card.setOnClickListener { selectedCallback(id) }
+            holder.card.setOnClickListener { selectedCallback.onItemSelected(id) }
             holder.courseTitle.text = name
             holder.courseTeacher.text = teachers?.joinToString(", ") { it.shortName() }
             holder.courseColor.setBackgroundColor(Color.parseColor(color))

@@ -8,7 +8,7 @@
             type="org.schulcloud.mobile.models.topic.Topic" />
         <variable
             name="selectedCallback"
-            type="org.schulcloud.mobile.controllers.course.TopicListAdapter.OnTopicSelectedCallback" />
+            type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
     </data>
 
     <TextView
@@ -18,7 +18,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> selectedCallback.onTopicSelected(topic.id)}"
+        android:onClick="@{() -> selectedCallback.onItemSelected(topic.id)}"
         android:text="@{topic.name}"
         tools:text="Topic Name" />
 </layout>

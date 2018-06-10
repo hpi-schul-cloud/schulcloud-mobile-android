@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.schulcloud.mobile">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -16,7 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
 
         <!--  -->
         <activity
@@ -33,9 +34,13 @@
         <activity
             android:name=".controllers.main.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.TranslucentStatus" />
 
         <activity android:name=".controllers.login.LoginActivity" />
+
+        <activity
+            android:name=".controllers.course.CourseActivity"
+            android:parentActivityName=".controllers.main.MainActivity" />
 
 
     </application>

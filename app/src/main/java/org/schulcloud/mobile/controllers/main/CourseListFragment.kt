@@ -11,11 +11,12 @@ import android.view.ViewGroup
 import io.realm.RealmResults
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.controllers.course.CourseActivity
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-class CourseListFragment: BaseFragment() {
+class CourseListFragment : BaseFragment() {
 
     companion object {
         val TAG: String = CourseListFragment::class.java.simpleName
@@ -37,15 +38,15 @@ class CourseListFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //
-        courseListViewModel?.getCourses()?.observe(this, Observer<RealmResults<Course>> {
-            courses -> courseListAdapter!!.update(courses!!)
+        courseListViewModel?.getCourses()?.observe(this, Observer<RealmResults<Course>> { courses ->
+            courseListAdapter!!.update(courses!!)
         })
 
         //
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
         recyclerView.addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
-        courseListAdapter = CourseListAdapter()
+        courseListAdapter = CourseListAdapter { startActivity(CourseActivity.newIntent(context!!, it)) }
         recyclerView.adapter = courseListAdapter
     }
 }

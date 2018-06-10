@@ -27,6 +27,7 @@ import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -94,29 +95,29 @@ implements ChangeProfileMvpView{
         settings_submit.setBackgroundColor(Color.GRAY);
 
         // Animation Logic
-        /*new profileAnimationLogicListener(oldPasswordInfo,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(oldPasswordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))?true:false);
 
-        new profileAnimationLogicListener(passwordEmpty,animationScaleIn,animationScaleOut)
-                .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
+        new profileAnimationLogicListener(passwordEmpty,animIn,animOut)
+                .setLogic(() -> password_editText.getText().toString().equals("")?true:false);
 
         new profileAnimationLogicListener(passwordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(""))?true:false);
 
-        /*new profileAnimationLogicListener(passwordsDoNotMatch,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordsDoNotMatch,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString()))?true:false);
 
-        new profileAnimationLogicListener(passwordTooShort,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordTooShort,animIn,animOut)
                 .setLogic(() -> newPassword_editText.getText().toString().length() < 8?true:false);
 
-        new profileAnimationLogicListener(passwordNeedsNumbers,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordNeedsNumbers,animIn,animOut)
                 .setLogic(() -> Pattern.matches("[a-zA-Z]+", newPassword_editText.getText().toString())?true:false);
 
-        new profileAnimationLogicListener(passwordControlFailed,animationScaleIn,animationScaleOut)
+        new profileAnimationLogicListener(passwordControlFailed,animIn,animOut)
                 .setLogic(() -> newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())?true:false);
 
-        new profileAnimationLogicListener(passwordOkay,animationScaleIn,animationScaleOut)
-                .setLogic(() -> (passwordIsOkay));*/
+        new profileAnimationLogicListener(passwordOkay,animIn,animOut)
+                .setLogic(() -> (passwordIsOkay));
 
         // Profile
         mChangeProfilePresenter.loadProfile();

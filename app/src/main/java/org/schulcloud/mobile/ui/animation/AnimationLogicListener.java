@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -34,17 +35,20 @@ public class AnimationLogicListener {
 
     private boolean isRunning = false;
 
-    protected ExtendedAnimatorListener mListenerIn;
-    protected ExtendedAnimatorListener mListenerOut;
+    protected AnimatorTask mTaskIn;
+    protected AnimatorTask mTaskOut;
 
     protected ObjectAnimator mTransIn;
     protected ObjectAnimator mTransOut;
 
+    protected Runnable mActionStart;
+    protected Runnable mActionEnd;
+
     protected Handler mHandler;
-    LogicListenerThread listenerThread;
+    protected boolean transInFinished;
+    protected boolean transOutFinsihed;
 
     public AnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
-        listenerThread = new LogicListenerThread();
         mView = view;
         mViewParent = (ViewGroup) view.getParent();
         mTransIn = transIn;
@@ -55,19 +59,18 @@ public class AnimationLogicListener {
 
         mActivity = (Activity) mView.getContext();
 
-        mListenerIn = new ExtendedAnimatorListener(mTransIn,null,null);
-        mListenerOut = new ExtendedAnimatorListener(mTransOut,null,null);
+        mTaskIn = new AnimatorTask();
+        mTaskOut = new AnimatorTask();
 
         mHandler = new Handler();
-        LogicListenerThread.addListener(this);
     }
 
     public void setActionStart(Runnable actionStart){
-        mListenerIn.mActionStart = actionStart;
+        mActionStart = actionStart;
     }
 
     public void setActionEnd(Runnable actionEnd){
-        mListenerOut.mActionEnd = actionEnd;
+        mActionEnd = actionEnd;
     }
 
     public View getView(){
@@ -76,19 +79,30 @@ public class AnimationLogicListener {
 
     public void setLogic(Callable<Boolean> logic) {
         mLogic = logic;
-        startLogicLoop();
+        start();
     }
 
     public void checkLogic() throws Exception {
         if (mLogic.call()) {
             if(mViewParent.findViewById(mView.getId()) == null) {
-                if (!mTransIn.isRunning()) {
-                    mTransIn.start();
+                if (!mTransIn.isRunning() && mTaskIn.isFinished) {
+                        mActionStart.run();
+                        mTransIn.start();
+                        mTaskIn.doInBackground((int) mTransIn.getDuration());
                 }
             }
          } else {
             if(!mTransOut.isRunning()) {
-                mTransOut.start();
+                if(!mTaskOut.wasStarted && mTaskIn.wasStarted) {
+                    mTransOut.start();
+                    mTaskOut.doInBackground((int) mTransOut.getDuration());
+                }else{
+                    if(mTaskOut.isFinished) {
+                        mActionEnd.run();
+                        mTaskOut.wasStarted = false;
+                        mTaskIn.wasStarted = false;
+                    }
+                }
             }
         }
     }
@@ -99,7 +113,6 @@ public class AnimationLogicListener {
 
     public void stop(){
         isRunning = false;
-        listenerThread.removeListener(this);
     }
 
     public void start(){
@@ -108,36 +121,36 @@ public class AnimationLogicListener {
     }
 
     public void startLogicLoop(){
-        listenerThread.addListener(this);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    checkLogic();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if(isRunning)
+                    mHandler.postDelayed(this,16);
+            }
+        });
     }
 
-    private class ExtendedAnimatorListener extends AnimatorListenerAdapter {
-        private Runnable mActionStart;
-        private Runnable mActionEnd;
-        private Handler mHandler;
-        private int listenDelay = 16;
-        private ObjectAnimator mAnimator;
+    private class AnimatorTask extends AsyncTask<Integer, Boolean,Boolean>{
 
-        public ExtendedAnimatorListener(ObjectAnimator animator, Runnable actionStart, Runnable actionEnd){
-            mAnimator = animator;
-            mActionStart = actionStart == null?() -> {return;}:actionStart;
-            mActionEnd = actionEnd == null?() -> {return;}:actionEnd;
-            mHandler = new Handler();
-            mAnimator.addListener(this);
-        }
+        private boolean isFinished = true;
+        private boolean wasStarted = false;
 
         @Override
-        public void onAnimationStart(Animator animator) {
-            super.onAnimationStart(animator);
-            mActionStart.run();
-            mView.clearAnimation();
+        protected Boolean doInBackground(Integer... integers) {
+            isFinished = false;
+            wasStarted = true;
+            new Handler().postDelayed(() -> {isFinished = true;},integers[0]);
+            return false;
         }
 
-        @Override
-        public void onAnimationEnd(Animator animator) {
-            if(mAnimator.getCurrentPlayTime() == mAnimator.getDuration())
-                mActionEnd.run();
-            mView.clearAnimation();
+        protected void onPostExecute(Boolean over){
+            isFinished = over;
         }
     }
 }

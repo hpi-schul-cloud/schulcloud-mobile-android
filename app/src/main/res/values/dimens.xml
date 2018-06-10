@@ -8,4 +8,10 @@
 
     <dimen name="grid_spacing">5dp</dimen>
 
+    <!-- Material Design -->
+    <dimen name="material_listItem_height">48dp</dimen>
+    <dimen name="material_listItem_paddingHorizontal">16dp</dimen>
+    <dimen name="material_listItem_textPrimary_textSize">16sp</dimen>
+
+
 </resources>

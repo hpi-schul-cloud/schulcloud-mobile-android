@@ -16,13 +16,14 @@ object CourseRepository {
     fun listCourses(realm: Realm): LiveRealmData<Course> {
         return realm.courseDao().listCourses()
     }
+
     fun course(realm: Realm, id: String): RealmObjectLiveData<Course> {
         return realm.courseDao().course(id)
     }
 
     //
     private fun requestCourseList() {
-        ListUserCoursesJob(object: RequestJobCallback() {
+        ListUserCoursesJob(object : RequestJobCallback() {
             override fun onSuccess() {
             }
 

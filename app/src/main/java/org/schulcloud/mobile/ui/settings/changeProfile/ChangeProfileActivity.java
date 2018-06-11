@@ -95,16 +95,16 @@ implements ChangeProfileMvpView{
         settings_submit.setBackgroundColor(Color.GRAY);
 
         // Animation Logic
-        new profileAnimationLogicListener(oldPasswordInfo,animIn,animOut)
+        /*new profileAnimationLogicListener(oldPasswordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))?true:false);
 
         new profileAnimationLogicListener(passwordEmpty,animIn,animOut)
-                .setLogic(() -> password_editText.getText().toString().equals("")?true:false);
+                .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
 
         new profileAnimationLogicListener(passwordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(""))?true:false);
 
-        new profileAnimationLogicListener(passwordsDoNotMatch,animIn,animOut)
+        /*new profileAnimationLogicListener(passwordsDoNotMatch,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString()))?true:false);
 
         new profileAnimationLogicListener(passwordTooShort,animIn,animOut)
@@ -117,7 +117,7 @@ implements ChangeProfileMvpView{
                 .setLogic(() -> newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())?true:false);
 
         new profileAnimationLogicListener(passwordOkay,animIn,animOut)
-                .setLogic(() -> (passwordIsOkay));
+                .setLogic(() -> (passwordIsOkay));*/
 
         // Profile
         mChangeProfilePresenter.loadProfile();

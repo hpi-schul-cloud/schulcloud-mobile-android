@@ -35,8 +35,8 @@ public class AnimationLogicListener {
 
     private boolean isRunning = false;
 
-    protected AnimatorTask mTaskIn;
-    protected AnimatorTask mTaskOut;
+    protected WaiterObject mTaskIn;
+    protected WaiterObject mTaskOut;
 
     protected ObjectAnimator mTransIn;
     protected ObjectAnimator mTransOut;
@@ -44,9 +44,11 @@ public class AnimationLogicListener {
     protected Runnable mActionStart;
     protected Runnable mActionEnd;
 
+    @Inject
+    AnimationWaiterThread waiterThread;
+
+
     protected Handler mHandler;
-    protected boolean transInFinished;
-    protected boolean transOutFinsihed;
 
     public AnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
         mView = view;
@@ -59,8 +61,10 @@ public class AnimationLogicListener {
 
         mActivity = (Activity) mView.getContext();
 
-        mTaskIn = new AnimatorTask();
-        mTaskOut = new AnimatorTask();
+        mTaskIn = new WaiterObject((int) transIn.getDuration());
+        mTaskIn.setTime((int) mTransIn.getDuration());
+        mTaskOut = new WaiterObject((int) transOut.getDuration());
+        mTaskOut.setTime((int) mTransOut.getDuration());
 
         mHandler = new Handler();
     }
@@ -88,14 +92,14 @@ public class AnimationLogicListener {
                 if (!mTransIn.isRunning() && mTaskIn.isFinished) {
                         mActionStart.run();
                         mTransIn.start();
-                        mTaskIn.doInBackground((int) mTransIn.getDuration());
+                        waiterThread.wait(mTaskIn);
                 }
             }
          } else {
             if(!mTransOut.isRunning()) {
                 if(!mTaskOut.wasStarted && mTaskIn.wasStarted) {
                     mTransOut.start();
-                    mTaskOut.doInBackground((int) mTransOut.getDuration());
+                    waiterThread.wait(mTaskOut);
                 }else{
                     if(mTaskOut.isFinished) {
                         mActionEnd.run();
@@ -136,7 +140,7 @@ public class AnimationLogicListener {
         });
     }
 
-    private class AnimatorTask extends AsyncTask<Integer, Boolean,Boolean>{
+   /* private class AnimatorTask extends AsyncTask<Integer, Boolean,Boolean>{
 
         private boolean isFinished = true;
         private boolean wasStarted = false;
@@ -152,5 +156,5 @@ public class AnimationLogicListener {
         protected void onPostExecute(Boolean over){
             isFinished = over;
         }
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.models.Homework
+package org.schulcloud.mobile.models.homework
 
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject

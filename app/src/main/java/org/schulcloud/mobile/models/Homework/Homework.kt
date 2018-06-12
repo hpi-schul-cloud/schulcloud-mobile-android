@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.models.Homework
+package org.schulcloud.mobile.models.homework
 
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
@@ -11,9 +11,10 @@ open class Homework: RealmObject(){
     var id: String = ""
 
     var schoold: String? = null
-    var teacherId: String? = null
     var name: String? = null
     var courseId: HomeworkCourse? = null
+    var dueDate: String? = null
+    var description: String? = null
     @SerializedName("private")
     var restricted: Boolean = false
 

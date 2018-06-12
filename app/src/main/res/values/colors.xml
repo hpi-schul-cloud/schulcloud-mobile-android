@@ -29,4 +29,6 @@
     <!-- 30% white overlay -->
     <color name="button_gray_light">#8c9094</color>
 
+    <color name="red">#ff3000</color>
+
 </resources>

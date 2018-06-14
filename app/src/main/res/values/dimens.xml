@@ -7,6 +7,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="grid_spacing">5dp</dimen>
+    <dimen name="content_spacing">16dp</dimen>
 
     <dimen name="content_title_margin">8dp</dimen>
 

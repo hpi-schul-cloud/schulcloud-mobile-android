@@ -20,6 +20,7 @@ interface ApiServiceInterface {
     fun listUserCourses(): Call<FeathersResponse<List<Course>>>
 
     // Homework
-    @GET("homework?\$limit=-1&\$populate=courseId&\$sort=dueDate:-1")
+    // TODO: make original url work
+    @GET("homework?\$populate=courseId&\$sort=dueDate:-1")
     fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
 }

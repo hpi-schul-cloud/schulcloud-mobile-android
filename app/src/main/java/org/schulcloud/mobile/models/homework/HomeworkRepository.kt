@@ -16,12 +16,12 @@ object HomeworkRepository {
         return realm.homeworkDao().listHomework()
     }
 
-    private fun requestHomeworkList(){
-        ListUserHomeworkJob(object: RequestJobCallback(){
-            override fun onSuccess(){
+    private fun requestHomeworkList() {
+        ListUserHomeworkJob(object : RequestJobCallback() {
+            override fun onSuccess() {
             }
 
-            override fun onError(code: ErrorCode){
+            override fun onError(code:ErrorCode){
             }
         }).run()
     }

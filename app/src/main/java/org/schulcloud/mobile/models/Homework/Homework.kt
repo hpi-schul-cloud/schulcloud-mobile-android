@@ -11,7 +11,8 @@ open class Homework: RealmObject(){
     var id: String = ""
 
     var schoold: String? = null
-    var name: String? = null
+    @SerializedName("name")
+    var title: String? = null
     var courseId: HomeworkCourse? = null
     var dueDate: String? = null
     var description: String? = null

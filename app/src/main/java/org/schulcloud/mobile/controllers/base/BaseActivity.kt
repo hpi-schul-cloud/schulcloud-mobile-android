@@ -10,7 +10,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeButtonEnabled(true)
         }
     }
 }

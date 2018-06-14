@@ -40,7 +40,18 @@
 
         <activity
             android:name=".controllers.course.CourseActivity"
-            android:parentActivityName=".controllers.main.MainActivity" />
+            android:parentActivityName=".controllers.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.main.MainActivity" />
+        </activity>
+        <activity
+            android:name=".controllers.topic.TopicActivity"
+            android:parentActivityName=".controllers.course.CourseActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.course.CourseActivity" />
+        </activity>
 
 
     </application>

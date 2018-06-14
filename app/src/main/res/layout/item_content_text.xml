@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data class="ItemContentBinding">
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+        <variable
+            name="content"
+            type="org.schulcloud.mobile.models.content.Content" />
+    </data>
+
+    <LinearLayout
+        style="@style/Content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Content_Header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_title_margin"
+            android:text="@{content.title}"
+            android:visibility="@{ViewUtilsKt.toVisible(content.title)}"
+            tools:text="Content name" />
+
+        <org.schulcloud.mobile.views.ContentWebView
+            android:id="@+id/contentText_cwv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            app:content="@{content.text}"
+            tools:ignore="WebViewLayout" />
+
+    </LinearLayout>
+</layout>

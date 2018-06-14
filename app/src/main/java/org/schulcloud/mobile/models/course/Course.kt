@@ -6,7 +6,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.schulcloud.mobile.models.user.User
 
-open class Course: RealmObject() {
+open class Course : RealmObject() {
 
     @PrimaryKey
     @SerializedName("_id")

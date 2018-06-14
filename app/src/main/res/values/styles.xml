@@ -40,6 +40,15 @@
         <item name="android:background">@drawable/button_main</item>
     </style>
 
+    <style name="Content">
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+    </style>
+    <style name="Content_Header" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:height">@dimen/material_listItem_height</item>
         <item name="android:paddingLeft">@dimen/material_listItem_paddingHorizontal</item>

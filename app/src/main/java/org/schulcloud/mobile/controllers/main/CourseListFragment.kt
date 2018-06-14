@@ -32,7 +32,7 @@ class CourseListFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.title_list_courses)
+        activity?.title = getString(R.string.courses_title)
         return inflater.inflate(R.layout.fragment_course_list, container, false)
     }
 

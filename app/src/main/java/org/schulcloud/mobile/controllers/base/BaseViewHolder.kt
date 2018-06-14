@@ -13,7 +13,7 @@ import android.view.ViewGroup
 abstract class BaseViewHolder<B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root) {
     companion object {
         fun <B : ViewDataBinding> createBinding(parent: ViewGroup, @LayoutRes layoutId: Int): B {
-            return DataBindingUtil.inflate<B>(LayoutInflater.from(parent.context), layoutId,
+            return DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutId,
                     parent, false)
         }
     }

@@ -40,6 +40,10 @@
 
 
     <!-- Courses -->
-    <string name="title_list_courses">My Courses</string>
+    <string name="courses_title">Meine Kurse</string>
+
+    <!-- Content -->
+    <eat-comment />
+    <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
 
 </resources>

@@ -23,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/content_title_margin"
-            android:text="@{content.title}"
-            android:visibility="@{ViewUtilsKt.toVisible(content.title)}"
+            android:text="@{wrapper.title}"
+            android:visibility="@{ViewUtilsKt.toVisible(wrapper.title)}"
             tools:text="Content name" />
 
         <TextView

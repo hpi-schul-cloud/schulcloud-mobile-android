@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
 
@@ -24,12 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/content_title_margin"
-            android:text="@{content.title}"
-            android:visibility="@{ViewUtilsKt.toVisible(content.title)}"
+            android:text="@{wrapper.title}"
+            android:visibility="@{ViewUtilsKt.toVisible(wrapper.title)}"
             tools:text="Content name" />
 
         <org.schulcloud.mobile.views.ContentWebView
-            android:id="@+id/contentText_cwv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"

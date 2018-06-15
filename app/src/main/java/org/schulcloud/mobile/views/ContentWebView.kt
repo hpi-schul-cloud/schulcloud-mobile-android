@@ -7,12 +7,10 @@ import android.net.Uri
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.util.AttributeSet
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
@@ -70,19 +68,27 @@ class ContentWebView @JvmOverloads constructor(context: Context, attrs: Attribut
     var httpClient: OkHttpClient
         private set
 
+    var referer: String? = null
 
     init {
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             WebView.setWebContentsDebuggingEnabled(true)
 
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
+
         httpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             if (UserRepository.isAuthorized)
                 builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
+
+            referer?.also { builder.addHeader(HEADER_REFERER, it) }
             chain.proceed(builder.build())
-        }.build()
+        }
+                .addInterceptor(loggingInterceptor).build()
 
         settings.javaScriptEnabled = true
+        settings.cacheMode = WebSettings.LOAD_NO_CACHE // TODO: remove
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 openUrl(Uri.parse(url))
@@ -112,7 +118,7 @@ class ContentWebView @JvmOverloads constructor(context: Context, attrs: Attribut
                 return try {
                     val response = httpClient.newCall(Request.Builder().url(url).build()).execute()
                     WebResourceResponse(
-                            response.header(HEADER_CONTENT_TYPE, MIME_TEXT_PLAIN),
+                            response.header(HEADER_CONTENT_TYPE)?.substringBefore(';'),
                             response.header(HEADER_CONTENT_ENCODING, ENCODING_UTF_8),
                             response.body()?.byteStream())
                 } catch (e: Exception) {
@@ -123,9 +129,33 @@ class ContentWebView @JvmOverloads constructor(context: Context, attrs: Attribut
         setBackgroundColor(Color.TRANSPARENT)
     }
 
-    fun setContent(content: String?) {
+    override fun loadUrl(url: String?) {
+        clear()
+        super.loadUrl(url)
+    }
+
+    override fun loadUrl(url: String?, additionalHttpHeaders: MutableMap<String, String>?) {
+        clear()
+        super.loadUrl(url, additionalHttpHeaders)
+    }
+
+    override fun loadData(data: String?, mimeType: String?, encoding: String?) {
+        clear()
+        super.loadData(data, mimeType, encoding)
+    }
+
+    override fun loadDataWithBaseURL(baseUrl: String?, data: String?, mimeType: String?, encoding: String?, historyUrl: String?) {
+        clear()
+        super.loadDataWithBaseURL(baseUrl, data, mimeType, encoding, historyUrl)
+    }
+
+    private fun clear() {
         // Clear content to fix size if new size is smaller than current one
-        loadDataWithBaseURL(null, null, MIME_TEXT_HTML, ENCODING_UTF_8, null)
+        super.loadDataWithBaseURL(null, null, MIME_TEXT_HTML, ENCODING_UTF_8, null)
+    }
+
+
+    fun setContent(content: String?) {
         loadDataWithBaseURL(HOST, CONTENT_TEXT_PREFIX + (content ?: "") + CONTENT_TEXT_SUFFIX,
                 MIME_TEXT_HTML, ENCODING_UTF_8, null)
     }

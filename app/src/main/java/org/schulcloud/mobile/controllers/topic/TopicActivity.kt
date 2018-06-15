@@ -56,8 +56,6 @@ class TopicActivity : BaseActivity() {
             addItemDecoration(ItemOffsetDecoration(this@TopicActivity, R.dimen.content_spacing))
         }
 
-        viewModel.topic.observe(this, Observer { topic ->
-            topic?.contents?.also { contentsAdapter.update(it) }
-        })
+        viewModel.topic.observe(this, Observer { contentsAdapter.update(it) })
     }
 }

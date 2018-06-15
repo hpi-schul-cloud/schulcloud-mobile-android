@@ -40,13 +40,25 @@
         <item name="android:background">@drawable/button_main</item>
     </style>
 
-    <style name="Content_Header" parent="TextAppearance.AppCompat.Headline">
-        <item name="android:textSize">20sp</item>
-    </style>
     <style name="Content_Text.Empty" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:padding">16dp</item>
         <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="Content_Header" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Content_Header.WithLink">
+        <item name="android:minHeight">40dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+    </style>
+    <style name="Content_LinkExternal">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
     </style>
 
     <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">

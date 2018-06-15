@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseViewHolder.Companion.createBinding
 import org.schulcloud.mobile.models.content.ContentWrapper
+import org.schulcloud.mobile.models.topic.Topic
 
 /**
  * Date: 6/10/2018
@@ -17,10 +18,13 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
                 ContentWrapper.COMPONENT_ETHERPAD, ContentWrapper.COMPONENT_NEXBOARD)
     }
 
+    private lateinit var topic: Topic
     private var contents: List<ContentWrapper> = emptyList()
 
-    fun update(contents: List<ContentWrapper>) {
-        this.contents = contents
+    fun update(topic: Topic?) {
+        if (topic != null)
+            this.topic = topic
+        this.contents = topic?.contents ?: emptyList()
         notifyDataSetChanged()
     }
 
@@ -28,6 +32,7 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<out ViewDataBinding> {
         return when (viewType) {
             0 -> TextViewHolder(createBinding(parent, R.layout.item_content_text))
+            3 -> EtherpadViewHolder(createBinding(parent, R.layout.item_content_etherpad))
             else -> UnsupportedViewHolder(createBinding(parent, R.layout.item_content_unsupported))
         }
     }
@@ -40,6 +45,7 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder<out ViewDataBinding>, position: Int) {
-        holder.setContent(contents[position])
+        holder.topic = topic
+        holder.content = contents[position]
     }
 }

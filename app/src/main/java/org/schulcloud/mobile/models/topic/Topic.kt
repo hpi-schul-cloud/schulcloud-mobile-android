@@ -5,6 +5,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.schulcloud.mobile.models.content.ContentWrapper
+import org.schulcloud.mobile.utils.HOST
 
 /**
  * Date: 6/10/2018
@@ -22,4 +23,7 @@ open class Topic : RealmObject() {
     var courseId: String? = null
     var hidden: Boolean? = null
     var contents: RealmList<ContentWrapper>? = null
+
+    val url: String
+        get() = "$HOST/courses/$courseId/topics/$id/"
 }

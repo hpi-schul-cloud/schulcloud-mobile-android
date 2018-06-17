@@ -95,10 +95,10 @@ implements ChangeProfileMvpView{
         settings_submit.setBackgroundColor(Color.GRAY);
 
         // Animation Logic
-        /*new profileAnimationLogicListener(oldPasswordInfo,animIn,animOut)
+        new profileAnimationLogicListener(oldPasswordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))?true:false);
 
-        new profileAnimationLogicListener(passwordEmpty,animIn,animOut)
+        /*new profileAnimationLogicListener(passwordEmpty,animIn,animOut)
                 .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
 
         new profileAnimationLogicListener(passwordInfo,animIn,animOut)

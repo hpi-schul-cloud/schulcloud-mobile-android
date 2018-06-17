@@ -1,7 +1,5 @@
 package org.schulcloud.mobile.injection.module;
 
-import android.view.animation.Animation;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -14,7 +12,6 @@ import com.google.gson.stream.JsonWriter;
 import org.schulcloud.mobile.BuildConfig;
 import org.schulcloud.mobile.data.model.RealmString;
 import org.schulcloud.mobile.data.remote.RestService;
-import org.schulcloud.mobile.ui.animation.AnimationWaiterThread;
 
 import java.io.IOException;
 
@@ -97,11 +94,5 @@ public class RestModule {
                         .createWithScheduler(Schedulers.io()))
                 .callFactory(httpClientBuilder.build())
                 .build().create(RestService.class);
-    }
-
-    @Provides
-    @Singleton
-    AnimationWaiterThread provideAnimationWaiterThread(){
-        return new AnimationWaiterThread();
     }
 }

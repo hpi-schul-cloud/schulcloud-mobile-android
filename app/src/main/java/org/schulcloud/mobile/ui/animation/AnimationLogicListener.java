@@ -10,6 +10,8 @@ import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.schulcloud.mobile.injection.component.ApplicationComponent;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -24,7 +26,7 @@ import javax.inject.Inject;
  *
  * new AnimationLogicListener(fooView,fooAnimatorIn,fooAnimatorOut).setLogic(() -> (bar==1)?true:false);
  *
- * Upon setting it, it will start iterating the logic given every 30 ms.
+ * Upon given Logic, the listener will iterate the logic every 16 ms.
  * **/
 
 public class AnimationLogicListener {
@@ -44,11 +46,8 @@ public class AnimationLogicListener {
     protected Runnable mActionStart;
     protected Runnable mActionEnd;
 
-    @Inject
-    AnimationWaiterThread waiterThread;
-
-
     protected Handler mHandler;
+    protected listenerAdapter listener;
 
     public AnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
         mView = view;
@@ -60,24 +59,24 @@ public class AnimationLogicListener {
         mTransOut.setTarget(mView);
 
         mActivity = (Activity) mView.getContext();
+        listener = new listenerAdapter();
 
-        mTaskIn = new WaiterObject((int) transIn.getDuration());
-        mTaskIn.setTime((int) mTransIn.getDuration());
-        mTaskOut = new WaiterObject((int) transOut.getDuration());
-        mTaskOut.setTime((int) mTransOut.getDuration());
+        mTaskIn = new WaiterObject();
+        mTaskOut = new WaiterObject();
+        mTransOut.addListener(listener);
 
         mHandler = new Handler();
     }
 
-    public void setActionStart(Runnable actionStart){
+    public void setActionStart(Runnable actionStart) {
         mActionStart = actionStart;
     }
 
-    public void setActionEnd(Runnable actionEnd){
+    public void setActionEnd(Runnable actionEnd) {
         mActionEnd = actionEnd;
     }
 
-    public View getView(){
+    public View getView() {
         return mView;
     }
 
@@ -88,43 +87,37 @@ public class AnimationLogicListener {
 
     public void checkLogic() throws Exception {
         if (mLogic.call()) {
-            if(mViewParent.findViewById(mView.getId()) == null) {
-                if (!mTransIn.isRunning() && mTaskIn.isFinished) {
-                        mActionStart.run();
-                        mTransIn.start();
-                        waiterThread.wait(mTaskIn);
+            if (mViewParent.findViewById(mView.getId()) == null) {
+                if (!mTransIn.isRunning() && !mTaskIn.wasStarted) {
+                    mActionStart.run();
+                    mTransIn.start();
+                    mTaskIn.wasStarted = true;
                 }
             }
-         } else {
-            if(!mTransOut.isRunning()) {
-                if(!mTaskOut.wasStarted && mTaskIn.wasStarted) {
+        } else {
+            if (!mTransOut.isRunning()) {
+                if (!mTaskOut.wasStarted && mTaskIn.wasStarted) {
                     mTransOut.start();
-                    waiterThread.wait(mTaskOut);
-                }else{
-                    if(mTaskOut.isFinished) {
-                        mActionEnd.run();
-                        mTaskOut.wasStarted = false;
-                        mTaskIn.wasStarted = false;
-                    }
+                    mTaskOut.wasStarted = true;
                 }
             }
         }
     }
 
-    public Callable<Boolean> getLogic(){
+    public Callable<Boolean> getLogic() {
         return mLogic;
     }
 
-    public void stop(){
+    public void stop() {
         isRunning = false;
     }
 
-    public void start(){
+    public void start() {
         isRunning = true;
         startLogicLoop();
     }
 
-    public void startLogicLoop(){
+    public void startLogicLoop() {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -134,27 +127,19 @@ public class AnimationLogicListener {
                     e.printStackTrace();
                 }
 
-                if(isRunning)
-                    mHandler.postDelayed(this,16);
+                if (isRunning)
+                    mHandler.postDelayed(this, 16);
             }
         });
     }
 
-   /* private class AnimatorTask extends AsyncTask<Integer, Boolean,Boolean>{
-
-        private boolean isFinished = true;
-        private boolean wasStarted = false;
+    public class listenerAdapter extends AnimatorListenerAdapter{
 
         @Override
-        protected Boolean doInBackground(Integer... integers) {
-            isFinished = false;
-            wasStarted = true;
-            new Handler().postDelayed(() -> {isFinished = true;},integers[0]);
-            return false;
+        public void onAnimationEnd(Animator animator){
+            mActionEnd.run();
+            mTaskOut.wasStarted = false;
+            mTaskIn.wasStarted = false;
         }
-
-        protected void onPostExecute(Boolean over){
-            isFinished = over;
-        }
-    }*/
+    }
 }

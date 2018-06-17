@@ -38,7 +38,6 @@ import org.schulcloud.mobile.data.sync.UserSyncService;
 import org.schulcloud.mobile.injection.ApplicationContext;
 import org.schulcloud.mobile.injection.module.ApplicationModule;
 import org.schulcloud.mobile.injection.module.RestModule;
-import org.schulcloud.mobile.ui.animation.AnimationWaiterThread;
 import org.schulcloud.mobile.util.RxEventBus;
 import org.schulcloud.mobile.util.firebase.MessagingService;
 
@@ -123,8 +122,6 @@ public interface ApplicationComponent {
     TopicDataManager topicDataManager();
 
     UserDataManager userDataManager();
-
-    AnimationWaiterThread animationWaiterThread();
 
     RxEventBus eventBus();
 }

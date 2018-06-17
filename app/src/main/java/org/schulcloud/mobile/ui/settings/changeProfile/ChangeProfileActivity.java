@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.ui.settings.changeProfile;
 
-import android.animation.PropertyValuesHolder;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,13 +8,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ViewAnimator;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.model.CurrentUser;
@@ -27,7 +26,6 @@ import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -87,10 +85,8 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        ObjectAnimator animIn = new ObjectAnimator().ofFloat(null,View.SCALE_Y,0f,1f);
-        animIn.setDuration(500);
-        ObjectAnimator animOut = new ObjectAnimator().ofFloat(null,View.SCALE_Y,1,0f);
-        animOut.setDuration(500);
+        Animation animIn;
+        Animation animOut;
 
         settings_submit.setBackgroundColor(Color.GRAY);
 
@@ -222,11 +218,26 @@ implements ChangeProfileMvpView{
 
     public class profileAnimationLogicListener extends AnimationLogicListener {
 
-        public profileAnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
+        public profileAnimationLogicListener(View view, Animation transIn, Animation transOut) {
             super(view, transIn, transOut);
             //transIn.getChildAnimations();
-            setActionStart(() -> {if(mViewParent.findViewById(mView.getId()) == null) {mViewParent.addView(mView);}});
-            setActionEnd(() -> {mViewParent.removeView(mView);});
+            setActionIn(() -> {if(mViewParent.findViewById(mView.getId()) == null) {mViewParent.addView(mView);}});
+            setActionOut(() -> {mViewParent.removeView(mView);});
+        }
+
+        @Override
+        public void checkLogic() throws Exception {
+            if(mLogic.call()){
+                if(!animListenerIn.mInfo.wasStarted){
+                    mView.clearAnimation();
+                    mView.startAnimation(mTransIn);
+                }
+            }else{
+                if(animListenerIn.mInfo.wasStarted && !animListenerOut.mInfo.wasStarted){
+                    mView.clearAnimation();
+                    mView.startAnimation(mTransOut);
+                }
+            }
         }
     }
 

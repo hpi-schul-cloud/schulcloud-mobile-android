@@ -1,123 +1,72 @@
 package org.schulcloud.mobile.ui.animation;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
-import org.schulcloud.mobile.injection.component.ApplicationComponent;
-
-import java.util.List;
 import java.util.concurrent.Callable;
 
-import javax.inject.Inject;
-
-/**
- * This class is usable for conditional animations, in terms of animations which will be triggered
- * under certain circumstances. I.e. variable equals one, make button red.
- *
- * To use this class you simply have to initialize it and give it logic to work with via setLogic().
- * An example would be following
- *
- * new AnimationLogicListener(fooView,fooAnimatorIn,fooAnimatorOut).setLogic(() -> (bar==1)?true:false);
- *
- * Upon given Logic, the listener will iterate the logic every 16 ms.
- * **/
-
 public class AnimationLogicListener {
+
+    protected Callable<Boolean> mLogic;
     protected View mView;
     protected ViewGroup mViewParent;
-    private Callable<Boolean> mLogic;
-    protected Activity mActivity;
-
-    private boolean isRunning = false;
-
-    protected WaiterObject mTaskIn;
-    protected WaiterObject mTaskOut;
-
-    protected ObjectAnimator mTransIn;
-    protected ObjectAnimator mTransOut;
-
-    protected Runnable mActionStart;
-    protected Runnable mActionEnd;
-
+    protected Animation mTransIn, mTransOut;
+    protected AnimListener animListenerIn, animListenerOut;
     protected Handler mHandler;
-    protected listenerAdapter listener;
+    protected boolean running;
 
-    public AnimationLogicListener(View view, ObjectAnimator transIn, ObjectAnimator transOut) {
+    public AnimationLogicListener(View view, Animation transIn, Animation transOut){
         mView = view;
-        mViewParent = (ViewGroup) view.getParent();
+        mViewParent = (ViewGroup) mView.getParent();
         mTransIn = transIn;
         mTransOut = transOut;
 
-        mTransIn.setTarget(mView);
-        mTransOut.setTarget(mView);
+        animListenerIn = new AnimListener();
+        animListenerOut =  new AnimListener();
 
-        mActivity = (Activity) mView.getContext();
-        listener = new listenerAdapter();
-
-        mTaskIn = new WaiterObject();
-        mTaskOut = new WaiterObject();
-        mTransOut.addListener(listener);
+        animListenerIn.mActionIn = () -> {return;};
+        animListenerOut.mActionIn = () -> {return;};
 
         mHandler = new Handler();
     }
 
-    public void setActionStart(Runnable actionStart) {
-        mActionStart = actionStart;
+    public void start(){
+        running = true;
+        startLogicLoop();
     }
 
-    public void setActionEnd(Runnable actionEnd) {
-        mActionEnd = actionEnd;
+    public void stop(){
+        running = false;
     }
 
-    public View getView() {
-        return mView;
-    }
-
-    public void setLogic(Callable<Boolean> logic) {
+    public void setLogic(Callable<Boolean> logic){
         mLogic = logic;
         start();
     }
 
-    public void checkLogic() throws Exception {
-        if (mLogic.call()) {
-            if (mViewParent.findViewById(mView.getId()) == null) {
-                if (!mTransIn.isRunning() && !mTaskIn.wasStarted) {
-                    mActionStart.run();
-                    mTransIn.start();
-                    mTaskIn.wasStarted = true;
-                }
-            }
-        } else {
-            if (!mTransOut.isRunning()) {
-                if (!mTaskOut.wasStarted && mTaskIn.wasStarted) {
-                    mTransOut.start();
-                    mTaskOut.wasStarted = true;
-                }
-            }
-        }
-    }
-
-    public Callable<Boolean> getLogic() {
+    public Callable<Boolean> getLogic(){
         return mLogic;
     }
 
-    public void stop() {
-        isRunning = false;
+    public void setActionIn(Runnable actionIn){
+        animListenerIn.mActionIn = actionIn;
     }
 
-    public void start() {
-        isRunning = true;
-        startLogicLoop();
+    public void setActionOut(Runnable actionOut){
+        animListenerOut.mActionOut = actionOut;
     }
 
-    public void startLogicLoop() {
+    public Runnable getActionIn(){
+        return animListenerIn.mActionIn;
+    }
+
+    public Runnable getActionOut(){
+        return animListenerOut.mActionOut;
+    }
+
+    public void startLogicLoop(){
         mHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -126,20 +75,38 @@ public class AnimationLogicListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                if (isRunning)
-                    mHandler.postDelayed(this, 16);
+                if(running)
+                    mHandler.postDelayed(this,16);
             }
         });
     }
 
-    public class listenerAdapter extends AnimatorListenerAdapter{
+
+    /*** Override this method! ***/
+    public void checkLogic() throws Exception {
+        return;
+    }
+
+    public class AnimListener implements Animation.AnimationListener {
+        public Runnable mActionIn;
+        public Runnable mActionOut;
+        public InfObject mInfo;
 
         @Override
-        public void onAnimationEnd(Animator animator){
-            mActionEnd.run();
-            mTaskOut.wasStarted = false;
-            mTaskIn.wasStarted = false;
+        public void onAnimationStart(Animation animation) {
+            mActionIn.run();
+            mInfo.wasStarted = true;
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            mActionOut.run();
+            mInfo.isFinished = true;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+            return;
         }
     }
 }

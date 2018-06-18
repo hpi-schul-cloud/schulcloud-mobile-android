@@ -45,5 +45,6 @@
     <!-- Content -->
     <eat-comment />
     <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
+    <string name="content_resource_client">via %1$s</string>
 
 </resources>

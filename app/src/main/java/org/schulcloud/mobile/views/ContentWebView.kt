@@ -7,7 +7,10 @@ import android.net.Uri
 import android.os.Build
 import android.support.annotation.AttrRes
 import android.util.AttributeSet
-import android.webkit.*
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,7 +22,7 @@ import org.schulcloud.mobile.utils.*
 /**
  * Date: 6/11/2018
  */
-class ContentWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0)
+open class ContentWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0)
     : WebView(context, attrs, defStyleAttr) {
 
     companion object {

@@ -29,4 +29,8 @@
     <!-- 30% white overlay -->
     <color name="button_gray_light">#8c9094</color>
 
+
+    <!--Material-->
+    <color name="material_divider">#1F000000</color>
+
 </resources>

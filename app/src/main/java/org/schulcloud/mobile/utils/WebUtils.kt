@@ -29,6 +29,13 @@ const val ENCODING_UTF_8 = "utf-8"
 val HOST = Config.API_URL.substringBeforeLast(":")
 
 
+fun String?.asUri(): Uri {
+    return if (this == null)
+        Uri.EMPTY
+    else
+        Uri.parse(this)
+}
+
 fun newCustomTab(context: Context): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
         setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed))
@@ -39,7 +46,7 @@ fun newCustomTab(context: Context): CustomTabsIntent {
 fun openUrl(context: Context, url: Uri, headers: Map<String, String>? = null) {
     Log.i(TAG, "Opening url: $url")
     newCustomTab(context).apply {
-                headers?.also { intent.putExtra(Browser.EXTRA_HEADERS, headers.asBundle()) }
+        headers?.also { intent.putExtra(Browser.EXTRA_HEADERS, headers.asBundle()) }
 
         intent.putExtra(EXTRA_REFERRER, Uri.parse("https://schul-cloud.org/courses/59a3c657a2049554a93fec3a/topics/5a7afee7994b406cfc028dd2/"))
     }.launchUrl(context, url)

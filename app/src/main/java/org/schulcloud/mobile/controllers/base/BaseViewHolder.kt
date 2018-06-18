@@ -11,14 +11,24 @@ import android.view.ViewGroup
 /**
  * Date: 6/11/2018
  */
-abstract class BaseViewHolder<B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root) {
-    val context: Context
-        get() = binding.root.context
-
+abstract class BaseViewHolder<T : Any, B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root) {
     companion object {
         fun <B : ViewDataBinding> createBinding(parent: ViewGroup, @LayoutRes layoutId: Int): B {
             return DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutId,
                     parent, false)
         }
     }
+
+    val context: Context
+        get() = binding.root.context
+
+    private lateinit var _item: T
+    var item: T
+        get() = _item
+        set(value) {
+            _item = value
+            onItemSet()
+        }
+
+    abstract fun onItemSet()
 }

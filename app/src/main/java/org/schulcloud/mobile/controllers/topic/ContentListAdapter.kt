@@ -32,6 +32,7 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<out ViewDataBinding> {
         return when (viewType) {
             0 -> TextViewHolder(createBinding(parent, R.layout.item_content_text))
+            1 -> ResourcesViewHolder(createBinding(parent, R.layout.item_content_resources))
             3 -> EtherpadViewHolder(createBinding(parent, R.layout.item_content_etherpad))
             else -> UnsupportedViewHolder(createBinding(parent, R.layout.item_content_unsupported))
         }
@@ -46,6 +47,6 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
 
     override fun onBindViewHolder(holder: ContentViewHolder<out ViewDataBinding>, position: Int) {
         holder.topic = topic
-        holder.content = contents[position]
+        holder.item = contents[position]
     }
 }

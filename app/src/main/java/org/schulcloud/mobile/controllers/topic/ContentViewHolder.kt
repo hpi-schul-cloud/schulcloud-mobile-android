@@ -1,17 +1,19 @@
 package org.schulcloud.mobile.controllers.topic
 
+import android.arch.lifecycle.Observer
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import io.realm.Realm
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
-import org.schulcloud.mobile.databinding.ItemContentEtherpadBinding
-import org.schulcloud.mobile.databinding.ItemContentResourcesBinding
-import org.schulcloud.mobile.databinding.ItemContentTextBinding
-import org.schulcloud.mobile.databinding.ItemContentUnsupportedBinding
+import org.schulcloud.mobile.databinding.*
+import org.schulcloud.mobile.models.content.ContentRepository
 import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.utils.HEADER_REFERER
 import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
+
 
 /**
  * Date: 6/11/2018
@@ -47,6 +49,33 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
 
     fun openExternal() {
         openUrl(context, item.content?.url.asUri(), mapOf(HEADER_REFERER to topic.url))
+    }
+}
+
+class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolder<ItemContentGeogebraBinding>(binding) {
+    companion object {
+        private const val GEOGEBRA = "https://www.geogebra.org/m/"
+    }
+
+    private val realm: Realm by lazy {
+        Realm.getDefaultInstance()
+    }
+
+    override fun onItemSet() {
+        binding.wrapper = item
+        binding.content = item.content
+        binding.viewHolder = this
+
+        binding.preview.setImageResource(0)
+        item.content?.materialId?.also {
+            ContentRepository.geogebraPreviewUrl(realm, it).observe(this, Observer {
+                Glide.with(context).load(it?.previewUrl.asUri()).into(binding.preview)
+            })
+        }
+    }
+
+    fun openExternal() {
+        openUrl(context, (GEOGEBRA + item.content?.materialId).asUri())
     }
 }
 

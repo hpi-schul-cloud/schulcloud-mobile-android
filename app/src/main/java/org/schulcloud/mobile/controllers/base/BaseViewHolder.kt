@@ -1,5 +1,8 @@
 package org.schulcloud.mobile.controllers.base
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LifecycleRegistry
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
@@ -11,7 +14,7 @@ import android.view.ViewGroup
 /**
  * Date: 6/11/2018
  */
-abstract class BaseViewHolder<T : Any, B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root) {
+abstract class BaseViewHolder<T : Any, B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
     companion object {
         fun <B : ViewDataBinding> createBinding(parent: ViewGroup, @LayoutRes layoutId: Int): B {
             return DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutId,
@@ -21,14 +24,23 @@ abstract class BaseViewHolder<T : Any, B : ViewDataBinding>(val binding: B) : Re
 
     val context: Context
         get() = binding.root.context
+    private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
     private lateinit var _item: T
     var item: T
         get() = _item
         set(value) {
             _item = value
+            lifecycleRegistry.markState(Lifecycle.State.CREATED)
+            lifecycleRegistry.markState(Lifecycle.State.STARTED)
             onItemSet()
         }
 
+    init {
+        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+    }
+
     abstract fun onItemSet()
+
+    override fun getLifecycle(): Lifecycle = lifecycleRegistry
 }

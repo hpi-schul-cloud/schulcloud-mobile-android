@@ -9,7 +9,10 @@ import io.realm.RealmObject
  */
 class RealmObjectLiveData<T : RealmObject>(private val result: T) : LiveData<T>() {
 
-    private val listener = RealmChangeListener<T> { result -> value = result }
+    private val listener = RealmChangeListener<T> { result ->
+        if (result.isValid)
+            value = result
+    }
 
     override fun onActive() {
         result.addChangeListener(listener)

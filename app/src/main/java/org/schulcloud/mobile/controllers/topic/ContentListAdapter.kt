@@ -33,6 +33,7 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
         return when (viewType) {
             0 -> TextViewHolder(createBinding(parent, R.layout.item_content_text))
             1 -> ResourcesViewHolder(createBinding(parent, R.layout.item_content_resources))
+            2 -> GeogebraViewHolder(createBinding(parent, R.layout.item_content_geogebra))
             3 -> EtherpadViewHolder(createBinding(parent, R.layout.item_content_etherpad))
             else -> UnsupportedViewHolder(createBinding(parent, R.layout.item_content_unsupported))
         }

@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import org.schulcloud.mobile.util.dialogs.DialogFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -85,8 +87,8 @@ implements ChangeProfileMvpView{
         ButterKnife.bind(this);
         setPresenter(mChangeProfilePresenter);
 
-        Animation animIn;
-        Animation animOut;
+        Animation animIn = AnimationUtils.loadAnimation(this,R.anim.resize_height_0_to_100);
+        Animation animOut = AnimationUtils.loadAnimation(this,R.anim.resize_height_100_to_0);
 
         settings_submit.setBackgroundColor(Color.GRAY);
 
@@ -94,13 +96,13 @@ implements ChangeProfileMvpView{
         new profileAnimationLogicListener(oldPasswordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals("") || !newPasswordRepeat_editText.getText().toString().equals(""))?true:false);
 
-        /*new profileAnimationLogicListener(passwordEmpty,animIn,animOut)
-                .setLogic(() -> password_editText.getText().toString().equals("")?true:false);*/
+        new profileAnimationLogicListener(passwordEmpty,animIn,animOut)
+                .setLogic(() -> password_editText.getText().toString().equals("")?true:false);
 
         new profileAnimationLogicListener(passwordInfo,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(""))?true:false);
 
-        /*new profileAnimationLogicListener(passwordsDoNotMatch,animIn,animOut)
+        new profileAnimationLogicListener(passwordsDoNotMatch,animIn,animOut)
                 .setLogic(() -> (!newPassword_editText.getText().toString().equals(newPasswordRepeat_editText.getText().toString()))?true:false);
 
         new profileAnimationLogicListener(passwordTooShort,animIn,animOut)
@@ -113,7 +115,7 @@ implements ChangeProfileMvpView{
                 .setLogic(() -> newPassword_editText.getText().toString().equals(newPassword_editText.getText().toString().toLowerCase())?true:false);
 
         new profileAnimationLogicListener(passwordOkay,animIn,animOut)
-                .setLogic(() -> (passwordIsOkay));*/
+                .setLogic(() -> (passwordIsOkay));
 
         // Profile
         mChangeProfilePresenter.loadProfile();
@@ -136,7 +138,7 @@ implements ChangeProfileMvpView{
         newPassword_editText.addTextChangedListener(listener);
         newPasswordRepeat_editText.addTextChangedListener(listener);
 
-        //passwordInfo.removeAllViews();
+        passwordInfo.removeAllViews();
         ViewGroup oldPasswordParent = (ViewGroup)oldPasswordInfo.getParent();
         oldPasswordParent.removeView(oldPasswordInfo);
         ViewGroup passwordInfoParent = (ViewGroup) passwordInfo.getParent();
@@ -222,20 +224,22 @@ implements ChangeProfileMvpView{
             super(view, transIn, transOut);
             //transIn.getChildAnimations();
             setActionIn(() -> {if(mViewParent.findViewById(mView.getId()) == null) {mViewParent.addView(mView);}});
-            setActionOut(() -> {mViewParent.removeView(mView);});
+            setActionOut(() -> {mViewParent.removeView(mView);mTransOut.reset();mTransIn.reset();});
         }
 
         @Override
         public void checkLogic() throws Exception {
             if(mLogic.call()){
-                if(!animListenerIn.mInfo.wasStarted){
+                if(!mTransIn.wasStarted()){
+                    mActionIn.run();
                     mView.clearAnimation();
-                    mView.startAnimation(mTransIn);
+                    mTransIn.start();
                 }
             }else{
-                if(animListenerIn.mInfo.wasStarted && !animListenerOut.mInfo.wasStarted){
+                if(mTransIn.wasStarted() && !mTransOut.wasStarted()){
                     mView.clearAnimation();
-                    mView.startAnimation(mTransOut);
+                    mTransOut.start();
+                    mHandler.postDelayed(mActionOut,mTransOut.mAnim.getDuration());
                 }
             }
         }

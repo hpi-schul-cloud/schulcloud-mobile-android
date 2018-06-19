@@ -12,24 +12,19 @@ public class AnimationLogicListener {
     protected Callable<Boolean> mLogic;
     protected View mView;
     protected ViewGroup mViewParent;
-    protected Animation mTransIn, mTransOut;
-    protected AnimListener animListenerIn, animListenerOut;
+    protected AnimationClass mTransIn, mTransOut;
+    protected Runnable mActionIn, mActionOut;
     protected Handler mHandler;
     protected boolean running;
 
     public AnimationLogicListener(View view, Animation transIn, Animation transOut){
         mView = view;
         mViewParent = (ViewGroup) mView.getParent();
-        mTransIn = transIn;
-        mTransOut = transOut;
-
-        animListenerIn = new AnimListener();
-        animListenerOut =  new AnimListener();
-
-        animListenerIn.mActionIn = () -> {return;};
-        animListenerOut.mActionIn = () -> {return;};
 
         mHandler = new Handler();
+
+        mTransIn = new AnimationClass(transIn,mView);
+        mTransOut = new AnimationClass(transOut,mView);
     }
 
     public void start(){
@@ -51,19 +46,19 @@ public class AnimationLogicListener {
     }
 
     public void setActionIn(Runnable actionIn){
-        animListenerIn.mActionIn = actionIn;
+        mActionIn = actionIn;
     }
 
     public void setActionOut(Runnable actionOut){
-        animListenerOut.mActionOut = actionOut;
+        mActionOut = actionOut;
     }
 
     public Runnable getActionIn(){
-        return animListenerIn.mActionIn;
+        return mActionIn;
     }
 
     public Runnable getActionOut(){
-        return animListenerOut.mActionOut;
+        return mActionOut;
     }
 
     public void startLogicLoop(){
@@ -85,28 +80,5 @@ public class AnimationLogicListener {
     /*** Override this method! ***/
     public void checkLogic() throws Exception {
         return;
-    }
-
-    public class AnimListener implements Animation.AnimationListener {
-        public Runnable mActionIn;
-        public Runnable mActionOut;
-        public InfObject mInfo;
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-            mActionIn.run();
-            mInfo.wasStarted = true;
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            mActionOut.run();
-            mInfo.isFinished = true;
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-            return;
-        }
     }
 }

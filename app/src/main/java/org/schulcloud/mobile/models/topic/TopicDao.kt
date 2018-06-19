@@ -12,6 +12,7 @@ class TopicDao(private val realm: Realm) {
 
     fun listTopics(courseId: String): LiveRealmData<Topic> {
         return realm.where(Topic::class.java)
+                .equalTo("courseId", courseId)
                 .findAllAsync()
                 .asLiveData()
     }

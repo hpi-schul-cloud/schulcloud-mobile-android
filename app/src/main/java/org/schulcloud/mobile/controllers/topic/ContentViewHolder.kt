@@ -5,6 +5,7 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import io.realm.Realm
+import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.*
 import org.schulcloud.mobile.models.content.ContentRepository
@@ -67,8 +68,8 @@ class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolde
 
         binding.preview.setImageResource(0)
         item.content?.materialId?.also {
-            ContentRepository.geogebraPreviewUrl(realm, it).observe(this, Observer {
-                Glide.with(context).load(it?.previewUrl.asUri()).into(binding.preview)
+            ContentRepository.geogebraPreviewUrl(realm, it).observe(context as BaseActivity, Observer {
+                Glide.with(context as BaseActivity).load(it?.previewUrl.asUri()).into(binding.preview)
             })
         }
     }
@@ -92,7 +93,7 @@ class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolde
 
 class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolder<ItemContentNexboardBinding>(binding) {
     companion object {
-        private const val URL_SUFFIX = "?username=Test&stickypad=false"
+        private const val URL_SUFFIX = "?username=Test"
     }
 
     override fun onItemSet() {

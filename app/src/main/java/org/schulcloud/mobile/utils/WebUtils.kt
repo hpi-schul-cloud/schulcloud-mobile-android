@@ -37,6 +37,8 @@ fun newCustomTab(context: Context): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
         setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed))
         addDefaultShareMenuItem()
+        setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
+        setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
     }.build()
 }
 

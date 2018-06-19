@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+
+        <variable
+            name="viewHolder"
+            type="org.schulcloud.mobile.controllers.topic.NexboardViewHolder" />
+        <variable
+            name="wrapper"
+            type="org.schulcloud.mobile.models.content.ContentWrapper" />
+        <variable
+            name="content"
+            type="org.schulcloud.mobile.models.content.Content" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Content_Header.WithLink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_title_margin"
+            android:text="@{wrapper.title}"
+            app:layout_constraintEnd_toStartOf="@+id/openExternal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Content name" />
+
+        <ImageView
+            android:id="@+id/openExternal"
+            style="@style/Content_LinkExternal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> viewHolder.openExternal()}"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/title" />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/barrierHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="title,openExternal" />
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{content.description}"
+            android:visibility="@{ViewUtilsKt.toVisible(content.description)}"
+            app:layout_constraintTop_toBottomOf="@+id/barrierHeader"
+            tools:text="Description...\n\n\nspanning\nmultiple\nlines" />
+
+        <org.schulcloud.mobile.views.ContentWebView
+            android:id="@+id/contentView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,4:3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:layout_goneMarginTop="0dp"
+            tools:ignore="WebViewLayout" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

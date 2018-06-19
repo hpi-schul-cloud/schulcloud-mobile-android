@@ -94,6 +94,24 @@ class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolde
     }
 }
 
+class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolder<ItemContentNexboardBinding>(binding) {
+    companion object {
+        private const val URL_SUFFIX = "?username=Test&stickypad=false"
+    }
+
+    override fun onItemSet() {
+        binding.wrapper = item
+        binding.content = item.content
+        binding.viewHolder = this
+
+        binding.contentView.loadUrl(item.content?.url + URL_SUFFIX)
+    }
+
+    fun openExternal() {
+        openUrl(context, (item.content?.url + URL_SUFFIX).asUri())
+    }
+}
+
 class UnsupportedViewHolder(binding: ItemContentUnsupportedBinding) : ContentViewHolder<ItemContentUnsupportedBinding>(binding) {
     override fun onItemSet() {
         binding.wrapper = item

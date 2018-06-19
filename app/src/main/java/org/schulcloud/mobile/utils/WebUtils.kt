@@ -36,6 +36,7 @@ fun String?.asUri(): Uri {
 fun newCustomTab(context: Context): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
         setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed))
+        setCloseButtonIcon(ContextCompat.getDrawable(context, R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
         addDefaultShareMenuItem()
         setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
         setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)

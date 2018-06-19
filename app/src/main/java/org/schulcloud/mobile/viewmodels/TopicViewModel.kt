@@ -15,8 +15,8 @@ class TopicViewModel(id: String) : ViewModel() {
         Realm.getDefaultInstance()
     }
 
-    private val _topic: LiveData<Topic> = TopicRepository.topic(realm, id)
+    private val _topic: LiveData<Topic?> = TopicRepository.topic(realm, id)
 
-    val topic: LiveData<Topic>
+    val topic: LiveData<Topic?>
         get() = _topic
 }

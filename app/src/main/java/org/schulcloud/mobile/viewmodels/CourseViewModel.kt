@@ -18,12 +18,12 @@ class CourseViewModel(id: String) : ViewModel() {
         Realm.getDefaultInstance()
     }
 
-    private val _course: LiveData<Course> = CourseRepository.course(realm, id)
-    private val _topics: LiveData<RealmResults<Topic>> = TopicRepository.listTopics(realm, id)
+    private val _course: LiveData<Course?> = CourseRepository.course(realm, id)
+    private val _topics: LiveData<RealmResults<Topic>?> = TopicRepository.listTopics(realm, id)
 
-    val course: LiveData<Course>
+    val course: LiveData<Course?>
         get() = _course
 
-    val topics: LiveData<RealmResults<Topic>>
+    val topics: LiveData<RealmResults<Topic>?>
         get() = _topics
 }

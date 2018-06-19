@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.utils
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.os.Bundle
 
 /**
@@ -12,3 +14,6 @@ fun Map<String, String>.asBundle(): Bundle {
             putString(entry.key, entry.value)
     }
 }
+
+fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> = Transformations.map(this, func)
+fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> = Transformations.switchMap(this, func)

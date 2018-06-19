@@ -1,9 +1,7 @@
 package org.schulcloud.mobile.utils
 
-import io.realm.Realm
-import io.realm.RealmModel
-import io.realm.RealmObject
-import io.realm.RealmResults
+import android.arch.lifecycle.LiveData
+import io.realm.*
 import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.content.ContentDao
@@ -17,6 +15,12 @@ fun <T : RealmModel> RealmResults<T>.asLiveData(): LiveRealmData<T> = LiveRealmD
 // Convenience extension on RealmObject to return as RealmObjectLiveData
 fun <T : RealmObject> T.asLiveData(): RealmObjectLiveData<T> = RealmObjectLiveData(this)
 
-fun Realm.courseDao() : CourseDao = CourseDao(this)
-fun Realm.topicDao() : TopicDao = TopicDao(this)
-fun Realm.contentDao() : ContentDao = ContentDao(this)
+fun <T : RealmObject> RealmQuery<T>.firstAsLiveData(): LiveData<T?> {
+    return this.findAllAsync()
+            .asLiveData()
+            .map { it?.getOrNull(0) }
+}
+
+fun Realm.courseDao(): CourseDao = CourseDao(this)
+fun Realm.topicDao(): TopicDao = TopicDao(this)
+fun Realm.contentDao(): ContentDao = ContentDao(this)

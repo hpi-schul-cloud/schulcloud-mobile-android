@@ -7,11 +7,11 @@ import io.realm.RealmObject
 /**
  * Date: 6/9/2018
  */
-class RealmObjectLiveData<T : RealmObject>(private val result: T) : LiveData<T>() {
+class RealmObjectLiveData<T : RealmObject>(private val result: T) : LiveData<T?>() {
 
     private val listener = RealmChangeListener<T> { result ->
-        if (result.isValid)
-            value = result
+        if (result.isLoaded)
+            value = if (result.isLoaded) result else null
     }
 
     override fun onActive() {

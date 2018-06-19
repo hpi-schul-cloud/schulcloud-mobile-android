@@ -8,12 +8,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.realm.RealmResults
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity
-import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
@@ -39,7 +37,7 @@ class CourseListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //
-        courseListViewModel?.getCourses()?.observe(this, Observer<RealmResults<Course>> { courses ->
+        courseListViewModel?.getCourses()?.observe(this, Observer { courses ->
             courseListAdapter!!.update(courses!!)
         })
 

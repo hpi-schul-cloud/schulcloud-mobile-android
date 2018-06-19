@@ -7,13 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_course.*
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.topic.TopicActivity
 import org.schulcloud.mobile.databinding.ActivityCourseBinding
-import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
@@ -52,7 +50,7 @@ class CourseActivity : BaseActivity() {
         })
         recycler_view.adapter = topicsAdapter
 
-        viewModel.topics.observe(this, Observer<RealmResults<Topic>> { topics ->
+        viewModel.topics.observe(this, Observer { topics ->
             topics?.also { topicsAdapter.update(it) }
         })
     }

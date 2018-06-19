@@ -46,5 +46,6 @@
     <eat-comment />
     <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
     <string name="content_resource_client">via %1$s</string>
+    <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
 
 </resources>

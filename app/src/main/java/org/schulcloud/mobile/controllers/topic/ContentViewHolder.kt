@@ -10,7 +10,6 @@ import org.schulcloud.mobile.databinding.*
 import org.schulcloud.mobile.models.content.ContentRepository
 import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.models.topic.Topic
-import org.schulcloud.mobile.utils.HEADER_REFERER
 import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
 
@@ -48,7 +47,7 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
     }
 
     fun openExternal() {
-        openUrl(context, item.content?.url.asUri(), mapOf(HEADER_REFERER to topic.url))
+        openUrl(context, item.content?.url.asUri())
     }
 }
 
@@ -84,13 +83,10 @@ class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolde
         binding.wrapper = item
         binding.content = item.content
         binding.viewHolder = this
-
-        binding.contentView.referer = "https://schul-cloud.org/courses/59a3c657a2049554a93fec3a/topics/5a7afee7994b406cfc028dd2/"
-        binding.contentView.loadUrl(item.content?.url, mutableMapOf(HEADER_REFERER to "https://schul-cloud.org/courses/59a3c657a2049554a93fec3a/topics/5a7afee7994b406cfc028dd2/"))
     }
 
     fun openExternal() {
-        openUrl(context, item.content?.url.asUri(), mapOf(HEADER_REFERER to topic.url))
+        openUrl(context, topic.url.asUri())
     }
 }
 

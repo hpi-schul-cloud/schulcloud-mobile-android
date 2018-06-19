@@ -13,7 +13,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
@@ -71,27 +70,18 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
     var httpClient: OkHttpClient
         private set
 
-    var referer: String? = null
-
     init {
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             WebView.setWebContentsDebuggingEnabled(true)
-
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
 
         httpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             if (UserRepository.isAuthorized)
                 builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
-
-            referer?.also { builder.addHeader(HEADER_REFERER, it) }
             chain.proceed(builder.build())
-        }
-                .addInterceptor(loggingInterceptor).build()
+        }.build()
 
         settings.javaScriptEnabled = true
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE // TODO: remove
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 openUrl(Uri.parse(url))

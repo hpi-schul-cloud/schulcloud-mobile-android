@@ -19,7 +19,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> viewHolder.openExternal()}">
 
         <TextView
             android:id="@+id/title"
@@ -38,8 +40,6 @@
             style="@style/Content_LinkExternal"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:onClick="@{() -> viewHolder.openExternal()}"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title" />
@@ -62,19 +62,15 @@
             app:layout_constraintTop_toBottomOf="@+id/barrierHeader"
             tools:text="Description...\n\n\nspanning\nmultiple\nlines" />
 
-        <org.schulcloud.mobile.views.ContentWebView
-            android:id="@+id/contentView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none"
+        <TextView
+            style="@style/Content_Text.Empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/content_etherpad_openInBrowser"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H,4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description"
-            app:layout_goneMarginTop="0dp"
-            tools:ignore="WebViewLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/description" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

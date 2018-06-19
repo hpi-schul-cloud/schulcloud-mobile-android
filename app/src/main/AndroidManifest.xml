@@ -40,6 +40,7 @@
 
         <activity
             android:name=".controllers.course.CourseActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".controllers.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -47,6 +48,7 @@
         </activity>
         <activity
             android:name=".controllers.topic.TopicActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".controllers.course.CourseActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

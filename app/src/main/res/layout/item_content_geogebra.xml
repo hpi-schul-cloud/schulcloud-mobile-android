@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
@@ -17,7 +16,7 @@
             type="org.schulcloud.mobile.models.content.Content" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
@@ -27,38 +26,18 @@
         <TextView
             android:id="@+id/title"
             style="@style/Content_Header.WithLink"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:text="@{wrapper.title}"
-            app:layout_constraintEnd_toStartOf="@+id/openExternal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="Content name" />
-
-        <ImageView
-            android:id="@+id/openExternal"
-            style="@style/Content_LinkExternal"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title" />
-
-        <android.support.constraint.Barrier
-            android:id="@+id/barrierHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="title,openExternal" />
 
         <ImageView
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/barrierHeader"
             tools:layout_height="192dp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 </layout>

@@ -57,7 +57,7 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                 + "</head>\n"
                 + "<body>")
         // language=HTML
-        val CONTENT_TEXT_SUFFIX = ("<script>\n"
+        const val CONTENT_TEXT_SUFFIX = ("<script>\n"
                 + "    for (tag of document.body.getElementsByTagName('*')) {\n"
                 + "        tag.style.width = '';\n"
                 + "        tag.style.height = '';\n"
@@ -65,21 +65,18 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                 + "</script>\n"
                 + "</body>\n"
                 + "</html>\n")
-    }
 
-    var httpClient: OkHttpClient
-        private set
-
-    init {
-        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            WebView.setWebContentsDebuggingEnabled(true)
-
-        httpClient = OkHttpClient.Builder().addInterceptor { chain ->
+        val HTTP_CLIENT: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             if (UserRepository.isAuthorized)
                 builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
             chain.proceed(builder.build())
         }.build()
+    }
+
+    init {
+        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            WebView.setWebContentsDebuggingEnabled(true)
 
         settings.javaScriptEnabled = true
         webViewClient = object : WebViewClient() {
@@ -109,7 +106,7 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
 
             private fun handleRequest(url: String): WebResourceResponse? {
                 return try {
-                    val response = httpClient.newCall(Request.Builder().url(url).build()).execute()
+                    val response = HTTP_CLIENT.newCall(Request.Builder().url(url).build()).execute()
                     WebResourceResponse(
                             response.header(HEADER_CONTENT_TYPE)?.substringBefore(';'),
                             response.header(HEADER_CONTENT_ENCODING, ENCODING_UTF_8),

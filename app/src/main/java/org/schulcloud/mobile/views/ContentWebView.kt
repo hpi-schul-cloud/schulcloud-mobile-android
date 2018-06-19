@@ -11,10 +11,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.schulcloud.mobile.BuildConfig
-import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
 
 
@@ -65,13 +63,6 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                 + "</script>\n"
                 + "</body>\n"
                 + "</html>\n")
-
-        val HTTP_CLIENT: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-            val builder = chain.request().newBuilder()
-            if (UserRepository.isAuthorized)
-                builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
-            chain.proceed(builder.build())
-        }.build()
     }
 
     init {

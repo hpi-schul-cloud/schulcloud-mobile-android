@@ -6,8 +6,17 @@ import android.net.Uri
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.config.Config
+import org.schulcloud.mobile.config.Config.Companion.API_URL
+import org.schulcloud.mobile.models.user.UserRepository
+import java.io.IOException
 
 
 /**
@@ -25,6 +34,15 @@ const val ENCODING_UTF_8 = "utf-8"
 
 val HOST = Config.API_URL.substringBeforeLast(":")
 
+
+val HTTP_CLIENT: OkHttpClient by lazy {
+    OkHttpClient.Builder().addInterceptor { chain ->
+        val builder = chain.request().newBuilder()
+        if (UserRepository.isAuthorized)
+            builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
+        chain.proceed(builder.build())
+    }.build()
+}
 
 fun String?.asUri(): Uri {
     return if (this == null)
@@ -46,4 +64,21 @@ fun newCustomTab(context: Context): CustomTabsIntent {
 fun openUrl(context: Context, url: Uri) {
     Log.i(TAG, "Opening url: $url")
     newCustomTab(context).launchUrl(context, url)
+}
+
+suspend fun resolveRedirect(url: String): Uri? {
+    if (url[0] != '/')
+        return url.asUri()
+
+    return try {
+        val response: Deferred<Response>
+        response = async(CommonPool) {
+            val request = Request.Builder().url(combinePath(API_URL, url)).build()
+            HTTP_CLIENT.newCall(request).execute()
+        }
+        response.await().request().url().toString().asUri()
+    } catch (e: IOException) {
+        Log.w(TAG, "Error resolving internal redirect", e)
+        null
+    }
 }

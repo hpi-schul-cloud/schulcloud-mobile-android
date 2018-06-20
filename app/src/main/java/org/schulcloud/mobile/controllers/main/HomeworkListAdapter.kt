@@ -1,7 +1,9 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.graphics.Color
+import android.os.Build
 import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import org.schulcloud.mobile.models.homework.Homework
 import android.view.View
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import org.schulcloud.mobile.R
+import java.text.ParseException
 
 class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -33,12 +36,38 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val homework = homeworkList[position]
         if (holder is HomeworkViewHolder){
             holder.homeworkTitle.text = homework.title
-            holder.homeworkDueTill.text = homework.dueDate
-            holder.homeworkDescription.text = homework.description
 
             homework.courseId?.let {
                 holder.homeworkCourseTitle.text = it.name
                 holder.homeworkCourseColor.setColorFilter(Color.parseColor(it.color))
+            }
+
+            homework.dueDate?.let{
+                var dueTextAndColorId: Pair<String, Int>?
+                try{
+                     dueTextAndColorId = homework.getDueTextAndColorId()
+                }
+                catch(e: ParseException){
+                    dueTextAndColorId = Pair("", Color.WHITE)
+                }
+                holder.homeworkDueTill.text = dueTextAndColorId!!.first
+                holder.homeworkDueTill.setTextColor(dueTextAndColorId.second)
+
+            }
+
+            // Usage for date-related testing
+           // holder.homeworkDueTill.text = homework.dueDate
+
+            homework.description?.let{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                    holder.homeworkDescription.text  = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY)
+                }
+                else{
+                    @Suppress("DEPRECATION")
+                    holder.homeworkDescription.text = Html.fromHtml(it)
+                }
+
+                holder.homeworkDescription.text = holder.homeworkDescription.text.toString().trim()
             }
 
         }

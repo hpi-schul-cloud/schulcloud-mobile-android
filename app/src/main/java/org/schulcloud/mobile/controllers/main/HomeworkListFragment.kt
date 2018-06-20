@@ -3,6 +3,7 @@ package org.schulcloud.mobile.controllers.main
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +39,7 @@ class HomeworkListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recycler_view_homework.layoutManager = LinearLayoutManager(activity)
+        recycler_view_homework.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         homeworkListAdapter = HomeworkListAdapter()
         recycler_view_homework.adapter = homeworkListAdapter
 

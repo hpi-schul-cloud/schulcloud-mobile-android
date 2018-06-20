@@ -10,12 +10,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
             android:gravity="end">
 
             <android.support.constraint.ConstraintLayout
@@ -33,13 +33,14 @@
                     android:layout_marginEnd="@dimen/circle_course_color_diameter"
                     android:layout_marginRight="@dimen/circle_course_color_diameter"
                     android:textSize="16sp"
+                    android:textAllCaps="true"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="COURSE"/>
+                    tools:text="Course"/>
 
                 <ImageView
                     android:id="@+id/homework_course_color"
@@ -56,17 +57,11 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <!-- TODO: make flag icon density dependent-->
             <TextView
                 android:id="@+id/homework_dueTill"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:drawableStart="@drawable/baseline_outlined_flag_black_18dp"
-                android:drawableLeft="@drawable/baseline_outlined_flag_black_18dp"
-                android:drawablePadding="4dp"
-                android:drawableTint="@color/red"
-                android:textColor="@color/red"
                 android:textSize="16sp"
                 tools:text="In x Stunden fällig" />
 
@@ -92,7 +87,9 @@
             android:layout_marginTop="8dp"
             android:gravity="start"
             android:textSize="@dimen/text_medium_size"
-            tools:text="Description" />
+            tools:text="Description"
+            android:maxLines="4"
+            android:ellipsize="end"/>
 
 
     </LinearLayout>

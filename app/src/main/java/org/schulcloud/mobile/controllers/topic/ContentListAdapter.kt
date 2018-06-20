@@ -24,7 +24,7 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
     fun update(topic: Topic?) {
         if (topic != null)
             this.topic = topic
-        this.contents = topic?.contents ?: emptyList()
+        contents = topic?.contents ?: emptyList()
         notifyDataSetChanged()
     }
 

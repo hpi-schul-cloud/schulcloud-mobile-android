@@ -3,6 +3,7 @@ package org.schulcloud.mobile.controllers.course
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemTopicBinding
 import org.schulcloud.mobile.models.topic.Topic
@@ -24,13 +25,15 @@ class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback) : R
         return TopicViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return topics.size
-    }
+    override fun getItemCount(): Int = topics.size
 
     override fun onBindViewHolder(holder: TopicViewHolder, position: Int) {
-        holder.binding.topic = topics[position]
+        holder.item = topics[position]
     }
 
-    class TopicViewHolder(val binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root)
+    class TopicViewHolder(binding: ItemTopicBinding) : BaseViewHolder<Topic, ItemTopicBinding>(binding) {
+        override fun onItemSet() {
+            binding.topic = item
+        }
+    }
 }

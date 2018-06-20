@@ -31,7 +31,11 @@ class CourseActivity : BaseActivity() {
     }
 
     private lateinit var viewModel: CourseViewModel
-    private lateinit var topicsAdapter: TopicListAdapter
+    private val topicsAdapter: TopicListAdapter by lazy {
+        TopicListAdapter(OnItemSelectedCallback { id ->
+            startActivity(TopicActivity.newIntent(this@CourseActivity, id))
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,15 +47,12 @@ class CourseActivity : BaseActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        recycler_view.layoutManager = LinearLayoutManager(this)
-        recycler_view.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        topicsAdapter = TopicListAdapter(OnItemSelectedCallback { id ->
-            startActivity(TopicActivity.newIntent(this@CourseActivity, id))
-        })
-        recycler_view.adapter = topicsAdapter
+        recycler_view.apply {
+            layoutManager = LinearLayoutManager(this@CourseActivity)
+            adapter = topicsAdapter
+            addItemDecoration(DividerItemDecoration(this@CourseActivity, DividerItemDecoration.VERTICAL))
+        }
 
-        viewModel.topics.observe(this, Observer { topics ->
-            topics?.also { topicsAdapter.update(it) }
-        })
+        viewModel.topics.observe(this, Observer { topicsAdapter.update(it ?: emptyList()) })
     }
 }

@@ -39,8 +39,9 @@
     <string name="error_password">Please insert valid Password.</string>
 
 
-    <!-- Courses -->
-    <string name="courses_title">Meine Kurse</string>
+    <!-- Course -->
+    <string name="course_title">Meine Kurse</string>
+    <string name="course_topics">Themen</string>
 
     <!-- Content -->
     <eat-comment />

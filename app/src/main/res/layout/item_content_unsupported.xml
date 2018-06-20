@@ -31,7 +31,8 @@
             style="@style/Content_Text.Empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@string/content_unsupported_message(wrapper.component)}" />
+            android:text="@{@string/content_unsupported_message(wrapper.component)}"
+            tools:text="@string/content_unsupported_message" />
 
     </LinearLayout>
 </layout>

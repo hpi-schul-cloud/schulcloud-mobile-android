@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.models.topic
 
 import io.realm.Realm
+import kotlinx.coroutines.experimental.async
+import org.schulcloud.mobile.jobs.GetTopicJob
 import org.schulcloud.mobile.jobs.ListCourseTopicsJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.LiveRealmData
@@ -14,7 +16,9 @@ object TopicRepository {
 
 
     fun listTopics(realm: Realm, courseId: String): LiveRealmData<Topic> {
-        requestTopics(courseId)
+        async {
+            syncTopics(courseId)
+        }
         return realm.topicDao().listTopics(courseId)
     }
 
@@ -22,8 +26,17 @@ object TopicRepository {
         return realm.topicDao().topic(id)
     }
 
-    private fun requestTopics(courseId: String) {
+    suspend fun syncTopics(courseId: String) {
         ListCourseTopicsJob(courseId, object : RequestJobCallback() {
+            override fun onSuccess() {
+            }
+
+            override fun onError(code: ErrorCode) {
+            }
+        }).run()
+    }
+    suspend fun syncTopic(topicId: String) {
+        GetTopicJob(topicId, object : RequestJobCallback() {
             override fun onSuccess() {
             }
 

@@ -34,7 +34,7 @@ class CourseListAdapter(private val selectedCallback: OnItemSelectedCallback) : 
             holder.card.setOnClickListener { selectedCallback.onItemSelected(id) }
             holder.courseTitle.text = name
             holder.courseTeacher.text = teachers?.joinToString(", ") { it.shortName() }
-            holder.courseColor.setBackgroundColor(Color.parseColor(color))
+            color?.also { holder.courseColor.setBackgroundColor(Color.parseColor(it)) }
         }
     }
 

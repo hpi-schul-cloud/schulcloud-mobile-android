@@ -14,10 +14,9 @@ open class Topic : RealmObject() {
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String? = null
+    var id: String = ""
 
     var name: String? = null
-    var description: String? = null
     var date: String? = null
     var time: String? = null
     var courseId: String? = null

@@ -12,6 +12,9 @@ import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.topic.TopicActivity
 import org.schulcloud.mobile.databinding.ActivityCourseBinding
+import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.topic.TopicRepository
+import org.schulcloud.mobile.utils.syncOnRefresh
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
@@ -47,12 +50,19 @@ class CourseActivity : BaseActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        recycler_view.apply {
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(this@CourseActivity)
             adapter = topicsAdapter
             addItemDecoration(DividerItemDecoration(this@CourseActivity, DividerItemDecoration.VERTICAL))
         }
 
         viewModel.topics.observe(this, Observer { topicsAdapter.update(it ?: emptyList()) })
+
+        swipeRefresh.syncOnRefresh {
+            viewModel.course.value?.also {
+                CourseRepository.syncCourse(it.id)
+                TopicRepository.syncTopics(it.id)
+            }
+        }
     }
 }

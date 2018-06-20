@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.models.user
 
 import io.realm.Realm
-import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
@@ -29,7 +28,7 @@ object UserRepository {
             return UserStorage().accessToken != null
         }
 
-    fun login(email: String, password: String, callback: RequestJobCallback) {
+    suspend fun login(email: String, password: String, callback: RequestJobCallback) {
         CreateAccessTokenJob(Credentials(email, password), callback).run()
     }
 

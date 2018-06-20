@@ -4,14 +4,16 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity
+import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.utils.syncOnRefresh
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
@@ -21,12 +23,14 @@ class CourseListFragment : BaseFragment() {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
 
-    private var courseListViewModel: CourseListViewModel? = null
-    private var courseListAdapter: CourseListAdapter? = null
+    private lateinit var viewModel: CourseListViewModel
+    private val coursesAdapter: CourseListAdapter by lazy {
+        CourseListAdapter(OnItemSelectedCallback { startActivity(CourseActivity.newIntent(context!!, it)) })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        courseListViewModel = ViewModelProviders.of(this).get(CourseListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(CourseListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,16 +40,19 @@ class CourseListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //
-        courseListViewModel?.getCourses()?.observe(this, Observer { courses ->
-            courseListAdapter!!.update(courses!!)
+
+        viewModel.getCourses().observe(this, Observer { courses ->
+            coursesAdapter.update(courses!!)
         })
 
-        //
-        val recyclerView = activity!!.findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(activity, 2)
-        recyclerView.addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
-        courseListAdapter = CourseListAdapter(OnItemSelectedCallback { startActivity(CourseActivity.newIntent(context!!, it)) })
-        recyclerView.adapter = courseListAdapter
+        recyclerView.apply {
+            layoutManager = GridLayoutManager(activity, 2)
+            adapter = coursesAdapter
+            addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
+        }
+
+        swipeRefresh.syncOnRefresh {
+            CourseRepository.syncCourses()
+        }
     }
 }

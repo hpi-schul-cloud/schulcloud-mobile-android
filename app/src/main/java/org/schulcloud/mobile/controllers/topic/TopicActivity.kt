@@ -11,7 +11,9 @@ import kotlinx.android.synthetic.main.activity_topic.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.databinding.ActivityTopicBinding
+import org.schulcloud.mobile.models.topic.TopicRepository
 import org.schulcloud.mobile.utils.dpToPx
+import org.schulcloud.mobile.utils.syncOnRefresh
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
@@ -37,6 +39,7 @@ class TopicActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(intent.getStringExtra(EXTRA_ID)))
                 .get(TopicViewModel::class.java)
         val binding = ActivityTopicBinding.inflate(layoutInflater)
@@ -50,12 +53,18 @@ class TopicActivity : BaseActivity() {
         windowManager.defaultDisplay.getMetrics(metrics)
         val spans = Math.max(1, metrics.widthPixels / 440.dpToPx())
 
-        recycler_view.apply {
+        recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL)
             adapter = contentsAdapter
             addItemDecoration(ItemOffsetDecoration(this@TopicActivity, R.dimen.content_spacing))
         }
 
         viewModel.topic.observe(this, Observer { contentsAdapter.update(it) })
+
+        swipeRefresh.syncOnRefresh {
+            viewModel.topic.value?.also {
+                TopicRepository.syncTopic(it.id)
+            }
+        }
     }
 }

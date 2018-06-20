@@ -12,6 +12,7 @@ import org.schulcloud.mobile.models.content.ContentRepository
 import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.utils.asUri
+import org.schulcloud.mobile.utils.asVisibility
 import org.schulcloud.mobile.utils.openUrl
 
 
@@ -20,10 +21,18 @@ import org.schulcloud.mobile.utils.openUrl
  */
 sealed class ContentViewHolder<B : ViewDataBinding>(binding: B) : BaseViewHolder<ContentWrapper, B>(binding) {
     lateinit var topic: Topic
+
+    override fun onItemSet() {
+        binding.root.visibility = (item.hidden ?: false).not().asVisibility()
+    }
 }
 
 class TextViewHolder(binding: ItemContentTextBinding) : ContentViewHolder<ItemContentTextBinding>(binding) {
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
     }
@@ -41,6 +50,10 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
     }
 
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
 
@@ -54,6 +67,10 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
 
 class InternalViewHolder(binding: ItemContentInternalBinding) : ContentViewHolder<ItemContentInternalBinding>(binding) {
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
         binding.viewHolder = this
@@ -63,6 +80,7 @@ class InternalViewHolder(binding: ItemContentInternalBinding) : ContentViewHolde
         openUrl(context, item.content?.url.asUri())
     }
 }
+
 class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolder<ItemContentGeogebraBinding>(binding) {
     companion object {
         private const val GEOGEBRA = "https://www.geogebra.org/m/"
@@ -73,6 +91,10 @@ class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolde
     }
 
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
         binding.viewHolder = this
@@ -92,6 +114,10 @@ class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolde
 
 class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolder<ItemContentEtherpadBinding>(binding) {
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
         binding.viewHolder = this
@@ -108,11 +134,13 @@ class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolde
     }
 
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
         binding.viewHolder = this
-
-        binding.contentView.loadUrl(item.content?.url + URL_SUFFIX)
     }
 
     fun openExternal() {
@@ -122,6 +150,10 @@ class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolde
 
 class UnsupportedViewHolder(binding: ItemContentUnsupportedBinding) : ContentViewHolder<ItemContentUnsupportedBinding>(binding) {
     override fun onItemSet() {
+        super.onItemSet()
+        if (item.hidden == true)
+            return
+
         binding.wrapper = item
         binding.content = item.content
     }

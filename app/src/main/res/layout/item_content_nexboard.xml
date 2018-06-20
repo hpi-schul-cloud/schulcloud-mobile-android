@@ -47,6 +47,7 @@
             style="@style/ContentExternal"
             android:layout_width="match_parent"
             android:layout_marginTop="12dp"
+            app:url="@{content.url + `?username=Test`}"
             tools:ignore="WebViewLayout" />
 
     </LinearLayout>

@@ -52,6 +52,17 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
     }
 }
 
+class InternalViewHolder(binding: ItemContentInternalBinding) : ContentViewHolder<ItemContentInternalBinding>(binding) {
+    override fun onItemSet() {
+        binding.wrapper = item
+        binding.content = item.content
+        binding.viewHolder = this
+    }
+
+    fun openExternal() {
+        openUrl(context, item.content?.url.asUri())
+    }
+}
 class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolder<ItemContentGeogebraBinding>(binding) {
     companion object {
         private const val GEOGEBRA = "https://www.geogebra.org/m/"

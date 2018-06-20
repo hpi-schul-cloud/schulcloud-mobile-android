@@ -8,7 +8,7 @@
 
         <variable
             name="viewHolder"
-            type="org.schulcloud.mobile.controllers.topic.NexboardViewHolder" />
+            type="org.schulcloud.mobile.controllers.topic.InternalViewHolder" />
         <variable
             name="wrapper"
             type="org.schulcloud.mobile.models.content.ContentWrapper" />
@@ -23,30 +23,21 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title"
             style="@style/Content_Header.WithLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/content_title_margin"
             android:onClick="@{() -> viewHolder.openExternal()}"
             android:text="@{wrapper.title}"
+            android:visibility="@{ViewUtilsKt.toVisible(wrapper.title)}"
             tools:text="Content name" />
 
-        <TextView
-            android:id="@+id/description"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{content.description}"
-            android:visibility="@{ViewUtilsKt.toVisible(content.description)}"
-            tools:text="Description...\n\n\nspanning\nmultiple\nlines" />
-
         <org.schulcloud.mobile.views.ContentWebView
-            android:id="@+id/contentView"
             style="@style/ContentExternal"
             android:layout_width="match_parent"
-            android:layout_marginTop="12dp"
+            android:layout_height="400dp"
+            android:scrollbars="vertical"
+            app:url="@{content.url + `?inline=true`}"
             tools:ignore="WebViewLayout" />
 
     </LinearLayout>

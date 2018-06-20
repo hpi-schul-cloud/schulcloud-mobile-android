@@ -9,6 +9,7 @@ open class ContentWrapper : RealmObject() {
     companion object {
         const val COMPONENT_TEXT = "text"
         const val COMPONENT_RESOURCES = "resources"
+        const val COMPONENT_INTERNAL = "internal"
         const val COMPONENT_GEOGEBRA = "geoGebra"
         const val COMPONENT_ETHERPAD = "Etherpad"
         const val COMPONENT_NEXBOARD = "neXboard"

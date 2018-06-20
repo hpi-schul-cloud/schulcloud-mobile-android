@@ -61,6 +61,11 @@
         <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
     </style>
 
+    <style name="ContentExternal">
+        <item name="android:layout_height">300dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
     <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:height">@dimen/material_listItem_height</item>
         <item name="android:paddingLeft">@dimen/material_listItem_paddingHorizontal</item>

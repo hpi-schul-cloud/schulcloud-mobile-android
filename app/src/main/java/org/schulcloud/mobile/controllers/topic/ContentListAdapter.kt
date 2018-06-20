@@ -14,8 +14,9 @@ import org.schulcloud.mobile.models.topic.Topic
 class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBinding>>() {
     companion object {
         private val CONTENT_TYPES = arrayOf(ContentWrapper.COMPONENT_TEXT,
-                ContentWrapper.COMPONENT_RESOURCES, ContentWrapper.COMPONENT_GEOGEBRA,
-                ContentWrapper.COMPONENT_ETHERPAD, ContentWrapper.COMPONENT_NEXBOARD)
+                ContentWrapper.COMPONENT_RESOURCES, ContentWrapper.COMPONENT_INTERNAL,
+                ContentWrapper.COMPONENT_GEOGEBRA, ContentWrapper.COMPONENT_ETHERPAD,
+                ContentWrapper.COMPONENT_NEXBOARD)
     }
 
     private lateinit var topic: Topic
@@ -33,9 +34,10 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
         return when (viewType) {
             0 -> TextViewHolder(createBinding(parent, R.layout.item_content_text))
             1 -> ResourcesViewHolder(createBinding(parent, R.layout.item_content_resources))
-            2 -> GeogebraViewHolder(createBinding(parent, R.layout.item_content_geogebra))
-            3 -> EtherpadViewHolder(createBinding(parent, R.layout.item_content_etherpad))
-            4 -> NexboardViewHolder(createBinding(parent, R.layout.item_content_nexboard))
+            2 -> InternalViewHolder(createBinding(parent, R.layout.item_content_internal))
+            3 -> GeogebraViewHolder(createBinding(parent, R.layout.item_content_geogebra))
+            4 -> EtherpadViewHolder(createBinding(parent, R.layout.item_content_etherpad))
+            5 -> NexboardViewHolder(createBinding(parent, R.layout.item_content_nexboard))
             else -> UnsupportedViewHolder(createBinding(parent, R.layout.item_content_unsupported))
         }
     }

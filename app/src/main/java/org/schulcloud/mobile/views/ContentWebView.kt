@@ -136,6 +136,10 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
 
+    fun setUrl(url: String?) {
+        loadUrl(url)
+    }
+
     fun setContent(content: String?) {
         loadDataWithBaseURL(HOST, CONTENT_TEXT_PREFIX + (content ?: "") + CONTENT_TEXT_SUFFIX,
                 MIME_TEXT_HTML, ENCODING_UTF_8, null)

@@ -13,11 +13,13 @@ open class Content : RealmObject() {
     // resources
     var resources: RealmList<Resource>? = null
 
+    // internal, etherpad, nexboard
+    var url: String? = null
+
     // geogebra
     var materialId: String? = null
 
     // etherpad, nexboard
     var title: String? = null
     var description: String? = null
-    var url: String? = null
 }

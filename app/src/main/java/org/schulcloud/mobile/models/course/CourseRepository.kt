@@ -10,14 +10,13 @@ import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.utils.courseDao
 
 object CourseRepository {
-
     init {
         async {
             syncCourses()
         }
     }
 
-    fun listCourses(realm: Realm): LiveRealmData<Course> {
+    fun courses(realm: Realm): LiveRealmData<Course> {
         return realm.courseDao().listCourses()
     }
 

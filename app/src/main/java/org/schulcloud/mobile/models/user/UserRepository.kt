@@ -7,26 +7,19 @@ import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.storages.UserStorage
 
 object UserRepository {
-
     val TAG: String = UserRepository::class.java.simpleName
 
     @JvmStatic
     val token: String?
-        get() {
-            return UserStorage().accessToken
-        }
+        get() = UserStorage().accessToken
 
     @JvmStatic
     val userId: String?
-        get() {
-            return UserStorage().userId
-        }
+        get() = UserStorage().userId
 
     @JvmStatic
     val isAuthorized: Boolean
-        get() {
-            return UserStorage().accessToken != null
-        }
+        get() = UserStorage().accessToken != null
 
     suspend fun login(email: String, password: String, callback: RequestJobCallback) {
         CreateAccessTokenJob(Credentials(email, password), callback).run()

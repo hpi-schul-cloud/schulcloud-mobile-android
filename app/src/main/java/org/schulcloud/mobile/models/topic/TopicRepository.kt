@@ -14,8 +14,7 @@ import org.schulcloud.mobile.utils.topicDao
  */
 object TopicRepository {
 
-
-    fun listTopics(realm: Realm, courseId: String): LiveRealmData<Topic> {
+    fun topicsForCourse(realm: Realm, courseId: String): LiveRealmData<Topic> {
         async {
             syncTopics(courseId)
         }
@@ -35,6 +34,7 @@ object TopicRepository {
             }
         }).run()
     }
+
     suspend fun syncTopic(topicId: String) {
         GetTopicJob(topicId, object : RequestJobCallback() {
             override fun onSuccess() {

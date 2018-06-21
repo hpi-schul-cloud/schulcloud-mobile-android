@@ -20,6 +20,7 @@
 
     <color name="background_main">#fafafa</color>
     <color name="background_light_gray">#cacaca</color>
+    <color name="background_lighter_gray">#eaeaff</color>
 
     <color name="apptheme_login_bg">#EEEEEE</color>
     <color name="transparent">#00000000</color>

@@ -1,11 +1,9 @@
 package org.schulcloud.mobile.models.homework
 
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.schulcloud.mobile.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,21 +24,16 @@ open class Homework : RealmObject() {
     @SerializedName("private")
     var restricted: Boolean = false
 
-    @Throws(ParseException::class)
-    fun getDueTextAndColorId(): Pair<String, Int> { //may get an exception
-        val receivedFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        val dueTillCal: Calendar = Calendar.getInstance()
-        dueTillCal.time = receivedFormat.parse(dueDate)
-        val currentCal: Calendar = Calendar.getInstance()
-        val diff: Long = dueTillCal.timeInMillis - currentCal.timeInMillis
-        val diffInDays = TimeUnit.MILLISECONDS.toDays(diff)
+    fun getDueTextAndColorId(): Pair<String, Int> {
+        val diffMillis = getDueTimespanMillis()
+        val diffDays = TimeUnit.MILLISECONDS.toDays(diffMillis)
 
-        when (diffInDays) {
-            in Int.MIN_VALUE until 0 -> {
+        when (diffDays) {
+            in Long.MIN_VALUE + 1 until 0 -> {
                 return Pair("⚐ Überfällig", Color.RED)
             }
             0L -> {
-                val diffInHours = TimeUnit.MILLISECONDS.toHours(diff)
+                val diffInHours = TimeUnit.MILLISECONDS.toHours(diffMillis)
                 if (diffInHours > 0) {
                     return Pair("⚐ In $diffInHours Stunden fällig", Color.RED)
                 } else {
@@ -49,11 +42,29 @@ open class Homework : RealmObject() {
             }
             1L -> return Pair("⚐ Morgen fällig", Color.RED)
             2L -> return Pair("Übermorgen", Color.BLACK)
-            in 3L..7L -> return Pair("In $diffInDays Tagen", Color.BLACK)
+            in 3L..7L -> return Pair("In $diffDays Tagen", Color.BLACK)
             else -> {
                 return Pair("", Color.WHITE)
             }
         }
 
+    }
+
+    fun getDueTimespanMillis(): Long {
+        val dueTillCal: Calendar = Calendar.getInstance()
+        val currentCal: Calendar = Calendar.getInstance()
+        var timespan: Long = Long.MIN_VALUE
+        try {
+            dueTillCal.time = getDueTillDate()
+            timespan = dueTillCal.timeInMillis - currentCal.timeInMillis
+        } catch (e: Exception) {
+        }
+        return timespan
+    }
+
+    @Throws(Exception::class)
+    fun getDueTillDate(): Date {
+        val receivedFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        return receivedFormat.parse(dueDate)
     }
 }

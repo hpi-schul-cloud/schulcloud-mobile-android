@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.schulcloud.mobile.R
 import java.text.ParseException
+import java.util.*
 
 class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -42,21 +43,16 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.homeworkCourseColor.setColorFilter(Color.parseColor(it.color))
             }
 
-            homework.dueDate?.let{
+            /*homework.dueDate?.let{
                 var dueTextAndColorId: Pair<String, Int>?
-                try{
-                     dueTextAndColorId = homework.getDueTextAndColorId()
-                }
-                catch(e: ParseException){
-                    dueTextAndColorId = Pair("", Color.WHITE)
-                }
+                dueTextAndColorId = homework.getDueTextAndColorId()
                 holder.homeworkDueTill.text = dueTextAndColorId!!.first
                 holder.homeworkDueTill.setTextColor(dueTextAndColorId.second)
 
-            }
+            }*/
 
             // Usage for date-related testing
-           // holder.homeworkDueTill.text = homework.dueDate
+           holder.homeworkDueTill.text = homework.dueDate
 
             homework.description?.let{
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
@@ -72,6 +68,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         }
     }
+
 
     class HomeworkViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val homeworkTitle: TextView = view.findViewById(R.id.homework_title)

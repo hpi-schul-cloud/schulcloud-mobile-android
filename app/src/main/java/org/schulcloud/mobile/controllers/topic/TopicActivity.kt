@@ -35,7 +35,11 @@ class TopicActivity : BaseActivity() {
     }
 
     private lateinit var viewModel: TopicViewModel
-    private val contentsAdapter: ContentListAdapter by lazy { ContentListAdapter() }
+    private val contentsAdapter: ContentListAdapter by lazy {
+        ContentListAdapter().apply {
+            emptyIndicator = empty
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

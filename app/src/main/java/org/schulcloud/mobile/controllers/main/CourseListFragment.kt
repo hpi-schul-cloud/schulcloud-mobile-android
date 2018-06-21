@@ -25,7 +25,11 @@ class CourseListFragment : BaseFragment() {
 
     private lateinit var viewModel: CourseListViewModel
     private val coursesAdapter: CourseListAdapter by lazy {
-        CourseListAdapter(OnItemSelectedCallback { startActivity(CourseActivity.newIntent(context!!, it)) })
+        CourseListAdapter(OnItemSelectedCallback {
+            startActivity(CourseActivity.newIntent(context!!, it))
+        }).apply {
+            emptyIndicator = empty
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

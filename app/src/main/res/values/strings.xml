@@ -42,11 +42,15 @@
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>
     <string name="course_topics">Themen</string>
+    <string name="courses_error_empty">Es wurden keine Kurse gefunden.</string>
+
+    <!-- Topic -->
+    <string name="topics_error_empty">Es wurden keine Themen gefunden</string>
 
     <!-- Content -->
-    <eat-comment />
     <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
     <string name="content_resource_client">via %1$s</string>
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
+    <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
 </resources>

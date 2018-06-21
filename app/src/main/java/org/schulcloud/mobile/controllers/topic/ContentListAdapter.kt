@@ -25,7 +25,7 @@ class ContentListAdapter
     fun update(topic: Topic?) {
         if (topic != null)
             this.topic = topic
-        items = topic?.contents?.filter { it.hidden != true } ?: emptyList()
+        items = topic?.contents?.filter { it.hidden != true }.orEmpty()
     }
 
 

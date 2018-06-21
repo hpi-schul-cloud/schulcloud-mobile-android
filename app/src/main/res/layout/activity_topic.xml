@@ -24,11 +24,25 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_content_unsupported" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@android:id/empty"
+                    style="@style/Content_Text.Empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contents_error_empty" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_content_unsupported" />
+
+            </LinearLayout>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

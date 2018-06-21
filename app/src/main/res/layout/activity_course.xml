@@ -50,6 +50,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/course_topics" />
 
+                    <TextView
+                        android:id="@android:id/empty"
+                        style="@style/Content_Text.Empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/topics_error_empty" />
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"

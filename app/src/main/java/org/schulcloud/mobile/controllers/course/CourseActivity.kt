@@ -37,7 +37,9 @@ class CourseActivity : BaseActivity() {
     private val topicsAdapter: TopicListAdapter by lazy {
         TopicListAdapter(OnItemSelectedCallback { id ->
             startActivity(TopicActivity.newIntent(this@CourseActivity, id))
-        })
+        }).apply {
+            emptyIndicator = empty
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

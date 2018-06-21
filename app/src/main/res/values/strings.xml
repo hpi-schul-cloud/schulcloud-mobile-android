@@ -38,6 +38,8 @@
     <string name="error_email">Please insert valid E-Mail address.</string>
     <string name="error_password">Please insert valid Password.</string>
 
+    <!-- General -->
+    <string name="general_action_refresh">Aktualisieren</string>
 
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>

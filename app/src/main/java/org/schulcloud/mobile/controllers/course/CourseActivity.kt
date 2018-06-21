@@ -7,14 +7,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
 import kotlinx.android.synthetic.main.activity_course.*
+import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.topic.TopicActivity
 import org.schulcloud.mobile.databinding.ActivityCourseBinding
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
-import org.schulcloud.mobile.utils.syncOnRefresh
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
@@ -51,6 +52,7 @@ class CourseActivity : BaseActivity() {
         binding.setLifecycleOwner(this)
         setContentView(binding.root)
         setupActionBar()
+        swipeRefreshLayout = swipeRefresh
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@CourseActivity)
@@ -59,12 +61,17 @@ class CourseActivity : BaseActivity() {
         }
 
         viewModel.topics.observe(this, Observer { topicsAdapter.update(it ?: emptyList()) })
+    }
 
-        swipeRefresh.syncOnRefresh {
-            viewModel.course.value?.also {
-                CourseRepository.syncCourse(it.id)
-                TopicRepository.syncTopics(it.id)
-            }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_course, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override suspend fun refresh() {
+        viewModel.course.value?.also {
+            CourseRepository.syncCourse(it.id)
+            TopicRepository.syncTopics(it.id)
         }
     }
 }

@@ -7,13 +7,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.DisplayMetrics
+import android.view.Menu
 import kotlinx.android.synthetic.main.activity_topic.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.databinding.ActivityTopicBinding
 import org.schulcloud.mobile.models.topic.TopicRepository
 import org.schulcloud.mobile.utils.dpToPx
-import org.schulcloud.mobile.utils.syncOnRefresh
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
@@ -43,7 +43,6 @@ class TopicActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(intent.getStringExtra(EXTRA_ID)))
                 .get(TopicViewModel::class.java)
         val binding = ActivityTopicBinding.inflate(layoutInflater)
@@ -51,6 +50,7 @@ class TopicActivity : BaseActivity() {
         binding.setLifecycleOwner(this)
         setContentView(binding.root)
         setupActionBar()
+        swipeRefreshLayout = swipeRefresh
 
         // calculate amount of columns
         val metrics = DisplayMetrics()
@@ -64,11 +64,16 @@ class TopicActivity : BaseActivity() {
         }
 
         viewModel.topic.observe(this, Observer { contentsAdapter.update(it) })
+    }
 
-        swipeRefresh.syncOnRefresh {
-            viewModel.topic.value?.also {
-                TopicRepository.syncTopic(it.id)
-            }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_topic, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override suspend fun refresh() {
+        viewModel.topic.value?.also {
+            TopicRepository.syncTopic(it.id)
         }
     }
 }

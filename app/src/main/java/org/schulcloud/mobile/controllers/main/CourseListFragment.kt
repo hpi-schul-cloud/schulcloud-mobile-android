@@ -4,16 +4,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity
 import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.utils.syncOnRefresh
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
@@ -34,6 +31,7 @@ class CourseListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this).get(CourseListViewModel::class.java)
     }
 
@@ -44,6 +42,7 @@ class CourseListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout = swipeRefresh
 
         viewModel.getCourses().observe(this, Observer { courses ->
             coursesAdapter.update(courses!!)
@@ -54,9 +53,14 @@ class CourseListFragment : BaseFragment() {
             adapter = coursesAdapter
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
         }
+    }
 
-        swipeRefresh.syncOnRefresh {
-            CourseRepository.syncCourses()
-        }
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.fragment_course_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override suspend fun refresh() {
+        CourseRepository.syncCourses()
     }
 }

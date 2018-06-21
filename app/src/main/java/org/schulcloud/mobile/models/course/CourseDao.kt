@@ -7,7 +7,7 @@ import org.schulcloud.mobile.utils.asLiveData
 
 class CourseDao(private val realm: Realm) {
 
-    fun listCourses(): LiveRealmData<Course> {
+    fun courses(): LiveRealmData<Course> {
         return realm.where(Course::class.java)
                 .findAllAsync()
                 .asLiveData()

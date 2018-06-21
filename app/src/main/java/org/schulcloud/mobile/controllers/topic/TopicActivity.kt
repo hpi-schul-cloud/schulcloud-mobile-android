@@ -66,6 +66,8 @@ class TopicActivity : BaseActivity() {
         }
 
         viewModel.topic.observe(this, Observer { contentsAdapter.update(it) })
+
+        performRefresh()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -63,6 +63,8 @@ class CourseActivity : BaseActivity() {
         }
 
         viewModel.topics.observe(this, Observer { topicsAdapter.update(it ?: emptyList()) })
+
+        performRefresh()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

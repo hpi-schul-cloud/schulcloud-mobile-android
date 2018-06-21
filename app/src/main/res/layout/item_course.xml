@@ -42,7 +42,6 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{course.name}"
-                android:textStyle="bold"
                 tools:text="Course Title" />
 
             <TextView

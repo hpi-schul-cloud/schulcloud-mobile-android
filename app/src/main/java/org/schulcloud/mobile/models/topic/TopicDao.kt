@@ -10,7 +10,7 @@ import org.schulcloud.mobile.utils.asLiveData
  */
 class TopicDao(private val realm: Realm) {
 
-    fun listTopics(courseId: String): LiveRealmData<Topic> {
+    fun topicsForCourse(courseId: String): LiveRealmData<Topic> {
         return realm.where(Topic::class.java)
                 .equalTo("courseId", courseId)
                 .sort("position")

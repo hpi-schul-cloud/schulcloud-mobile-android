@@ -37,7 +37,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected open suspend fun refresh() {}
-    private fun performRefresh() {
+    protected fun performRefresh() {
         swipeRefreshLayout?.isRefreshing = true
         async(UI) { refresh() }
         swipeRefreshLayout?.isRefreshing = false

@@ -3,6 +3,7 @@ package org.schulcloud.mobile
 import android.app.Application
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import net.danlew.android.joda.JodaTimeAndroid
 import org.schulcloud.mobile.config.Config
 
 class SchulCloudApp : Application() {
@@ -19,6 +20,7 @@ class SchulCloudApp : Application() {
     override fun onCreate() {
         super.onCreate()
         configureRealm()
+        JodaTimeAndroid.init(this);
     }
 
     private fun configureRealm() {

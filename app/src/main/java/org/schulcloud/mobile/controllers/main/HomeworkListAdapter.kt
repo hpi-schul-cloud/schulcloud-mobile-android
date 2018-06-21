@@ -10,9 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.R
-import java.text.ParseException
-import java.util.*
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 
 class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -66,6 +67,42 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.homeworkDescription.text = holder.homeworkDescription.text.toString().trim()
             }
 
+            if(headerRequired(position)){
+                holder.homeworkHeader.visibility = View.VISIBLE
+                holder.homeworkHeader.text = getHeaderText(position)
+            }
+        }
+    }
+
+    private fun headerRequired(position: Int): Boolean{
+        if (position == 0 ||  homeworkList[position].getDueTimespanDays() != homeworkList[position-1].getDueTimespanDays())
+            return true
+        return false
+    }
+
+    private fun getHeaderText(position: Int): String{
+        val dueDays = homeworkList[position].getDueTimespanDays()
+        when (dueDays){
+            -1 -> {
+                return "Gestern"
+            }
+            0 -> {
+                return "Heute"
+            }
+            1 -> {
+                return "Morgen"
+            }
+            Int.MIN_VALUE -> {
+                return ""
+            }
+            else -> {
+                var dateText = ""
+                try {
+                    dateText = DateTimeFormat.forPattern("dd.MM.yyyy").print(homeworkList[position].getDueTillDateTime())
+                } catch (e: Exception){
+                }
+                return dateText
+            }
         }
     }
 
@@ -76,5 +113,6 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val homeworkDescription: TextView = view.findViewById(R.id.homework_description)
         val homeworkCourseTitle: TextView = view.findViewById(R.id.homework_course_title)
         val homeworkCourseColor: ImageView = view.findViewById(R.id.homework_course_color)
+        val homeworkHeader: TextView = view.findViewById(R.id.homework_header)
     }
 }

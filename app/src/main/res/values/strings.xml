@@ -38,8 +38,28 @@
     <string name="error_email">Please insert valid E-Mail address.</string>
     <string name="error_password">Please insert valid Password.</string>
 
+    <!-- Share -->
+    <string name="share_subject">Schul-Cloud: %1$s</string>
+    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_title">Link teilen</string>
 
-    <!-- Courses -->
-    <string name="title_list_courses">My Courses</string>
+    <!-- General -->
+    <string name="general_action_share">Teilen</string>
+    <string name="general_action_showInBrowser">Im Browser anzeigen</string>
+    <string name="general_action_refresh">Aktualisieren</string>
+
+    <!-- Course -->
+    <string name="course_title">Meine Kurse</string>
+    <string name="course_topics">Themen</string>
+    <string name="courses_error_empty">Es wurden keine Kurse gefunden.</string>
+
+    <!-- Topic -->
+    <string name="topics_error_empty">Es wurden keine Themen gefunden</string>
+
+    <!-- Content -->
+    <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
+    <string name="content_resource_client">via %1$s</string>
+    <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
+    <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
 </resources>

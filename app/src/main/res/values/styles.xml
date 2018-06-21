@@ -1,22 +1,5 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/hpiRed</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/hpiRed</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
     <style name="LoginTextInput" parent="Widget.Design.TextInputLayout">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColor">@color/text_main</item>
@@ -37,6 +20,60 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">@drawable/button_main</item>
+    </style>
+
+    <style name="Animation.Activity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+
+    <style name="Content_Text.Empty" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="Content_Header" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Content_Header.WithLink">
+        <item name="android:minHeight">40dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:drawableEnd">@drawable/ic_open_in_new_dark_24dp</item>
+        <item name="android:drawableRight">@drawable/ic_open_in_new_dark_24dp</item>
+    </style>
+    <style name="Content_Subhead" parent="TextAppearance.AppCompat.Title">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+    <style name="Content_LinkExternal">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
+    </style>
+
+    <style name="ContentExternal">
+        <item name="android:layout_height">300dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="android:height">@dimen/material_listItem_height</item>
+        <item name="android:paddingLeft">@dimen/material_listItem_paddingHorizontal</item>
+        <item name="android:paddingRight">@dimen/material_listItem_paddingHorizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/material_listItem_textPrimary_textSize</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
     </style>
 
 </resources>

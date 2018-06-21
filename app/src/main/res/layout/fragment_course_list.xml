@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="@dimen/grid_spacing"
-            tools:listitem="@layout/item_course_list" />
+            tools:listitem="@layout/item_course" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

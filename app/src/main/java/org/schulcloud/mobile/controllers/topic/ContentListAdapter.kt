@@ -1,9 +1,9 @@
 package org.schulcloud.mobile.controllers.topic
 
 import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder.Companion.createBinding
 import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.models.topic.Topic
@@ -11,7 +11,8 @@ import org.schulcloud.mobile.models.topic.Topic
 /**
  * Date: 6/10/2018
  */
-class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBinding>>() {
+class ContentListAdapter
+    : BaseAdapter<ContentWrapper, ContentViewHolder<out ViewDataBinding>, ViewDataBinding>() {
     companion object {
         private val CONTENT_TYPES = arrayOf(ContentWrapper.COMPONENT_TEXT,
                 ContentWrapper.COMPONENT_RESOURCES, ContentWrapper.COMPONENT_INTERNAL,
@@ -20,13 +21,11 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
     }
 
     private lateinit var topic: Topic
-    private var contents: List<ContentWrapper> = emptyList()
 
     fun update(topic: Topic?) {
         if (topic != null)
             this.topic = topic
-        contents = topic?.contents?.filter { it.hidden != true } ?: emptyList()
-        notifyDataSetChanged()
+        items = topic?.contents?.filter { it.hidden != true } ?: emptyList()
     }
 
 
@@ -42,15 +41,13 @@ class ContentListAdapter : RecyclerView.Adapter<ContentViewHolder<out ViewDataBi
         }
     }
 
-    override fun getItemCount(): Int = contents.size
-
     override fun getItemViewType(position: Int): Int {
-        val component = contents[position].component
+        val component = items[position].component
         return CONTENT_TYPES.indexOfFirst { it.equals(component, true) }
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder<out ViewDataBinding>, position: Int) {
+        super.onBindViewHolder(holder, position)
         holder.topic = topic
-        holder.item = contents[position]
     }
 }

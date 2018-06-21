@@ -1,48 +1,37 @@
 package org.schulcloud.mobile.controllers.main
 
-import android.graphics.Color
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.base.BaseAdapter
+import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
+import org.schulcloud.mobile.databinding.ItemCourseBinding
 import org.schulcloud.mobile.models.course.Course
+import org.schulcloud.mobile.models.user.User
 
-class CourseListAdapter(private val selectedCallback: OnItemSelectedCallback) : RecyclerView.Adapter<CourseListAdapter.CourseViewHolder>() {
-
-    private var courses: List<Course> = emptyList()
+class CourseListAdapter(private val selectedCallback: OnItemSelectedCallback)
+    : BaseAdapter<Course, CourseListAdapter.CourseViewHolder, ItemCourseBinding>() {
 
     fun update(courseList: List<Course>) {
-        courses = courseList
-        notifyDataSetChanged()
+        items = courseList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseListAdapter.CourseViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_course_list, parent, false)
-        return CourseViewHolder(view)
+        val binding = ItemCourseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.selectedCallback = selectedCallback
+        return CourseViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return courses.size
-    }
-
-    override fun onBindViewHolder(holder: CourseListAdapter.CourseViewHolder, position: Int) {
-        courses[position].apply {
-            holder.card.setOnClickListener { selectedCallback.onItemSelected(id) }
-            holder.courseTitle.text = name
-            holder.courseTeacher.text = teachers?.joinToString(", ") { it.shortName() }
-            color?.also { holder.courseColor.setBackgroundColor(Color.parseColor(it)) }
+    class CourseViewHolder(binding: ItemCourseBinding) : BaseViewHolder<Course, ItemCourseBinding>(binding) {
+        companion object {
+            @JvmStatic
+            fun teachersToShort(teachers: List<User>?): String {
+                return teachers?.joinToString(", ") { it.shortName() } ?: ""
+            }
         }
-    }
 
-
-    class CourseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var card: CardView = view.findViewById(R.id.card)
-        var courseTitle: TextView = view.findViewById(R.id.course_title)
-        var courseTeacher: TextView = view.findViewById(R.id.course_teacher)
-        var courseColor: View = view.findViewById(R.id.course_color)
+        override fun onItemSet() {
+            binding.course = item
+        }
     }
 }

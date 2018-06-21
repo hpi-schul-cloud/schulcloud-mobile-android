@@ -14,7 +14,7 @@ import android.view.ViewGroup
 /**
  * Date: 6/11/2018
  */
-abstract class BaseViewHolder<T : Any, B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+abstract class BaseViewHolder<T : Any, out B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
     companion object {
         fun <B : ViewDataBinding> createBinding(parent: ViewGroup, @LayoutRes layoutId: Int): B {
             return DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutId,

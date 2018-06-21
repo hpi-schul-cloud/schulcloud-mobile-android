@@ -16,11 +16,12 @@ open class Topic : RealmObject() {
     @SerializedName("_id")
     var id: String = ""
 
-    var name: String? = null
-    var date: String? = null
-    var time: String? = null
     var courseId: String? = null
-    var hidden: Boolean? = null
+    var name: String? = null
+    var time: String? = null
+    var date: String? = null
+    @Suppress("unused")
+    var position: Int? = null
     var contents: RealmList<ContentWrapper>? = null
 
     val url: String

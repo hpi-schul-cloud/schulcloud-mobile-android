@@ -23,7 +23,6 @@ import org.schulcloud.mobile.views.ItemOffsetDecoration
  * Date: 6/11/2018
  */
 class TopicActivity : BaseActivity() {
-
     companion object {
         val TAG: String = TopicActivity::class.java.simpleName
         const val EXTRA_ID = "org.schulcloud.extras.EXTRA_ID"
@@ -33,6 +32,9 @@ class TopicActivity : BaseActivity() {
                     .apply { putExtra(EXTRA_ID, id) }
         }
     }
+
+    override var url: String? = null
+        get() = viewModel.topic.value?.url
 
     private lateinit var viewModel: TopicViewModel
     private val contentsAdapter: ContentListAdapter by lazy {

@@ -11,14 +11,16 @@ import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.utils.HOST
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
 class CourseListFragment : BaseFragment() {
-
     companion object {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
+
+    override var url: String? = "$HOST/courses"
 
     private lateinit var viewModel: CourseListViewModel
     private val coursesAdapter: CourseListAdapter by lazy {

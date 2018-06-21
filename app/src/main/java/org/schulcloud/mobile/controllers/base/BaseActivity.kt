@@ -8,9 +8,11 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.setup
+import org.schulcloud.mobile.utils.shareLink
 import kotlin.properties.Delegates
 
 abstract class BaseActivity : AppCompatActivity() {
+    open var url: String? = null
     var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
         new?.setOnRefreshListener { performRefresh() }
@@ -18,6 +20,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.share -> shareLink(url!!, supportActionBar?.title)
             R.id.refresh -> performRefresh()
             else -> return super.onOptionsItemSelected(item)
         }

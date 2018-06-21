@@ -23,7 +23,6 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
  * Date: 6/9/2018
  */
 class CourseActivity : BaseActivity() {
-
     companion object {
         val TAG: String = CourseActivity::class.java.simpleName
         const val EXTRA_ID = "org.schulcloud.extras.EXTRA_ID"
@@ -33,6 +32,9 @@ class CourseActivity : BaseActivity() {
                     .apply { putExtra(EXTRA_ID, id) }
         }
     }
+
+    override var url: String? = null
+        get() = viewModel.course.value?.url
 
     private lateinit var viewModel: CourseViewModel
     private val topicsAdapter: TopicListAdapter by lazy {

@@ -25,5 +25,5 @@ open class Topic : RealmObject() {
     var contents: RealmList<ContentWrapper>? = null
 
     val url: String
-        get() = "$HOST/courses/$courseId/topics/$id/"
+        get() = "$HOST/courses/$courseId/topics/$id"
 }

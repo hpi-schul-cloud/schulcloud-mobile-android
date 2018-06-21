@@ -2,11 +2,14 @@ package org.schulcloud.mobile.utils
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import org.schulcloud.mobile.R
 
 /**
  * Date: 6/15/2018
@@ -31,4 +34,15 @@ fun Drawable.asBitmap(): Bitmap {
     setBounds(0, 0, canvas.width, canvas.height)
     draw(canvas)
     return bitmap
+}
+
+fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = MIME_TEXT_PLAIN
+        putExtra(Intent.EXTRA_SUBJECT,
+                if (titleContent != null) getString(R.string.share_subject, titleContent)
+                else getString(R.string.share_subject_general))
+        putExtra(Intent.EXTRA_TEXT, url)
+    }
+    startActivity(Intent.createChooser(intent, getString(R.string.share_title)))
 }

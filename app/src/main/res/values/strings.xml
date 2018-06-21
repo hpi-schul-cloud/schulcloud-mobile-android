@@ -38,7 +38,13 @@
     <string name="error_email">Please insert valid E-Mail address.</string>
     <string name="error_password">Please insert valid Password.</string>
 
+    <!-- Share -->
+    <string name="share_subject">Schul-Cloud: %1$s</string>
+    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_title">Link teilen</string>
+
     <!-- General -->
+    <string name="general_action_share">Teilen</string>
     <string name="general_action_refresh">Aktualisieren</string>
 
     <!-- Course -->

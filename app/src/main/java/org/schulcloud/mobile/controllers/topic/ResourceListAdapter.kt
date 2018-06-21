@@ -33,7 +33,7 @@ class ResourceListAdapter : BaseAdapter<Resource, ResourceListAdapter.ResourceVi
 
         fun openExternal() {
             async(UI) {
-                resolveRedirect(item.url!!)?.also { openUrl(this@ResourceViewHolder.context, it) }
+                resolveRedirect(item.url!!)?.also { this@ResourceViewHolder.context.openUrl(it) }
             }
         }
     }

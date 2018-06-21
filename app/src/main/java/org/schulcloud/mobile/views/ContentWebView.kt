@@ -84,7 +84,7 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                 if (url.toString() == getUrl())
                     return false
 
-                openUrl(context, url)
+                context.openUrl(url)
                 return true
             }
 

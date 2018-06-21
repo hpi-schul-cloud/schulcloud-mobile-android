@@ -51,19 +51,19 @@ fun String?.asUri(): Uri {
         Uri.parse(this)
 }
 
-fun newCustomTab(context: Context): CustomTabsIntent {
+fun Context.prepareCustomTab(): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
-        setToolbarColor(ContextCompat.getColor(context, R.color.hpiRed))
-        setCloseButtonIcon(ContextCompat.getDrawable(context, R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
+        setToolbarColor(ContextCompat.getColor(this@prepareCustomTab, R.color.hpiRed))
+        setCloseButtonIcon(ContextCompat.getDrawable(this@prepareCustomTab, R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
         addDefaultShareMenuItem()
-        setStartAnimations(context, R.anim.slide_in_right, R.anim.slide_out_left)
-        setExitAnimations(context, R.anim.slide_in_left, R.anim.slide_out_right)
+        setStartAnimations(this@prepareCustomTab, R.anim.slide_in_right, R.anim.slide_out_left)
+        setExitAnimations(this@prepareCustomTab, R.anim.slide_in_left, R.anim.slide_out_right)
     }.build()
 }
 
-fun openUrl(context: Context, url: Uri) {
+fun Context.openUrl(url: Uri) {
     Log.i(TAG, "Opening url: $url")
-    newCustomTab(context).launchUrl(context, url)
+    prepareCustomTab().launchUrl(this, url)
 }
 
 suspend fun resolveRedirect(url: String): Uri? {

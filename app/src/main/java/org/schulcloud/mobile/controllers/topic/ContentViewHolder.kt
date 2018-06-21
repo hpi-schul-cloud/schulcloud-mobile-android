@@ -50,7 +50,7 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
     }
 
     fun openExternal() {
-        openUrl(context, item.content?.url.asUri())
+        context.openUrl(item.content?.url.asUri())
     }
 }
 
@@ -62,7 +62,7 @@ class InternalViewHolder(binding: ItemContentInternalBinding) : ContentViewHolde
     }
 
     fun openExternal() {
-        openUrl(context, item.content?.url.asUri())
+        context.openUrl(item.content?.url.asUri())
     }
 }
 
@@ -89,7 +89,7 @@ class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolde
     }
 
     fun openExternal() {
-        openUrl(context, (GEOGEBRA + item.content?.materialId).asUri())
+        context.openUrl((GEOGEBRA + item.content?.materialId).asUri())
     }
 }
 
@@ -101,7 +101,7 @@ class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolde
     }
 
     fun openExternal() {
-        openUrl(context, topic.url.asUri())
+        context.openUrl(topic.url.asUri())
     }
 }
 
@@ -117,7 +117,7 @@ class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolde
     }
 
     fun openExternal() {
-        openUrl(context, (item.content?.url + URL_SUFFIX).asUri())
+        context.openUrl((item.content?.url + URL_SUFFIX).asUri())
     }
 }
 

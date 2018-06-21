@@ -45,6 +45,7 @@
 
     <!-- General -->
     <string name="general_action_share">Teilen</string>
+    <string name="general_action_showInBrowser">Im Browser anzeigen</string>
     <string name="general_action_refresh">Aktualisieren</string>
 
     <!-- Course -->

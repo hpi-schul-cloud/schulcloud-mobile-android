@@ -72,18 +72,20 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
         settings.javaScriptEnabled = true
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                openUrl(Uri.parse(url))
-                return true
+                return openUrl(Uri.parse(url))
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                openUrl(request.url)
-                return true
+                return openUrl(request.url)
             }
 
-            private fun openUrl(url: Uri) {
+            private fun openUrl(url: Uri): Boolean {
+                if (url.toString() == getUrl())
+                    return false
+
                 openUrl(context, url)
+                return true
             }
 
             override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {

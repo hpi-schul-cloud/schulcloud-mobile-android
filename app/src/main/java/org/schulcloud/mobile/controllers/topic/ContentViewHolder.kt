@@ -35,7 +35,9 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
     init {
         adapter = ResourceListAdapter()
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = object : LinearLayoutManager(context) {
+                override fun canScrollVertically() = false
+            }
             adapter = this@ResourcesViewHolder.adapter
         }
     }

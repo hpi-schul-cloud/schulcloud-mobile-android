@@ -34,6 +34,7 @@
         <activity
             android:name=".controllers.main.MainActivity"
             android:label="@string/title_activity_main"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.TranslucentStatus" />
 
         <activity android:name=".controllers.login.LoginActivity" />

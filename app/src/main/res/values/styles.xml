@@ -45,8 +45,7 @@
         <item name="android:drawablePadding">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:gravity">start|center_vertical</item>
-        <item name="android:drawableEnd">@drawable/ic_open_in_new_dark_24dp</item>
-        <item name="android:drawableRight">@drawable/ic_open_in_new_dark_24dp</item>
+        <item name="drawableEnd">@drawable/ic_open_in_new_dark_24dp</item>
     </style>
     <style name="Content_Subhead" parent="TextAppearance.AppCompat.Title">
         <item name="android:layout_marginTop">8dp</item>

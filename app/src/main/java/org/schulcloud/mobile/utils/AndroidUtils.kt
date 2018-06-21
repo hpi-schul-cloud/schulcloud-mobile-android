@@ -9,7 +9,10 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v4.text.TextUtilsCompat
+import android.support.v4.view.ViewCompat
 import org.schulcloud.mobile.R
+import java.util.*
 
 /**
  * Date: 6/15/2018
@@ -46,3 +49,5 @@ fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
     }
     startActivity(Intent.createChooser(intent, getString(R.string.share_title)))
 }
+
+fun isLtr() = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_LTR

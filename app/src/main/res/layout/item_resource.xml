@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <org.schulcloud.mobile.views.CompatTextView
                 style="@style/Content_Header.WithLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

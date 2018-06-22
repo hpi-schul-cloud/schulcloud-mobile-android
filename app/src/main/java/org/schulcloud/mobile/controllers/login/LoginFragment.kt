@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.main.MainActivity
 import org.schulcloud.mobile.viewmodels.LoginViewModel
@@ -35,7 +34,7 @@ class LoginFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        text_credentials.text = String.format(getString(R.string.login_with_credentials), Config.HOST)
+        text_credentials.text = String.format(getString(R.string.login_withCredentials), getString(R.string.brand_name))
         btnLogin.setOnClickListener { login() }
         btn_demo_student.setOnClickListener { demoLoginStudent() }
         btn_demo_teacher.setOnClickListener { demoLoginTeacher() }

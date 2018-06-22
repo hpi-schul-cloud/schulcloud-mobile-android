@@ -50,7 +50,7 @@ open class Homework : RealmObject() {
     }
 
     fun getDueTimespanDays(): Int {
-        val currentDate = LocalDate()
+        val currentDate = LocalDate.now()
         var dueTimespanDays: Int = Int.MIN_VALUE
         try {
             val dueTillDate = getDueTillDateTime()
@@ -61,7 +61,7 @@ open class Homework : RealmObject() {
     }
 
     fun getDueTimespanHours(): Int {
-        val currentDateTime = LocalDateTime()
+        val currentDateTime = LocalDateTime.now()
         var dueTimespanHours: Int = Int.MAX_VALUE
         try {
             val dueTillDateTime = getDueTillDateTime()
@@ -75,6 +75,6 @@ open class Homework : RealmObject() {
     @Throws(Exception::class)
     fun getDueTillDateTime(): DateTime {
         val receivedFormat = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        return receivedFormat.parseDateTime(dueDate)
+        return receivedFormat.parseDateTime(dueDate!!)
     }
 }

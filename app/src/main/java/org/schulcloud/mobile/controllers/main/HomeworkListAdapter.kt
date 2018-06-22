@@ -44,16 +44,16 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.homeworkCourseColor.setColorFilter(Color.parseColor(it.color))
             }
 
-            /*homework.dueDate?.let{
-                var dueTextAndColorId: Pair<String, Int>?
+            homework.dueDate?.let{
+                val dueTextAndColorId: Pair<String, Int>?
                 dueTextAndColorId = homework.getDueTextAndColorId()
-                holder.homeworkDueTill.text = dueTextAndColorId!!.first
+                holder.homeworkDueTill.text = dueTextAndColorId.first
                 holder.homeworkDueTill.setTextColor(dueTextAndColorId.second)
 
-            }*/
+            }
 
             // Usage for date-related testing
-           holder.homeworkDueTill.text = homework.dueDate
+           //holder.homeworkDueTill.text = homework.dueDate
 
             homework.description?.let{
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
@@ -70,6 +70,9 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if(headerRequired(position)){
                 holder.homeworkHeader.visibility = View.VISIBLE
                 holder.homeworkHeader.text = getHeaderText(position)
+            }
+            else{
+                holder.homeworkHeader.visibility = View.GONE
             }
         }
     }

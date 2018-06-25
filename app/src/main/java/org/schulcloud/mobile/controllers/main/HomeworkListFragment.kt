@@ -38,13 +38,16 @@ class HomeworkListFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler_view_homework.layoutManager = LinearLayoutManager(activity)
-        recycler_view_homework.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         homeworkListAdapter = HomeworkListAdapter()
-        recycler_view_homework.adapter = homeworkListAdapter
+        recycler_view_homework.apply {
+            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            adapter = homeworkListAdapter
+        }
 
-        homeworkListViewModel!!.getHomework().observe(this, Observer<RealmResults<Homework>> {
-            homework -> homeworkListAdapter!!.update(homework!!)
+        homeworkListViewModel!!.getHomework().observe(this, Observer<RealmResults<Homework>> { homework ->
+            homeworkListAdapter!!.update(homework!!)
         })
     }
 }
+

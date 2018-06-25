@@ -28,13 +28,15 @@ open class Homework : RealmObject() {
         val diffDays = getDueTimespanDays()
 
         when (diffDays) {
-            in Long.MIN_VALUE + 1 until 0 -> {
+            in Int.MIN_VALUE + 1 until 0 -> {
                 return Pair("⚐ Überfällig", Color.RED)
             }
             0 -> {
                 val diffHours = getDueTimespanHours()
-                if (diffHours > 0) {
+                if (diffHours >= 0) {
                     return Pair("⚐ In $diffHours Stunden fällig", Color.RED)
+                } else if (diffHours == Int.MIN_VALUE) {
+                    return Pair("", Color.WHITE)
                 } else {
                     return Pair("⚐ Überfällig", Color.RED)
                 }
@@ -46,26 +48,21 @@ open class Homework : RealmObject() {
                 return Pair("", Color.WHITE)
             }
         }
-
     }
 
     fun getDueTimespanDays(): Int {
-        val currentDate = LocalDate.now()
         var dueTimespanDays: Int = Int.MIN_VALUE
         try {
-            val dueTillDate = getDueTillDateTime()
-            dueTimespanDays = Days.daysBetween(currentDate, dueTillDate.toLocalDate()).days
+            dueTimespanDays = Days.daysBetween(LocalDate.now(), getDueTillDateTime().toLocalDate()).days
         } catch (e: Exception) {
         }
         return dueTimespanDays
     }
 
-    fun getDueTimespanHours(): Int {
-        val currentDateTime = LocalDateTime.now()
-        var dueTimespanHours: Int = Int.MAX_VALUE
+    private fun getDueTimespanHours(): Int {
+        var dueTimespanHours: Int = Int.MIN_VALUE
         try {
-            val dueTillDateTime = getDueTillDateTime()
-            dueTimespanHours = Hours.hoursBetween(currentDateTime, dueTillDateTime.toLocalDateTime()).hours
+            dueTimespanHours = Hours.hoursBetween(LocalDateTime.now(), getDueTillDateTime().toLocalDateTime()).hours
         } catch (e: Exception) {
         }
         return dueTimespanHours
@@ -74,7 +71,6 @@ open class Homework : RealmObject() {
 
     @Throws(Exception::class)
     fun getDueTillDateTime(): DateTime {
-        val receivedFormat = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        return receivedFormat.parseDateTime(dueDate!!)
+        return DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate!!)
     }
 }

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+    <!-- TODO: improve header appearance-->
 
         <TextView
             android:id="@+id/homework_header"
@@ -52,7 +53,7 @@
                         android:paddingEnd="7dp"
                         android:paddingRight="7dp"
                         android:textAllCaps="true"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_medium_smaller_size"
                         app:layout_constrainedWidth="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +66,6 @@
                         android:id="@+id/homework_course_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginStart="0dp"
                         android:layout_toEndOf="@id/homework_course_title"
                         android:layout_toRightOf="@id/homework_course_title"
                         android:paddingTop="1dp"
@@ -81,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_medium_smaller_size"
                     tools:text="In x Stunden fällig" />
 
             </LinearLayout>

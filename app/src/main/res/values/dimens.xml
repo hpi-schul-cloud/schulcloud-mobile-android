@@ -10,5 +10,6 @@
 
     <dimen name="circle_course_color_diameter">20dp</dimen>
     <dimen name="text_medium_size">18sp</dimen>
+    <dimen name="text_medium_smaller_size">16sp</dimen>
 
 </resources>

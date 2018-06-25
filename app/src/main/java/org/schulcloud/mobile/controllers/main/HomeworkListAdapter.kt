@@ -12,8 +12,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.R
-import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 
 class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,7 +32,6 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        // TODO: formatting
         val homework = homeworkList[position]
         if (holder is HomeworkViewHolder){
             holder.homeworkTitle.text = homework.title
@@ -84,8 +81,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private fun getHeaderText(position: Int): String{
-        val dueDays = homeworkList[position].getDueTimespanDays()
-        when (dueDays){
+        when (homeworkList[position].getDueTimespanDays()){
             -1 -> {
                 return "Gestern"
             }

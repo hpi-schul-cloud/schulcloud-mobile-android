@@ -1,0 +1,89 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homework_detail_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start">
+
+            <TextView
+                android:id="@+id/homework_detail_course_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/circle_course_color_diameter"
+                android:layout_marginRight="@dimen/circle_course_color_diameter"
+                android:paddingEnd="7dp"
+                android:paddingRight="7dp"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_medium_smaller_size"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Course" />
+
+            <ImageView
+                android:id="@+id/homework_detail_course_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/homework_course_title"
+                android:layout_toRightOf="@id/homework_course_title"
+                android:paddingTop="1dp"
+                android:src="@drawable/circle_course_color"
+                app:layout_constraintStart_toEndOf="@+id/homework_detail_course_title"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/homework_detail_dueTill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textSize="@dimen/text_medium_smaller_size"
+            tools:text="In x Stunden fällig" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/homework_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="start"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_medium_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Homework Title" />
+
+    <TextView
+        android:id="@+id/homework_detail_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_medium_size"
+        tools:text="Description" />
+
+
+</LinearLayout>
+
+

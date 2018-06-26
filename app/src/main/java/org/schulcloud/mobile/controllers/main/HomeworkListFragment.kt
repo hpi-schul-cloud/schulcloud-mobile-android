@@ -52,7 +52,7 @@ class HomeworkListFragment : BaseFragment() {
         })
         homeworkListAdapter.setListener(object: HomeworkListAdapter.Listener{
             override fun onClick(id: String){
-                var intent: Intent = Intent(context, HomeworkDetailActivity::class.java)
+                val intent = Intent(context, HomeworkDetailActivity::class.java)
                 intent.putExtra(HomeworkDetailActivity.EXTRA_ID, id)
                 startActivity(intent)
             }

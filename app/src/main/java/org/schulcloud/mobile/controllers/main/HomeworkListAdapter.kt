@@ -68,11 +68,11 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             if(headerRequired(position)){
-                holder.homeworkHeader.visibility = View.VISIBLE
+                holder.homeworkHeaderLayout.visibility = View.VISIBLE
                 holder.homeworkHeader.text = getHeaderText(position)
             }
             else{
-                holder.homeworkHeader.visibility = View.GONE
+                holder.homeworkHeaderLayout.visibility = View.GONE
             }
 
             holder.homeworkClickable.setOnClickListener({
@@ -123,6 +123,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val homeworkCourseTitle: TextView = view.findViewById(R.id.homework_course_title)
         val homeworkCourseColor: ImageView = view.findViewById(R.id.homework_course_color)
         val homeworkHeader: TextView = view.findViewById(R.id.homework_header)
+        val homeworkHeaderLayout: LinearLayout = view.findViewById(R.id.homework_header_layout)
         val homeworkClickable: LinearLayout = view.findViewById(R.id.homework_clickable_layout)
     }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.text.Html
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
@@ -25,6 +26,7 @@ class HomeworkDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homework_detail)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         homeworkViewModel = ViewModelProviders.of(this, HomeworkViewModelFactory(intent.getStringExtra(EXTRA_ID))).get(HomeworkViewModel::class.java)
         homeworkViewModel.getHomework().observe(this, Observer<Homework>{
@@ -47,17 +49,10 @@ class HomeworkDetailActivity : BaseActivity() {
             homework_detail_duetill.setTextColor(dueTextAndColorId.second)
 
         }
-        // TODO: handle images in HTML code
+        // TODO: improve HMTL text appearance
         homework.description?.let{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-               homework_detail_description.text  = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY)
-            }
-            else{
-                @Suppress("DEPRECATION")
-                homework_detail_description.text = Html.fromHtml(it)
-            }
-
-            homework_detail_description.text =   homework_detail_description.text.toString().trim()
+            homework_detail_description.loadData(it, "text/html", null)
         }
+        homework_detail_description.setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
     }
 }

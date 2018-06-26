@@ -20,7 +20,9 @@
 
     <color name="background_main">#fafafa</color>
     <color name="background_light_gray">#cacaca</color>
-    <color name="background_lighter_gray">#eaeaff</color>
+    <color name="background_lighter_gray">#f0eff5</color>
+
+    <color name="separator_gray">#b1b1b1b1</color>
 
     <color name="apptheme_login_bg">#EEEEEE</color>
     <color name="transparent">#00000000</color>

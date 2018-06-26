@@ -10,21 +10,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <!-- TODO: improve header appearance-->
 
-        <TextView
-            android:id="@+id/homework_header"
-            android:visibility="gone"
+        <LinearLayout
+            android:id="@+id/homework_header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="15dp"
-            android:paddingLeft="15dp"
-            android:padding="10dp"
-            android:background="@color/background_lighter_gray"
-            android:gravity="start|center"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            tools:text="Header" />
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/homework_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_lighter_gray"
+                android:gravity="start|center"
+                android:padding="10dp"
+                android:paddingLeft="15dp"
+                android:paddingStart="15dp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                tools:text="Header" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.25dp"
+                android:background="@color/separator_gray" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/homework_clickable_layout"

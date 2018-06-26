@@ -4,6 +4,7 @@ import io.realm.Realm
 import org.schulcloud.mobile.jobs.ListUserHomeworkJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.LiveRealmData
+import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.utils.homeworkDao
 
 object HomeworkRepository {
@@ -16,7 +17,7 @@ object HomeworkRepository {
         return realm.homeworkDao().listHomework()
     }
 
-    fun getHomeworkForId(realm: Realm, id: String): LiveRealmData<Homework>{
+    fun getHomeworkForId(realm: Realm, id: String): RealmObjectLiveData<Homework>{
         return realm.homeworkDao().getHomeworkForId(id)
     }
 

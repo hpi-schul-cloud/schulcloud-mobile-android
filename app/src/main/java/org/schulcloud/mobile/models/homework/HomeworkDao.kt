@@ -2,9 +2,11 @@ package org.schulcloud.mobile.models.homework
 
 import android.arch.lifecycle.LiveData
 import io.realm.Realm
+import io.realm.RealmObject
 import io.realm.RealmResults
 import io.realm.Sort
 import org.schulcloud.mobile.models.base.LiveRealmData
+import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.utils.asLiveData
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,11 +20,11 @@ class HomeworkDao(private val realm: Realm){
                 .asLiveData()
     }
 
-    fun getHomeworkForId(id: String) : LiveRealmData<Homework>{
+    fun getHomeworkForId(id: String) : RealmObjectLiveData<Homework>{
         return realm.where(Homework::class.java)
                 .sort("dueDate", Sort.ASCENDING)
                 .equalTo("id", id)
-                .findAllAsync()
+                .findFirstAsync()
                 .asLiveData()
     }
 

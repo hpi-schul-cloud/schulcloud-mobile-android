@@ -34,10 +34,8 @@
             android:name=".controllers.main.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".controllers.login.LoginActivity" />
-
-
+        <activity android:name=".controllers.homework.HomeworkDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -16,6 +16,10 @@ object HomeworkRepository {
         return realm.homeworkDao().listHomework()
     }
 
+    fun getHomeworkForId(realm: Realm, id: String): LiveRealmData<Homework>{
+        return realm.homeworkDao().getHomeworkForId(id)
+    }
+
     private fun requestHomeworkList() {
         ListUserHomeworkJob(object : RequestJobCallback() {
             override fun onSuccess() {

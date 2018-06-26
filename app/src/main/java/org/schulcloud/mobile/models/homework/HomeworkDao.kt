@@ -18,4 +18,12 @@ class HomeworkDao(private val realm: Realm){
                 .asLiveData()
     }
 
+    fun getHomeworkForId(id: String) : LiveRealmData<Homework>{
+        return realm.where(Homework::class.java)
+                .sort("dueDate", Sort.ASCENDING)
+                .equalTo("id", id)
+                .findAllAsync()
+                .asLiveData()
+    }
+
 }

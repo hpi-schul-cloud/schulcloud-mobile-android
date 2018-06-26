@@ -2,6 +2,7 @@ package org.schulcloud.mobile.controllers.main
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 import kotlinx.android.synthetic.main.fragment_homework_list.*
+import org.schulcloud.mobile.controllers.homework.HomeworkDetailActivity
 import org.schulcloud.mobile.models.homework.Homework
 
 class HomeworkListFragment : BaseFragment() {
@@ -21,8 +23,8 @@ class HomeworkListFragment : BaseFragment() {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }
 
-    private var homeworkListAdapter: HomeworkListAdapter? = null
-    private var homeworkListViewModel: HomeworkListViewModel? = null
+    private lateinit var homeworkListAdapter: HomeworkListAdapter
+    private lateinit var homeworkListViewModel: HomeworkListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +47,17 @@ class HomeworkListFragment : BaseFragment() {
             adapter = homeworkListAdapter
         }
 
-        homeworkListViewModel!!.getHomework().observe(this, Observer<RealmResults<Homework>> { homework ->
-            homeworkListAdapter!!.update(homework!!)
+        homeworkListViewModel.getHomework().observe(this, Observer<RealmResults<Homework>> { homework ->
+            homeworkListAdapter.update(homework!!)
+        })
+        homeworkListAdapter.setListener(object: HomeworkListAdapter.Listener{
+            override fun onClick(id: String){
+                var intent: Intent = Intent(context, HomeworkDetailActivity::class.java)
+                intent.putExtra(HomeworkDetailActivity.EXTRA_ID, id)
+                startActivity(intent)
+            }
         })
     }
+
 }
 

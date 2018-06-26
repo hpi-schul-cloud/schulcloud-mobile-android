@@ -7,14 +7,18 @@ import io.realm.RealmResults
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 
-class HomeworkViewModel (id: String) : ViewModel() {
+class HomeworkViewModel () : ViewModel() {
     private val realm: Realm by lazy {
         Realm.getDefaultInstance()
     }
 
-    private var homework: LiveData<RealmResults<Homework>> = HomeworkRepository.getHomeworkForId(realm, id)
+    private lateinit var homework: LiveData<RealmResults<Homework>>
 
     fun getHomework(): LiveData<RealmResults<Homework>> {
         return homework
+    }
+
+    fun setHomeworkForId(id: String){
+       homework = HomeworkRepository.getHomeworkForId(realm, id)
     }
 }

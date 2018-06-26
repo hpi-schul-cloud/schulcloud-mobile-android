@@ -9,6 +9,7 @@ import org.schulcloud.mobile.models.homework.Homework
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.R
@@ -16,6 +17,11 @@ import org.schulcloud.mobile.R
 class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var homeworkList: List<Homework> = emptyList()
+    private var listener: Listener? = null
+
+    fun setListener (listener: Listener){
+        this.listener = listener
+    }
 
     fun update(homeworkList: List<Homework>){
         this.homeworkList = homeworkList
@@ -49,9 +55,6 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             }
 
-            // Usage for date-related testing
-           //holder.homeworkDueTill.text = homework.dueDate
-
             homework.description?.let{
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
                     holder.homeworkDescription.text  = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY)
@@ -71,6 +74,10 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             else{
                 holder.homeworkHeader.visibility = View.GONE
             }
+
+            holder.homeworkClickable.setOnClickListener({
+                v -> listener?.onClick(homework.id)
+            })
         }
     }
 
@@ -105,6 +112,9 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    interface Listener{
+        fun onClick(id: String)
+    }
 
     class HomeworkViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val homeworkTitle: TextView = view.findViewById(R.id.homework_title)
@@ -113,5 +123,6 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val homeworkCourseTitle: TextView = view.findViewById(R.id.homework_course_title)
         val homeworkCourseColor: ImageView = view.findViewById(R.id.homework_course_color)
         val homeworkHeader: TextView = view.findViewById(R.id.homework_header)
+        val homeworkClickable: LinearLayout = view.findViewById(R.id.homework_clickable_layout)
     }
 }

@@ -125,6 +125,7 @@
     <string name="settings_calendar_sync_successful">Synchronisieren des Kalenders war erfolgreich!</string>
     <string name="settings_calendar_choose">Kalender auf dem Gerät auswählen</string>
     <string name="settings_notifications_title">Benachrichtigungen</string>
+    <string name="settings_notifications_error_notWorking">Benachrichtigungen sind zur Zeit aus technischen Gründen deaktiviert. Wir arbeiten bereits an einer Lösung!</string>
     <string name="settings_notifications_registerDevice">Gerät registrieren</string>
     <string name="settings_about_title">Über</string>
     <string name="settings_about_contributors">Mitwirkende:</string>

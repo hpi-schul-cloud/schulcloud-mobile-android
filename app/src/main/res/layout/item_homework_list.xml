@@ -105,8 +105,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_medium_size"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 tools:text="Homework Title" />
 
             <TextView
@@ -119,7 +117,6 @@
                 android:maxLines="4"
                 android:textSize="@dimen/text_medium_size"
                 tools:text="Description" />
-
 
         </LinearLayout>
 

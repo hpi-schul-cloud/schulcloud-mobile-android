@@ -22,5 +22,4 @@ class HomeworkDao(private val realm: Realm){
                 .findFirstAsync()
                 .asLiveData()
     }
-
 }

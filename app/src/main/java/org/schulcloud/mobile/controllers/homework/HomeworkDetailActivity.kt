@@ -4,29 +4,24 @@ import android.annotation.TargetApi
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.text.Html
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseActivity
-import org.schulcloud.mobile.models.homework.Homework
-import org.schulcloud.mobile.viewmodels.HomeworkViewModel
-import org.schulcloud.mobile.viewmodels.HomeworkViewModelFactory
 import kotlinx.android.synthetic.main.activity_homework_detail.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.schulcloud.mobile.config.Config
+import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.user.UserRepository
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.Intent
-import android.net.Uri
-
+import org.schulcloud.mobile.viewmodels.HomeworkViewModel
+import org.schulcloud.mobile.viewmodels.HomeworkViewModelFactory
 
 class HomeworkDetailActivity : BaseActivity() {
 
@@ -65,13 +60,14 @@ class HomeworkDetailActivity : BaseActivity() {
         }
 
         homework.description?.let {
-            homework_detail_description.apply{
+            homework_detail_description.apply {
+                settings.builtInZoomControls = true
                 webViewClient = AuthorizedWebViewClient.getWithContext(this@HomeworkDetailActivity)
                 loadData(it, "text/html", "UTF-8")
-                settings.defaultFontSize = 18}
+                settings.defaultFontSize = 18
+            }
         }
         homework_detail_description.setBackgroundColor(Color.TRANSPARENT)
-
     }
 
     class AuthorizedWebViewClient : WebViewClient() {
@@ -97,16 +93,16 @@ class HomeworkDetailActivity : BaseActivity() {
                     }.build()
         }
 
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-            val intent = Intent(Intent.ACTION_VIEW, request?.url)
+        @Suppress("OverridingDeprecatedMember")
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             context?.startActivity(intent)
             return true
         }
 
-        @Suppress("OverridingDeprecatedMember")
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            val intent = Intent(Intent.ACTION_VIEW, request?.url)
             context?.startActivity(intent)
             return true
         }
@@ -135,4 +131,3 @@ class HomeworkDetailActivity : BaseActivity() {
         }
     }
 }
-

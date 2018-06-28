@@ -6,8 +6,6 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
 
 open class Homework : RealmObject() {
 
@@ -18,11 +16,11 @@ open class Homework : RealmObject() {
     var schoold: String? = null
     @SerializedName("name")
     var title: String? = null
-    var courseId: HomeworkCourse? = null
-    var dueDate: String? = null
     var description: String? = null
+    var dueDate: String? = null
     @SerializedName("private")
     var restricted: Boolean = false
+    var courseId: HomeworkCourse? = null
 
     fun getDueTextAndColorId(): Pair<String, Int> {
         val diffDays = getDueTimespanDays()

@@ -58,6 +58,4 @@ class HomeworkListFragment : BaseFragment() {
             }
         })
     }
-
 }
-

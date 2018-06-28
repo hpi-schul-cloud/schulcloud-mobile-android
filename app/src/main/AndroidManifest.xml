@@ -149,6 +149,9 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.PasswordRecovery.PasswordRecovery" />
+
+
     </application>
 
 </manifest>

@@ -4,11 +4,14 @@ import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.remote.RestService;
+import org.schulcloud.mobile.ui.PasswordRecovery.PasswordRecoveryMvpView;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 
 @Singleton
@@ -40,5 +43,13 @@ public class FeedbackDataManager {
                         return Observable.just(feedbackResponse);
                     }
                 });
+    }
+
+    public void sendEmail(FeedbackRequest feedbackRequest){
+
+                 mRestService
+                .sendFeedback(userDataManager.getAccessToken(),feedbackRequest)
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(res->{},error -> {});
+
     }
 }

@@ -4,6 +4,7 @@ import org.schulcloud.mobile.data.model.AccessToken;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.User;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Observable;
 import rx.Single;
 import timber.log.Timber;
@@ -48,6 +50,7 @@ public class UserDatabaseHelper extends BaseDatabaseHelper {
                 .filter(users -> users.isLoaded())
                 .map(users -> realm.copyFromRealm(users));
     }
+
 
     public Observable<AccessToken> setAccessToken(final AccessToken newAccessToken) {
         return Observable.create(subscriber -> {

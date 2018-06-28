@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import org.schulcloud.mobile.R;
+import org.schulcloud.mobile.ui.PasswordRecovery.PasswordRecovery;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.ui.main.MainActivity;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
@@ -31,6 +32,8 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
     Button demoStudent;
     @BindView(R.id.btn_demo_teacher)
     Button demoTeacher;
+    @BindView(R.id.btn_password_recovery)
+    Button recoverPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,13 @@ public class SignInActivity extends BaseActivity<SignInMvpView, SignInPresenter>
         demoTeacher.setOnClickListener(v -> mSignInPresenter.signIn(
                 getString(R.string.login_demo_teacher_username),
                 getString(R.string.login_demo_teacher_password), true));
+        recoverPassword.setOnClickListener(v -> StartPasswordRecovery());
+
+    }
+
+    private void StartPasswordRecovery(){
+        Intent recoveryIntent = new Intent(this,PasswordRecovery.class);
+        startActivity(recoveryIntent);
     }
 
 

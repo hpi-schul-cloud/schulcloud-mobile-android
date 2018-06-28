@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.data.remote;
 
 import org.schulcloud.mobile.data.model.AccessToken;
+import org.schulcloud.mobile.data.model.Account;
 import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Device;
@@ -18,12 +19,15 @@ import org.schulcloud.mobile.data.model.requestBodies.CreateDirectoryRequest;
 import org.schulcloud.mobile.data.model.requestBodies.Credentials;
 import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.data.model.requestBodies.FeedbackRequest;
+import org.schulcloud.mobile.data.model.requestBodies.ResetData;
+import org.schulcloud.mobile.data.model.requestBodies.ResetRequest;
 import org.schulcloud.mobile.data.model.requestBodies.SignedUrlRequest;
 import org.schulcloud.mobile.data.model.responseBodies.AddHomeworkResponse;
 import org.schulcloud.mobile.data.model.responseBodies.DeviceResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeathersResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FeedbackResponse;
 import org.schulcloud.mobile.data.model.responseBodies.FilesResponse;
+import org.schulcloud.mobile.data.model.responseBodies.ResetResponse;
 import org.schulcloud.mobile.data.model.responseBodies.SignedUrlResponse;
 
 import java.util.List;
@@ -50,8 +54,18 @@ public interface RestService {
     @GET("users/{userId}")
     Observable<CurrentUser> getUser(@Header("Authorization") String accessToken, @Path("userId") String userId);
 
+
+    @GET("accounts/{accountId}?$populate[0]=userId")
+    Observable<Account> getAccount(@Header("Authorization") String accessToken, @Path("accountId") String accountId);
+
     @POST("authentication")
     Observable<AccessToken> signIn(@Body Credentials credentials);
+
+    @POST("passwordRecovery")
+    Observable<ResetResponse> passwordRecovery(@Header("Authorization") String accessToken, @Body ResetRequest username);
+
+    @POST("passwordRecovery/reset")
+    Observable<ResponseBody> passwordReset(@Header("Authorization") String accessToken, @Body ResetData data);
 
     // todo: move Authorization-Header to somewhere better
     @GET("fileStorage")

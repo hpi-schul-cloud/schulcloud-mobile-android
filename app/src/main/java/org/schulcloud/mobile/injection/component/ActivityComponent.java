@@ -2,6 +2,7 @@ package org.schulcloud.mobile.injection.component;
 
 import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.injection.scope.PerActivity;
+import org.schulcloud.mobile.ui.PasswordRecovery.PasswordRecovery;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
 import org.schulcloud.mobile.ui.courses.topic.TopicFragment;
@@ -33,6 +34,9 @@ public interface ActivityComponent {
 
     //    Sign in
     void inject(SignInActivity signInActivity);
+
+    //   Password Recovery
+    void inject(PasswordRecovery passwordRecovery);
 
     //    Main
     void inject(MainActivity mainActivity);

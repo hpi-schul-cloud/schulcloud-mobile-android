@@ -109,7 +109,7 @@ play {
 }
 
 dependencies {
-    final PLAY_SERVICES_VERSION = '9.6.1'
+    final PLAY_SERVICES_VERSION = '15.0.1'
     final SUPPORT_LIBRARY_VERSION = '25.3.1'
     final RETROFIT_VERSION = '2.1.0'
     final OKHTTP_VERSION = '3.4.1'
@@ -165,9 +165,6 @@ dependencies {
     testApt daggerCompiler
     androidTestApt daggerCompiler
 
-    // GMS Google and Firebase
-    apply plugin: 'com.google.gms.google-services'
-
     // Instrumentation test dependencies
     androidTestCompile jUnit
     androidTestCompile mockito
@@ -195,8 +192,8 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-integration:$HAMCREST_VERSION"
     compile 'com.beardedhen:androidbootstrap:2.3.0'
-    compile 'com.google.firebase:firebase-core:9.6.1'
-    compile 'com.google.firebase:firebase-messaging:9.6.1'
+    compile 'com.google.firebase:firebase-core:16.0.1'
+    compile 'com.google.firebase:firebase-messaging:17.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
@@ -210,3 +207,5 @@ dependencies {
 tasks.matching { it instanceof Test }.all {
     testLogging.events = ["failed", "passed", "skipped"]
 }
+
+apply plugin: 'com.google.gms.google-services'

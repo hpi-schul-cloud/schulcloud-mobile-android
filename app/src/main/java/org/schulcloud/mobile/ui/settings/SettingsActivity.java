@@ -1,44 +1,24 @@
 package org.schulcloud.mobile.ui.settings;
 
-import android.Manifest;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
-import org.schulcloud.mobile.data.sync.DeviceSyncService;
-import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
-import org.schulcloud.mobile.util.CalendarContentUtil;
-import org.schulcloud.mobile.util.PermissionsUtil;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -49,7 +29,8 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         implements SettingsMvpView {
 
     public static final Integer CALENDAR_PERMISSION_CALLBACK_ID = 42;
-    private static final String EXTRA_TRIGGER_SYNC = "org.schulcloud.mobile.ui.settings.SettingsActivity.EXTRA_TRIGGER_SYNC";
+    private static final String EXTRA_TRIGGER_SYNC =
+            "org.schulcloud.mobile.ui.settings.SettingsActivity.EXTRA_TRIGGER_SYNC";
 
     @Inject
     SettingsPresenter mSettingsPresenter;
@@ -68,10 +49,12 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     // Notifications
     @BindView(R.id.notifications)
     LinearLayout notifications;
+    /*
     @BindView(R.id.btn_create_device)
     BootstrapButton btn_create_device;
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
+    '/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +160,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
 
     @Override
     public void connectToCalendar(@NonNull List<Event> events, boolean promptForCalendar) {
+        /*
         // grant calendar permission, powered sdk version 23
         PermissionsUtil.checkPermissions(
                 CALENDAR_PERMISSION_CALLBACK_ID,
@@ -220,6 +204,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
                     events,
                     calendarContentUtil,
                     promptForCalendar);
+                    */
     }
 
     @Override

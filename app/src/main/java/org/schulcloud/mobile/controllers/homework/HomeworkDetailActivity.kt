@@ -14,6 +14,7 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_homework_detail.*
+import kotlinx.android.synthetic.main.toolbar.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.schulcloud.mobile.R
@@ -35,7 +36,9 @@ class HomeworkDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homework_detail)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         homeworkViewModel = ViewModelProviders.of(this, HomeworkViewModelFactory(intent.getStringExtra(EXTRA_ID))).get(HomeworkViewModel::class.java)
         homeworkViewModel.getHomework().observe(this, Observer<Homework> {
@@ -56,14 +59,19 @@ class HomeworkDetailActivity : BaseActivity() {
             dueTextAndColorId = homework.getDueTextAndColorId()
             homework_detail_duetill.text = dueTextAndColorId.first
             homework_detail_duetill.setTextColor(dueTextAndColorId.second)
-
         }
 
         homework.description?.let {
             homework_detail_description.apply {
                 settings.builtInZoomControls = true
+                settings.displayZoomControls = true
+                settings.loadWithOverviewMode = true
+                settings.useWideViewPort = true
                 webViewClient = AuthorizedWebViewClient.getWithContext(this@HomeworkDetailActivity)
-                loadData(it, "text/html", "UTF-8")
+                val formattedDescription = ("<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>"
+                                            + it
+                                            + "</body></html>")
+                loadData(formattedDescription, "text/html", "UTF-8")
                 settings.defaultFontSize = 18
             }
         }

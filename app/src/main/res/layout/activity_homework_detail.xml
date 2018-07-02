@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context="org.schulcloud.mobile.controllers.homework.HomeworkDetailActivity">
 
+    <include layout="@layout/toolbar"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

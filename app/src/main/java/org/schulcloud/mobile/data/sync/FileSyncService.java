@@ -53,7 +53,7 @@ public class FileSyncService extends Service {
         }
 
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mFileDataManager.syncFiles(mFileDataManager.getCurrentStorageContext())
+        mSubscription = mFileDataManager.syncFiles(mFileDataManager.getStorageContext())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<File>() {
                     @Override

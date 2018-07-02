@@ -38,7 +38,7 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textSize="@dimen/text_small_body"
+            android:textSize="@dimen/text_body_small"
             tools:text="Description...\n..." />
 
         <LinearLayout

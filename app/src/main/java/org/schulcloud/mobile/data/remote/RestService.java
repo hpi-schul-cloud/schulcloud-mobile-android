@@ -41,6 +41,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
+import rx.Single;
 
 public interface RestService {
 
@@ -116,6 +117,8 @@ public interface RestService {
 
     @GET("lessons")
     Observable<FeathersResponse<Topic>> getTopics(@Header("Authorization") String accessToken, @Query("courseId") String courseId);
+    @GET("lessons/{id}")
+    Single<Topic> getTopic(@Header("Authorization") String accessToken, @Path("id") String topicId);
 
     @POST("mails")
     Observable<FeedbackResponse> sendFeedback(@Header("Authorization") String accessToken, @Body FeedbackRequest feedbackRequest);

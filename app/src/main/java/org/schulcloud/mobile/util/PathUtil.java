@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.util;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.io.File;
 
@@ -22,6 +23,12 @@ public final class PathUtil {
         return trimTrailingSlash(trimLeadingSlash(path));
     }
     @NonNull
+    public static String ensureLeadingSlash(@NonNull String path) {
+        if (path.length() == 0 || path.charAt(0) != File.separatorChar)
+            return File.separator + path;
+        return path;
+    }
+    @NonNull
     public static String ensureTrailingSlash(@NonNull String path) {
         if (path.length() == 0 || path.charAt(path.length() - 1) != File.separatorChar)
             return path + File.separator;
@@ -33,9 +40,16 @@ public final class PathUtil {
         return path.split(File.separator);
     }
     @NonNull
+    public static String[] getAllParts(@NonNull String path, int limit) {
+        return path.split(File.separator, limit);
+    }
+    @NonNull
     public static String combine(@NonNull String... parts) {
         StringBuilder builder = new StringBuilder(parts[0]);
         for (int i = 1; i < parts.length; i++) {
+            if (TextUtils.isEmpty(parts[i]))
+                continue;
+
             boolean endsWithSeparator = builder.length() > 0
                     && builder.charAt(builder.length() - 1) == File.separatorChar;
             boolean beginsWithSeparator = parts[i].length() > 0

@@ -4,6 +4,7 @@ import org.schulcloud.mobile.injection.module.ActivityModule;
 import org.schulcloud.mobile.injection.scope.PerActivity;
 import org.schulcloud.mobile.ui.courses.CourseFragment;
 import org.schulcloud.mobile.ui.courses.detailed.DetailedCourseFragment;
+import org.schulcloud.mobile.ui.courses.topic.ContentAdapter;
 import org.schulcloud.mobile.ui.courses.topic.TopicFragment;
 import org.schulcloud.mobile.ui.dashboard.DashboardFragment;
 import org.schulcloud.mobile.ui.feedback.FeedbackDialog;
@@ -42,26 +43,22 @@ public interface ActivityComponent {
 
     //    News
     void inject(NewsFragment newsFragment);
-
     void inject(DetailedNewsFragment detailedNewsFragment);
 
     //    Course
     void inject(CourseFragment courseFragment);
-
     void inject(DetailedCourseFragment detailedCourseFragment);
-
     void inject(TopicFragment topicFragment);
+
+    void inject(ContentAdapter.ResourcesViewHolder resourcesViewHolder);
 
     //    Homework
     void inject(HomeworkFragment homeworkFragment);
-
     void inject(DetailedHomeworkFragment detailedHomeworkFragment);
-
     void inject(AddHomeworkFragment addHomeworkFragment);
 
     //    File
     void inject(FileOverviewFragment fileOverviewFragment);
-
     void inject(FilesFragment filesFragment);
 
     //    Settings

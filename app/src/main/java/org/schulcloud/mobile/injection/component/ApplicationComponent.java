@@ -3,6 +3,8 @@ package org.schulcloud.mobile.injection.component;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
 import org.schulcloud.mobile.data.datamanagers.FeedbackDataManager;
@@ -16,7 +18,7 @@ import org.schulcloud.mobile.data.datamanagers.UserDataManager;
 import org.schulcloud.mobile.data.local.BaseDatabaseHelper;
 import org.schulcloud.mobile.data.local.CourseDatabaseHelper;
 import org.schulcloud.mobile.data.local.EventsDatabaseHelper;
-import org.schulcloud.mobile.data.local.FileStorageDatabasehelper;
+import org.schulcloud.mobile.data.local.FileStorageDatabaseHelper;
 import org.schulcloud.mobile.data.local.HomeworkDatabaseHelper;
 import org.schulcloud.mobile.data.local.NewsDatabaseHelper;
 import org.schulcloud.mobile.data.local.NotificationsDatabaseHelper;
@@ -77,6 +79,8 @@ public interface ApplicationComponent {
 
     Application application();
 
+    Gson gson();
+
     RestService restService();
 
     PreferencesHelper preferencesHelper();
@@ -87,7 +91,7 @@ public interface ApplicationComponent {
 
     EventsDatabaseHelper eventsDatabaseHelper();
 
-    FileStorageDatabasehelper fileStorageDatabaseHelper();
+    FileStorageDatabaseHelper fileStorageDatabaseHelper();
 
     HomeworkDatabaseHelper homeworkDatabseHelper();
 

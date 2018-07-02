@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.ui.main;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -9,6 +10,8 @@ import org.schulcloud.mobile.ui.base.MvpView;
 import java.util.List;
 
 public interface MainMvpView<V> extends MvpView {
+
+    void loadViewForUrl(@NonNull Uri url);
 
     int getTabCount();
     Pair<Integer, V> createInitialView(int tabIndex);

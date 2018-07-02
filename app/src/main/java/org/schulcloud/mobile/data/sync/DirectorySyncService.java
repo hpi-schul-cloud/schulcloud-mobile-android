@@ -53,7 +53,7 @@ public class DirectorySyncService extends Service {
         }
 
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mFileDataManager.syncDirectories(mFileDataManager.getCurrentStorageContext())
+        mSubscription = mFileDataManager.syncDirectories(mFileDataManager.getStorageContext())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Directory>() {
                     @Override

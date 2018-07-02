@@ -50,7 +50,7 @@ public class DetailedCoursePresenter extends BasePresenter<DetailedCourseMvpView
         mCourse = mCourseDataManager.getCourseForId(courseId);
         showName();
         RxUtil.unsubscribe(mSubscription);
-        mSubscription = mTopicDataManager.getTopics()
+        mSubscription = mTopicDataManager.getTopics(courseId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         topics -> sendToView(v -> v.showTopics(topics)),

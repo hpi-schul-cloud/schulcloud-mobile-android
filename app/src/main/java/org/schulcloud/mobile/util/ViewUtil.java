@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import org.schulcloud.mobile.R;
 
@@ -31,6 +34,10 @@ public final class ViewUtil {
      */
     public static void setVisibility(@NonNull View view, boolean visible) {
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+    public static void setText(@NonNull TextView view, @Nullable String content) {
+        view.setText(content);
+        view.setVisibility(TextUtils.isEmpty(content) ? View.GONE : View.VISIBLE);
     }
 
     public static float pxToDp(float px) {

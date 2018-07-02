@@ -60,6 +60,7 @@
     <string name="files_file_action_delete">Löschen</string>
     <string name="files_directory_action_delete">@string/files_file_action_delete</string>
     <string name="files_fileLoad_error">Oops! Irgendwas ist beim Laden der Dateien schief gelaufen!</string>
+    <string name="files_fileLoad_error_notFound">Die Datei \'%1$s\' wurde nicht gefunden</string>
     <string name="files_fileDownload_progress">Die Datei wird geladen&#8230;</string>
     <string name="files_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
     <string name="files_fileDownload_error">Die Datei konnte nicht geladen werden</string>
@@ -85,11 +86,14 @@
 
     <!--Courses-->
     <string name="courses_title">Kurse</string>
-    <string name="courses_content_error_notSupported">%s wird zurzeit nicht unterstüzt.</string>
+    <string name="courses_contentUnsupported_message">%s wird zurzeit nicht unterstützt</string>
     <string name="courses_loading_error">Leider gab es ein Problem beim Laden der Kurse</string>
     <string name="courses_course_title">Kurs</string>
     <string name="courses_course_loading_error">Leider gab es ein Problem beim Laden des Kurses</string>
+    <string name="courses_topic_error">Das Thema konnte nicht geladen werden</string>
     <string name="courses_topic_title">Thema</string>
+    <string name="courses_resource_client">via %1$s</string>
+    <string name="courses_resources_error">Es gab einen Fehler beim Laden des Materials</string>
 
     <!--Homework-->
     <string name="homework_title">Aufgaben</string>
@@ -158,6 +162,7 @@
     <string name="web_protocol_http" translatable="false">http://</string>
     <string name="web_protocol_https" translatable="false">https://</string>
     <string name="website">https://schul-cloud.org</string>
+    <string name="web_error_linkNotSupported">Dieser Link kann aktuell nicht geöffnet werden</string>
 
     <!--Generic dialogs-->
     <string name="dialog_action_ok">OK</string>

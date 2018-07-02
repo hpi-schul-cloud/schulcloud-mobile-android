@@ -5,15 +5,17 @@
     android:id="@+id/card_view"
     style="@style/Material.Card.Margin"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/text_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="6dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textSize="@dimen/text_body"
+        android:textSize="16sp"
         tools:text="Topic name" />
 
 </android.support.v7.widget.CardView>

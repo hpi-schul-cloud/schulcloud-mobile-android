@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentUnsupported_ll_wrapper"
+    style="@style/SchulCloud.Content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/contentUnsupported_tv_title"
+        style="@style/SchulCloud.Content_Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/content_title_margin"
+        android:visibility="gone"
+        tools:text="Content name"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/contentUnsupported_tv_message"
+        style="@style/Content_Text.Empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/courses_contentUnsupported_message" />
+
+</LinearLayout>

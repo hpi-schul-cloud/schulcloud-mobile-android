@@ -54,9 +54,11 @@ import okhttp3.ResponseBody;
 public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
         implements FilesMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
+    private static final String ARGUMENT_PATH = "ARGUMENT_PATH";
+    private static final String ARGUMENT_FILE = "ARGUMENT_FILE";
 
     @Inject
-    FilesPresenter mFilesPresenter;
+    FilesPresenter mPresenter;
 
     @Inject
     InternalFilesUtil mFilesUtil;
@@ -89,7 +91,11 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
 
     @NonNull
     public static FilesFragment newInstance() {
-        return newInstance(true);
+        return newInstance(true, null, null);
+    }
+    @NonNull
+    public static FilesFragment newInstance(@NonNull String path, String file) {
+        return newInstance(true, path, file);
     }
     /**
      * Creates a new instance of this fragment.
@@ -99,11 +105,14 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
      * @return The new instance
      */
     @NonNull
-    public static FilesFragment newInstance(boolean triggerDataSyncOnCreate) {
+    public static FilesFragment newInstance(boolean triggerDataSyncOnCreate,
+            @Nullable String path, @Nullable String file) {
         FilesFragment filesFragment = new FilesFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_TRIGGER_SYNC, triggerDataSyncOnCreate);
+        args.putString(ARGUMENT_PATH, path);
+        args.putString(ARGUMENT_FILE, file);
         filesFragment.setArguments(args);
 
         return filesFragment;
@@ -113,7 +122,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityComponent().inject(this);
-        setPresenter(mFilesPresenter);
+        setPresenter(mPresenter);
         readArguments(savedInstanceState);
 
         setHasOptionsMenu(true);
@@ -125,6 +134,8 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
             restartService(FileSyncService.getStartIntent(getContext()));
             restartService(DirectorySyncService.getStartIntent(getContext()));
         }
+        mPresenter.onDirectorySelected(args.getString(ARGUMENT_PATH),
+                args.getString(ARGUMENT_FILE));
     }
     @Nullable
     @Override
@@ -187,7 +198,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
 
     @Override
     public boolean onBackPressed() {
-        return mFilesPresenter.onBackSelected();
+        return mPresenter.onBackSelected();
     }
 
     private void updateEmptyText() {
@@ -197,11 +208,12 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
                 && (files == null || files.isEmpty()));
     }
 
-    /***** MVP View methods implementation *****/
+    /* MVP View methods implementation */
     @Override
     public void showBreadcrumbs(@NonNull String path, @Nullable Course course) {
         String[] folders = PathUtil.getAllParts(path);
-        final StringBuilder currentPath = new StringBuilder(folders[0] + "/" + folders[1]);
+        final StringBuilder currentPath =
+                new StringBuilder(PathUtil.combine(folders[0], folders[1]));
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
         // Top-level directory ("Persönliche Dateien" or name and color of the course)
@@ -238,7 +250,11 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
 
         @Override
         public void onClick(View widget) {
-            mFilesPresenter.onDirectorySelected(mPath);
+            mPresenter.onDirectorySelected(mPath, null);
+
+            // Realm doesn't trigger a notification if a table was and stays empty, so in case of a
+            // manual refresh in an empty directory the refresh indicator would never terminate.
+            new Handler().postDelayed(() -> swipeRefresh.setRefreshing(false), 3000);
         }
         @Override
         public void updateDrawState(TextPaint ds) {
@@ -295,6 +311,11 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
                     .show();
     }
     @Override
+    public void showFileError_notFound(@NonNull String fileName) {
+        DialogFactory.createGenericErrorDialog(getContext(),
+                getString(R.string.files_fileLoad_error_notFound, fileName)).show();
+    }
+    @Override
     public void saveFile(@NonNull String fileName, @NonNull ResponseBody body) {
         DialogUtil.cancel(mFileDownloadProgressDialog);
 
@@ -321,7 +342,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
         permissionsDeniedToError(requestPermissions(Manifest.permission.READ_EXTERNAL_STORAGE))
                 .flatMap(results -> mFilesUtil.openFileChooser())
                 .subscribe(
-                        file -> mFilesPresenter.onFileUploadSelected(file),
+                        file -> mPresenter.onFileUploadSelected(file),
                         throwable -> DialogFactory.createGenericErrorDialog(getContext(),
                                 R.string.files_fileUpload_error_readPermissionDenied)
                 );
@@ -393,7 +414,7 @@ public class FilesFragment extends MainFragment<FilesMvpView, FilesPresenter>
                 getString(R.string.files_directoryCreate_title),
                 getString(R.string.dialog_action_ok), getString(R.string.dialog_action_cancel))
                 .subscribe(
-                        s -> mFilesPresenter.onDirectoryCreateSelected(s),
+                        s -> mPresenter.onDirectoryCreateSelected(s),
                         throwable -> {} // Abort if cancel was selected
                 );
     }

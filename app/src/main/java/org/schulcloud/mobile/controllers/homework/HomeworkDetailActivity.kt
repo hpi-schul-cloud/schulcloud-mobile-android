@@ -68,7 +68,7 @@ class HomeworkDetailActivity : BaseActivity() {
                 settings.loadWithOverviewMode = true
                 settings.useWideViewPort = true
                 webViewClient = AuthorizedWebViewClient.getWithContext(this@HomeworkDetailActivity)
-                val formattedDescription = ("<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>"
+                val formattedDescription = ("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=yes\" /></head>"
                                             + it
                                             + "</body></html>")
                 loadData(formattedDescription, "text/html", "UTF-8")

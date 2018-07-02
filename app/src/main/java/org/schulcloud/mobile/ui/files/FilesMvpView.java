@@ -31,6 +31,8 @@ public interface FilesMvpView extends MvpView {
 
     void showFile(@NonNull String url, @NonNull String mimeType, @NonNull String extension);
 
+    void showFileError_notFound(@NonNull String fileName);
+
     void saveFile(@NonNull String fileName, @NonNull ResponseBody body);
 
     /* File upload */

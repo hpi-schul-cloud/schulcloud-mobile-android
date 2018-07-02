@@ -72,7 +72,7 @@ public class NewsFragment extends MainFragment<NewsMvpView, NewsPresenter> imple
     }
     @Override
     public void onReadArguments(Bundle args) {
-        if (getArguments().getBoolean(ARGUMENT_TRIGGER_SYNC, true))
+        if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true))
             startService(NewsSyncService.getStartIntent(getContext()));
     }
     @Nullable

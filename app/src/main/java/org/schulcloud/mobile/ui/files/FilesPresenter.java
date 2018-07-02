@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.ui.files;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.ipaulpro.afilechooser.utils.FileUtils;
@@ -8,7 +9,6 @@ import com.ipaulpro.afilechooser.utils.FileUtils;
 import org.schulcloud.mobile.data.datamanagers.CourseDataManager;
 import org.schulcloud.mobile.data.datamanagers.FileDataManager;
 import org.schulcloud.mobile.data.datamanagers.UserDataManager;
-import org.schulcloud.mobile.data.model.Course;
 import org.schulcloud.mobile.data.model.CurrentUser;
 import org.schulcloud.mobile.data.model.Directory;
 import org.schulcloud.mobile.data.model.File;
@@ -45,9 +45,11 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     private Subscription mDirectoryCreateSubscription;
     private Subscription mDirectoryDeleteSubscription;
 
+    private String mFileToOpen = null;
+
     @Inject
     FilesPresenter(FileDataManager fileDataManager, UserDataManager userDataManager,
-                   CourseDataManager courseDataManager) {
+            CourseDataManager courseDataManager) {
         mFileDataManager = fileDataManager;
         mUserDataManager = userDataManager;
         mCourseDataManager = courseDataManager;
@@ -81,25 +83,26 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     private void loadPermissions() {
         RxUtil.unsubscribe(mCurrentUserSubscription);
         mCurrentUserSubscription = mUserDataManager.getCurrentUser()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(currentUser -> sendToView(v -> {
-                v.showCanUploadFile(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FILE_CREATE));
-                v.showCanDeleteFiles(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FILE_DELETE));
-                v.showCanCreateDirectories(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FOLDER_CREATE));
-                v.showCanDeleteDirectories(currentUser.hasPermission(
-                        CurrentUser.PERMISSION_FOLDER_DELETE));
-            }));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(currentUser -> sendToView(v -> {
+                    v.showCanUploadFile(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FILE_CREATE));
+                    v.showCanDeleteFiles(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FILE_DELETE));
+                    v.showCanCreateDirectories(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FOLDER_CREATE));
+                    v.showCanDeleteDirectories(currentUser.hasPermission(
+                            CurrentUser.PERMISSION_FOLDER_DELETE));
+                }));
     }
     private void loadBreadcrumbs() {
-        String path = mFileDataManager.getCurrentStorageContext();
-        if (path.startsWith(FileDataManager.FILES_CONTEXT_MY))
+        String path = mFileDataManager.getStorageContext();
+        String courseId = mFileDataManager.isStorageContextCourse();
+        if (mFileDataManager.isStorageContextMy())
             sendToView(view -> view.showBreadcrumbs(path, null));
-        else if (path.startsWith(FileDataManager.FILES_CONTEXT_COURSES))
-            sendToView(view -> view.showBreadcrumbs(path,
-                    mCourseDataManager.getCourseForId(path.split("/", 3)[1])));
+        else if (courseId != null)
+            sendToView(view ->
+                    view.showBreadcrumbs(path, mCourseDataManager.getCourseForId(courseId)));
     }
 
     private void loadFiles() {
@@ -107,7 +110,21 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         mFileSubscription = mFileDataManager.getFiles()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        files -> sendToView(view -> view.showFiles(files)),
+                        files -> {
+                            sendToView(view -> view.showFiles(files));
+
+                            if (mFileToOpen == null)
+                                return;
+                            for (File file : files)
+                                if (file.name.equals(mFileToOpen)) {
+                                    onFileSelected(file);
+                                    mFileToOpen = null;
+                                    return;
+                                }
+
+                            sendToView(v -> v.showFileError_notFound(mFileToOpen));
+                            mFileToOpen = null;
+                        },
                         error -> {
                             Timber.e(error, "There was an error loading the files.");
                             sendToView(FilesMvpView::showFilesLoadError);
@@ -175,7 +192,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
     public void onFileUploadSelected(@NonNull java.io.File file) {
         sendToView(FilesMvpView::showFileUploadStarted);
         String uploadPath = PathUtil
-                .combine(mFileDataManager.getCurrentStorageContext(), file.getName());
+                .combine(mFileDataManager.getStorageContext(), file.getName());
 
         SignedUrlRequest signedUrlRequest = new SignedUrlRequest(
                 SignedUrlRequest.ACTION_PUT,
@@ -202,8 +219,9 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
             @NonNull SignedUrlResponse signedUrlResponse) {
         RxUtil.unsubscribe(mFileUploadSubscription);
         mFileUploadSubscription = mFileDataManager.uploadFile(file, signedUrlResponse)
-                .flatMap(responseBody -> mFileDataManager.persistFile(signedUrlResponse, file.getName(),
-                        FileUtils.getMimeType(file), file.length()))
+                .flatMap(responseBody -> mFileDataManager
+                        .persistFile(signedUrlResponse, file.getName(),
+                                FileUtils.getMimeType(file), file.length()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         responseBody -> sendToView(view -> {
@@ -258,10 +276,15 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      * @param directory The selected directory
      */
     public void onDirectorySelected(@NonNull Directory directory) {
-        onDirectorySelected(PathUtil.combine(directory.path, directory.name));
+        onDirectorySelected(PathUtil.combine(directory.path, directory.name), null);
     }
-    public void onDirectorySelected(@NonNull String path) {
-        mFileDataManager.setCurrentStorageContext(path);
+    public void onDirectorySelected(@Nullable String path, @Nullable String file) {
+        if (path == null)
+            return;
+
+        mFileToOpen = file;
+
+        mFileDataManager.setStorageContext(path);
         loadBreadcrumbs();
         sendToView(view -> {
             view.reloadFiles();
@@ -274,7 +297,7 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
         RxUtil.unsubscribe(mDirectoryCreateSubscription);
         mDirectoryCreateSubscription = mFileDataManager
                 .createDirectory(new CreateDirectoryRequest(
-                        PathUtil.combine(mFileDataManager.getCurrentStorageContext(), name)))
+                        PathUtil.combine(mFileDataManager.getStorageContext(), name)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         directory -> sendToView(view -> {
@@ -316,11 +339,11 @@ public class FilesPresenter extends BasePresenter<FilesMvpView> {
      * @return True if stepping back was successful, false if we are already in the root directory.
      */
     public boolean onBackSelected() {
-        String storageContext = mFileDataManager.getCurrentStorageContext();
+        String storageContext = mFileDataManager.getStorageContext();
 
         // first two parts are meta
-        if (storageContext.split("/", 3).length > 2) {
-            onDirectorySelected(PathUtil.parent(storageContext));
+        if (storageContext.split("/", 4).length > 3) {
+            onDirectorySelected(PathUtil.parent(storageContext), null);
             return true;
         }
         return false;

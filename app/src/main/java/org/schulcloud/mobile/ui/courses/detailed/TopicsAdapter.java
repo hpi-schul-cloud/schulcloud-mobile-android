@@ -44,7 +44,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
                 .inflate(R.layout.item_topic, parent, false);
         return new TopicsViewHolder(itemView);
     }
-
     @Override
     public void onBindViewHolder(TopicsViewHolder holder, int position) {
         Topic topic = mTopics.get(position);
@@ -54,7 +53,6 @@ public class TopicsAdapter extends RecyclerView.Adapter<TopicsAdapter.TopicsView
         holder.cardView.setOnClickListener(v ->
                 mDetailedCoursePresenter.showTopicDetail(topic._id));
     }
-
     @Override
     public int getItemCount() {
         return mTopics.size();

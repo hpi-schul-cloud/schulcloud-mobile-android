@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, FileOverviewPresenter>
         implements FileOverviewMvpView {
     private static final String ARGUMENT_TRIGGER_SYNC = "ARGUMENT_TRIGGER_SYNC";
+    private static final String ARGUMENT_SWITCH_DIR = "ARGUMENT_SWITCH_DIR";
 
     @Inject
     FileOverviewPresenter mFileOverviewPresenter;
@@ -51,7 +52,11 @@ public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, File
 
     @NonNull
     public static FileOverviewFragment newInstance() {
-        return newInstance(true);
+        return newInstance(true, true);
+    }
+    @NonNull
+    public static FileOverviewFragment newInstance(boolean switchDir) {
+        return newInstance(true, switchDir);
     }
     /**
      * Creates a new instance of this fragment.
@@ -61,11 +66,13 @@ public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, File
      * @return The new instance
      */
     @NonNull
-    public static FileOverviewFragment newInstance(boolean triggerDataSyncOnCreate) {
+    public static FileOverviewFragment newInstance(boolean triggerDataSyncOnCreate,
+            boolean switchDir) {
         FileOverviewFragment fileOverviewFragment = new FileOverviewFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(ARGUMENT_TRIGGER_SYNC, triggerDataSyncOnCreate);
+        args.putBoolean(ARGUMENT_SWITCH_DIR, switchDir);
         fileOverviewFragment.setArguments(args);
 
         return fileOverviewFragment;
@@ -82,6 +89,7 @@ public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, File
     public void onReadArguments(Bundle args) {
         if (args.getBoolean(ARGUMENT_TRIGGER_SYNC, true))
             startService(CourseSyncService.getStartIntent(getContext()));
+        mFileOverviewPresenter.switchDirectoryOnCreate(args.getBoolean(ARGUMENT_SWITCH_DIR, true));
     }
     @Nullable
     @Override
@@ -92,22 +100,24 @@ public class FileOverviewFragment extends MainFragment<FileOverviewMvpView, File
         setTitle(R.string.files_title);
 
         ViewUtil.initSwipeRefreshColors(vSwipeRefresh);
-        vSwipeRefresh.setOnRefreshListener(
-                () -> {
-                    startService(CourseSyncService.getStartIntent(getContext()));
+        vSwipeRefresh.setOnRefreshListener(() -> {
+            startService(CourseSyncService.getStartIntent(getContext()));
+            new Handler().postDelayed(() -> {
+                mFileOverviewPresenter.load();
 
-                    new Handler().postDelayed(() -> {
-                        mFileOverviewPresenter.load();
-
-                        vSwipeRefresh.setRefreshing(false);
-                    }, 3000);
-                }
-        );
+                vSwipeRefresh.setRefreshing(false);
+            }, 3000);
+        });
 
         vC_myWrapper.setOnClickListener(v -> mFileOverviewPresenter.showMyFiles());
 
         vRv_coursesList.setAdapter(mCourseDirectoryAdapter);
-        vRv_coursesList.setLayoutManager(new LinearLayoutManager(getContext()));
+        vRv_coursesList.setLayoutManager(new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
 
         return view;
     }

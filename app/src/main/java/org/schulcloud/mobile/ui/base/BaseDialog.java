@@ -42,15 +42,18 @@ public abstract class BaseDialog<V extends MvpView, P extends BasePresenter<V>>
 
         ConfigPersistentComponent configPersistentComponent = sComponents.get(mActivityId);
         if (configPersistentComponent == null) {
-            Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
+            Timber.i("Creating new ConfigPersistentComponent id=%d, class=%s", mActivityId,
+                    getClass().getSimpleName());
             configPersistentComponent = DaggerConfigPersistentComponent.builder()
                     .applicationComponent(SchulCloudApplication.get(getActivity()).getComponent())
                     .build();
             sComponents.put(mActivityId, configPersistentComponent);
         } else
-            Timber.i("Reusing ConfigPersistentComponent id=%d", mActivityId);
+            Timber.i("Reusing ConfigPersistentComponent id=%d, class=%s", mActivityId,
+                    getClass().getSimpleName());
         mActivityComponent = configPersistentComponent
-                .activityComponent(new ActivityModule((BaseActivity) getActivity()));
+                .activityComponent(new ActivityModule(
+                        (BaseActivity<? extends MvpView, ? extends BasePresenter>) getActivity()));
     }
     protected final void readArguments(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null)

@@ -38,7 +38,7 @@
             android:layout_below="@id/text_name"
             android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/view_hex_color"
-            android:textSize="@dimen/text_small_body"
+            android:textSize="@dimen/text_body_small"
             tools:text="developer"/>
 
     </RelativeLayout>

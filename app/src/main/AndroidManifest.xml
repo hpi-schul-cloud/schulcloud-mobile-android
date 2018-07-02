@@ -33,11 +33,12 @@
         <activity
             android:name=".controllers.main.MainActivity"
             android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"/>
         <activity android:name=".controllers.login.LoginActivity" />
         <activity
             android:name=".controllers.homework.HomeworkDetailActivity"
-
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".controllers.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

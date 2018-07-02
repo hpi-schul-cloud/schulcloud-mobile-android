@@ -31,24 +31,25 @@
     <string name="login_demo_teacher_password">schulcloud</string>
     <string name="login_successful">Erfolgreich angemeldet!</string>
     <string name="login_error">Falscher Nutzername oder Passwort</string>
-    <string name="login_password_recovery">Password vergessen?</string>
+    <string name="login_password_recovery">Passwort vergessen?</string>
 
 
     <!-- Recovery-->
-    <string name="recovery_title">Passwort Zurücksetzen</string>
+    <string name="recovery_title">Passwort zurücksetzen</string>
     <string name="recovery_btn_confirm">Weiter</string>
-    <string name="recovery_name_hint">Email Addresse</string>
-    <string name="recovery_errorMessage_Email">Die Email Adresse existiert nicht</string>
+    <string name="recovery_name_hint">E-Mail-Adresse</string>
+    <string name="recovery_errorMessage_Email">Die E-Mail-Adresse existiert nicht</string>
     <string name="recovery_errorMessage_code_input">Der eingebene Code ist falsch</string>
     <string name="recovery_errorMessage_pw_ungleich">Beide Passwörter stimmen nicht überein</string>
-    <string name="recovery_errorMessage_pw_fehlende_zeichen">Mindestens ein Großbuchstabe und ein Kleinbuchstabe, ein Sonderzeichen und eine Zahl muss vorhanden sein!</string>
-    <string name="recovery_errorMessage_final_error">Änderung des Passwort derzeit nicht möglich.Versuchen Sie es später erneut.</string>
-    <string name="recovery_success_request">Geben Sie den erhaltenen Code ein.</string>
-    <string name="recovery_success_code_input">Wählen Sie ein neues Passwort.\n Mindestens ein Großbuchstabe und ein Kleinbuchstabe, ein Sonderzeichen und eine Zahl muss vorhanden sein.</string>
-    <string name="recovery_success">Passwort erfolgreich geändern!</string>
+    <string name="recovery_errorMessage_pw_fehlende_zeichen">Mindestens 8 Zeichen mit Groß- und Kleinschreibung und mindestens einer Zahl sowie einem Sonderzeichen.</string>
+    <string name="recovery_errorMessage_final_error">Änderung des Passwort derzeit nicht möglich. Versuchen Sie es später erneut.</string>
+    <string name="recovery_success_request">Bitte geben Sie den Code ein, der Ihnen per E-Mail zugeschickt wurde.</string>
+    <string name="recovery_success_code_input">Wählen Sie ein neues Passwort.\nMindestens 8 Zeichen mit Groß- und Kleinschreibung und mindestens einer Zahl sowie einem Sonderzeichen.</string>
+    <string name="recovery_success">Passwort erfolgreich geändert!</string>
     <string name="recovery_reset_email_subject">Schul-Cloud Passwort zurücksetzen</string>
-    <string name="recovery_email_text">Sehr geehrte/r %1$s \n\n Bitte geben Sie folgenden Code in die App ein: %2$s. \n\n Alternativ können Sie Ihr Passwort auch unter folgendem Link zurücksetzen:\n %3$s \n\n Mit freundlichen Grüßen \n Ihr Schul-Cloud Team</string>
-    <string name="recovery_hint_code">Code...</string>
+    <string name="recovery_email_text">Sehr geehrte/r %1$s,\n\nbitte geben Sie folgenden Code in die App ein: %2$s \n\n Alternativ können Sie Ihr Passwort auch unter folgendem Link zurücksetzen:\n %3$s \n\n Mit freundlichen Grüßen \n Ihr Schul-Cloud Team</string>
+    <string name="recovery_button_done">Zum Login</string>
+    <string name="recovery_hint_code">Code…</string>
     <string name="recovery_hint_pw">Neues Passwort</string>
     <string name="recovery_hint_pw_repeat">Passwort wiederholen</string>
 

@@ -33,6 +33,11 @@
             android:noHistory="true" />
 
         <activity
+            android:name=".ui.PasswordRecovery.PasswordRecovery"
+            android:noHistory="true"
+            android:parentActivityName=".ui.signin.SignInActivity" />
+
+        <activity
             android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask">
@@ -176,8 +181,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".ui.PasswordRecovery.PasswordRecovery" />
 
 
     </application>

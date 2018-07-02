@@ -6,7 +6,7 @@ package org.schulcloud.mobile.ui.PasswordRecovery;
 
 public interface PasswordRecoveryMvpView  extends MvpView {
     void showSuccessMessage();
-    void showErrorMessage();
+    void showErrorMessage(boolean subStep);
     void setStep(int step);
     void sendEmail(ResetResponse responseBody, Account account);
 }

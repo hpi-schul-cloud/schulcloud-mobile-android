@@ -83,23 +83,19 @@ public class UserDataManager{
         mPreferencesHelper.clear();
     }
 
-    public Observable<ResetResponse> requestResetPassword(String username ){
-       return mRestService.passwordRecovery(getAccessToken(),new ResetRequest(username));
+    public Observable<ResetResponse> requestResetPassword(String username){
+       return mRestService.passwordRecovery(getAccessToken(), new ResetRequest(username));
     }
-    public Observable<ResponseBody> resetPassword(String AccountId,String passwort){
-        return mRestService.passwordReset(getAccessToken(),new ResetData(AccountId,passwort));
+    public Observable<ResponseBody> resetPassword(String accountId, String password) {
+        return mRestService.passwordReset(getAccessToken(), new ResetData(accountId, password));
     }
 
     public Observable<CurrentUser> syncCurrentUser(String userId) {
-        return mRestService.getUser(getAccessToken(), userId).concatMap(
-                new Func1<CurrentUser, Observable<CurrentUser>>() {
-                    @Override
-                    public Observable<CurrentUser> call(CurrentUser currentUser) {
-                        mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
-                        mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
-                        return mUserDatabaseHelper.setCurrentUser(currentUser);
-                    }
-                }).doOnError(Throwable::printStackTrace);
+        return mRestService.getUser(getAccessToken(), userId).concatMap(currentUser -> {
+            mPreferencesHelper.saveCurrentUsername(currentUser.displayName);
+            mPreferencesHelper.saveCurrentSchoolId(currentUser.schoolId);
+            return mUserDatabaseHelper.setCurrentUser(currentUser);
+        }).doOnError(Throwable::printStackTrace);
     }
 
     public Single<CurrentUser> getCurrentUser() {

@@ -62,8 +62,3 @@ android {
 }
 
 apply from: 'dependencies.gradle'
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'net.danlew:android.joda:2.9.9.4'
-}

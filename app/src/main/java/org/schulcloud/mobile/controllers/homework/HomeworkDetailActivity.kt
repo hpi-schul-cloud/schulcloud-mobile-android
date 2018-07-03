@@ -60,11 +60,10 @@ class HomeworkDetailActivity : BaseActivity() {
             homework_detail_duetill.setTextColor(dueTextAndColorId.second)
         }
 
+        // TODO: use ContentWebView
         homework.description?.let {
             homework_detail_description.apply {
                 webViewClient = AuthorizedWebViewClient.getWithContext(this@HomeworkDetailActivity)
-
-                // format the displayed content, enable zoom
                 settings.builtInZoomControls = true
                 settings.displayZoomControls = true
                 settings.loadWithOverviewMode = true
@@ -79,9 +78,7 @@ class HomeworkDetailActivity : BaseActivity() {
         homework_detail_description.setBackgroundColor(Color.TRANSPARENT)
     }
 
-    /**
-     * Allows loading images from SchulCloud database with user access token
-     */
+    // TODO: replace with ContentWebView
     class AuthorizedWebViewClient : WebViewClient() {
 
         companion object {
@@ -105,9 +102,6 @@ class HomeworkDetailActivity : BaseActivity() {
                     }.build()
         }
 
-        /**
-         * Opens external link in browser
-         */
         @Suppress("OverridingDeprecatedMember")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -132,11 +126,6 @@ class HomeworkDetailActivity : BaseActivity() {
             return getNewResponse(request.url.toString())
         }
 
-        /**
-         * Gets a response using the user access token
-         *
-         * @return a WebResourceResponse containing the data received by a call with the token
-         */
         private fun getNewResponse(url: String): WebResourceResponse? {
             try {
                 val request = Request.Builder().url(url).build()

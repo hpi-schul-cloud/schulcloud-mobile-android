@@ -50,12 +50,12 @@ class HomeworkListFragment : BaseFragment() {
         homeworkListViewModel.getHomework().observe(this, Observer<RealmResults<Homework>> { homework ->
             homeworkListAdapter.update(homework!!)
         })
-        homeworkListAdapter.setListener(object: HomeworkListAdapter.Listener{
+        homeworkListAdapter.listener = object: HomeworkListAdapter.Listener{
             override fun onClick(id: String){
                 val intent = Intent(context, HomeworkDetailActivity::class.java)
                 intent.putExtra(HomeworkDetailActivity.EXTRA_ID, id)
                 startActivity(intent)
             }
-        })
+        }
     }
 }

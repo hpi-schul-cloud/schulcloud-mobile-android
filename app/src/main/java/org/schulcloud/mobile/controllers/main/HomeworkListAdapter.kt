@@ -17,11 +17,7 @@ import org.schulcloud.mobile.R
 class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var homeworkList: List<Homework> = emptyList()
-    private var listener: Listener? = null
-
-    fun setListener (listener: Listener){
-        this.listener = listener
-    }
+    var listener: Listener? = null
 
     fun update(homeworkList: List<Homework>){
         this.homeworkList = homeworkList
@@ -48,8 +44,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             homework.dueDate?.let{
-                val dueTextAndColorId: Pair<String, Int>?
-                dueTextAndColorId = homework.getDueTextAndColorId()
+                val dueTextAndColorId = homework.getDueTextAndColorId()
                 holder.homeworkDueTill.text = dueTextAndColorId.first
                 holder.homeworkDueTill.setTextColor(dueTextAndColorId.second)
 

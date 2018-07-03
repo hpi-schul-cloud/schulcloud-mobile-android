@@ -13,6 +13,7 @@ import org.schulcloud.mobile.models.homework.HomeworkDao
 // Convenience extension on RealmResults to return as LiveRealmData
 fun <T : RealmModel> RealmResults<T>.asLiveData(): LiveRealmData<T> = LiveRealmData(this)
 
+// Convenience extension on RealmObjects to return as RealmObjectLiveData
 fun <T : RealmObject> T.asLiveData(): RealmObjectLiveData<T> = RealmObjectLiveData(this)
 
 // DAOs

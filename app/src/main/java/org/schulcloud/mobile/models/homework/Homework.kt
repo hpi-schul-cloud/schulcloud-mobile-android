@@ -22,6 +22,15 @@ open class Homework : RealmObject() {
     var restricted: Boolean = false
     var courseId: HomeworkCourse? = null
 
+    /**
+     * Returns text and text color for the duetill label of a Homework object
+     * depending on how many days and hours are left until its dueDate.
+     *
+     * When there is more than a week left or the Homework object does not have a dueDate
+     * or the dueDate cannot be parsed, this function returns an empty String
+     *
+     * @return a Pair with duetill label text and color
+     */
     fun getDueTextAndColorId(): Pair<String, Int> {
         val diffDays = getDueTimespanDays()
 
@@ -34,7 +43,7 @@ open class Homework : RealmObject() {
                 if (diffHours >= 0) {
                     return Pair("⚐ In $diffHours Stunden fällig", Color.RED)
                 } else if (diffHours == Int.MIN_VALUE) {
-                    return Pair("", Color.WHITE)
+                    return Pair("", Color.TRANSPARENT)
                 } else {
                     return Pair("⚐ Überfällig", Color.RED)
                 }
@@ -43,11 +52,17 @@ open class Homework : RealmObject() {
             2 -> return Pair("Übermorgen", Color.BLACK)
             in 3..7 -> return Pair("In $diffDays Tagen", Color.BLACK)
             else -> {
-                return Pair("", Color.WHITE)
+                return Pair("", Color.TRANSPARENT)
             }
         }
     }
 
+    /**
+     * Calculates how many days are left until the dueDate.
+     * In case of no dueDate given or parsing error this function returns minimal Int value
+     *
+     * @return the number of days until deadline
+     */
     fun getDueTimespanDays(): Int {
         var dueTimespanDays: Int = Int.MIN_VALUE
         try {

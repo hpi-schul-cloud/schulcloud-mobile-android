@@ -55,29 +55,33 @@ class HomeworkDetailActivity : BaseActivity() {
         }
 
         homework.dueDate?.let {
-            val dueTextAndColorId: Pair<String, Int>?
-            dueTextAndColorId = homework.getDueTextAndColorId()
+            val dueTextAndColorId = homework.getDueTextAndColorId()
             homework_detail_duetill.text = dueTextAndColorId.first
             homework_detail_duetill.setTextColor(dueTextAndColorId.second)
         }
 
         homework.description?.let {
             homework_detail_description.apply {
+                webViewClient = AuthorizedWebViewClient.getWithContext(this@HomeworkDetailActivity)
+
+                // format the displayed content, enable zoom
                 settings.builtInZoomControls = true
                 settings.displayZoomControls = true
                 settings.loadWithOverviewMode = true
                 settings.useWideViewPort = true
-                webViewClient = AuthorizedWebViewClient.getWithContext(this@HomeworkDetailActivity)
+                settings.defaultFontSize = 18
                 val formattedDescription = ("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=yes\" /></head>"
                                             + it
                                             + "</body></html>")
                 loadData(formattedDescription, "text/html", "UTF-8")
-                settings.defaultFontSize = 18
             }
         }
         homework_detail_description.setBackgroundColor(Color.TRANSPARENT)
     }
 
+    /**
+     * Allows loading images from SchulCloud database with user access token
+     */
     class AuthorizedWebViewClient : WebViewClient() {
 
         companion object {
@@ -101,6 +105,9 @@ class HomeworkDetailActivity : BaseActivity() {
                     }.build()
         }
 
+        /**
+         * Opens external link in browser
+         */
         @Suppress("OverridingDeprecatedMember")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -125,6 +132,11 @@ class HomeworkDetailActivity : BaseActivity() {
             return getNewResponse(request.url.toString())
         }
 
+        /**
+         * Gets a response using the user access token
+         *
+         * @return a WebResourceResponse containing the data received by a call with the token
+         */
         private fun getNewResponse(url: String): WebResourceResponse? {
             try {
                 val request = Request.Builder().url(url).build()

@@ -28,8 +28,16 @@
     <string name="login_demo_teacher_password">schulcloud</string>
 
     <!-- Main -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="main_drawer_open">Navigationsleiste öffnen</string>
+    <string name="main_drawer_close">Navigationsleiste schließen</string>
+    <string name="main_drawer_dashboard">Übersicht</string>
+    <string name="main_drawer_news">Neuigkeiten</string>
+    <string name="main_drawer_courses">Kurse</string>
+    <string name="main_drawer_calendar">Termine</string>
+    <string name="main_drawer_homework">Aufgaben</string>
+    <string name="main_drawer_files">Meine Dateien</string>
+    <string name="main_drawer_learnstore">Materialien</string>
+    <string name="main_drawer_logout">Abmelden</string>
 
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>

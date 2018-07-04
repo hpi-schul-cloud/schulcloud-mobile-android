@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="brand_primary">@color/hpiRed</color>
+    <color name="brand_primary">@color/brand_hpiRed</color>
     <!-- 40% black overlay -->
     <color name="brand_primaryLight">#e8915a</color>
     <!-- 30% white overlay -->
     <color name="brand_primaryDark">#853b0b</color>
-    <color name="brand_accent">@color/hpiRed</color>
+    <color name="brand_accent">@color/brand_hpiRed</color>
 
     <color name="ic_launcher_background">@android:color/white</color>
+
+    <array name="brand_swipeRefreshColors">
+        <item>@color/brand_hpiRed</item>
+        <item>@color/brand_hpiOrange</item>
+        <item>@color/brand_hpiYellow</item>
+    </array>
+
+
+    <color name="brand_hpiRed">#B10438</color>
+    <color name="brand_hpiOrange">#E2661D</color>
+    <color name="brand_hpiYellow">#F8A41B</color>
 
 </resources>

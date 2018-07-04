@@ -8,4 +8,10 @@
 
     <color name="ic_launcher_background">@color/brand_primary</color>
 
+    <array name="brand_swipeRefreshColors">
+        <item>@color/brand_primary</item>
+        <item>@color/brand_primaryLight</item>
+        <item>@color/brand_primaryDark</item>
+    </array>
+
 </resources>

@@ -34,7 +34,6 @@ class LoginFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        text_credentials.text = String.format(getString(R.string.login_withCredentials), getString(R.string.brand_name))
         btnLogin.setOnClickListener { login() }
         btn_demo_student.setOnClickListener { demoLoginStudent() }
         btn_demo_teacher.setOnClickListener { demoLoginTeacher() }
@@ -82,8 +81,8 @@ class LoginFragment: BaseFragment() {
     private fun handleInvalidFields(invalidInputs: MutableList<LoginViewModel.LoginInput>) {
         invalidInputs.forEach { input ->
             when(input) {
-                LoginViewModel.LoginInput.EMAIL -> editEmail.error = getString(R.string.error_invalid_email)
-                LoginViewModel.LoginInput.PASSWORD -> editPassword.error = getString(R.string.error_invalid_password)
+                LoginViewModel.LoginInput.EMAIL -> editEmail.error = getString(R.string.login_error_emailInvalid)
+                LoginViewModel.LoginInput.PASSWORD -> editPassword.error = getString(R.string.login_error_passwordEmpty)
             }
         }
     }

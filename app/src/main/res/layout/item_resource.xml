@@ -33,7 +33,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@null"
                 android:text="@{resource.title}"
-                android:textColor="@color/hpiRed"
+                android:textColor="@color/brand_primary"
                 tools:text="Resource title" />
 
             <org.schulcloud.mobile.views.PassiveWebView

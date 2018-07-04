@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -58,6 +59,13 @@ class HomeworkDetailActivity : BaseActivity() {
             val dueTextAndColorId = homework.getDueTextAndColorId()
             homework_detail_duetill.text = dueTextAndColorId.first
             homework_detail_duetill.setTextColor(dueTextAndColorId.second)
+
+            if(dueTextAndColorId.second == Color.RED){
+                homework_detail_duetill_flag.visibility = View.VISIBLE
+            }
+            else{
+                homework_detail_duetill_flag.visibility = View.GONE
+            }
         }
 
         // TODO: use ContentWebView

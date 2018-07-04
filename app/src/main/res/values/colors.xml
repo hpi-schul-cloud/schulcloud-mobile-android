@@ -9,6 +9,7 @@
     <color name="hpiYellow">#F8A41B</color>
 
     <color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
 
     <color name="apptheme_main">@color/hpiRed</color>
     <!-- 30% white overlay -->

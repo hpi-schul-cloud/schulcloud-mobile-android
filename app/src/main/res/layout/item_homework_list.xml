@@ -86,6 +86,13 @@
 
                 </android.support.constraint.ConstraintLayout>
 
+                <ImageView
+                    android:id="@+id/homework_duetill_flag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/baseline_outlined_flag_16dp"/>
+
                 <TextView
                     android:id="@+id/homework_duetill"
                     android:layout_width="wrap_content"

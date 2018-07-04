@@ -36,19 +36,19 @@ open class Homework : RealmObject() {
 
         when (diffDays) {
             in Int.MIN_VALUE + 1 until 0 -> {
-                return Pair("⚐ Überfällig", Color.RED)
+                return Pair("Überfällig", Color.RED)
             }
             0 -> {
                 val diffHours = getDueTimespanHours()
                 if (diffHours >= 0) {
-                    return Pair("⚐ In $diffHours Stunden fällig", Color.RED)
+                    return Pair("In $diffHours Stunden fällig", Color.RED)
                 } else if (diffHours == Int.MIN_VALUE) {
                     return Pair("", Color.TRANSPARENT)
                 } else {
-                    return Pair("⚐ Überfällig", Color.RED)
+                    return Pair("Überfällig", Color.RED)
                 }
             }
-            1 -> return Pair("⚐ Morgen fällig", Color.RED)
+            1 -> return Pair("Morgen fällig", Color.RED)
             2 -> return Pair("Übermorgen", Color.BLACK)
             in 3..7 -> return Pair("In $diffDays Tagen", Color.BLACK)
             else -> {

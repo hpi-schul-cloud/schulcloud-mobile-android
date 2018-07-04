@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Build
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -48,6 +49,12 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.homeworkDueTill.text = dueTextAndColorId.first
                 holder.homeworkDueTill.setTextColor(dueTextAndColorId.second)
 
+                if(dueTextAndColorId.second == Color.RED){
+                    holder.homeworkDueTillFlag.visibility = View.VISIBLE
+                }
+                else{
+                    holder.homeworkDueTillFlag.visibility = View.GONE
+                }
             }
 
             homework.description?.let{
@@ -114,6 +121,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class HomeworkViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val homeworkTitle: TextView = view.findViewById(R.id.homework_title)
         val homeworkDueTill: TextView = view.findViewById(R.id.homework_duetill)
+        val homeworkDueTillFlag: ImageView = view.findViewById(R.id.homework_duetill_flag)
         val homeworkDescription: TextView = view.findViewById(R.id.homework_description)
         val homeworkCourseTitle: TextView = view.findViewById(R.id.homework_course_title)
         val homeworkCourseColor: ImageView = view.findViewById(R.id.homework_course_color)

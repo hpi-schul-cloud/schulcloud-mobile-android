@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.graphics.Color" />
+
+        <variable
+            name="course"
+            type="org.schulcloud.mobile.models.course.Course" />
+        <variable
+            name="selectedCallback"
+            type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
+    </data>
+
+    <LinearLayout
+        style="@style/Material.ListItem"
+        android:layout_width="match_parent"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> selectedCallback.onItemSelected(course.id)}">
+
+        <View
+            style="@style/Material.ListItem_Icon"
+            android:layout_width="@dimen/material_listItem_icon_size"
+            android:layout_height="@dimen/material_listItem_icon_size"
+            android:background="@{Color.parseColor(course.color)}"
+            tools:background="@color/brand_primary" />
+
+        <TextView
+            style="@style/Material.ListItem_TextPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@{course.name}"
+            tools:text="12 Math" />
+
+    </LinearLayout>
+</layout>

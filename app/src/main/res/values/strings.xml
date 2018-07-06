@@ -53,4 +53,13 @@
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
+    <!-- File -->
+    <string name="file_title">Dateien</string>
+    <string name="fileOverview_my">Persönliche Dateien</string>
+    <string name="fileOverview_my_description">Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzern teilen.</string>
+    <string name="fileOverview_courses">Kurs-Dateien</string>
+    <string name="fileOverview_courses_description">Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff.</string>
+    <string name="fileOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
+    <string name="file_directoryEmpty">Der Ordner ist leer</string>
+
 </resources>

@@ -62,4 +62,16 @@
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
+    <!-- Settings -->
+    <string name="settings_calender">Kalender</string>
+    <string name="settings_sync_appointments">Termine synchronisieren</string>
+    <string name="settings_about">Über</string>
+    <string name="settings_contributors">Mitwirkende</string>
+    <string name="settings_open_source">Diese App ist Open Source</string>
+    <string name="settings_contact">Kontakt</string>
+    <string name="settings_imprint">Impressum</string>
+    <string name="settings_data_protection">Datenschutzerklärung</string>
+    <string name="settings_register_device">Gerät registrieren</string>
+    <string name="settings_notifications">Benachrichtigungen</string>
+
 </resources>

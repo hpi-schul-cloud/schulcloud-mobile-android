@@ -113,4 +113,16 @@
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
 
+    <!-- Settings -->
+    <string name="settings_calender">Kalender</string>
+    <string name="settings_sync_appointments">Termine synchronisieren</string>
+    <string name="settings_about">Über</string>
+    <string name="settings_contributors">Mitwirkende</string>
+    <string name="settings_open_source">Diese App ist Open Source</string>
+    <string name="settings_contact">Kontakt</string>
+    <string name="settings_imprint">Impressum</string>
+    <string name="settings_data_protection">Datenschutzerklärung</string>
+    <string name="settings_register_device">Gerät registrieren</string>
+    <string name="settings_notifications">Benachrichtigungen</string>
+
 </resources>

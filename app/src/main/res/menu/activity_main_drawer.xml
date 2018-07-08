@@ -36,10 +36,14 @@
             android:icon="@drawable/ic_search"
             android:title="@string/main_drawer_learnstore" />
     </group>
+    
+    <group android:id="@+id/nav_group_2"  android:checkableBehavior="single">
 
-    <group
-        android:id="@+id/nav_group_2"
-        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_options"
+            android:icon="@drawable/ic_settings"
+            android:title="Einstellungen" />
+
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_sign_out_alt"

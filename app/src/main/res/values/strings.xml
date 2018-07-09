@@ -63,6 +63,7 @@
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
     <!-- Settings -->
+    <string name="settings">Einstellungen</string>
     <string name="settings_calender">Kalender</string>
     <string name="settings_sync_appointments">Termine synchronisieren</string>
     <string name="settings_about">Über</string>

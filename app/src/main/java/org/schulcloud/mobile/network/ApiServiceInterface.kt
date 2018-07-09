@@ -3,6 +3,7 @@ package org.schulcloud.mobile.network
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
+import org.schulcloud.mobile.models.devices.Device
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
@@ -25,5 +26,10 @@ interface ApiServiceInterface {
     fun listCourseTopics(@Query("courseId") courseId: String): Call<FeathersResponse<List<Topic>>>
     @GET("lessons/{id}")
     fun getTopic(@Path("id") topicId: String): Call<Topic>
+
+    @GET("notification/devices")
+    fun getDevices(): Call<FeathersResponse<List<Device>>>
+    @GET("notification/devices/{id}")
+    fun getDevice(@Path("id") deviceId: String): Call<Device>
 
 }

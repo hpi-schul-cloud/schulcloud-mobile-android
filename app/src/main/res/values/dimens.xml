@@ -17,6 +17,7 @@
     <dimen name="material_listItem_textPrimary_textSize">16sp</dimen>
     <dimen name="material_body_1">16sp</dimen>
     <dimen name="material_body_2">14sp</dimen>
+    <dimen name="material_header_H6">20sp</dimen>
 
 
 </resources>

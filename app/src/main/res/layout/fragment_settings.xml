@@ -1,78 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginVertical="@dimen/activity_vertical_margin"
     android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
 
-    <ScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/swipeRefresh">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextHeader"
-                    android:text="@string/settings_calender"/>
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
 
-                <Switch
-                    android:id="@+id/sync_appointments_switch"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        style="@style/TextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_calender" />
+
+                    <Switch
+                        android:id="@+id/sync_appointments_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/settings_sync_appointments"
+                        android:textSize="@dimen/material_body_1" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:checked="false"
-                    android:text="@string/settings_sync_appointments"
-                    android:textSize="@dimen/material_body_1"
-                    android:layout_marginLeft="10dp"/>
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_notifications" />
+
+                    <Button
+                        style="@style/Button"
+                        android:id="@+id/register_device"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/button_gray"
+                        android:text="@string/settings_register_device" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/settings_devices"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_about" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_contributors"
+                            android:textColor="@color/text_main"
+                            android:textSize="@dimen/material_body_1" />
+
+                        <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/contributors_names" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_open_source"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left"
+                        android:text="@string/settings_open_source"
+                        android:textColor="@color/text_main"
+                        android:textSize="@dimen/material_body_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/ic_open_in_new" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left"
+                        android:text="@string/settings_contact"
+                        android:textColor="@color/text_main"
+                        android:textSize="@dimen/material_body_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/ic_open_in_new" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_imprint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left"
+                        android:text="@string/settings_imprint"
+                        android:textColor="@color/text_main"
+                        android:textSize="@dimen/material_body_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/ic_open_in_new" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settings_data_protection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="left"
+                        android:text="@string/settings_data_protection"
+                        android:textColor="@color/text_main"
+                        android:textSize="@dimen/material_body_1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/ic_open_in_new" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextHeader"
-                android:text="@string/settings_notifications"/>
+        </ScrollView>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Button"
-                android:text="@string/settings_register_device"
-                android:background="@color/button_gray"
-                android:layout_gravity="center_horizontal"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextHeader"
-                android:text="@string/settings_about"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/material_body_1"
-                    android:text="@string/settings_contributors"/>
-
-                
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

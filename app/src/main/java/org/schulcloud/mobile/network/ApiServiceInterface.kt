@@ -10,6 +10,7 @@ import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.news.News
+import org.schulcloud.mobile.models.devices.Device
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
@@ -40,6 +41,7 @@ interface ApiServiceInterface {
     @GET("lessons/{id}")
     fun getTopic(@Path("id") topicId: String): Call<Topic>
 
+
     // Homework
     @GET("homework?\$populate=courseId&\$sort=dueDate:-1")
     fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
@@ -53,4 +55,11 @@ interface ApiServiceInterface {
     fun generateSignedUrl(@Body signedUrlRequest: SignedUrlRequest): Call<SignedUrlResponse>
     @GET
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
+
+    @GET("notification/devices")
+    fun getDevices(): Call<FeathersResponse<List<Device>>>
+    @GET("notification/devices/{id}")
+    fun getDevice(@Path("id") deviceId: String): Call<Device>
+
+
 }

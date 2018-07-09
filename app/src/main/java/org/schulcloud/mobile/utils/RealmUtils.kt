@@ -9,6 +9,7 @@ import org.schulcloud.mobile.models.course.CourseDao
 import org.schulcloud.mobile.models.event.EventDao
 import org.schulcloud.mobile.models.file.FileDao
 import org.schulcloud.mobile.models.news.NewsDao
+import org.schulcloud.mobile.models.devices.DeviceDao
 import org.schulcloud.mobile.models.topic.TopicDao
 import org.schulcloud.mobile.models.homework.HomeworkDao
 
@@ -31,7 +32,6 @@ fun Realm.newsDao(): NewsDao = NewsDao(this)
 fun Realm.courseDao(): CourseDao = CourseDao(this)
 fun Realm.topicDao(): TopicDao = TopicDao(this)
 fun Realm.contentDao(): ContentDao = ContentDao(this)
-
 fun Realm.homeworkDao() : HomeworkDao = HomeworkDao(this)
-
 fun Realm.fileDao(): FileDao = FileDao(this)
+fun Realm.devicesDao(): DeviceDao = DeviceDao(this)

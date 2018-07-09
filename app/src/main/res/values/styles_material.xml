@@ -37,10 +37,6 @@
     <!-- List -->
     <style name="Material.ListItem">
         <item name="android:layout_height">@dimen/material_listItem_height</item>
-        <item name="android:paddingLeft">@dimen/material_listItem_paddingHorizontal</item>
-        <item name="android:paddingRight">@dimen/material_listItem_paddingHorizontal</item>
-        <item name="android:paddingTop">@dimen/material_listItem_paddingVertical</item>
-        <item name="android:paddingBottom">@dimen/material_listItem_paddingVertical</item>
     </style>
     <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:height">@dimen/material_listItem_height</item>
@@ -52,15 +48,16 @@
         <item name="android:maxLines">1</item>
     </style>
     <style name="Material.ListItem_TextPrimary" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_marginLeft">@dimen/material_listItem_icon_textSpacing</item>
+        <item name="android:layout_marginRight">@dimen/material_listItem_icon_textSpacing</item>
         <item name="android:textSize">@dimen/material_listItem_textPrimary_textSize</item>
-        <item name="android:gravity">top</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
-    <style name="Material.ListItem_Icon">
-        <item name="android:width">@dimen/material_listItem_icon_size</item>
-        <item name="android:height">@dimen/material_listItem_icon_size</item>
-        <item name="android:layout_marginRight">@dimen/material_listItem_icon_textSpacing</item>
+    <style name="Material.ListItem_Icon" parent="Material.Icon">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
     </style>
 
     <!-- Card -->

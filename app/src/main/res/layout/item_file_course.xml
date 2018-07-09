@@ -21,8 +21,9 @@
 
         <View
             style="@style/Material.ListItem_Icon"
-            android:layout_width="@dimen/material_listItem_icon_size"
-            android:layout_height="@dimen/material_listItem_icon_size"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="12dp"
             android:background="@{Color.parseColor(course.color)}"
             tools:background="@color/brand_primary" />
 

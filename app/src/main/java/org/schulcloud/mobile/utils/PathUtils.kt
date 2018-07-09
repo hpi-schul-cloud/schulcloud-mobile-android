@@ -4,20 +4,19 @@ import android.text.TextUtils
 import java.io.File
 
 
-/**
- * Date: 6/19/2018
- */
-fun combinePath(vararg parts: String): String {
+fun String.getPathParts(limit: Int = 0): List<String> = split(File.separator, limit = limit)
+
+fun combinePath(vararg parts: String?): String {
     val builder = StringBuilder(parts[0])
     for (i in 1 until parts.size) {
-        if (TextUtils.isEmpty(parts[i]))
+        if (parts[i] == null || TextUtils.isEmpty(parts[i]))
             continue
 
         val endsWithSeparator = builder.isNotEmpty() && builder[builder.length - 1] == File.separatorChar
-        val beginsWithSeparator = parts[i].isNotEmpty() && parts[i][0] == File.separatorChar
+        val beginsWithSeparator = parts[i]!!.isNotEmpty() && parts[i]!![0] == File.separatorChar
 
         if (endsWithSeparator && beginsWithSeparator)
-            builder.append(parts[i].substring(1))
+            builder.append(parts[i]!!.substring(1))
         else if (!endsWithSeparator && !beginsWithSeparator)
             builder.append(File.separatorChar).append(parts[i])
         else
@@ -25,3 +24,13 @@ fun combinePath(vararg parts: String): String {
     }
     return builder.toString()
 }
+
+fun String.trimLeadingSlash(): String = if (length > 0 && this[0] == File.separatorChar) substring(1) else this
+
+fun String.trimTrailingSlash(): String = if (length > 1 && this[length - 1] == File.separatorChar) substring(0, length - 1) else this
+
+fun String.trimSlashes(): String = this.trimLeadingSlash().trimTrailingSlash()
+
+fun String.ensureLeadingSlash(): String = if (length == 0 || this[0] != File.separatorChar) File.separator + this else this
+
+fun String.ensureTrailingSlash(): String = if (length == 0 || this[length - 1] != File.separatorChar) this + File.separator else this

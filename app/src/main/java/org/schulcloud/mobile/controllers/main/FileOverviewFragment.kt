@@ -9,7 +9,9 @@ import kotlinx.android.synthetic.main.fragment_file_overview.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
+import org.schulcloud.mobile.controllers.file.FileActivity
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.utils.HOST
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
@@ -23,7 +25,7 @@ class FileOverviewFragment : BaseFragment() {
     private lateinit var viewModel: FileOverviewViewModel
     private val coursesAdapter: FileOverviewCourseAdapter by lazy {
         FileOverviewCourseAdapter(OnItemSelectedCallback {
-//            startActivity(CourseActivity.newIntent(context!!, it))
+            startActivity(FileActivity.newIntent(context!!, FileRepository.pathCourse(it)))
         }).apply {
             emptyIndicator = empty
         }
@@ -43,6 +45,9 @@ class FileOverviewFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = swipeRefresh
+        personal_card.setOnClickListener {
+            startActivity(FileActivity.newIntent(context!!, FileRepository.pathPersonal()))
+        }
 
         viewModel.getCourses().observe(this, Observer { courses ->
             coursesAdapter.update(courses!!)

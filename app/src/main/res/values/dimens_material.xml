@@ -1,5 +1,9 @@
 <resources>
 
+    <!-- Buttons -->
+    <!-- FAB -->
+    <dimen name="material_button_fab_spacer">88dp</dimen>
+
     <!-- List -->
     <dimen name="material_listItem_height">48dp</dimen>
     <dimen name="material_listItem_paddingHorizontal">16dp</dimen>

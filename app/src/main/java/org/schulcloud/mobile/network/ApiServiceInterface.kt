@@ -27,6 +27,6 @@ interface ApiServiceInterface {
 
     // File
     @GET("fileStorage")
-    fun listDirectoryContents(@Query("path") path: String): Call<FeathersResponse<DirectoryResponse>>
+    fun listDirectoryContents(@Query("path") path: String): Call<DirectoryResponse>
 
 }

@@ -11,6 +11,7 @@ import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.models.devices.Device
+import org.schulcloud.mobile.models.devices.DeviceRequest
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
@@ -60,6 +61,10 @@ interface ApiServiceInterface {
     fun getDevices(): Call<FeathersResponse<List<Device>>>
     @GET("notification/devices/{id}")
     fun getDevice(@Path("id") deviceId: String): Call<Device>
+    @POST("notification/devicse")
+    fun createDevice(@Body device: DeviceRequest): Call<Void>
+    @DELETE("notifcation/devices/{id}")
+    fun deleteDevice(@Path("id") deviceId: String): Call<String>
 
 
 }

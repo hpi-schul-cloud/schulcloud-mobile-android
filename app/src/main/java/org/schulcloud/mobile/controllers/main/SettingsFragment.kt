@@ -1,43 +1,46 @@
 package org.schulcloud.mobile.controllers.main
 
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.generated.callback.OnClickListener
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
+import org.schulcloud.mobile.jobs.CreateDeviceJob
+import org.schulcloud.mobile.jobs.DeleteDeviceJob
+import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.models.devices.DeviceRepository
+import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.DeviceListViewModel
 
 class SettingsFragment: BaseFragment() {
 
-    companion object{
+    companion object {
         var TAG: String = SettingsFragment::class.java.simpleName
 
-        fun openWebPage(url: String,mContext: Context){
-            val uris = Uri.parse(url)
-            val webIntent = Intent(Intent.ACTION_VIEW,uris)
-            val bundle = Bundle()
-            bundle.putBoolean("new_window",true)
-            webIntent.putExtras(bundle)
-            mContext.startActivity(webIntent)
+        class deviceCallback(): RequestJobCallback() {
+            override fun onError(code: ErrorCode) {
+                Log.i(TAG, ErrorCode.ERROR.toString())
+            }
+
+            override fun onSuccess() {
+                async {DeviceRepository.syncDevices()}
+            }
         }
+    }
 
-        fun openMail(mContext: Context){
-            //TODO: finish
-            var emailIntent = Intent(Intent.ACTION_SENDTO)
-            var mailTo = Uri.parse("mailto:schul-cloud@hpi.de")
-
-            emailIntent.setData(mailTo)
-
-        }
+    private val deviceListAdapter by lazy {
+        DeviceListAdapter(OnItemSelectedCallback {id ->
+            DeviceRepository.deleteDevice(id,deviceCallback())
+        })
     }
 
     private lateinit var viewModel: DeviceListViewModel
@@ -56,9 +59,5 @@ class SettingsFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = swipeRefresh
-        settings_open_source.setOnClickListener({v ->  openWebPage("https://github.com/schul-cloud/schulcloud-mobile-android",this.context!!)})
-        settings_imprint.setOnClickListener({v -> openWebPage("https://schul-cloud.org/impressum",this.context!!)})
-        settings_data_protection.setOnClickListener({v -> openWebPage("https://schul-cloud.org/impressum#data_security",this.context!!)})
-
     }
 }

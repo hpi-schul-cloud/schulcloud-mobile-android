@@ -4,7 +4,7 @@ import android.text.TextUtils
 import java.io.File
 
 
-fun String.getPathParts(limit: Int = 0): List<String> = split(File.separator, limit = limit)
+fun String.getPathParts(limit: Int = 0): List<String> = trimSlashes().split(File.separator, limit = limit)
 
 fun combinePath(vararg parts: String?): String {
     val builder = StringBuilder(parts[0])
@@ -24,6 +24,8 @@ fun combinePath(vararg parts: String?): String {
     }
     return builder.toString()
 }
+
+fun String.parentDirectory(): String = trimTrailingSlash().substringBeforeLast(File.separatorChar).ensureTrailingSlash()
 
 fun String.trimLeadingSlash(): String = if (length > 0 && this[0] == File.separatorChar) substring(1) else this
 

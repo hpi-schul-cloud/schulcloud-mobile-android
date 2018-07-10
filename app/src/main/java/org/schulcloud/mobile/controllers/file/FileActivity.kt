@@ -15,10 +15,7 @@ import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ActivityFileBinding
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.utils.combinePath
-import org.schulcloud.mobile.utils.getPathParts
-import org.schulcloud.mobile.utils.map
-import org.schulcloud.mobile.utils.visibilityBool
+import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
@@ -75,6 +72,13 @@ class FileActivity : BaseActivity() {
         super.onNewIntent(intent)
         init(intent!!)
         performRefresh()
+    }
+
+    override fun navigateUp(): Boolean {
+        return if (viewModel.path.getPathParts(3).size > 2) {
+            startActivity(newIntent(this, viewModel.path.parentDirectory()))
+            true
+        } else false
     }
 
     private fun init(intent: Intent) {

@@ -23,6 +23,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            android.R.id.home -> return navigateUp()
+
             R.id.activity_action_share -> shareLink(url!!, supportActionBar?.title)
         // TODO: Remove when deep linking is readded
             R.id.activity_action_openInBrowser -> openUrl(url.asUri())
@@ -30,6 +32,11 @@ abstract class BaseActivity : AppCompatActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    override fun onBackPressed() {
+        if (!navigateUp())
+            super.onBackPressed()
     }
 
     protected fun setupActionBar() {
@@ -40,6 +47,8 @@ abstract class BaseActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
     }
+
+    protected open fun navigateUp(): Boolean = false
 
     protected open suspend fun refresh() {}
     protected fun performRefresh() {

@@ -64,8 +64,6 @@
 
     <!-- Settings -->
     <string name="settings">Einstellungen</string>
-    <string name="settings_calender">Kalender</string>
-    <string name="settings_sync_appointments">Termine synchronisieren</string>
     <string name="settings_about">Über</string>
     <string name="settings_contributors">Mitwirkende</string>
     <string name="settings_open_source">Diese App ist Open Source</string>
@@ -74,5 +72,8 @@
     <string name="settings_data_protection">Datenschutzerklärung</string>
     <string name="settings_register_device">Gerät registrieren</string>
     <string name="settings_notifications">Benachrichtigungen</string>
+    <string name="settings_open_source_address">https://github.com/schul-cloud/schulcloud-mobile-android</string>
+    <string name="settings_imprint_address">https://schul-cloud.org/impressum</string>
+    <string name="settings_data_protection_address">https://schul-cloud.org/impressum#data_security</string>
 
 </resources>

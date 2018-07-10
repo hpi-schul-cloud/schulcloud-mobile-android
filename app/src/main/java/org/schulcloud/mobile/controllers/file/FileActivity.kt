@@ -8,12 +8,16 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_file.*
+import kotlinx.coroutines.experimental.launch
+import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ActivityFileBinding
+import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.utils.combinePath
 import org.schulcloud.mobile.utils.getPathParts
+import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.utils.visibilityBool
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
@@ -78,7 +82,6 @@ class FileActivity : BaseActivity() {
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(path))
                 .get(path, FileViewModel::class.java)
         binding.viewModel = viewModel
-        title = path.getPathParts().last()
 
         viewModel.directories.observe(this, Observer {
             directoryAdapter.update(it ?: emptyList())
@@ -88,6 +91,22 @@ class FileActivity : BaseActivity() {
             fileAdapter.update(it ?: emptyList())
             updateEmptyMessage()
         })
+
+        // Title
+        val parts = path.getPathParts()
+        when {
+            parts.size > 2 ->
+                title = parts.last()
+            path.startsWith(FileRepository.CONTEXT_MY_API) ->
+                title = getString(R.string.file_directory_my)
+            path.startsWith(FileRepository.CONTEXT_COURSES) -> {
+                launch { CourseRepository.syncCourse(parts[1]) }
+                CourseRepository.course(viewModel.realm, parts[1]).map {
+                    it?.name ?: getString(R.string.file_directory_course_unknown)
+                }.observe(this, Observer { title = it })
+            }
+            else -> throw IllegalArgumentException("Path $path is not supported")
+        }
     }
 
     private fun updateEmptyMessage() {

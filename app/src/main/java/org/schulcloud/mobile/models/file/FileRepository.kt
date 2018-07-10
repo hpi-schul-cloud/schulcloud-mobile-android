@@ -9,7 +9,7 @@ import org.schulcloud.mobile.utils.*
 
 object FileRepository {
     const val CONTEXT_MY = "my"
-    private const val CONTEXT_MY_API = "users"
+    const val CONTEXT_MY_API = "users"
     const val CONTEXT_COURSES = "courses"
 
     fun files(realm: Realm, path: String): LiveRealmData<File> {

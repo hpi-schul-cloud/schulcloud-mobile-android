@@ -60,6 +60,8 @@
     <string name="fileOverview_courses">Kurs-Dateien</string>
     <string name="fileOverview_courses_description">Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff.</string>
     <string name="fileOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
+    <string name="file_directory_my">Meine Dateien</string>
+    <string name="file_directory_course_unknown">Unbekannter Kurs</string>
     <string name="file_directoryEmpty">Der Ordner ist leer</string>
 
 </resources>

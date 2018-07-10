@@ -6,7 +6,6 @@ import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.file.Directory
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.utils.getPathParts
 
 /**
  * Date: 7/6/2018
@@ -14,7 +13,7 @@ import org.schulcloud.mobile.utils.getPathParts
 class FileViewModel(path_: String) : ViewModel() {
     val path = FileRepository.fixPath(path_)
 
-    private val realm: Realm by lazy {
+    val realm: Realm by lazy {
         Realm.getDefaultInstance()
     }
 

@@ -9,7 +9,7 @@ import org.schulcloud.mobile.databinding.ItemCourseBinding
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.user.User
 
-class CourseListAdapter(private val selectedCallback: OnItemSelectedCallback)
+class CourseListAdapter(private val selectedCallback: OnItemSelectedCallback<String>)
     : BaseAdapter<Course, CourseListAdapter.CourseViewHolder, ItemCourseBinding>() {
 
     fun update(courseList: List<Course>) {

@@ -6,7 +6,6 @@ import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.GetCourseJob
 import org.schulcloud.mobile.jobs.ListUserCoursesJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
-import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.utils.courseDao
 
 object CourseRepository {
@@ -16,7 +15,7 @@ object CourseRepository {
         }
     }
 
-    fun courses(realm: Realm): LiveRealmData<Course> {
+    fun courses(realm: Realm): LiveData<List<Course>> {
         return realm.courseDao().courses()
     }
 

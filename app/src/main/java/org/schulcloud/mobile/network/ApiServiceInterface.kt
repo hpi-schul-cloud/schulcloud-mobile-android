@@ -4,6 +4,8 @@ import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.file.DirectoryResponse
+import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
@@ -28,5 +30,7 @@ interface ApiServiceInterface {
     // File
     @GET("fileStorage")
     fun listDirectoryContents(@Query("path") path: String): Call<DirectoryResponse>
+    @POST("fileStorage/signedUrl")
+    fun generateSignedUrl(@Body signedUrlRequest: SignedUrlRequest): Call<SignedUrlResponse>
 
 }

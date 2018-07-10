@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
  * <p>
  * Date: 6/10/2018
  */
-public interface OnItemSelectedCallback {
+public interface OnItemSelectedCallback<T> {
 
-    void onItemSelected(@NonNull String id);
+    void onItemSelected(@NonNull T item);
 
 }

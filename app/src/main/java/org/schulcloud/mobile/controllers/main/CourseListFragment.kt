@@ -46,7 +46,7 @@ class CourseListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = swipeRefresh
 
-        viewModel.getCourses().observe(this, Observer { courses ->
+        viewModel.courses.observe(this, Observer { courses ->
             coursesAdapter.update(courses!!)
         })
 

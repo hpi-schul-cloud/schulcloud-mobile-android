@@ -4,20 +4,27 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_file.*
+import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ActivityFileBinding
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
+import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import ru.gildor.coroutines.retrofit.await
+
 
 class FileActivity : BaseActivity() {
     companion object {
@@ -38,9 +45,7 @@ class FileActivity : BaseActivity() {
         })
     }
     private val fileAdapter: FileAdapter by lazy {
-        FileAdapter(OnItemSelectedCallback { name ->
-
-        })
+        FileAdapter(OnItemSelectedCallback { loadFile(it, false) })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +81,7 @@ class FileActivity : BaseActivity() {
 
     override fun navigateUp(): Boolean {
         return if (viewModel.path.getPathParts(3).size > 2) {
-            startActivity(newIntent(this, viewModel.path.parentDirectory()))
+            startActivity(newIntent(this, viewModel.path.parentDirectory))
             true
         } else false
     }
@@ -113,6 +118,7 @@ class FileActivity : BaseActivity() {
         }
     }
 
+
     private fun updateEmptyMessage() {
         empty.visibilityBool = (viewModel.directories.value?.isEmpty() ?: false)
                 && (viewModel.files.value?.isEmpty() ?: false)
@@ -120,5 +126,31 @@ class FileActivity : BaseActivity() {
 
     override suspend fun refresh() {
         FileRepository.syncDirectory(viewModel.path)
+    }
+
+
+    private fun loadFile(file: File, download: Boolean) {
+        launch {
+            val response = ApiService.getInstance().generateSignedUrl(
+                    SignedUrlRequest().apply {
+                        action = SignedUrlRequest.ACTION_GET
+                        path = file.key
+                        fileType = file.type
+                    }).await()
+
+            launch(UI) {
+                if (download)
+                    TODO()
+                else {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(Uri.parse(response.url), response.header?.contentType)
+                    }
+                    if (intent.resolveActivity(packageManager) != null)
+                        startActivity(intent)
+                    else
+                        showGenericError(getString(R.string.file_fileDownload_error_cantResolve, file.name?.fileExtension))
+                }
+            }
+        }
     }
 }

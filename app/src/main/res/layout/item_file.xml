@@ -16,7 +16,8 @@
         style="@style/Material.ListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> selectedCallback.onItemSelected(file)}">
 
         <ImageView
             android:id="@+id/directory_atv_icon"

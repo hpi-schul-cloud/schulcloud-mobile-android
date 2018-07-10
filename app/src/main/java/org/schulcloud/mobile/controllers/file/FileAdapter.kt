@@ -8,7 +8,7 @@ import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemFileBinding
 import org.schulcloud.mobile.models.file.File
 
-class FileAdapter(private val selectedCallback: OnItemSelectedCallback)
+class FileAdapter(private val selectedCallback: OnItemSelectedCallback<File>)
     : BaseAdapter<File, FileAdapter.FileViewHolder, ItemFileBinding>() {
 
     fun update(fileList: List<File>) {

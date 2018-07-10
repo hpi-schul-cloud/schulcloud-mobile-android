@@ -49,7 +49,7 @@ class FileOverviewFragment : BaseFragment() {
             startActivity(FileActivity.newIntent(context!!, FileRepository.pathPersonal()))
         }
 
-        viewModel.getCourses().observe(this, Observer { courses ->
+        viewModel.courses.observe(this, Observer { courses ->
             coursesAdapter.update(courses!!)
         })
 

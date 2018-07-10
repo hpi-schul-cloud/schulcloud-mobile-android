@@ -8,7 +8,7 @@ import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemFileCourseBinding
 import org.schulcloud.mobile.models.course.Course
 
-class FileOverviewCourseAdapter(private val selectedCallback: OnItemSelectedCallback)
+class FileOverviewCourseAdapter(private val selectedCallback: OnItemSelectedCallback<String>)
     : BaseAdapter<Course, FileOverviewCourseAdapter.CourseViewHolder, ItemFileCourseBinding>() {
 
     fun update(courseList: List<Course>) {

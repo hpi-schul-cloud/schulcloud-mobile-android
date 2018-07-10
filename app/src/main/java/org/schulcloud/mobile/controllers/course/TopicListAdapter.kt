@@ -11,7 +11,7 @@ import org.schulcloud.mobile.models.topic.Topic
 /**
  * Date: 6/10/2018
  */
-class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback)
+class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback<String>)
     : BaseAdapter<Topic, TopicListAdapter.TopicViewHolder, ItemTopicBinding>() {
 
     fun update(topicList: List<Topic>) {

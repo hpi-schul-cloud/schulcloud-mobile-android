@@ -8,7 +8,7 @@ import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemDirectoryBinding
 import org.schulcloud.mobile.models.file.Directory
 
-class DirectoryAdapter(private val selectedCallback: OnItemSelectedCallback)
+class DirectoryAdapter(private val selectedCallback: OnItemSelectedCallback<String>)
     : BaseAdapter<Directory, DirectoryAdapter.DirectoryViewHolder, ItemDirectoryBinding>() {
 
     fun update(directoryList: List<Directory>) {

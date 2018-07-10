@@ -10,6 +10,9 @@
     <string name="share_subject_general">Schul-Cloud</string>
     <string name="share_title">Link teilen</string>
 
+    <!-- Dialogs -->
+    <string name="dialog_error_format">Fehler: %1$s</string>
+
 
     <!-- Login -->
     <string name="login_email_hint">E-Mail</string>
@@ -63,5 +66,6 @@
     <string name="file_directory_my">Meine Dateien</string>
     <string name="file_directory_course_unknown">Unbekannter Kurs</string>
     <string name="file_directoryEmpty">Der Ordner ist leer</string>
+    <string name="file_fileDownload_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
 
 </resources>

@@ -25,14 +25,14 @@ fun combinePath(vararg parts: String?): String {
     return builder.toString()
 }
 
-fun String.parentDirectory(): String = trimTrailingSlash().substringBeforeLast(File.separatorChar).ensureTrailingSlash()
+val String.parentDirectory: String
+    get() = trimTrailingSlash().substringBeforeLast(File.separatorChar).ensureTrailingSlash()
+val String.fileExtension: String
+    get() = substringAfterLast('.')
 
 fun String.trimLeadingSlash(): String = if (length > 0 && this[0] == File.separatorChar) substring(1) else this
-
 fun String.trimTrailingSlash(): String = if (length > 1 && this[length - 1] == File.separatorChar) substring(0, length - 1) else this
-
 fun String.trimSlashes(): String = this.trimLeadingSlash().trimTrailingSlash()
 
 fun String.ensureLeadingSlash(): String = if (length == 0 || this[0] != File.separatorChar) File.separator + this else this
-
 fun String.ensureTrailingSlash(): String = if (length == 0 || this[length - 1] != File.separatorChar) this + File.separator else this

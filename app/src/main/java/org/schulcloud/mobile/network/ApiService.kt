@@ -6,6 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.utils.HOST
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -21,9 +22,10 @@ object ApiService {
 
         val client = OkHttpClient.Builder()
                 .addInterceptor { chain ->
-                    val original = chain.request()
-                    val builder = original.newBuilder()
-                    if (UserRepository.isAuthorized) {
+                    val request = chain.request()
+                    val builder = request.newBuilder()
+                    if (UserRepository.isAuthorized
+                            && request.url().host().equals(HOST.substringAfterLast('/'), true)) {
                         builder.header(Config.HEADER_AUTH, Config.HEADER_AUTH_VALUE_PREFIX + UserRepository.token)
                     }
                     chain.proceed(builder.build())

@@ -1,5 +1,8 @@
 package org.schulcloud.mobile.controllers.base
 
+import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -12,7 +15,11 @@ import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
 import org.schulcloud.mobile.utils.setup
 import org.schulcloud.mobile.utils.shareLink
+import java.util.*
+import kotlin.coroutines.experimental.Continuation
+import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.properties.Delegates
+
 
 abstract class BaseActivity : AppCompatActivity() {
     open var url: String? = null
@@ -20,6 +27,9 @@ abstract class BaseActivity : AppCompatActivity() {
         new?.setup()
         new?.setOnRefreshListener { performRefresh() }
     }
+
+    private val permissionRequests: MutableList<Continuation<Boolean>>
+            by lazy { LinkedList<Continuation<Boolean>>() }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -39,6 +49,7 @@ abstract class BaseActivity : AppCompatActivity() {
             super.onBackPressed()
     }
 
+
     protected fun setupActionBar() {
         if (toolbar != null)
             setSupportActionBar(toolbar)
@@ -57,5 +68,31 @@ abstract class BaseActivity : AppCompatActivity() {
             withContext(UI) { refresh() }
             withContext(UI) { swipeRefreshLayout?.isRefreshing = false }
         }
+    }
+
+    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine {cont ->
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED){
+            cont.resume(true)
+            return@suspendCoroutine
+        }
+
+        permissionRequests.add(cont)
+        ActivityCompat.requestPermissions(this, arrayOf(permission), permissionRequests.size - 1)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        // Request not from this class
+        if (requestCode >= permissionRequests.size) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            return
+        }
+
+        //The request was interrupted
+        if (permissions.isEmpty()) {
+            permissionRequests[requestCode].resume(false)
+            return
+        }
+
+        permissionRequests[requestCode].resume(grantResults[0] == PackageManager.PERMISSION_GRANTED)
     }
 }

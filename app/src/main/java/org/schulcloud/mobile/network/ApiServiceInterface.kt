@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.network
 
+import okhttp3.ResponseBody
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
@@ -32,5 +33,7 @@ interface ApiServiceInterface {
     fun listDirectoryContents(@Query("path") path: String): Call<DirectoryResponse>
     @POST("fileStorage/signedUrl")
     fun generateSignedUrl(@Body signedUrlRequest: SignedUrlRequest): Call<SignedUrlResponse>
+    @GET
+    fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
 
 }

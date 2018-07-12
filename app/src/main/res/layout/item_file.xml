@@ -10,6 +10,9 @@
         <variable
             name="selectedCallback"
             type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
+        <variable
+            name="downloadCallback"
+            type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
     </data>
 
     <LinearLayout
@@ -36,14 +39,15 @@
             android:text="@{file.name}"
             tools:text="File" />
 
-        <!--
         <ImageView
             android:id="@+id/download"
             style="@style/Material.ListItem_Icon"
             android:background="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> downloadCallback.onItemSelected(file)}"
             android:padding="12dp"
             app:srcCompat="@drawable/ic_download" />
 
+        <!--
         <ImageView
             android:id="@+id/overflow"
             style="@style/Material.ListItem_Icon"

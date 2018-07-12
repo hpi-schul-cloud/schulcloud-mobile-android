@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.file
 
+import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -23,6 +24,7 @@ import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 
 
@@ -45,7 +47,8 @@ class FileActivity : BaseActivity() {
         })
     }
     private val fileAdapter: FileAdapter by lazy {
-        FileAdapter(OnItemSelectedCallback { loadFile(it, false) })
+        FileAdapter(OnItemSelectedCallback { loadFile(it, false) },
+                OnItemSelectedCallback { loadFile(it, true) })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,25 +133,36 @@ class FileActivity : BaseActivity() {
 
 
     private fun loadFile(file: File, download: Boolean) {
-        launch {
-            val response = ApiService.getInstance().generateSignedUrl(
-                    SignedUrlRequest().apply {
-                        action = SignedUrlRequest.ACTION_GET
-                        path = file.key
-                        fileType = file.type
-                    }).await()
+        launch(UI) {
+            try {
+                val response = ApiService.getInstance().generateSignedUrl(
+                        SignedUrlRequest().apply {
+                            action = SignedUrlRequest.ACTION_GET
+                            path = file.key
+                            fileType = file.type
+                        }).await()
 
-            launch(UI) {
-                if (download)
-                    TODO()
-                else {
+                if (download) {
+                    if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        val result = ApiService.getInstance().downloadFile(response.url!!).await()
+                        if (result.writeToDisk(file.name.orEmpty()))
+                            showGenericSuccess(getString(R.string.file_fileDownload_success, file.name))
+                        else
+                            showGenericError(R.string.file_fileDownload_error_save)
+                    } else
+                        showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                } else {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         setDataAndType(Uri.parse(response.url), response.header?.contentType)
                     }
                     if (intent.resolveActivity(packageManager) != null)
                         startActivity(intent)
                     else
-                        showGenericError(getString(R.string.file_fileDownload_error_cantResolve, file.name?.fileExtension))
+                        showGenericError(getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
+                }
+            } catch (e: HttpException) {
+                when (e.code()) {
+                    404 -> showGenericError(R.string.file_fileOpen_error_404)
                 }
             }
         }

@@ -13,3 +13,9 @@ fun Context.showGenericError(message: String): Toast {
     return Toast.makeText(this, getString(R.string.dialog_error_format, message), Toast.LENGTH_SHORT)
             .apply { show() }
 }
+
+fun Context.showGenericSuccess(@StringRes messageRes: Int): Toast = showGenericSuccess(getString(messageRes))
+fun Context.showGenericSuccess(message: String): Toast {
+    return Toast.makeText(this, message, Toast.LENGTH_SHORT)
+            .apply { show() }
+}

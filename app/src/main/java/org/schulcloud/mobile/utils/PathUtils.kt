@@ -1,8 +1,15 @@
 package org.schulcloud.mobile.utils
 
+import android.os.Environment
 import android.text.TextUtils
+import android.util.Log
+import okhttp3.ResponseBody
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
+
+private const val TAG = "PathUtils"
 
 fun String.getPathParts(limit: Int = 0): List<String> = trimSlashes().split(File.separator, limit = limit)
 
@@ -36,3 +43,22 @@ fun String.trimSlashes(): String = this.trimLeadingSlash().trimTrailingSlash()
 
 fun String.ensureLeadingSlash(): String = if (length == 0 || this[0] != File.separatorChar) File.separator + this else this
 fun String.ensureTrailingSlash(): String = if (length == 0 || this[length - 1] != File.separatorChar) this + File.separator else this
+
+fun ResponseBody.writeToDisk(fileName: String): Boolean {
+    val downloadDirPath = Environment
+            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            .absolutePath
+    try {
+        val file = File(combinePath(downloadDirPath, fileName))
+        if (!(file.exists() || file.createNewFile()))
+            return false
+
+        val outputStream = FileOutputStream(file)
+        byteStream().copyTo(outputStream)
+        outputStream.close()
+        return true
+    } catch (e: IOException) {
+        Log.w(TAG, "ResponseBody.writeToDisk", e)
+        return false
+    }
+}

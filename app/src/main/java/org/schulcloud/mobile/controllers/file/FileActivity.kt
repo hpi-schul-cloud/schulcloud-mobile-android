@@ -143,14 +143,20 @@ class FileActivity : BaseActivity() {
                         }).await()
 
                 if (download) {
-                    if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        val result = ApiService.getInstance().downloadFile(response.url!!).await()
-                        if (result.writeToDisk(file.name.orEmpty()))
-                            showGenericSuccess(getString(R.string.file_fileDownload_success, file.name))
-                        else
-                            showGenericError(R.string.file_fileDownload_error_save)
-                    } else
+                    if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                        return@launch
+                    }
+
+                    withProgressDialog(R.string.file_fileDownload_progress) {
+                        val result = ApiService.getInstance().downloadFile(response.url!!).await()
+                        if (!result.writeToDisk(file.name.orEmpty())) {
+                            showGenericError(R.string.file_fileDownload_error_save)
+                            return@withProgressDialog
+                        }
+                        showGenericSuccess(getString(R.string.file_fileDownload_success, file.name))
+                    }
+
                 } else {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         setDataAndType(Uri.parse(response.url), response.header?.contentType)

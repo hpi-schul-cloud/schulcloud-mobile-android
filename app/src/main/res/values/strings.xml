@@ -68,6 +68,7 @@
     <string name="file_directoryEmpty">Der Ordner ist leer</string>
     <string name="file_fileOpen_error_404">Die Datei konnte nicht gefunden werden</string>
     <string name="file_fileOpen_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
+    <string name="file_fileDownload_progress">Die Datei wird geladen&#8230;</string>
     <string name="file_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>

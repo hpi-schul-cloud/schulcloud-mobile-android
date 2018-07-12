@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.utils
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.support.annotation.StringRes
 import android.widget.Toast
@@ -18,4 +19,14 @@ fun Context.showGenericSuccess(@StringRes messageRes: Int): Toast = showGenericS
 fun Context.showGenericSuccess(message: String): Toast {
     return Toast.makeText(this, message, Toast.LENGTH_SHORT)
             .apply { show() }
+}
+
+suspend fun Context.withProgressDialog(@StringRes messageRes: Int, block: suspend () -> Unit) = withProgressDialog(getString(messageRes), block)
+suspend fun Context.withProgressDialog(message: String, block: suspend () -> Unit) {
+    val dialog = ProgressDialog(this).apply {
+        setMessage(message)
+        show()
+    }
+    block()
+    dialog.dismiss()
 }

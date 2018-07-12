@@ -1,12 +1,21 @@
 package org.schulcloud.mobile.ui.settings;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.johnpersano.supertoasts.library.utils.PaletteUtils;
 
@@ -14,6 +23,8 @@ import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.local.PreferencesHelper;
 import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
+import org.schulcloud.mobile.data.sync.DeviceSyncService;
+import org.schulcloud.mobile.data.sync.EventSyncService;
 import org.schulcloud.mobile.ui.base.BaseActivity;
 import org.schulcloud.mobile.util.ViewUtil;
 import org.schulcloud.mobile.util.dialogs.DialogFactory;
@@ -54,7 +65,7 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
     BootstrapButton btn_create_device;
     @BindView(R.id.devices_recycler_view)
     RecyclerView devices_recycler_view;
-    '/
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +96,12 @@ public class SettingsActivity extends BaseActivity<SettingsMvpView, SettingsPres
         });
 
         // Notifications
+        /*
         btn_create_device.setOnClickListener(view -> mSettingsPresenter.registerDevice());
 
         devices_recycler_view.setAdapter(mDevicesAdapter);
         devices_recycler_view.setLayoutManager(new LinearLayoutManager(this));
+        */
 
         // About
         findViewById(R.id.settings_about_contributors).setOnLongClickListener(v -> {

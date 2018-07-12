@@ -52,7 +52,6 @@
                             android:layout_height="wrap_content"
                             android:clipToPadding="false"
                             android:nestedScrollingEnabled="false"
-                            android:paddingTop="6dp"
                             android:scrollbars="vertical"
                             tools:listitem="@layout/item_directory" />
 
@@ -63,7 +62,6 @@
                             android:layout_marginBottom="@dimen/material_button_fab_spacer"
                             android:clipToPadding="false"
                             android:nestedScrollingEnabled="false"
-                            android:paddingTop="6dp"
                             android:scrollbars="vertical"
                             tools:listitem="@layout/item_file" />
 

@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="org.schulcloud.mobile.utils.FormatUtilsKt" />
+
         <variable
             name="file"
             type="org.schulcloud.mobile.models.file.File" />
@@ -15,36 +17,56 @@
             type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
     </data>
 
-    <LinearLayout
-        style="@style/Material.ListItem"
+    <android.support.constraint.ConstraintLayout
+        style="@style/Material.ListItem.TwoLine"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{() -> selectedCallback.onItemSelected(file)}">
 
         <ImageView
-            android:id="@+id/directory_atv_icon"
+            android:id="@+id/icon"
             style="@style/Material.ListItem_Icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/thumb_default" />
 
         <TextView
-            android:id="@+id/directory_tv_name"
+            android:id="@+id/name"
             style="@style/Material.ListItem_TextPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:ellipsize="end"
             android:maxLines="2"
             android:text="@{file.name}"
+            app:layout_constraintBottom_toTopOf="@id/size"
+            app:layout_constraintEnd_toStartOf="@+id/download"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".5"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="File" />
+
+        <TextView
+            android:id="@+id/size"
+            style="@style/Material.ListItem_TextSecondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{FormatUtilsKt.formatFileSize(file.size)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/download"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toBottomOf="@id/name"
             tools:text="File" />
 
         <ImageView
             android:id="@+id/download"
             style="@style/Material.ListItem_Icon"
+            android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="@{() -> downloadCallback.onItemSelected(file)}"
             android:padding="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_download" />
 
         <!--
@@ -57,5 +79,5 @@
             tools:visibility="visible" />
             -->
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>

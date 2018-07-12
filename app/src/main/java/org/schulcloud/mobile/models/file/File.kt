@@ -10,7 +10,7 @@ open class File : RealmObject() {
     var path: String? = null
 
     var type: String? = null
-    var size: String? = null
+    var size: Long? = null
     var thumbnail: String? = null
     var flatFileName: String? = null
 }

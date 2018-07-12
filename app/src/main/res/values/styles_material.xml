@@ -38,6 +38,9 @@
     <style name="Material.ListItem">
         <item name="android:layout_height">@dimen/material_listItem_height</item>
     </style>
+    <style name="Material.ListItem.TwoLine">
+        <item name="android:layout_height">@dimen/material_listItem_height_twoLine</item>
+    </style>
     <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:height">@dimen/material_listItem_height</item>
         <item name="android:paddingLeft">@dimen/material_listItem_paddingHorizontal</item>
@@ -51,6 +54,13 @@
         <item name="android:layout_marginLeft">@dimen/material_listItem_icon_textSpacing</item>
         <item name="android:layout_marginRight">@dimen/material_listItem_icon_textSpacing</item>
         <item name="android:textSize">@dimen/material_listItem_textPrimary_textSize</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    <style name="Material.ListItem_TextSecondary" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:layout_marginLeft">@dimen/material_listItem_icon_textSpacing</item>
+        <item name="android:layout_marginRight">@dimen/material_listItem_icon_textSpacing</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>

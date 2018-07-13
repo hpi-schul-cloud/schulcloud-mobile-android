@@ -22,6 +22,8 @@
 
         <ImageView
             style="@style/Material.ListItem_Icon"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             app:srcCompat="@drawable/ic_folder" />
 
         <TextView

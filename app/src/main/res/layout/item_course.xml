@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@{Color.parseColor(course.color)}"
-                tools:background="@color/hpiRed" />
+                tools:background="@color/brand_primary" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Title"

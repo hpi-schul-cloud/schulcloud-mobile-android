@@ -23,7 +23,7 @@
         android:onClick="@{() -> viewHolder.openExternal()}"
         android:orientation="vertical">
 
-        <TextView
+        <org.schulcloud.mobile.views.CompatTextView
             android:id="@+id/title"
             style="@style/Content_Header.WithLink"
             android:layout_width="match_parent"

@@ -2,9 +2,9 @@
 <resources>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/hpiRed</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/hpiRed</item>
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryDark">@color/brand_primaryDark</item>
+        <item name="colorAccent">@color/brand_accent</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -4,7 +4,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.MenuItem
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.setup
 import org.schulcloud.mobile.utils.shareLink
@@ -29,7 +30,9 @@ abstract class BaseFragment : Fragment() {
     protected open suspend fun refresh() {}
     protected fun performRefresh() {
         swipeRefreshLayout?.isRefreshing = true
-        async(UI) { refresh() }
-        swipeRefreshLayout?.isRefreshing = false
+        launch {
+            withContext(UI) { refresh() }
+            withContext(UI) { swipeRefreshLayout?.isRefreshing = false }
+        }
     }
 }

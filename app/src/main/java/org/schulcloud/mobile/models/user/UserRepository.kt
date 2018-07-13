@@ -1,8 +1,9 @@
 package org.schulcloud.mobile.models.user
 
 import io.realm.Realm
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
@@ -27,14 +28,12 @@ object UserRepository {
     fun login(email: String, password: String, callback: RequestJobCallback) {
         launch {
             // Login
-            async {
+            withContext(DefaultDispatcher) {
                 CreateAccessTokenJob(Credentials(email, password), callback).run()
-            }.await()
+            }
 
-            // Sync data
-            async {
-                CourseRepository.syncCourses()
-            }.await()
+            // Sync data in background
+            CourseRepository.syncCourses()
         }
     }
 

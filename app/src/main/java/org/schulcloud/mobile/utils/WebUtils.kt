@@ -12,9 +12,8 @@ import kotlinx.coroutines.experimental.async
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import org.schulcloud.mobile.BuildConfig.API_URL
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.config.Config
-import org.schulcloud.mobile.config.Config.Companion.API_URL
 import org.schulcloud.mobile.models.user.UserRepository
 import java.io.IOException
 
@@ -32,7 +31,7 @@ const val MIME_APPLICATION_JSON = "application/json"
 
 const val ENCODING_UTF_8 = "utf-8"
 
-val HOST = Config.API_URL.substringBeforeLast(":")
+val HOST = API_URL.substringBeforeLast(":")
 
 
 val HTTP_CLIENT: OkHttpClient by lazy {
@@ -53,7 +52,7 @@ fun String?.asUri(): Uri {
 
 fun Context.prepareCustomTab(): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
-        setToolbarColor(ContextCompat.getColor(this@prepareCustomTab, R.color.hpiRed))
+        setToolbarColor(ContextCompat.getColor(this@prepareCustomTab, R.color.brand_primary))
         setCloseButtonIcon(ContextCompat.getDrawable(this@prepareCustomTab, R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
         addDefaultShareMenuItem()
         setStartAnimations(this@prepareCustomTab, R.anim.slide_in_right, R.anim.slide_out_left)

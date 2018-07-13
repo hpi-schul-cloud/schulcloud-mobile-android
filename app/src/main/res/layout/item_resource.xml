@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <org.schulcloud.mobile.views.CompatTextView
                 style="@style/Content_Header.WithLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@null"
                 android:text="@{resource.title}"
-                android:textColor="@color/hpiRed"
+                android:textColor="@color/brand_primary"
                 tools:text="Resource title" />
 
             <org.schulcloud.mobile.views.PassiveWebView

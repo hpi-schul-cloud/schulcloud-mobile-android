@@ -36,6 +36,7 @@ class LoginViewModel : ViewModel() {
             override fun onSuccess() {
                 loginState.value = LoginStatus.LoggedIn()
             }
+
             override fun onError(code: ErrorCode) {
                 loginState.value = LoginStatus.Error(code.toString())
             }
@@ -45,7 +46,7 @@ class LoginViewModel : ViewModel() {
     sealed class LoginStatus {
         class Pending : LoginStatus()
         class LoggedIn : LoginStatus()
-        class InvalidInputs(val invalidInputs: MutableList<LoginInput>): LoginStatus()
+        class InvalidInputs(val invalidInputs: MutableList<LoginInput>) : LoginStatus()
         class Error(val error: String) : LoginStatus()
     }
 

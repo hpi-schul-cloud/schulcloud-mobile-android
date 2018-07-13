@@ -1,36 +1,41 @@
 package org.schulcloud.mobile.models.user
 
 import io.realm.Realm
-import org.schulcloud.mobile.SchulCloudApp
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
+import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.storages.UserStorage
 
 object UserRepository {
-
     val TAG: String = UserRepository::class.java.simpleName
 
     @JvmStatic
     val token: String?
-        get() {
-            return UserStorage().accessToken
-        }
+        get() = UserStorage().accessToken
 
     @JvmStatic
     val userId: String?
-        get() {
-            return UserStorage().userId
-        }
+        get() = UserStorage().userId
 
     @JvmStatic
     val isAuthorized: Boolean
-        get() {
-            return UserStorage().accessToken != null
-        }
+        get() = UserStorage().accessToken != null
 
     fun login(email: String, password: String, callback: RequestJobCallback) {
-        CreateAccessTokenJob(Credentials(email, password), callback).run()
+        launch {
+            // Login
+            async {
+                CreateAccessTokenJob(Credentials(email, password), callback).run()
+            }.await()
+
+            // Sync data
+            async {
+                CourseRepository.syncCourses()
+            }.await()
+        }
     }
 
     fun logout() {

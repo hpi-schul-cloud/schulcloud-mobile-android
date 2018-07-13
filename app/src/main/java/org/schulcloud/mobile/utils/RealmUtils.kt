@@ -6,6 +6,7 @@ import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.content.ContentDao
 import org.schulcloud.mobile.models.course.CourseDao
+import org.schulcloud.mobile.models.event.EventDao
 import org.schulcloud.mobile.models.file.FileDao
 import org.schulcloud.mobile.models.topic.TopicDao
 
@@ -21,6 +22,8 @@ fun <T : RealmObject> RealmQuery<T>.firstAsLiveData(): LiveData<T?> {
             .asLiveData()
             .map { it.getOrNull(0) }
 }
+
+fun Realm.eventDao(): EventDao = EventDao(this)
 
 fun Realm.courseDao(): CourseDao = CourseDao(this)
 fun Realm.topicDao(): TopicDao = TopicDao(this)

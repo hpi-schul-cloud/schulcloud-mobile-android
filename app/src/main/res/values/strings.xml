@@ -42,6 +42,11 @@
     <string name="main_drawer_learnstore">Materialien</string>
     <string name="main_drawer_logout">Abmelden</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_title">Übersicht</string>
+    <!-- Events -->
+    <string name="dashboard_events_none">Keine Termine für heute</string>
+
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>
     <string name="course_topics">Themen</string>

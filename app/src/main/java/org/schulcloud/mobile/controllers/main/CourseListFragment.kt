@@ -58,7 +58,7 @@ class CourseListFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_default, menu)
+        inflater?.inflate(R.menu.fragment_base, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

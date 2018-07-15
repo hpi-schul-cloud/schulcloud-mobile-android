@@ -7,9 +7,14 @@ import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.network.ApiService
+import org.schulcloud.mobile.storages.DeviceStorage
 import org.schulcloud.mobile.utils.devicesDao
 
 object DeviceRepository{
+
+    @JvmStatic
+    var deviceToken: String? = null
+        get() = DeviceStorage().deviceToken
 
     fun getDevices(realm: Realm): LiveRealmData<Device>{
         return realm.devicesDao().devices()
@@ -19,7 +24,7 @@ object DeviceRepository{
         return realm.devicesDao().device(deviceId)
     }
 
-    fun createDevice(device: Device, callback: RequestJobCallback) {
+    fun createDevice(device: DeviceRequest, callback: RequestJobCallback) {
         CreateDeviceJob(device,callback)
     }
 

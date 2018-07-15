@@ -75,5 +75,6 @@
     <string name="settings_open_source_address">https://github.com/schul-cloud/schulcloud-mobile-android</string>
     <string name="settings_imprint_address">https://schul-cloud.org/impressum</string>
     <string name="settings_data_protection_address">https://schul-cloud.org/impressum#data_security</string>
+    <string name="settings_devices">Geräte</string>
 
 </resources>

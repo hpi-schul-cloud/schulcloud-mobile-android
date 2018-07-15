@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.Uri
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
@@ -61,7 +60,7 @@ fun Context.prepareCustomTab(): CustomTabsIntent {
 }
 
 fun Context.openUrl(url: Uri) {
-    Log.i(TAG, "Opening url: $url")
+    logi(TAG, "Opening url: $url")
     prepareCustomTab().launchUrl(this, url)
 }
 
@@ -77,7 +76,7 @@ suspend fun resolveRedirect(url: String): Uri? {
         }
         response.await().request().url().toString().asUri()
     } catch (e: IOException) {
-        Log.w(TAG, "Error resolving internal redirect", e)
+        logw(TAG, "Error resolving internal redirect", e)
         null
     }
 }

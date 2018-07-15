@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.main.MainActivity
+import org.schulcloud.mobile.utils.logd
 import org.schulcloud.mobile.viewmodels.LoginViewModel
 
 class LoginFragment: BaseFragment() {
@@ -58,20 +58,20 @@ class LoginFragment: BaseFragment() {
         loginViewModel.loginState.observe(this, Observer { loginState ->
             when(loginState) {
                 is LoginViewModel.LoginStatus.Pending -> {
-                    Log.d(TAG, "PENDING LOGIN")
+                    logd(TAG, "PENDING LOGIN")
                     login_progress.visibility = View.VISIBLE
                 }
                 is LoginViewModel.LoginStatus.LoggedIn -> {
-                    Log.d(TAG, "LOGGED IN")
+                    logd(TAG, "LOGGED IN")
                     startMainActivity()
                 }
                 is LoginViewModel.LoginStatus.InvalidInputs -> {
-                    Log.d(TAG, "INVALID FIELDS")
+                    logd(TAG, "INVALID FIELDS")
                     login_progress.visibility = View.GONE
                     handleInvalidFields(loginState.invalidInputs)
                 }
                 is LoginViewModel.LoginStatus.Error -> {
-                    Log.d(TAG, "ERROR: " + loginState.error)
+                    logd(TAG, "ERROR: " + loginState.error)
                     login_progress.visibility = View.GONE
                 }
             }

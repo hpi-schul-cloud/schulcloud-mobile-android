@@ -7,8 +7,6 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.R.id.recyclerView
-import org.schulcloud.mobile.R.id.swipeRefresh
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity

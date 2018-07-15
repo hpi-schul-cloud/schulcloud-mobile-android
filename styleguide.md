@@ -3,11 +3,12 @@
 Most important:
 
 - [1.1.2 Resources files](#112-resources-files)
-- [2.2.9 Logging guidelines](#229-logging-guidelines)
-- [2.2.10 No unnecessary if nesting](#2210-no-unnecessary-if-nesting)
-- [2.2.14 Arguments in Fragments and Activities](#2214-arguments-in-fragments-and-activities)
-- [2.3.1 Use self closing tags](#231-use-self-closing-tags)
-- [2.3.2 Resources naming](#232-resources-naming)
+- [2.1.1 End file with newline](#211-end-file-with-newline)
+- [2.3.9 Logging guidelines](#239-logging-guidelines)
+- [2.3.10 No unnecessary if nesting](#2310-no-unnecessary-if-nesting)
+- [2.3.14 Arguments in Fragments and Activities](#2314-arguments-in-fragments-and-activities)
+- [2.4.1 Use self closing tags](#241-use-self-closing-tags)
+- [2.4.2 Resources naming](#242-resources-naming)
 
 All Contents:
 
@@ -22,39 +23,41 @@ All Contents:
         - [1.1.2.4 Values files](#1124-values-files)
         - [1.1.2.5 Namespaces](#1125-namespaces)
   - [2 Code guidelines](#2-code-guidelines)
-    - [2.1 Kotlin language rules](#21-kotlin-language-rules)
-      - [2.1.1 Don't ignore exceptions](#211-dont-ignore-exceptions)
-      - [2.1.2 Don't catch generic exception](#212-dont-catch-generic-exception)
-      - [2.1.3 Don't use finalizers](#213-dont-use-finalizers)
-      - [2.1.4 Fully qualify imports](#214-fully-qualify-imports)
-    - [2.2 Kotlin style rules](#22-kotlin-style-rules)
-      - [2.2.1 Properties definition and naming](#221-properties-definition-and-naming)
-      - [2.2.2 Treat acronyms as words](#222-treat-acronyms-as-words)
-      - [2.2.3 Use spaces for indentation](#223-use-spaces-for-indentation)
-      - [2.2.4 No semicolons](#224-no-semicolons)
-      - [2.2.5 Use standard brace style](#225-use-standard-brace-style)
-      - [2.2.6 Annotations](#226-annotations)
-        - [2.2.6.1 Annotations practices](#2261-annotations-practices)
-        - [2.2.6.2 Annotations style](#2262-annotations-style)
-      - [2.2.7 Limit variable scope](#227-limit-variable-scope)
-      - [2.2.8 Order import statements](#228-order-import-statements)
-      - [2.2.9 Logging guidelines](#229-logging-guidelines)
-      - [2.2.10 No unnecessary if nesting](#2210-no-unnecessary-if-nesting)
-      - [2.2.11 Class member ordering](#2211-class-member-ordering)
-      - [2.2.12 Parameter ordering in methods](#2212-parameter-ordering-in-methods)
-      - [2.2.13 String constants, naming, and values](#2213-string-constants-naming-and-values)
-      - [2.2.14 Arguments in Fragments and Activities](#2214-arguments-in-fragments-and-activities)
-      - [2.2.15 Line length limit](#2215-line-length-limit)
-        - [2.2.15.1 Line-wrapping strategies](#22151-line-wrapping-strategies)
-    - [2.3 XML style rules](#23-xml-style-rules)
-      - [2.3.1 Use self closing tags](#231-use-self-closing-tags)
-      - [2.3.2 Resources naming](#232-resources-naming)
-        - [2.3.2.1 ID naming](#2321-id-naming)
-        - [2.3.2.2 Strings](#2322-strings)
-        - [2.3.2.3 Styles and Themes](#2323-styles-and-themes)
-      - [2.3.3 Attributes ordering](#233-attributes-ordering)
-    - [2.4 Tests style rules](#24-tests-style-rules)
-      - [2.4.1 Unit tests](#241-unit-tests)
+    - [2.1 General style rules](#21-general-style-rules)
+      - [2.1.1 End file with newline](#211-end-file-with-newline)
+    - [2.2 Kotlin language rules](#22-kotlin-language-rules)
+      - [2.2.1 Don't ignore exceptions](#221-dont-ignore-exceptions)
+      - [2.2.2 Don't catch generic exception](#222-dont-catch-generic-exception)
+      - [2.2.3 Don't use finalizers](#223-dont-use-finalizers)
+      - [2.2.4 Fully qualify imports](#224-fully-qualify-imports)
+    - [2.3 Kotlin style rules](#23-kotlin-style-rules)
+      - [2.3.1 Properties definition and naming](#231-properties-definition-and-naming)
+      - [2.3.2 Treat acronyms as words](#232-treat-acronyms-as-words)
+      - [2.3.3 Use spaces for indentation](#233-use-spaces-for-indentation)
+      - [2.3.4 No semicolons](#234-no-semicolons)
+      - [2.3.5 Use standard brace style](#235-use-standard-brace-style)
+      - [2.3.6 Annotations](#236-annotations)
+        - [2.3.6.1 Annotations practices](#2361-annotations-practices)
+        - [2.3.6.2 Annotations style](#2362-annotations-style)
+      - [2.3.7 Limit variable scope](#237-limit-variable-scope)
+      - [2.3.8 Order import statements](#238-order-import-statements)
+      - [2.3.9 Logging guidelines](#239-logging-guidelines)
+      - [2.3.10 No unnecessary if nesting](#2310-no-unnecessary-if-nesting)
+      - [2.3.11 Class member ordering](#2311-class-member-ordering)
+      - [2.3.12 Parameter ordering in methods](#2312-parameter-ordering-in-methods)
+      - [2.3.13 String constants, naming, and values](#2313-string-constants-naming-and-values)
+      - [2.3.14 Arguments in Fragments and Activities](#2314-arguments-in-fragments-and-activities)
+      - [2.3.15 Line length limit](#2315-line-length-limit)
+        - [2.3.15.1 Line-wrapping strategies](#23151-line-wrapping-strategies)
+    - [2.4 XML style rules](#24-xml-style-rules)
+      - [2.4.1 Use self closing tags](#241-use-self-closing-tags)
+      - [2.4.2 Resources naming](#242-resources-naming)
+        - [2.4.2.1 ID naming](#2421-id-naming)
+        - [2.4.2.2 Strings](#2422-strings)
+        - [2.4.2.3 Styles and Themes](#2423-styles-and-themes)
+      - [2.4.3 Attributes ordering](#243-attributes-ordering)
+    - [2.5 Tests style rules](#25-tests-style-rules)
+      - [2.5.1 Unit tests](#251-unit-tests)
 
 
 ## 1. Project guidelines
@@ -110,9 +113,15 @@ Many related resources can be grouped using namespaces. Examples include `brand`
 
 ## 2 Code guidelines
 
-### 2.1 Kotlin language rules
+### 2.1 General style rules
 
-#### 2.1.1 Don't ignore exceptions
+#### 2.1.1 End file with newline
+
+Any text file should end with a newline.
+
+### 2.2 Kotlin language rules
+
+#### 2.2.1 Don't ignore exceptions
 
 You must never do the following:
 
@@ -129,7 +138,7 @@ _While you may think that your code will never encounter this error condition or
 See alternatives [here](https://source.android.com/source/code-style.html#dont-ignore-exceptions).
 
 
-#### 2.1.2 Don't catch generic exception
+#### 2.2.2 Don't catch generic exception
 
 You should not do this:
 
@@ -147,12 +156,12 @@ try {
 See the reason why and some alternatives [here](https://source.android.com/source/code-style.html#dont-catch-generic-exception).
 
 
-#### 2.1.3 Don't use finalizers
+#### 2.2.3 Don't use finalizers
 
 _We don't use finalizers. There are no guarantees as to when a finalizer will be called, or even that it will be called at all. In most cases, you can do what you need from a finalizer with good exception handling. If you absolutely need it, define a `close()` method (or the like) and document exactly when that method needs to be called. See `InputStream` for an example. In this case it is appropriate but not required to print a short log message from the finalizer, as long as it is not expected to flood the logs._ - ([Android code style guidelines](https://source.android.com/source/code-style.html#dont-use-finalizers))
 
 
-#### 2.1.4 Fully qualify imports
+#### 2.2.4 Fully qualify imports
 
 This is bad: `import foo.*`  
 This is good: `import foo.Bar`
@@ -161,9 +170,9 @@ An exception is made for KTX Synthetic (e.g. `import kotlinx.android.synthetic.m
 
 See more info [here](https://source.android.com/source/code-style.html#fully-qualify-imports).
 
-### 2.2 Kotlin style rules
+### 2.3 Kotlin style rules
 
-#### 2.2.1 Properties definition and naming
+#### 2.3.1 Properties definition and naming
 
 Properties should be defined at the __top of the file__ and they should follow the naming rules listed below.
 
@@ -186,7 +195,7 @@ open class MyClass {
 ```
 
 
-#### 2.2.2 Treat acronyms as words
+#### 2.3.2 Treat acronyms as words
 
 | Good             | Bad              |
 | ---------------- | ---------------- |
@@ -196,7 +205,7 @@ open class MyClass {
 | `id: Long`       | `ID: Long`       |
 
 
-#### 2.2.3 Use spaces for indentation
+#### 2.3.3 Use spaces for indentation
 
 Use __4 space__ indents for blocks:
 
@@ -214,12 +223,12 @@ val i =
 ```
 
 
-#### 2.2.4 No semicolons
+#### 2.3.4 No semicolons
 
 Semicolons should not be used to end expressions.
 
 
-#### 2.2.5 Use standard brace style
+#### 2.3.5 Use standard brace style
 
 Braces go on the same line as the code before them.
 
@@ -251,13 +260,13 @@ if (condition) body()  // bad!
 ```
 
 
-#### 2.2.6 Annotations
+#### 2.3.6 Annotations
 
-##### 2.2.6.1 Annotations practices
+##### 2.3.6.1 Annotations practices
 
 Information about annotation guidelines can be found [here](http://source.android.com/source/code-style.html#use-standard-java-annotations).
 
-##### 2.2.6.2 Annotations style
+##### 2.3.6.2 Annotations style
 
 When annotations are applied to a class, secondary constructor, function or property, they are listed after the documentation block and should appear as __one annotation per line__. This does not apply to parameter annotations, which shoud appear inline.
 
@@ -271,19 +280,19 @@ class MyAnnotatedClass { }
 ```
 
 
-#### 2.2.7 Limit variable scope
+#### 2.3.7 Limit variable scope
 
 _The scope of local variables should be kept to a minimum (Effective Java Item 29). By doing so, you increase the readability and maintainability of your code and reduce the likelihood of error. Each variable should be declared in the innermost block that encloses all uses of the variable._
 
 _Local variables should be declared at the point they are first used. Nearly every local variable declaration should contain an initializer. If you don't yet have enough information to initialize a variable sensibly, you should postpone the declaration until you do._ - ([Android code style guidelines](https://source.android.com/source/code-style.html#limit-variable-scope))
 
 
-#### 2.2.8 Order import statements
+#### 2.3.8 Order import statements
 
 If you are using an IDE such as Android Studio, you don't have to worry about this because your IDE is already obeying these rules. If not, the import statements are listed alphabetically without any blank lines.
 
 
-#### 2.2.9 Logging guidelines
+#### 2.3.9 Logging guidelines
 
 Use the logging functions provided by the `AndroidUtils` class to print out error messages or other information that may be useful for developers to identify issues. These functions automatically disable all logging on release builds, hence **don't use methods from `Log` directly!**
 
@@ -308,7 +317,7 @@ class MyClass {
 ```
 
 
-#### 2.2.10 No unnecessary if nesting
+#### 2.3.10 No unnecessary if nesting
 
 If some code requires preconditions to apply before it can run, those conditions should all be checked **and handled** first, and only then the actual action is performed. While it may sometimes require less lines of code, deep nesting of conditions makes the code harder to read. Using the flat structure it is instantly clear how each error is handled.
 
@@ -342,7 +351,7 @@ fun login(username: String, password: String) {
 ```
 
 
-#### 2.2.11 Class member ordering
+#### 2.3.11 Class member ordering
 
 There is no single correct solution for this but using a __logical__ and __consistent__ order will improve code learnability and readability. It is recommendable to use the following order:
 
@@ -402,7 +411,7 @@ class MainActivity : Activity() {
 ```
 
 
-#### 2.2.12 Parameter ordering in methods
+#### 2.3.12 Parameter ordering in methods
 
 When programming for Android, it is quite common to define methods that take a `Context`. If you are writing a method like this, then the __Context__ must be the __first__ parameter.
 
@@ -419,7 +428,7 @@ fun registerCallback(context: Context, userId: int, callback: (User) -> Unit)
 ```
 
 
-#### 2.2.13 String constants, naming, and values
+#### 2.3.13 String constants, naming, and values
 
 Many elements of the Android SDK such as `SharedPreferences`, `Bundle`, or `Intent` use a key-value pair approach so it's very likely that even for a small app you end up having to write a lot of String constants.
 
@@ -453,7 +462,7 @@ class Foo {
 ```
 
 
-#### 2.2.14 Arguments in Fragments and Activities
+#### 2.3.14 Arguments in Fragments and Activities
 
 When data is passed into an `Activity` or `Fragment` via an `Intent` or a `Bundle`, the keys for the different values __must__ follow the rules described in the section above.
 
@@ -482,7 +491,7 @@ fun newInstance(id: String): FooFragment {
 __Note__: As we provide the functions described above, the keys for extras and arguments should be `private` because there is no need for them to be exposed outside the class.
 
 
-#### 2.2.15 Line length limit
+#### 2.3.15 Line length limit
 
 Code lines should not exceed __100 characters__. If the line is longer than this limit there are usually two options to reduce its length:
 
@@ -494,7 +503,7 @@ There are two __exceptions__ where it is possible to have lines longer than 100:
 - Lines that are not possible to split, e.g. long URLs in comments.
 - `package` and `import` statements.
 
-##### 2.2.15.1 Line-wrapping strategies
+##### 2.3.15.1 Line-wrapping strategies
 
 There isn't an exact formula that explains how to line-wrap and quite often different solutions are valid. However there are a few rules that can be applied to common cases.
 
@@ -547,9 +556,9 @@ loadPicture(context,
 ```
 
 
-### 2.3 XML style rules
+### 2.4 XML style rules
 
-#### 2.3.1 Use self closing tags
+#### 2.4.1 Use self closing tags
 
 When an XML element doesn't have any contents, you __must__ use self closing tags.
 
@@ -574,7 +583,7 @@ This is __bad__:
 ```
 
 
-#### 2.3.2 Resources naming
+#### 2.4.2 Resources naming
 
 Resource IDs and names are written in a mix of __lowerCamelCase__ (for finer separation) and __lowercase_underscore__ (for broader separation/categorization).
 
@@ -583,7 +592,7 @@ Resource IDs and names are written in a mix of __lowerCamelCase__ (for finer sep
 <string name="content_etherpad_openInBrowser" />
 ```
 
-##### 2.3.2.1 ID naming
+##### 2.4.2.1 ID naming
 
 View-IDs should mirror the content they display, e.g. `name`, `description`. Example:
 
@@ -603,7 +612,7 @@ Menu/menu item-IDs should be prefixed with the broader section they belong to (e
 </menu>
 ```
 
-##### 2.3.2.2 Strings
+##### 2.4.2.2 Strings
 
 String names start with a prefix that identifies the section they belong to. For example `registration_email_hint` or `registration_name_hint`. If a string __doesn't belong__ to any section, then you should follow the rules below:
 
@@ -635,7 +644,7 @@ Those bigger sections are separated by 1 or 2 blank lines, and in the beginning 
 </resources>
 ```
 
-##### 2.3.2.3 Styles and Themes
+##### 2.4.2.3 Styles and Themes
 
 Unlike the rest of resources, style names are written in __UpperCamelCase__.
 
@@ -655,7 +664,7 @@ When a hierarchy implied by `.`-separation is inappropriate, __UpperCamel_WithUn
 ```
 
 
-#### 2.3.3 Attributes ordering
+#### 2.4.3 Attributes ordering
 
 As a general rule you should try to group similar attributes together. A good way of ordering the most common attributes is:
 
@@ -666,9 +675,9 @@ As a general rule you should try to group similar attributes together. A good wa
 5. Remaining attributes, sorted alphabetically
 
 
-### 2.4 Tests style rules
+### 2.5 Tests style rules
 
-#### 2.4.1 Unit tests
+#### 2.5.1 Unit tests
 
 Test classes should match the name of the class the tests are targeting, followed by `Test`. For example, if we create a test class that contains tests for the `RequestJob`, we should name it `RequestJobTest`.
 

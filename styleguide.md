@@ -7,8 +7,8 @@ Most important:
 - [2.3.9 Logging guidelines](#239-logging-guidelines)
 - [2.3.10 No unnecessary if nesting](#2310-no-unnecessary-if-nesting)
 - [2.3.14 Arguments in Fragments and Activities](#2314-arguments-in-fragments-and-activities)
-- [2.4.1 Use self closing tags](#241-use-self-closing-tags)
 - [2.4.2 Resources naming](#242-resources-naming)
+- [3. Git Guidelines](#3-git-guidelines)
 
 All Contents:
 
@@ -58,6 +58,14 @@ All Contents:
       - [2.4.3 Attributes ordering](#243-attributes-ordering)
     - [2.5 Tests style rules](#25-tests-style-rules)
       - [2.5.1 Unit tests](#251-unit-tests)
+  - [3. Git Guidelines](#3-git-guidelines)
+    - [3.1. Commits](#31-commits)
+      - [3.1.1. Type](#311-type)
+      - [3.1.2. Scope](#312-scope)
+      - [3.1.3. Subject](#313-subject)
+      - [3.1.4. Body](#314-body)
+      - [3.1.5. Footer](#315-footer)
+    - [3.2. Pull Request](#32-pull-request)
 
 
 ## 1. Project guidelines
@@ -436,7 +444,7 @@ When using one of these components, you __must__ define the keys as a `const val
 
 | Element            | Field Name Prefix |
 | ------------------ | ----------------- |
-| SharedPreferences  | `KEY_`           |
+| SharedPreferences  | `KEY_`            |
 | Bundle             | `BUNDLE_`         |
 | Fragment Arguments | `ARGUMENT_`       |
 | Intent Extra       | `EXTRA_`          |
@@ -690,6 +698,92 @@ Precondition and/or expected behaviour may not always be required if the test is
 
 Sometimes a class may contain a large amount of methods, that at the same time require several tests for each method. In this case, it's recommendable to split up the test class into multiple ones. For example, if the `Repository` contains a lot of methods we may want to divide it into `RepositorySignInTest`, `RepositoryLoadUsersTest`, etc. Generally you will be able to see what tests belong together because they have common [test fixtures](https://en.wikipedia.org/wiki/Test_fixture).
 
+
+## 3. Git Guidelines
+
+### 3.1. Commits
+
+The commit message structure is based on [Conventional Commits](https://conventionalcommits.org/). Any commit message is structured as follows:
+
+```git
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+Examples:
+
+```git
+feat(docs/styleguide): add Git guidelines
+```
+
+```git
+fix(file): show correct file size
+```
+
+```git
+feat(docs): add contributor info
+
+Added README + CONTRIBUTING as a guide for new contributors. This includes an overview of the current architecture and issue + PR templates.
+```
+
+#### 3.1.1. Type
+
+The following types are allowed:
+
+| Type     | Description                                                                       |
+| -------- | --------------------------------------------------------------------------------- |
+| feat     | A new feature                                                                     |
+| fix      | A bug fix                                                                         |
+| perf     | A code change that improves performance                                           |
+| refactor | A code change that neither fixes a bug nor adds a feature                         |
+| style    | Changes that do not affect the meaning of the code (white-space, formatting, etc) |
+| test     | Adding missing tests or correcting existing tests                                 |
+
+
+#### 3.1.2. Scope
+
+We have the following predefined scopes:
+
+| Scope | Description                                       |
+| ----- | ------------------------------------------------- |
+| build | Changes that affect the build system (Gradle)     |
+| ci    | Changes to our CI configuration files and scripts |
+| docs  | Documentation only changes                        |
+
+Additionally, large sections of the app also count as scopes. Examples include: `dashboard`, `login`, `course`, `topic`, `content`, etc.
+
+For finer granularity you may add subscopes if applicable, e.g. `docs/styleguide`.
+
+
+#### 3.1.3. Subject
+
+The subject contains a succinct description of the change:
+
+- use the imperative, present tense: "change" not "changed" nor "changes"
+- don't capitalize the first letter
+- no dot (.) at the end
+
+
+#### 3.1.4. Body
+
+Just as in the **subject**, use the imperative, present tense: "change" not "changed" nor "changes". The body should include the motivation for the change and contrast this with previous behavior.
+
+The body may be left out if the commit is small or not important.
+
+
+#### 3.1.5. Footer
+
+The footer should contain any information about **Breaking Changes** and is also the place to reference Jira-**issues** that this commit closes.
+
+**Breaking Changes** should start with the word `BREAKING CHANGE:` with a space or two newlines. The rest of the commit message is then used for this.
+
+
+### 3.2. Pull Request
+
+Please see the [PR template](./.github/PULL_REQUEST_TEMPLATE.md) for details of how to write a pull request, including an example.
 
 ---
 

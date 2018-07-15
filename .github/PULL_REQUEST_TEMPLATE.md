@@ -7,7 +7,7 @@
 ## Checklist
 
 - [x]  The commit message follows our guidelines: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
-- [x] Tested on actual devices
+- [ ] Tested on actual devices
 - [x] Documentation
 
 
@@ -38,7 +38,7 @@ This PR readds a README and some documentation for new contributors.
 ## Checklist
 <!-- Check all items that apply using "x" -->
 
-- [ ]  The commit message follows our guidelines: https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit
+- [ ] Code and commit messages follow our [guidelines](../styleguide)
 - [ ] Tested on actual devices
 - [ ] Documentation
 

@@ -7,10 +7,11 @@ import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.devices.Device
 import org.schulcloud.mobile.models.devices.DeviceRepository
+import org.schulcloud.mobile.models.devices.DeviceRequest
 import org.schulcloud.mobile.network.ApiService
 import ru.gildor.coroutines.retrofit.awaitResponse
 
-class CreateDeviceJob(private val device: Device, callback:RequestJobCallback): RequestJob(callback){
+class CreateDeviceJob(private val device: DeviceRequest, callback:RequestJobCallback): RequestJob(callback){
 
     companion object {
         private val TAG: String = CreateDeviceJob::class.java.simpleName

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="org.schulcloud.mobile.controllers.main.NewsListAdapter.NewsViewHolder" />
+
+        <variable
+            name="news"
+            type="org.schulcloud.mobile.models.news.News" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/news_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/news_item_margin"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:text="@{news.title}"
+                    tools:text="News Title" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:layout_weight="0"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:textSize="14sp"
+                    android:text="@{NewsViewHolder.getShortDate(news.createdAt)}"
+                    tools:text="DD.MM.YYYY" />
+
+            </LinearLayout>
+
+            <org.schulcloud.mobile.views.ContentWebView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:scrollbars="none"
+                app:content="@{news.content}"
+                tools:ignore="WebViewLayout"
+                tools:text="Content" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>

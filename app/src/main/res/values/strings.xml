@@ -57,6 +57,7 @@
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
     <!-- News -->
-    <string name="title_list_news">Neuigkeiten</string>
+    <string name="news_title">Neuigkeiten</string>
+    <string name="news_error_empty">Es wurden keine Neuigkeiten gefunden</string>
 
 </resources>

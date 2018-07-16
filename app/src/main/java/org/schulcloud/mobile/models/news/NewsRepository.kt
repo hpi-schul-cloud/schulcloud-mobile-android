@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.models.news
 
 import io.realm.Realm
+import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.ListUserNewsJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.LiveRealmData
@@ -9,14 +10,16 @@ import org.schulcloud.mobile.utils.newsDao
 object NewsRepository {
 
     init {
-        requestNewsList()
+        async {
+            syncNews()
+        }
     }
 
-    fun listNews(realm: Realm): LiveRealmData<News>{
+    fun news(realm: Realm): LiveRealmData<News>{
         return realm.newsDao().listNews()
     }
 
-    private fun requestNewsList() {
+    suspend fun syncNews() {
         ListUserNewsJob(object : RequestJobCallback() {
             override fun onSuccess() {
             }

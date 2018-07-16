@@ -4,67 +4,46 @@ import android.os.Build
 import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.base.BaseAdapter
+import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.models.news.News
+import org.schulcloud.mobile.databinding.ItemNewsBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private var newsList: List <News> = emptyList()
+class NewsListAdapter : BaseAdapter<News, NewsListAdapter.NewsViewHolder, ItemNewsBinding>(){
 
     fun update (newsList: List<News>){
-        this.newsList=newsList
-        notifyDataSetChanged()
+        items = newsList
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news_list, parent, false)
-        return NewsViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return newsList.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsListAdapter.NewsViewHolder {
+        val binding = ItemNewsBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+        return NewsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val news: News = newsList[position]
-        if (holder is NewsViewHolder){
-            holder.newsTitle.text = news.title
-
-            news.createdAt?.let{
+    class NewsViewHolder(binding: ItemNewsBinding) : BaseViewHolder<News, ItemNewsBinding>(binding){
+        companion object {
+            @JvmStatic
+            fun getShortDate(longDateString: String): String{
                 val receivedFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 val displayedFormat = SimpleDateFormat("dd.MM.yyyy")
-                var displayedDate: Date? = null
+                var displayedDate: Date? =  null
 
                 try{
-                    displayedDate=receivedFormat.parse(it)
+                    displayedDate = receivedFormat.parse(longDateString)
                 }
                 catch(e: ParseException){
-                    e.printStackTrace()
+                    return ""
                 }
-                holder.newsDate.text = displayedFormat.format(displayedDate)
-            }
-
-            news.content?.let{
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
-                    holder.newsContent.text  = Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY)
-                }
-                else{
-                    @Suppress("DEPRECATION")
-                    holder.newsContent.text = Html.fromHtml(it)
-                }
+                return displayedFormat.format(displayedDate)
             }
         }
-    }
 
-    class NewsViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val newsTitle: TextView = view.findViewById(R.id.news_title)
-        val newsDate: TextView = view.findViewById(R.id.news_date)
-        val newsContent: TextView = view.findViewById(R.id.news_content)
+        override fun onItemSet() {
+            binding.news = item
+        }
     }
-
 }

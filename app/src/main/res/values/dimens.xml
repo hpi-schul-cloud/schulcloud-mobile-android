@@ -7,11 +7,11 @@
 
     <dimen name="grid_spacing">5dp</dimen>
 
-    <dimen name="linear_spacing">5dp</dimen>
-
     <dimen name="content_spacing">16dp</dimen>
 
     <dimen name="content_title_margin">8dp</dimen>
+
+    <dimen name="news_item_margin">20dp</dimen>
 
     <!-- Material Design -->
     <dimen name="material_listItem_height">48dp</dimen>

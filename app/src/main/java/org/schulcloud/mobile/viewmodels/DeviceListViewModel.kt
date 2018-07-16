@@ -20,4 +20,8 @@ class DeviceListViewModel: ViewModel(){
     fun getDevices(): LiveData<RealmResults<Device>?>{
         return devices
     }
+
+    fun resyncDevices(){
+        devices = DeviceRepository.getDevices(realm)
+    }
 }

@@ -12,9 +12,8 @@
         <variable
             name="selectedCallback"
             type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback"/>
-
     </data>
-^
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_marginHorizontal="40dp"
@@ -28,7 +27,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatImageView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:scaleType="center"

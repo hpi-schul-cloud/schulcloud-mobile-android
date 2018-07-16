@@ -13,9 +13,9 @@ class CourseListViewModel : ViewModel() {
         Realm.getDefaultInstance()
     }
 
-    private var courses: LiveData<RealmResults<Course>> = CourseRepository.listCourses(realm)
+    private var courses: LiveData<RealmResults<Course>?> = CourseRepository.courses(realm)
 
-    fun getCourses(): LiveData<RealmResults<Course>> {
+    fun getCourses(): LiveData<RealmResults<Course>?> {
         return courses
     }
 }

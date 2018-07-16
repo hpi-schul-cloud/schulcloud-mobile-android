@@ -5,8 +5,8 @@ android:
   - tools
   - platform-tools
   - tools
-  - build-tools-25.0.3
-  - android-25
+  - build-tools-27.0.3
+  - android-27
   - android-16
   - extra-android-m2repository
   - extra-google-m2repository
@@ -38,7 +38,7 @@ before_script:
 after_success:
 - "./.travis/upload-apk.sh"
 script:
-- "./gradlew assembleDebug testDebugUnitTest"
+- "./gradlew assembleDebug testHpiDebugUnitTest testN21DebugUnitTest"
 #- "./gradlew assembleDebug testDebugUnitTest connectedDebugAndroidTest"
 deploy:
   provider: releases

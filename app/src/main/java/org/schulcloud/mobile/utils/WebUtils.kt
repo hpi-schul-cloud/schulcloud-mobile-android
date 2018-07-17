@@ -17,9 +17,6 @@ import org.schulcloud.mobile.models.user.UserRepository
 import java.io.IOException
 
 
-/**
- * Date: 6/11/2018
- */
 const val HEADER_COOKIE = "cookie"
 const val HEADER_CONTENT_TYPE = "content-type"
 const val HEADER_CONTENT_ENCODING = "content-encoding";

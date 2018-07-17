@@ -8,9 +8,6 @@ import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemTopicBinding
 import org.schulcloud.mobile.models.topic.Topic
 
-/**
- * Date: 6/10/2018
- */
 class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback)
     : BaseAdapter<Topic, TopicListAdapter.TopicViewHolder, ItemTopicBinding>() {
 

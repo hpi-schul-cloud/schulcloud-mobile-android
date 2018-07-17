@@ -6,7 +6,7 @@ import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.content.ContentDao
 import org.schulcloud.mobile.models.course.CourseDao
-import org.schulcloud.mobile.models.devices.DeviceDao
+import org.schulcloud.mobile.models.notifications.DeviceDao
 import org.schulcloud.mobile.models.topic.TopicDao
 
 

@@ -8,7 +8,7 @@
 
         <variable
             name="device"
-            type="org.schulcloud.mobile.models.devices.Device"/>
+            type="org.schulcloud.mobile.models.notifications.Device"/>
         <variable
             name="selectedCallback"
             type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback"/>

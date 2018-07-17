@@ -77,5 +77,6 @@
     <string name="settings_data_protection_address">https://schul-cloud.org/impressum#data_security</string>
     <string name="settings_devices">Geräte</string>
     <string name="settings_devices_empty">Keine Geräte registriert...</string>
+    <string name="devices_technical_difficulties">Benachrichtigungen sind zuzeit aus technischen Gründen deaktiviert! Wir arbeiten schon an einer Lösung!</string>
 
 </resources>

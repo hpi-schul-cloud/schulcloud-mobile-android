@@ -1,16 +1,15 @@
-package org.schulcloud.mobile.models.devices
+package org.schulcloud.mobile.models.notifications
 
+import com.google.gson.JsonParser
 import io.realm.Realm
-import okhttp3.internal.http2.ErrorCode
 import org.schulcloud.mobile.jobs.*
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
-import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.storages.DeviceStorage
 import org.schulcloud.mobile.utils.devicesDao
 
-object DeviceRepository{
+object NotificationRepository{
 
     @JvmStatic
     var deviceToken: String? = null
@@ -28,8 +27,11 @@ object DeviceRepository{
         CreateDeviceJob(device,callback)
     }
 
-    fun deleteDevice(id: String, callback: RequestJobCallback){
-        DeleteDeviceJob(id,callback)
+    fun deleteDevice(id: String, callback: RequestJobCallback) {
+        DeleteDeviceJob(id, callback)
+    }
+
+    fun sendCallback(callbackRequest: CallbackRequest,callback: RequestJobCallback){
     }
 
     suspend fun syncDevices() {

@@ -1,13 +1,11 @@
 package org.schulcloud.mobile.viewmodels
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import io.realm.Realm
 import io.realm.RealmResults
-import org.schulcloud.mobile.models.devices.Device
-import org.schulcloud.mobile.models.devices.DeviceRepository
+import org.schulcloud.mobile.models.notifications.Device
+import org.schulcloud.mobile.models.notifications.NotificationRepository
 
 class DeviceListViewModel: ViewModel(){
 
@@ -15,13 +13,13 @@ class DeviceListViewModel: ViewModel(){
         Realm.getDefaultInstance()
     }
 
-    private var devices: LiveData<RealmResults<Device>?> = DeviceRepository.getDevices(realm)
+    private var devices: LiveData<RealmResults<Device>?> = NotificationRepository.getDevices(realm)
 
     fun getDevices(): LiveData<RealmResults<Device>?>{
         return devices
     }
 
     fun resyncDevices(){
-        devices = DeviceRepository.getDevices(realm)
+        devices = NotificationRepository.getDevices(realm)
     }
 }

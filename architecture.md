@@ -6,6 +6,7 @@
   - [Data structure](#data-structure)
     - [Repositories](#repositories)
   - [Common features](#common-features)
+    - [RecyclerView](#recyclerview)
     - [HTML-Content](#html-content)
     - [Share](#share)
     - [Refresh](#refresh)
@@ -53,6 +54,17 @@ Syncing of data (e.g. to the Schul-Cloud server) is done via sync-methods in the
 
 ## Common features
 
+### RecyclerView
+
+Implementing a `RecyclerView.Adapter` is pretty simple, and we've made it even easier!
+
+- Extend [`BaseAdapter`][BaseAdapter].
+- Provide a method method for setting the items, e.g. `fun update(topicList: List<Topic>)`, in which you set `items` to the list.
+- Override `onCreateViewHolder` and inflate your Binding, e.g. `ItemTopicBinding.inflate(...)`. Additionally you register any listeners on the `ViewBinding` here.
+- Create a simple `ViewHolder` extending [`BaseViewHolder`][BaseViewHolder]. Overwrite `onItemSet()` and forward the `item` (property) to your `ViewBinding`, e.g. `override fun onItemSet() { binding.topic = item }`.
+
+*For an example, see the implementation of [`TopicListAdapter`][TopicListAdapter]*
+
 ### HTML-Content
 
 For displaying HTML-based formatted content, please use [`ContentWebView`][ContentWebView]. It takes care of loading internal content (using authentication), correct opening of links (external vs internal) and resizes content designed for larger screens.
@@ -65,6 +77,8 @@ For displaying HTML-based formatted content, please use [`ContentWebView`][Conte
 ```
 
 External links are opened using [`openUrl`][WebUtils], which creates a `CustomTab` behind the scenes.
+
+*If the displayed content should be non-interactive, use [`PassiveWebView`][PassiveWebView] instead. It works the same but doesn't catch any click or scroll events.*
 
 
 ### Share
@@ -85,7 +99,6 @@ class CourseListFragment : BaseFragment() {
         get() = "$HOST/courses/${viewModel.course.value?.id}"
 }
 ```
-
 
 
 ### Refresh
@@ -172,11 +185,15 @@ fun downloadFile() {
 [BaseActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseActivity.kt
 [BaseFragment]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseFragment.kt
 [BaseAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseAdapter.kt
+[BaseViewHolder]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseViewHolder.kt
 [MainActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/main/MainActivity.kt
+[TopicListAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/course/TopicListAdapter.kt
 [ApiServiceInterface]: ./app/src/main/java/org/schulcloud/mobile/network/ApiServiceInterface.kt
 [UserRepository]: ./app/src/main/java/org/schulcloud/mobile/models/user/UserRepository.kt
 [CourseRepository]: ./app/src/main/java/org/schulcloud/mobile/models/course/CourseRepository.kt
 [ListUserCoursesJob]: ./app/src/main/java/org/schulcloud/mobile/jobs/ListUserCoursesJob.kt
+[ContentWebView]: ./app/src/main/java/org/schulcloud/mobile/views/ContentWebView.kt
+[PassiveWebView]: ./app/src/main/java/org/schulcloud/mobile/views/PassiveWebView.kt
 [Utils]: ./app/src/main/java/org/schulcloud/mobile/utils
 [DialogUtils]: ./app/src/main/java/org/schulcloud/mobile/utils/DialogUtils.kt
 [WebUtils]: ./app/src/main/java/org/schulcloud/mobile/utils/WebUtils.kt

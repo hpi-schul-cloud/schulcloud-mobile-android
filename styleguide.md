@@ -121,6 +121,8 @@ Many related resources can be grouped using namespaces. Examples include `brand`
 
 ## 2 Code guidelines
 
+If not stated otherwise, the default formatting settings provided by Android Studio should be used.
+
 ### 2.1 General style rules
 
 #### 2.1.1 End file with newline

@@ -12,6 +12,9 @@ import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.models.devices.Device
 import org.schulcloud.mobile.models.devices.DeviceRequest
+import org.schulcloud.mobile.models.notifications.CallbackRequest
+import org.schulcloud.mobile.models.notifications.Device
+import org.schulcloud.mobile.models.notifications.DeviceRequest
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
@@ -65,6 +68,8 @@ interface ApiServiceInterface {
     fun createDevice(@Body device: DeviceRequest): Call<Void>
     @DELETE("notifcation/devices/{id}")
     fun deleteDevice(@Path("id") deviceId: String): Call<String>
+    @POST("notifcation/callback")
+    fun sendCallback(@Body callback: CallbackRequest): Call<Void>
 
 
 }

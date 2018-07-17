@@ -5,7 +5,7 @@ import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Sync
-import org.schulcloud.mobile.models.devices.Device
+import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.network.ApiService
 import ru.gildor.coroutines.retrofit.awaitResponse
 

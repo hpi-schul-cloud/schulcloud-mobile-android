@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.models.devices
+package org.schulcloud.mobile.models.notifications
 
 import io.realm.Realm
 import org.schulcloud.mobile.models.base.LiveRealmData

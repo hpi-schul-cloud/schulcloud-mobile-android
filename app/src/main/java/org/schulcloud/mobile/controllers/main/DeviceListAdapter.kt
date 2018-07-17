@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.support.v7.widget.RecyclerView
-import android.transition.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemDeviceBinding
-import org.schulcloud.mobile.models.devices.Device
+import org.schulcloud.mobile.models.notifications.Device
 
 class DeviceListAdapter(private val selectedCallback: OnItemSelectedCallback,private val mChevron: ImageView,private val mEmpty: TextView):
         BaseAdapter<Device,DeviceListAdapter.DeviceViewHolder,ItemDeviceBinding>(){
@@ -22,7 +21,6 @@ class DeviceListAdapter(private val selectedCallback: OnItemSelectedCallback,pri
     private var active = false
     private val states = arrayOf(R.anim.rotate_0_180,R.anim.rotate_180_0)
     private lateinit var mRecyclerGroup: ViewGroup
-    private lateinit var animationListener: Animation.AnimationListener
 
     fun Boolean.toInt() = if (this) 1 else 0
 

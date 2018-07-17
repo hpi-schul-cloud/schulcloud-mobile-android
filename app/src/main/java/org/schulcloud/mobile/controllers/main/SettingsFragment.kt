@@ -5,25 +5,21 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.google.firebase.iid.FirebaseInstanceId
-import io.realm.RealmResults
-import kotlinx.android.synthetic.main.activity_topic.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
-import org.schulcloud.mobile.models.devices.Device
-import org.schulcloud.mobile.models.devices.DeviceRepository
-import org.schulcloud.mobile.models.devices.DeviceRequest
+import org.schulcloud.mobile.models.notifications.Device
+import org.schulcloud.mobile.models.notifications.NotificationRepository
+import org.schulcloud.mobile.models.notifications.DeviceRequest
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.DeviceListViewModel
 
@@ -38,7 +34,7 @@ class SettingsFragment: BaseFragment() {
             }
 
             override fun onSuccess() {
-                async {DeviceRepository.syncDevices(); viewModel.resyncDevices();}
+                async {NotificationRepository.syncDevices(); viewModel.resyncDevices();}
             }
         }
     }
@@ -53,13 +49,13 @@ class SettingsFragment: BaseFragment() {
     }
 
     fun createDevice(){
-        if(DeviceRepository.deviceToken == null) {
-            DeviceRepository.deviceToken = FirebaseInstanceId.getInstance().token
+        if(NotificationRepository.deviceToken == null) {
+            NotificationRepository.deviceToken = FirebaseInstanceId.getInstance().token
         }
 
-        DeviceRepository.createDevice(DeviceRequest("firebase","mobile",
+        NotificationRepository.createDevice(DeviceRequest("firebase","mobile",
                 android.os.Build.MODEL + " ( " + android.os.Build.PRODUCT + " ) ",
-                UserRepository.token!!,DeviceRepository.deviceToken!!,android.os.Build.VERSION.INCREMENTAL),deviceCallback(viewModel))
+                UserRepository.token!!,NotificationRepository.deviceToken!!,android.os.Build.VERSION.INCREMENTAL),deviceCallback(viewModel))
     }
 
     fun openMail() {
@@ -71,8 +67,8 @@ class SettingsFragment: BaseFragment() {
 
     private val deviceListAdapter by lazy {
         DeviceListAdapter(OnItemSelectedCallback {id ->
-            DeviceRepository.deleteDevice(id,deviceCallback(viewModel))
-        }, settings_devices_list, settings_devices_empty)
+            NotificationRepository.deleteDevice(id,deviceCallback(viewModel))
+        }, devices_chevron, settings_devices_empty)
     }
 
     private lateinit var viewModel: DeviceListViewModel
@@ -110,5 +106,9 @@ class SettingsFragment: BaseFragment() {
         for(string in resources.getStringArray(R.array.contributors_names)) run {
             settings_contributor_list.append(string + "\n")
         }
+    }
+
+    override suspend fun refresh() {
+        NotificationRepository.syncDevices()
     }
 }

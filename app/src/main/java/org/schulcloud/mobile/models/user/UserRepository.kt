@@ -11,6 +11,7 @@ import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.event.EventRepository
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.storages.UserStorage
 
 object UserRepository {

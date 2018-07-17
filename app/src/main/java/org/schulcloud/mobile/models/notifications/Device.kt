@@ -1,7 +1,6 @@
-package org.schulcloud.mobile.models.devices
+package org.schulcloud.mobile.models.notifications
 
 import com.google.gson.annotations.SerializedName
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 

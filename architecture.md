@@ -58,10 +58,10 @@ Syncing of data (e.g. to the Schul-Cloud server) is done via sync-methods in the
 
 Implementing a `RecyclerView.Adapter` is pretty simple, and we've made it even easier!
 
-- Extend [`BaseAdapter`][BaseAdapter].
-- Provide a method method for setting the items, e.g. `fun update(topicList: List<Topic>)`, in which you set `items` to the list.
-- Override `onCreateViewHolder` and inflate your Binding, e.g. `ItemTopicBinding.inflate(...)`. Additionally you register any listeners on the `ViewBinding` here.
-- Create a simple `ViewHolder` extending [`BaseViewHolder`][BaseViewHolder]. Overwrite `onItemSet()` and forward the `item` (property) to your `ViewBinding`, e.g. `override fun onItemSet() { binding.topic = item }`.
+1. Extend [`BaseAdapter`][BaseAdapter].
+2. Provide a method method for setting the items, e.g. `fun update(topicList: List<Topic>)`, in which you store the list in property `items`.
+3. Override `onCreateViewHolder` and inflate your Binding, e.g. `ItemTopicBinding.inflate(...)`. Additionally you register any listeners on the `ViewBinding` here.
+4. Create a simple `ViewHolder` extending [`BaseViewHolder`][BaseViewHolder]. Overwrite `onItemSet()` and forward the `item` (property) to your `ViewBinding`, e.g. `override fun onItemSet() { binding.topic = item }`.
 
 *For an example, see the implementation of [`TopicListAdapter`][TopicListAdapter]*
 

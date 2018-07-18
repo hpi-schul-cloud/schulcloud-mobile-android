@@ -1,4 +1,4 @@
-# Schul-Cloud Android Application
+# Schul-Cloud for Android
 
 [![Build Status](https://travis-ci.org/schul-cloud/schulcloud-mobile-android.svg?branch=dev)](https://travis-ci.org/schul-cloud/schulcloud-mobile-android)
 [![GitHub version](https://img.shields.io/github/release/schul-cloud/schulcloud-mobile-android.svg?colorB=4c1)](https://github.com/schul-cloud/schulcloud-mobile-android/releases)
@@ -12,30 +12,21 @@
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?colorB=4c1)](https://github.com/Naereen/badges)
 
 
-The official Android App for [Schul-Cloud](https://schul-cloud.org/).
+Native Android application for [Schul-Cloud](https://schul-cloud.org/).
 
 
-  - [Setup](#setup)
-  - [Contributing](#contributing)
-  - [Bug reporting](#bug-reporting)
-  - [License](#license)
+## Issues
 
-## Setup
+The [issues for this project](https://ticketsystem.schul-cloud.org/projects/AN/issues) are managed in the global ticket system for Schul-Cloud.
 
-Clone git repository:
 
-```git
-git clone --recursive https://github.com/schul-cloud/schulcloud-mobile-android
-```
-
-## Contributing
+## How to get started
 
 Thanks for your interest in contributing! There are many ways to contribute to this project. Get started [here][contributing].
 
 
-## Bug reporting
+## Contributing
 
-When you find bugs in the App, please open a new issue in our [Jira-project](https://ticketsystem.schul-cloud.org/projects/AN/issues/AN-1?filter=allopenissues) (red *create* button at the top)
 
 
 ## License

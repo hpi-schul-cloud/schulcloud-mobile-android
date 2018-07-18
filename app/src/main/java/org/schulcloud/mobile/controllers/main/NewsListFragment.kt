@@ -50,9 +50,7 @@ class NewsListFragment : BaseFragment() {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         }
 
-        viewModel.getNews().observe(this, Observer { news ->
-            newsListAdapter.update(news!!)
-        })
+        viewModel.news.observe(this, Observer { newsListAdapter.update(it?: emptyList())})
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

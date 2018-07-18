@@ -13,9 +13,8 @@ class NewsListViewModel: ViewModel(){
         Realm.getDefaultInstance()
     }
 
-    private var news: LiveData<RealmResults<News>?> = NewsRepository.news(realm)
+    private val _news: LiveData<RealmResults<News>?> = NewsRepository.news(realm)
 
-    fun getNews(): LiveData<RealmResults<News>?>{
-        return news
-    }
+    val news: LiveData<RealmResults<News>?>
+        get() = _news
 }

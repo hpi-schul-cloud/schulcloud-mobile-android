@@ -108,6 +108,7 @@
             tools:progress="33" />
 
         <TextView
+            android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dashboard_events_event_next"

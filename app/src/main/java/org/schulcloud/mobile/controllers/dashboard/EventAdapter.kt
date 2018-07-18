@@ -50,4 +50,11 @@ class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallba
             return HOLDER_CURRENT
         return HOLDER_GENERAL
     }
+
+    override fun onBindViewHolder(holder: EventViewHolder<out ViewDataBinding>, position: Int) {
+        super.onBindViewHolder(holder, position)
+
+        if (holder is CurrentEventViewHolder)
+            holder.items = items
+    }
 }

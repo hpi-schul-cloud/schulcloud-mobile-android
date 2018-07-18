@@ -10,6 +10,7 @@ import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.utils.getUserCalendar
 import org.schulcloud.mobile.utils.timeOfDay
 import org.schulcloud.mobile.utils.toLocal
+import org.schulcloud.mobile.utils.visibilityBool
 import java.text.DateFormat
 
 
@@ -54,6 +55,8 @@ class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val cours
         }
     }
 
+    var items: List<Event> = emptyList()
+
     override fun onItemSet() {
         binding.event = item
         binding.formattedTime = formattedTime
@@ -63,5 +66,7 @@ class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val cours
                 courseEventSelectedCallback.onItemSelected(courseId)
             }
         } ?: binding.container.setOnClickListener(null)
+
+        binding.next.visibilityBool = items.size > 1
     }
 }

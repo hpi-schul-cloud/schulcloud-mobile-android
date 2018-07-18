@@ -1,54 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="event"
             type="org.schulcloud.mobile.models.event.Event" />
         <variable
-            name="time"
+            name="formattedTime"
             type="String" />
     </data>
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground">
+        android:background="?android:attr/selectableItemBackground"
+        android:minHeight="56dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:text="@{event.title}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/barrierEnd"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
-        <TextView
-            android:id="@+id/summary"
+        <android.support.constraint.Barrier
+            android:id="@+id/barrierEnd"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:text="@{event.summary}"
-            tools:text="Summary" />
+            android:layout_height="match_parent"
+            app:barrierDirection="start"
+            app:constraint_referenced_ids="time,location" />
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:gravity="bottom"
-            android:text="@{time}"
+            android:text="@{event.location}"
+            app:layout_constraintBottom_toTopOf="@id/time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:text="A1.16" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:text="@{formattedTime}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/location"
             tools:text="10:00 - 11:30" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/summary"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>

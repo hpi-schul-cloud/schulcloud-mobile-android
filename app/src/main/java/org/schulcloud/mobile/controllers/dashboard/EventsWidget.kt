@@ -13,7 +13,6 @@ import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.controllers.course.CourseActivity
 import org.schulcloud.mobile.models.event.EventRepository
 import org.schulcloud.mobile.viewmodels.EventListViewModel
-import org.schulcloud.mobile.views.ItemOffsetDecoration
 
 class EventsWidget : Widget() {
     companion object {
@@ -48,7 +47,6 @@ class EventsWidget : Widget() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = eventAdapter
-            addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
         }
     }
 

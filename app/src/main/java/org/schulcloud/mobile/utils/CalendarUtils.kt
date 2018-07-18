@@ -11,6 +11,9 @@ val UTC_FORMAT: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", 
 fun getCalendar(): Calendar {
     return GregorianCalendar.getInstance(UTC)
 }
+fun getUserCalendar(): Calendar {
+    return GregorianCalendar.getInstance()
+}
 
 fun String.parseDate(): Calendar? {
     return try {
@@ -31,11 +34,11 @@ var Calendar.timeOfDay: Long
         var time = value
         set(Calendar.MILLISECOND, (value % DateUtils.SECOND_IN_MILLIS).toInt())
         time /= DateUtils.SECOND_IN_MILLIS
-        set(Calendar.SECOND, (value % 60).toInt())
+        set(Calendar.SECOND, (time % 60).toInt())
         time /= 60
-        set(Calendar.MINUTE, (value % 60).toInt())
+        set(Calendar.MINUTE, (time % 60).toInt())
         time /= 60
-        set(Calendar.HOUR_OF_DAY, (value % 24).toInt())
+        set(Calendar.HOUR_OF_DAY, (time % 24).toInt())
     }
 
 var Calendar.dayOfWeek: Int

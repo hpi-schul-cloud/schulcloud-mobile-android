@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.dashboard
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.schulcloud.mobile.controllers.base.BaseAdapter
@@ -7,6 +8,8 @@ import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemEventBinding
 import org.schulcloud.mobile.models.event.Event
+import org.schulcloud.mobile.utils.getUserCalendar
+import java.text.DateFormat
 
 class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallback<String>)
     : BaseAdapter<Event, EventAdapter.EventViewHolder, ItemEventBinding>() {
@@ -30,8 +33,11 @@ class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallba
                 }
             } ?: binding.container.setOnClickListener(null)
 
-
-
+            val cal = getUserCalendar()
+            binding.formattedTime = item.nextStart(true)?.let {
+                DateUtils.formatSameDayTime(it.timeInMillis, cal.timeInMillis,
+                        DateFormat.SHORT, DateFormat.SHORT).toString()
+            } ?: ""
         }
     }
 }

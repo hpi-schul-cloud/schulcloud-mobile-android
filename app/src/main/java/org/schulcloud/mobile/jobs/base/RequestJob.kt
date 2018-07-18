@@ -10,7 +10,7 @@ abstract class RequestJob(protected val callback: RequestJobCallback?, private v
         AUTH
     }
 
-    fun run() {
+    suspend fun run() {
         if (preconditions.contains(Precondition.AUTH) && !UserRepository.isAuthorized) {
             callback?.error(RequestJobCallback.ErrorCode.NO_AUTH)
             return

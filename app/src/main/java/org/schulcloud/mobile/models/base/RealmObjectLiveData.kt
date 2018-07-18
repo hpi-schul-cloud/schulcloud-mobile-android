@@ -1,13 +1,18 @@
-package  org.schulcloud.mobile.models.base
+package org.schulcloud.mobile.models.base
 
-import io.realm.RealmChangeListener
 import android.arch.lifecycle.LiveData
+import io.realm.RealmChangeListener
 import io.realm.RealmObject
 
+/**
+ * Date: 6/9/2018
+ */
+class RealmObjectLiveData<T : RealmObject>(private val result: T) : LiveData<T?>() {
 
-class RealmObjectLiveData<T : RealmObject>(private val result: T) : LiveData<T>() {
-
-    private val listener = RealmChangeListener<T> { result -> value = result }
+    private val listener = RealmChangeListener<T> { result ->
+        if (result.isLoaded)
+            value = if (result.isLoaded) result else null
+    }
 
     override fun onActive() {
         result.addChangeListener(listener)

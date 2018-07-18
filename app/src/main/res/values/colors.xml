@@ -1,36 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#B1043880</color>
-    <color name="colorPrimaryDark">#853b0b</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="hpiRed">#B10438</color>
-    <color name="hpiOrange">#E2661D</color>
-    <color name="hpiYellow">#F8A41B</color>
-
-    <color name="white">#ffffff</color>
-    <color name="red">#ff0000</color>
-
-    <color name="apptheme_main">@color/hpiRed</color>
-    <!-- 30% white overlay -->
-    <color name="apptheme_main_light">#e8915a</color>
-    <!-- 40% black overlay -->
-    <color name="apptheme_main_dark">#853b0b</color>
-
-    <color name="text_main">#DE000000</color>
-
-    <color name="background_main">#fafafa</color>
-    <color name="background_light_gray">#cacaca</color>
     <color name="background_lighter_gray">#f0eff5</color>
 
     <color name="separator_gray">#b1b1b1b1</color>
 
-    <color name="apptheme_login_bg">#EEEEEE</color>
-    <color name="transparent">#00000000</color>
-    <color name="apptheme_login_text">@color/text_main</color>
+
+    <color name="text_main">#DE000000</color>
+
+    <color name="login_bg">#EEEEEE</color>
+    <color name="login_text">@color/text_main</color>
 
     <color name="button_gray">#5a6065</color>
     <!-- 30% white overlay -->
     <color name="button_gray_light">#8c9094</color>
+
+
+    <!-- Material -->
+    <color name="material_divider">#1F000000</color>
 
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="topic"
+            type="org.schulcloud.mobile.models.topic.Topic" />
+        <variable
+            name="selectedCallback"
+            type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
+    </data>
+
+    <TextView
+        style="@style/Material.ListItem.Simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> selectedCallback.onItemSelected(topic.id)}"
+        android:text="@{topic.name}"
+        tools:text="Topic Name" />
+</layout>

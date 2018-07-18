@@ -5,7 +5,7 @@ import io.realm.Realm
 import io.realm.RealmModel
 import org.schulcloud.mobile.BuildConfig
 
-abstract class Sync<S: RealmModel>(private val clazz: Class<S>) {
+abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
 
     var handleDeletes: Boolean = true
 
@@ -13,7 +13,7 @@ abstract class Sync<S: RealmModel>(private val clazz: Class<S>) {
         val TAG: String = Sync::class.java.simpleName
     }
 
-    fun saveOnly() : Sync<S> {
+    fun saveOnly(): Sync<S> {
         handleDeletes = false
         return this
     }
@@ -21,7 +21,7 @@ abstract class Sync<S: RealmModel>(private val clazz: Class<S>) {
     /**
      *
      */
-    class Data<S: RealmModel>(private val clazz: Class<S>, private val items: List<S>) : Sync<S>(clazz) {
+    class Data<S : RealmModel>(private val clazz: Class<S>, private val items: List<S>) : Sync<S>(clazz) {
 
         companion object {
             fun <S : RealmModel> with(clazz: Class<S>, items: List<S>): Data<S> {
@@ -34,10 +34,36 @@ abstract class Sync<S: RealmModel>(private val clazz: Class<S>) {
             realm.executeTransaction {
 
                 // Copy or Update
-                for(item: S in items) {
+                for (item: S in items) {
                     realm.copyToRealmOrUpdate(item)
                 }
                 if (BuildConfig.DEBUG) Log.d(TAG, "DATA: Saved " + items.size + " data resources from type " + clazz.simpleName)
+
+                /*
+                // Handle Delete
+                if(handleDeletes) {
+                    // if (BuildConfig.DEBUG) Log.d(TAG, "DATA: Deleted " + results.size + " local resources from type " + clazz.simpleName)
+                } else if(BuildConfig.DEBUG) Log.d(TAG, "DATA: Deleted 0 local resources from type " + clazz.simpleName)
+                */
+            }
+            realm.close()
+        }
+    }
+
+    class SingleData<S : RealmModel>(private val clazz: Class<S>, private val item: S) : Sync<S>(clazz) {
+        companion object {
+            fun <S : RealmModel> with(clazz: Class<S>, item: S): SingleData<S> {
+                return SingleData(clazz, item)
+            }
+        }
+
+        fun run() {
+            val realm = Realm.getDefaultInstance()
+            realm.executeTransaction {
+                // Copy or Update
+                realm.copyToRealmOrUpdate(item)
+
+                if (BuildConfig.DEBUG) Log.d(TAG, "DATA: Saved 1 data resource from type " + clazz.simpleName)
 
                 /*
                 // Handle Delete

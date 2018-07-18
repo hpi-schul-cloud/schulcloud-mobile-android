@@ -3,6 +3,7 @@ package org.schulcloud.mobile.network
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.models.user.UserRepository
 import retrofit2.Retrofit
@@ -34,7 +35,7 @@ object ApiService {
                 .create()
 
         val retrofit = Retrofit.Builder()
-                .baseUrl(Config.API_URL)
+                .baseUrl(BuildConfig.API_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
@@ -42,5 +43,4 @@ object ApiService {
         service = retrofit.create(ApiServiceInterface::class.java)
         return service as ApiServiceInterface
     }
-
 }

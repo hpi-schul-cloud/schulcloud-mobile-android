@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:id="@+id/nav_group_1" android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_group_1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_th_large"
-            android:title="Übersicht" />
+            android:title="@string/main_drawer_dashboard" />
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_newspaper"
-            android:title="Neuigkeiten" />
+            android:title="@string/main_drawer_news" />
         <item
             android:id="@+id/nav_courses"
             android:icon="@drawable/ic_graduation_cap"
-            android:title="Kurse" />
+            android:title="@string/main_drawer_courses" />
         <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_table"
-            android:title="Termine" />
+            android:title="@string/main_drawer_calendar" />
         <item
             android:id="@+id/nav_assignments"
             android:icon="@drawable/ic_tasks"
-            android:title="Aufgaben" />
+            android:title="@string/main_drawer_homework" />
         <item
             android:id="@+id/nav_files"
             android:icon="@drawable/ic_folder_open"
-            android:title="Meine Dateien" />
+            android:title="@string/main_drawer_files" />
         <item
             android:id="@+id/nav_learnstore"
             android:icon="@drawable/ic_search"
-            android:title="Material" />
+            android:title="@string/main_drawer_learnstore" />
     </group>
 
-    <group android:id="@+id/nav_group_2"  android:checkableBehavior="single">
+    <group
+        android:id="@+id/nav_group_2"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_sign_out_alt"
-            android:title="Abmelden" />
+            android:title="@string/main_drawer_logout" />
     </group>
 
 </menu>

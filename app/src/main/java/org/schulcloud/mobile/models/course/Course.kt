@@ -5,8 +5,9 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.schulcloud.mobile.models.user.User
+import org.schulcloud.mobile.utils.HOST
 
-open class Course: RealmObject() {
+open class Course : RealmObject() {
 
     @PrimaryKey
     @SerializedName("_id")
@@ -19,4 +20,7 @@ open class Course: RealmObject() {
 
     @SerializedName("teacherIds")
     var teachers: RealmList<User>? = null
+
+    val url: String
+        get() = "$HOST/courses/$id"
 }

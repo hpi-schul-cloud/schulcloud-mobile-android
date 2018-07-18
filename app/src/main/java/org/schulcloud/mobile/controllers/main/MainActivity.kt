@@ -29,7 +29,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun setupNavigation(isFirstRun: Boolean) {
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                R.string.main_drawer_open, R.string.main_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 

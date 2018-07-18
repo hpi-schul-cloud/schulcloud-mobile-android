@@ -4,10 +4,7 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.schulcloud.mobile.utils.dayOfWeek
-import org.schulcloud.mobile.utils.getCalendar
-import org.schulcloud.mobile.utils.parseDate
-import org.schulcloud.mobile.utils.timeOfDay
+import org.schulcloud.mobile.utils.*
 import java.util.*
 
 open class Event : RealmObject() {
@@ -44,7 +41,7 @@ open class Event : RealmObject() {
         val end = end ?: return null
         val startOrEnd = if (includeCurrent) end else start
 
-        val current = getCalendar()
+        val current = getCalendar().apply { fromLocal() }
 
         // Test all repetition definitions
         return included.orEmpty().map {
@@ -57,8 +54,14 @@ open class Event : RealmObject() {
 
             val freq = attributes.freq ?: return@map null
             val weekdayNumber = attributes.weekdayNumber ?: return@map null
-            val timeOfDay = getCalendar().apply { timeInMillis = startOrEnd }.timeOfDay
-            val startTimeOfDay = getCalendar().apply { timeInMillis = start }.timeOfDay
+            val timeOfDay = getUserCalendar().apply {
+                timeInMillis = startOrEnd
+                toLocal()
+            }.timeOfDay
+            val startTimeOfDay = getUserCalendar().apply {
+                timeInMillis = start
+                toLocal()
+            }.timeOfDay
 
             val cal = getCalendar()
             // First repeated event now or later
@@ -90,7 +93,7 @@ open class Event : RealmObject() {
             }
         }
                 .let {
-                    val startCal = getCalendar().apply { timeInMillis = start }
+                    val startCal = getUserCalendar().apply { timeInMillis = start }
                     // If repetition only starts now or later, take the first instance
                     if (start >= current.timeInMillis)
                         listOf(startCal)

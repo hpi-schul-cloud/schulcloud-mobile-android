@@ -33,7 +33,7 @@ To name your branch, take the number of the Jira-issue and append the issue name
 
 We have documented the underlaying architecture of our app in the [architecture] file. It also contains code snippets for common features, such as embedding a `SwipeRefreshLayout` with only three lines of code or showing a progress dialog with just one line.
 
-When writing code, please also follow our [styleguide]. Most of it is common sense or done by [Android Studio] automatically, but you should take a look at the sections highlighted at the top.
+When commiting, please use [conventional commits]. This makes it much easier to get an overview of what you did.
 
 
 ## 4. Creating a pull request
@@ -44,8 +44,8 @@ For writing the PR message and details on what to include, please use our [Pull 
 
 
 [android studio]: https://developer.android.com/studio/
+[conventional commits]: https://conventionalcommits.org/
 [architecture]: ./architecture.md
-[styleguide]: ./styleguide.md
 [changelog]: ./CHANGELOG.md
 [issues]: https://ticketsystem.schul-cloud.org/projects/AN/issues
 [pr-template]: ./.github/PULL_REQUEST_TEMPLATE.md

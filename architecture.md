@@ -90,16 +90,8 @@ An **error** can be shown by calling [`showGenericError`][DialogUtils], passing 
 
 Showing an indeterminate progress dialog is as simple as wrapping a `suspend`-function with [`withProgressDialog`][DialogUtils], passing a string or string resource shown in the dialog to inform the user.
 
-```kotlin
-withProgressDialog("Downloading file") {
-    val result = performDownload().await()
-    if (!result) {
-        showGenericError("Download encountered an error. Please try again.")
-        return@withProgressDialog
-    }
-    showGenericSuccess("File downloaded!")
-}
-```
+
+*For an example, see the implementation of [`FileActivity#loadFile()`][FileActivity]*
 
 
 [android studio]: https://developer.android.com/studio/
@@ -114,6 +106,7 @@ withProgressDialog("Downloading file") {
 [BaseFragment]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseFragment.kt
 [BaseAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseAdapter.kt
 [MainActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/main/MainActivity.kt
+[FileActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/file/FileActivity.kt
 [TopicListAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/course/TopicListAdapter.kt
 [ApiServiceInterface]: ./app/src/main/java/org/schulcloud/mobile/network/ApiServiceInterface.kt
 [UserRepository]: ./app/src/main/java/org/schulcloud/mobile/models/user/UserRepository.kt

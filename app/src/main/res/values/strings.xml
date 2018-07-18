@@ -46,6 +46,7 @@
     <string name="dashboard_title">Übersicht</string>
     <!-- Events -->
     <string name="dashboard_events_none">Keine Termine für heute</string>
+    <string name="dashboard_events_event_next">danach:</string>
 
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>

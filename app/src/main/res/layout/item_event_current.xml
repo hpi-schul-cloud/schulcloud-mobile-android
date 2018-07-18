@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+        <import type="org.schulcloud.mobile.controllers.dashboard.CurrentEventViewHolder" />
 
         <variable
             name="event"
@@ -27,13 +28,13 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/TextAppearance.AppCompat.Headline"
+            style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@{event.title}"
             app:layout_constraintBottom_toTopOf="@id/summary"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
@@ -49,10 +50,10 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@{event.summary}"
             android:visibility="@{ViewUtilsKt.asVisibility(!event.title.equals(event.summary))}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/barrierBottom"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
@@ -89,6 +90,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location"
             tools:text="10:00 - 11:30" />
+
+        <android.support.constraint.Barrier
+            android:id="@+id/barrierBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="summary,time" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="@{CurrentEventViewHolder.getProgress(event)}"
+            app:layout_constraintTop_toBottomOf="@id/barrierBottom"
+            tools:progress="33" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboard_events_event_next"
+            app:layout_constraintTop_toBottomOf="@id/progress" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

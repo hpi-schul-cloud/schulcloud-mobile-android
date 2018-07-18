@@ -1,43 +1,53 @@
 package org.schulcloud.mobile.controllers.dashboard
 
-import android.text.format.DateUtils
-import android.view.LayoutInflater
+import android.databinding.ViewDataBinding
 import android.view.ViewGroup
+import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseAdapter
-import org.schulcloud.mobile.controllers.base.BaseViewHolder
+import org.schulcloud.mobile.controllers.base.BaseViewHolder.Companion.createBinding
 import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
-import org.schulcloud.mobile.databinding.ItemEventBinding
 import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.utils.getUserCalendar
-import java.text.DateFormat
+import org.schulcloud.mobile.utils.timeOfDay
+import org.schulcloud.mobile.utils.toLocal
 
 class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallback<String>)
-    : BaseAdapter<Event, EventAdapter.EventViewHolder, ItemEventBinding>() {
+    : BaseAdapter<Event, EventViewHolder<out ViewDataBinding>, ViewDataBinding>() {
+    companion object {
+        const val HOLDER_GENERAL = 0
+        const val HOLDER_CURRENT = 1
+    }
+
 
     fun update(events: List<Event>) {
         items = events
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventAdapter.EventViewHolder {
-        val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EventViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder<out ViewDataBinding> {
+        return when (viewType) {
+            HOLDER_CURRENT -> CurrentEventViewHolder(createBinding(parent, R.layout.item_event_current),
+                    courseEventSelectedCallback)
+            else -> GeneralEventViewHolder(createBinding(parent, R.layout.item_event),
+                    courseEventSelectedCallback)
+        }
     }
 
-    inner class EventViewHolder(binding: ItemEventBinding) : BaseViewHolder<Event, ItemEventBinding>(binding) {
-        override fun onItemSet() {
-            binding.event = item
+    override fun getItemViewType(position: Int): Int {
+        val event = items[position]
 
-            item.courseId?.also { courseId ->
-                binding.container.setOnClickListener {
-                    courseEventSelectedCallback.onItemSelected(courseId)
-                }
-            } ?: binding.container.setOnClickListener(null)
-
+        fun isEventCurrent(): Boolean {
             val cal = getUserCalendar()
-            binding.formattedTime = item.nextStart(true)?.let {
-                DateUtils.formatSameDayTime(it.timeInMillis, cal.timeInMillis,
-                        DateFormat.SHORT, DateFormat.SHORT).toString()
-            } ?: ""
+            val currentTime = cal.timeOfDay
+            val start = event.start ?: return false
+            val startTime = cal.apply {
+                timeInMillis = start
+                toLocal()
+            }.timeOfDay
+            return startTime < currentTime
         }
+
+        if (isEventCurrent())
+            return HOLDER_CURRENT
+        return HOLDER_GENERAL
     }
 }

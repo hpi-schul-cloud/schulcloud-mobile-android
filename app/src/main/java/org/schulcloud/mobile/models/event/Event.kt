@@ -23,6 +23,7 @@ open class Event : RealmObject() {
     var allDay: Boolean? = null
     var start: Long? = null
     var end: Long? = null
+    var summary: String? = null
     var location: String? = null
     var description: String? = null
     var included: RealmList<Included>? = null
@@ -30,6 +31,13 @@ open class Event : RealmObject() {
     @SerializedName("x-sc-courseId")
     var courseId: String? = null
 
+
+    val duration: Long?
+        get() {
+            val start = start ?: return null
+            val end = end ?: return null
+            return end - start
+        }
 
     fun nextStart(includeCurrent: Boolean = false): Calendar? {
         val start = start ?: return null

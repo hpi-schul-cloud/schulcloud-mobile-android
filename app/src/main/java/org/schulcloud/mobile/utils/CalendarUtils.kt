@@ -5,14 +5,22 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-val UTC: TimeZone = TimeZone.getTimeZone("UTC")
+val TIMEZONE_UTC: TimeZone = TimeZone.getTimeZone("TIMEZONE_UTC")
 val UTC_FORMAT: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+val TIMEZONE_LOCAL: TimeZone = TimeZone.getDefault()
 
 fun getCalendar(): Calendar {
-    return GregorianCalendar.getInstance(UTC)
+    return GregorianCalendar.getInstance(TIMEZONE_UTC)
 }
 fun getUserCalendar(): Calendar {
     return GregorianCalendar.getInstance()
+}
+
+fun Calendar.toLocal() {
+    add(Calendar.MILLISECOND, -TIMEZONE_LOCAL.getOffset(timeInMillis))
+}
+fun Calendar.fromLocal() {
+    add(Calendar.MILLISECOND, TIMEZONE_LOCAL.getOffset(timeInMillis))
 }
 
 fun String.parseDate(): Calendar? {

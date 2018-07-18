@@ -5,6 +5,7 @@
     <dimen name="material_button_fab_spacer">88dp</dimen>
 
     <!-- List -->
+    <dimen name="material_list_paddingVertical">8dp</dimen>
     <dimen name="material_listItem_height">48dp</dimen>
     <dimen name="material_listItem_height_twoLine">72dp</dimen>
     <dimen name="material_listItem_paddingHorizontal">16dp</dimen>

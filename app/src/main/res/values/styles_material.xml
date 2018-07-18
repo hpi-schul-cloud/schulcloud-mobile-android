@@ -35,6 +35,10 @@
     </style>
 
     <!-- List -->
+    <style name="Material.List">
+        <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
+        <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
+    </style>
     <style name="Material.ListItem">
         <item name="android:layout_height">@dimen/material_listItem_height</item>
     </style>

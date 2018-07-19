@@ -26,8 +26,7 @@ open class Homework : RealmObject() {
      * Returns text and text color for the duetill label of a Homework object
      * depending on how many days and hours are left until its dueDate.
      *
-     * When there is more than a week left or the Homework object does not have a dueDate
-     * or the dueDate cannot be parsed, this function returns an empty String
+     * When there is more than a week left or the dueDate cannot be parsed, this function returns an empty String
      *
      * @return a Pair with duetill label text and color
      */
@@ -35,14 +34,14 @@ open class Homework : RealmObject() {
         val diffDays = getDueTimespanDays()
 
         when (diffDays) {
-            in Int.MIN_VALUE + 1 until 0 -> {
+            in Int.MIN_VALUE until 0 -> {
                 return Pair("Überfällig", Color.RED)
             }
             0 -> {
                 val diffHours = getDueTimespanHours()
-                if (diffHours >= 0) {
+                if (diffHours in 0 until Int.MAX_VALUE) {
                     return Pair("In $diffHours Stunden fällig", Color.RED)
-                } else if (diffHours == Int.MIN_VALUE) {
+                } else if (diffHours == Int.MAX_VALUE) {
                     return Pair("", Color.TRANSPARENT)
                 } else {
                     return Pair("Überfällig", Color.RED)
@@ -59,31 +58,29 @@ open class Homework : RealmObject() {
 
     /**
      * Calculates how many days are left until the dueDate.
-     * In case of no dueDate given or parsing error this function returns minimal Int value
+     * When the given date string cannot be parsed, this function returns maximal Int value
      *
      * @return the number of days until deadline
      */
     fun getDueTimespanDays(): Int {
-        var dueTimespanDays: Int = Int.MIN_VALUE
-        try {
-            dueTimespanDays = Days.daysBetween(LocalDate.now(), getDueTillDateTime().toLocalDate()).days
-        } catch (e: Exception) {
+        return try {
+            Days.daysBetween(LocalDateTime.now(), getDueTillDateTime().toLocalDateTime()).days
+        } catch (e: IllegalArgumentException) {
+            Int.MAX_VALUE
         }
-        return dueTimespanDays
     }
 
     private fun getDueTimespanHours(): Int {
-        var dueTimespanHours: Int = Int.MIN_VALUE
-        try {
-            dueTimespanHours = Hours.hoursBetween(LocalDateTime.now(), getDueTillDateTime().toLocalDateTime()).hours
-        } catch (e: Exception) {
+        return try {
+            Hours.hoursBetween(LocalDateTime.now(), getDueTillDateTime().toLocalDateTime()).hours
+        } catch (e: IllegalArgumentException) {
+            Int.MAX_VALUE
         }
-        return dueTimespanHours
-
     }
 
-    @Throws(Exception::class)
+
+    @Throws(IllegalArgumentException::class)
     fun getDueTillDateTime(): DateTime {
-        return DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate!!)
+        return DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate)
     }
 }

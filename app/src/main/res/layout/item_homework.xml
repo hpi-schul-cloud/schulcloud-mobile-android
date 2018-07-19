@@ -31,10 +31,6 @@
                 android:textSize="20sp"
                 tools:text="Header" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.25dp"
-                android:background="@color/separator_gray" />
         </LinearLayout>
 
         <LinearLayout

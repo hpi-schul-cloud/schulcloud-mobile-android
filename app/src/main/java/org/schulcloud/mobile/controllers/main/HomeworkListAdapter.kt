@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Build
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -26,7 +25,7 @@ class HomeworkListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_homework_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_homework, parent, false)
         return HomeworkViewHolder(view)
     }
 

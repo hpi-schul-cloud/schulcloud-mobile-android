@@ -8,14 +8,14 @@ import org.schulcloud.mobile.utils.asLiveData
 
 class HomeworkDao(private val realm: Realm){
 
-    fun listHomework() : LiveRealmData<Homework>{
+    fun homeworkList() : LiveRealmData<Homework>{
         return realm.where(Homework::class.java)
                 .sort("dueDate", Sort.ASCENDING)
                 .findAllAsync()
                 .asLiveData()
     }
 
-    fun getHomeworkForId(id: String) : RealmObjectLiveData<Homework>{
+    fun homework(id: String) : RealmObjectLiveData<Homework>{
         return realm.where(Homework::class.java)
                 .sort("dueDate", Sort.ASCENDING)
                 .equalTo("id", id)

@@ -23,7 +23,7 @@ import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
-import org.schulcloud.mobile.viewmodels.HomeworkViewModelFactory
+import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
 class HomeworkDetailActivity : BaseActivity() {
 
@@ -41,7 +41,7 @@ class HomeworkDetailActivity : BaseActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        homeworkViewModel = ViewModelProviders.of(this, HomeworkViewModelFactory(intent.getStringExtra(EXTRA_ID))).get(HomeworkViewModel::class.java)
+        homeworkViewModel = ViewModelProviders.of(this, IdViewModelFactory(intent.getStringExtra(EXTRA_ID))).get(HomeworkViewModel::class.java)
         homeworkViewModel.getHomework().observe(this, Observer<Homework> {
             it?.let { onHomeworkUpdate(it) }
         })

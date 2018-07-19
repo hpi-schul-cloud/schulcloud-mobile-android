@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+
+    <issue id="LogConditional" severity="error" />
+    <issue id="Registered" severity="error" />
+
+    <issue id="ConvertToWebp" severity="warning" />
+
+    <!-- Change the severity of hardcoded strings to "error" -->
+    <issue id="HardcodedText" severity="error">
+        <ignore path="*/test/*" />
+    </issue>
+
+    <issue id="MinSdkTooLow" severity="informational" />
+    <issue id="GoogleAppIndexingWarning" severity="informational" />
+
+</lint>

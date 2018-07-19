@@ -39,12 +39,16 @@ open class Homework : RealmObject() {
             }
             0 -> {
                 val diffHours = getDueTimespanHours()
-                if (diffHours in 0 until Int.MAX_VALUE) {
-                    return Pair("In $diffHours Stunden fällig", Color.RED)
-                } else if (diffHours == Int.MAX_VALUE) {
-                    return Pair("", Color.TRANSPARENT)
-                } else {
-                    return Pair("Überfällig", Color.RED)
+                when (diffHours) {
+                    in 0 until Int.MAX_VALUE -> {
+                        return Pair("In $diffHours Stunden fällig", Color.RED)
+                    }
+                    Int.MAX_VALUE -> {
+                        return Pair("", Color.TRANSPARENT)
+                    }
+                    else -> {
+                        return Pair("Überfällig", Color.RED)
+                    }
                 }
             }
             1 -> return Pair("Morgen fällig", Color.RED)

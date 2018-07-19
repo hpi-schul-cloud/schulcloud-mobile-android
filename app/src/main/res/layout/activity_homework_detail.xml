@@ -32,7 +32,7 @@
                 android:paddingEnd="7dp"
                 android:paddingRight="7dp"
                 android:textAllCaps="true"
-                android:textSize="@dimen/text_medium_smaller_size"
+                android:textSize="@dimen/text_smaller_size"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:textSize="@dimen/text_medium_smaller_size"
+            android:textSize="@dimen/text_smaller_size"
             tools:text="In x Stunden fällig" />
 
     </LinearLayout>

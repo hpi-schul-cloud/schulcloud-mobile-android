@@ -2,20 +2,17 @@ package org.schulcloud.mobile.controllers.main
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import io.realm.RealmResults
+import android.view.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 import kotlinx.android.synthetic.main.fragment_homework_list.*
-import org.schulcloud.mobile.controllers.homework.HomeworkDetailActivity
-import org.schulcloud.mobile.models.homework.Homework
+import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
+import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.utils.HOST
 
 class HomeworkListFragment : BaseFragment() {
 
@@ -23,11 +20,21 @@ class HomeworkListFragment : BaseFragment() {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }
 
-    private lateinit var homeworkListAdapter: HomeworkListAdapter
+    override var url: String? = "${HOST}/homework"
+
     private lateinit var homeworkListViewModel: HomeworkListViewModel
+    private val homeworkListAdapter: HomeworkListAdapter by lazy {
+        HomeworkListAdapter(OnItemSelectedCallback {
+           // startActivity(,it)
+        }).apply {
+            emptyIndicator = empty
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         homeworkListViewModel = ViewModelProviders.of(this).get(HomeworkListViewModel::class.java)
     }
 
@@ -39,23 +46,25 @@ class HomeworkListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout = swipeRefresh
 
-        homeworkListAdapter = HomeworkListAdapter()
-        recycler_view_homework.apply {
-            layoutManager = LinearLayoutManager(activity)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            adapter = homeworkListAdapter
-        }
-
-        homeworkListViewModel.getHomework().observe(this, Observer<RealmResults<Homework>> { homework ->
-            homeworkListAdapter.update(homework!!)
+        homeworkListViewModel.homework.observe(this, Observer {
+            homeworkListAdapter.update(it ?: emptyList())
         })
-        homeworkListAdapter.listener = object: HomeworkListAdapter.Listener{
-            override fun onClick(id: String){
-                val intent = Intent(context, HomeworkDetailActivity::class.java)
-                intent.putExtra(HomeworkDetailActivity.EXTRA_ID, id)
-                startActivity(intent)
-            }
+
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = homeworkListAdapter
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.fragment_course_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override suspend fun refresh() {
+        HomeworkRepository.syncHomeworkList()
     }
 }

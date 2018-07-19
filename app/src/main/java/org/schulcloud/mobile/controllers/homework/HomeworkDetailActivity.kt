@@ -42,7 +42,7 @@ class HomeworkDetailActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         homeworkViewModel = ViewModelProviders.of(this, IdViewModelFactory(intent.getStringExtra(EXTRA_ID))).get(HomeworkViewModel::class.java)
-        homeworkViewModel.getHomework().observe(this, Observer<Homework> {
+        homeworkViewModel.homework.observe(this, Observer{
             it?.let { onHomeworkUpdate(it) }
         })
     }

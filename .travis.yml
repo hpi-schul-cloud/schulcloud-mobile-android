@@ -38,8 +38,9 @@ before_script:
 after_success:
 - "./.travis/upload-apk.sh"
 script:
-- "./gradlew clean assembleDebug testHpiDebugUnitTest testN21DebugUnitTest lint"
+- "./gradlew clean assembleDebug testHpiDebugUnitTest testN21DebugUnitTest"
 #- "./gradlew clean assembleDebug testDebugUnitTest connectedDebugAndroidTest"
+- bundle exec danger --verbose
 deploy:
   provider: releases
   api_key:

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 kotlin {
     experimental {
@@ -64,9 +65,24 @@ android {
     }
 
     lintOptions {
-        htmlReport true
-        warningsAsErrors true
-        abortOnError true
+        abortOnError false
+    }
+}
+
+ktlint {
+    version = "0.21.0"
+    android = true
+    reporters = org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE
+    ignoreFailures = true
+}
+
+detekt {
+    version = "1.0.0.RC7-3"
+    profile("main") {
+        input = "$projectDir"
+        config = "$projectDir/detekt.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        output = "$projectDir/build/reports/detekt"
     }
 }
 

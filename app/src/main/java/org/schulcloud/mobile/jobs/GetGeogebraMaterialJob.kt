@@ -13,8 +13,6 @@ import org.schulcloud.mobile.models.Sync
 import org.schulcloud.mobile.models.content.GeogebraMaterial
 import org.schulcloud.mobile.models.content.GeogebraResponse
 import org.schulcloud.mobile.utils.MIME_APPLICATION_JSON
-import org.schulcloud.mobile.utils.loge
-import org.schulcloud.mobile.utils.logi
 
 /**
  * Date: 6/18/2018
@@ -56,14 +54,14 @@ class GetGeogebraMaterialJob(private val materialId: String, callback: RequestJo
                         GEOGEBRA_REQUEST_PREFIX + materialId + GEOGEBRA_REQUEST_SUFFIX))
                 .build()).execute()
         if (response.body() == null) {
-            loge(TAG, "Error while fetching preview url for Geogebra material $materialId")
+            if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching preview url for Geogebra material $materialId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
             return
         }
 
         val parsed = GSON.fromJson(response.body()?.charStream(), GeogebraResponse::class.java)
         if (parsed?.responses?.response?.item?.previewUrl == null) {
-            loge(TAG, "Error while parsing preview url for Geogebra material $materialId")
+            if (BuildConfig.DEBUG) Log.e(TAG, "Error while parsing preview url for Geogebra material $materialId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
             return
         }
@@ -72,7 +70,7 @@ class GetGeogebraMaterialJob(private val materialId: String, callback: RequestJo
             id = materialId
             previewUrl = parsed.responses?.response?.item?.previewUrl
         }
-        logi(TAG, "Preview url for Geogebra material $materialId received")
+        if (BuildConfig.DEBUG) Log.i(TAG, "Preview url for Geogebra material $materialId received")
         Sync.Data.with(GeogebraMaterial::class.java, listOf(material))
                 .run()
     }

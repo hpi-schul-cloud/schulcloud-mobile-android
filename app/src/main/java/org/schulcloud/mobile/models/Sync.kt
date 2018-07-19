@@ -1,8 +1,9 @@
 package org.schulcloud.mobile.models
 
+import android.util.Log
 import io.realm.Realm
 import io.realm.RealmModel
-import org.schulcloud.mobile.utils.logd
+import org.schulcloud.mobile.BuildConfig
 
 abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
 
@@ -36,7 +37,7 @@ abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
                 for (item: S in items) {
                     realm.copyToRealmOrUpdate(item)
                 }
-                logd(TAG, "DATA: Saved " + items.size + " data resources from type " + clazz.simpleName)
+                if (BuildConfig.DEBUG) Log.d(TAG, "DATA: Saved " + items.size + " data resources from type " + clazz.simpleName)
 
                 /*
                 // Handle Delete
@@ -62,7 +63,7 @@ abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
                 // Copy or Update
                 realm.copyToRealmOrUpdate(item)
 
-                logd(TAG, "DATA: Saved 1 data resource from type " + clazz.simpleName)
+                if (BuildConfig.DEBUG) Log.d(TAG, "DATA: Saved 1 data resource from type " + clazz.simpleName)
 
                 /*
                 // Handle Delete

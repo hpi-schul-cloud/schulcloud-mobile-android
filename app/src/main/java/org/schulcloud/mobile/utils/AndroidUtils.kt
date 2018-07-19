@@ -14,51 +14,12 @@ import android.support.annotation.ColorInt
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.text.TextUtilsCompat
 import android.support.v4.view.ViewCompat
-import android.util.Log
-import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.R
 import java.util.*
 
-fun logv(tag: String, msg: String, e: Exception? = null) {
-    if (!BuildConfig.DEBUG)
-        return
-    if (e == null)
-        Log.v(tag, msg)
-    else
-        Log.v(tag, msg, e)
-}
-fun logd(tag: String, msg: String, e: Exception? = null) {
-    if (!BuildConfig.DEBUG)
-        return
-    if (e == null)
-        Log.d(tag, msg)
-    else
-        Log.d(tag, msg, e)
-}
-fun logi(tag: String, msg: String, e: Exception? = null) {
-    if (!BuildConfig.DEBUG)
-        return
-    if (e == null)
-        Log.i(tag, msg)
-    else
-        Log.i(tag, msg, e)
-}
-fun logw(tag: String, msg: String, e: Exception? = null) {
-    if (!BuildConfig.DEBUG)
-        return
-    if (e == null)
-        Log.w(tag, msg)
-    else
-        Log.w(tag, msg, e)
-}
-fun loge(tag: String, msg: String, e: Exception? = null) {
-    if (!BuildConfig.DEBUG)
-        return
-    if (e == null)
-        Log.e(tag, msg)
-    else
-        Log.e(tag, msg, e)
-}
+/**
+ * Date: 6/15/2018
+ */
 
 fun Map<String, String>.asBundle(): Bundle {
     return Bundle().apply {

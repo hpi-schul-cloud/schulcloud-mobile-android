@@ -7,6 +7,9 @@ import android.view.MotionEvent
 import android.webkit.WebViewClient
 
 
+/**
+ * Date: 6/15/2018
+ */
 class PassiveWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0)
     : ContentWebView(context, attrs, defStyleAttr) {
     init {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
@@ -17,6 +18,9 @@ import org.schulcloud.mobile.models.user.UserRepository
 import java.io.IOException
 
 
+/**
+ * Date: 6/11/2018
+ */
 const val HEADER_COOKIE = "cookie"
 const val HEADER_CONTENT_TYPE = "content-type"
 const val HEADER_CONTENT_ENCODING = "content-encoding";
@@ -57,7 +61,7 @@ fun Context.prepareCustomTab(): CustomTabsIntent {
 }
 
 fun Context.openUrl(url: Uri) {
-    logi(TAG, "Opening url: $url")
+    Log.i(TAG, "Opening url: $url")
     prepareCustomTab().launchUrl(this, url)
 }
 
@@ -73,7 +77,7 @@ suspend fun resolveRedirect(url: String): Uri? {
         }
         response.await().request().url().toString().asUri()
     } catch (e: IOException) {
-        logw(TAG, "Error resolving internal redirect", e)
+        Log.w(TAG, "Error resolving internal redirect", e)
         null
     }
 }

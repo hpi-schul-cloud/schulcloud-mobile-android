@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkActivity">
+
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+        <import type="org.schulcloud.mobile.controllers.homework.HomeworkActivity" />
+        <import type="android.graphics.Color" />
+
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/homework_item_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start">
+
+                            <TextView
+                                android:id="@+id/course_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/circle_course_color_diameter"
+                                android:layout_marginRight="@dimen/circle_course_color_diameter"
+                                android:paddingEnd="7dp"
+                                android:paddingRight="7dp"
+                                android:text="@{viewModel.homework.courseId.name}"
+                                android:textAllCaps="true"
+                                android:textSize="@dimen/text_smaller_size"
+                                app:layout_constrainedWidth="true"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="Course" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="1dp"
+                                android:src="@drawable/circle_course_color"
+                                app:setcolor="@{viewModel.homework != null? Color.parseColor(viewModel.homework.courseId.color) : Color.TRANSPARENT}"
+                                app:layout_constraintStart_toEndOf="@+id/course_title"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{ViewUtilsKt.asVisibility(HomeworkActivity.dueLabelFlagRequired(viewModel.homework))}"
+                            app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="@{viewModel.homework.dueTextAndColorId.first}"
+                            android:textColor="@{safeUnbox(viewModel.homework.dueTextAndColorId.second)}"
+                            android:textSize="@dimen/text_smaller_size"
+                            tools:text="In x Stunden fällig" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="start"
+                        android:text="@{viewModel.homework.title}"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        tools:text="Homework Title" />
+
+                    <org.schulcloud.mobile.views.ContentWebView
+                        android:id="@+id/homework_detail_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:content="@{viewModel.homework.description}"
+                        tools:ignore="WebViewLayout" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</layout>

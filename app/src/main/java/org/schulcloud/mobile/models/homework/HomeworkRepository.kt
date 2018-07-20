@@ -2,6 +2,7 @@ package org.schulcloud.mobile.models.homework
 
 import io.realm.Realm
 import kotlinx.coroutines.experimental.async
+import org.schulcloud.mobile.jobs.GetHomeworkJob
 import org.schulcloud.mobile.jobs.ListUserHomeworkJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.LiveRealmData
@@ -27,6 +28,16 @@ object HomeworkRepository {
 
     suspend fun syncHomeworkList() {
         ListUserHomeworkJob(object : RequestJobCallback() {
+            override fun onSuccess() {
+            }
+
+            override fun onError(code:ErrorCode){
+            }
+        }).run()
+    }
+
+    suspend fun syncHomework(homeworkId: String) {
+        GetHomeworkJob(homeworkId, object : RequestJobCallback() {
             override fun onSuccess() {
             }
 

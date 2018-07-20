@@ -56,7 +56,7 @@
         </activity>
 
         <activity
-            android:name=".controllers.homework.HomeworkDetailActivity"
+            android:name=".controllers.homework.HomeworkActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".controllers.main.MainActivity">
             <meta-data

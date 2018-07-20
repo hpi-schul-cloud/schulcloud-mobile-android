@@ -12,12 +12,13 @@
             name="homework"
             type="org.schulcloud.mobile.models.homework.Homework" />
         <variable
-            name="selectedCallback"
-            type="org.schulcloud.mobile.controllers.base.OnItemSelectedCallback" />
-        <variable
             name="headerRequired"
-            type="Boolean" />
+            type="boolean" />
+        <variable
+            name="onSelected"
+            type="kotlin.jvm.functions.Function1" />
     </data>
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -51,8 +52,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:onClick="@{() -> selectedCallback.onItemSelected(homework.id)}"
+                android:onClick="@{() -> onSelected.invoke(homework.id)}"
                 android:padding="@dimen/homework_item_margin">
 
                 <LinearLayout
@@ -67,7 +69,7 @@
                         android:gravity="start">
 
                         <TextView
-                            android:id="@+id/homework_course_title"
+                            android:id="@+id/course_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/circle_course_color_diameter"
@@ -88,12 +90,10 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/homework_course_title"
-                            android:layout_toRightOf="@id/homework_course_title"
                             android:paddingTop="1dp"
                             android:src="@drawable/circle_course_color"
-                            android:tint="@{Color.parseColor(homework.courseId.color)}"
-                            app:layout_constraintStart_toEndOf="@+id/homework_course_title"
+                            app:setcolor="@{Color.parseColor(homework.courseId.color)}"
+                            app:layout_constraintStart_toEndOf="@+id/course_title"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </android.support.constraint.ConstraintLayout>
@@ -105,12 +105,11 @@
                         app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
 
                     <TextView
-                        android:id="@+id/homework_duetill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
+                        android:textColor="@{safeUnbox(homework.dueTextAndColorId.second)}"
                         android:textSize="@dimen/text_smaller_size"
-                        android:textColor="@{homework.dueTextAndColorId.second}"
                         android:text="@{homework.dueTextAndColorId.first}"
                         tools:text="In x Stunden fällig" />
 
@@ -143,4 +142,5 @@
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
+
 </layout>

@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
-import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemHomeworkBinding
 import org.schulcloud.mobile.models.homework.Homework
-import org.schulcloud.mobile.utils.asVisibility
 
-class HomeworkListAdapter(private val selectedCallback: OnItemSelectedCallback) : BaseAdapter<Homework, HomeworkListAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
+class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapter<Homework, HomeworkListAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
 
     fun update(homeworkList: List<Homework>) {
         items = homeworkList
@@ -20,6 +18,7 @@ class HomeworkListAdapter(private val selectedCallback: OnItemSelectedCallback) 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkListAdapter.HomeworkViewHolder {
         val binding = ItemHomeworkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.onSelected = onSelected
         return HomeworkViewHolder(binding)
     }
 

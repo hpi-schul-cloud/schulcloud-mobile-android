@@ -10,7 +10,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 import kotlinx.android.synthetic.main.fragment_homework_list.*
-import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
+import org.schulcloud.mobile.controllers.homework.HomeworkActivity
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.utils.HOST
 
@@ -22,11 +22,11 @@ class HomeworkListFragment : BaseFragment() {
 
     override var url: String? = "${HOST}/homework"
 
-    private lateinit var homeworkListViewModel: HomeworkListViewModel
+    private lateinit var viewModel: HomeworkListViewModel
     private val homeworkListAdapter: HomeworkListAdapter by lazy {
-        HomeworkListAdapter(OnItemSelectedCallback {
-           // startActivity(,it)
-        }).apply {
+        HomeworkListAdapter{
+            startActivity(HomeworkActivity.newIntent(context!!,it))
+        }.apply {
             emptyIndicator = empty
         }
     }
@@ -35,7 +35,7 @@ class HomeworkListFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        homeworkListViewModel = ViewModelProviders.of(this).get(HomeworkListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(HomeworkListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +48,7 @@ class HomeworkListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = swipeRefresh
 
-        homeworkListViewModel.homework.observe(this, Observer {
+        viewModel.homework.observe(this, Observer {
             homeworkListAdapter.update(it ?: emptyList())
         })
 

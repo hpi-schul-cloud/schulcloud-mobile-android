@@ -31,4 +31,6 @@ interface ApiServiceInterface {
 
     @GET("homework?\$populate=courseId&\$sort=dueDate:-1")
     fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
+    @GET("homework/{id}?\$populate=courseId&\$sort=dueDate:-1")
+    fun getHomework(@Path("id") homeworkId: String): Call<Homework>
 }

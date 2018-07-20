@@ -15,5 +15,5 @@ class HomeworkViewModel(id: String) : ViewModel() {
     private val _homework: LiveData<Homework?> = HomeworkRepository.homework(realm, id)
 
     val homework: LiveData<Homework?>
-        get() = homework
+        get() = _homework
 }

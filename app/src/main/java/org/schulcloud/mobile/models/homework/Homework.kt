@@ -6,6 +6,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
+import org.schulcloud.mobile.utils.HOST
 
 open class Homework : RealmObject() {
 
@@ -21,6 +22,9 @@ open class Homework : RealmObject() {
     @SerializedName("private")
     var restricted: Boolean = false
     var courseId: HomeworkCourse? = null
+
+    val url: String
+        get() = "${HOST}/homework/$id"
 
     /**
      * Returns text and text color for the duetill label of a Homework object

@@ -130,4 +130,14 @@
     <string name="settings_devices_empty">Keine Geräte registriert...</string>
     <string name="devices_technical_difficulties">Benachrichtigungen sind zuzeit aus technischen Gründen deaktiviert! Wir arbeiten schon an einer Lösung!</string>
 
+    <!-- User Settings -->
+    <string name="user_settings">Benutzer Einstellungen</string>
+    <string name="user_settings_forename">Vorname</string>
+    <string name="user_settings_lastname">Nachname</string>
+    <string name="user_settings_name">Nachname</string>
+    <string name="user_settings_gender">Geschlecht</string>
+    <string name="user_settings_email">E-Mail</string>
+    <string name="user_settings_current_password">Passwort</string>
+    <string name="user_settings_your_account">Dein Account</string>
+
 </resources>

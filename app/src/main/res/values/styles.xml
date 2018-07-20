@@ -81,10 +81,17 @@
     <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
     <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
 
-    <style name="TextHeader">
-        <item name="android:textSize">@dimen/material_header_H6</item>
+    <style name="TextHeader_Settings_H6">
+        <item name="android:textSize">@dimen/material_h6</item>
         <item name="android:textColor">@color/hpiRed</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+
+    <style name="UserSettings_SubHeader">
+        <item name="android:textSize">@dimen/material_b1</item>
+        <item name="android:textColor">@color/text_main</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 </resources>

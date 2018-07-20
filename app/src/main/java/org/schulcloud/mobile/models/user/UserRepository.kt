@@ -26,6 +26,18 @@ object UserRepository {
         get() = UserStorage().userId
 
     @JvmStatic
+    val firstname: String?
+        get() = UserStorage().firstname
+
+    @JvmStatic
+    val lastname: String?
+        get() = UserStorage().lastname
+
+    @JvmStatic
+    val email: String?
+        get() = UserStorage().email
+
+    @JvmStatic
     val isAuthorized: Boolean
         get() = UserStorage().accessToken != null
 

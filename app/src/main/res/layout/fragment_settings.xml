@@ -28,7 +28,36 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/TextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/TextHeader_Settings_H6"
+                        android:text="@string/user_settings_your_account" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/UserSettings_SubHeader"
+                        android:text="@string/user_settings_lastname"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/UserSettings_SubHeader"
+                        android:text="@string/user_settings_gender"/>
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/genders" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/UserSettings_SubHeader"
+                        android:text="@string/user_settings_email"/>
+
+                    <TextView
+                        style="@style/TextHeader_Settings_H6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_notifications" />
@@ -132,7 +161,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/TextHeader"
+                        style="@style/TextHeader_Settings_H6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_about" />
@@ -148,7 +177,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/settings_contributors"
                             android:textColor="@color/text_main"
-                            android:textSize="@dimen/material_body_1" />
+                            android:textSize="@dimen/material_b1" />
 
                         <TextView
                             android:id="@+id/settings_contributor_list"
@@ -174,7 +203,7 @@
                         android:gravity="left"
                         android:text="@string/settings_open_source"
                         android:textColor="@color/text_main"
-                        android:textSize="@dimen/material_body_1" />
+                        android:textSize="@dimen/material_b1" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -199,7 +228,7 @@
                         android:gravity="left"
                         android:text="@string/settings_contact"
                         android:textColor="@color/text_main"
-                        android:textSize="@dimen/material_body_1" />
+                        android:textSize="@dimen/material_b1" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -224,7 +253,7 @@
                         android:gravity="left"
                         android:text="@string/settings_imprint"
                         android:textColor="@color/text_main"
-                        android:textSize="@dimen/material_body_1" />
+                        android:textSize="@dimen/material_b1" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -249,7 +278,7 @@
                         android:gravity="left"
                         android:text="@string/settings_data_protection"
                         android:textColor="@color/text_main"
-                        android:textSize="@dimen/material_body_1" />
+                        android:textSize="@dimen/material_b1" />
 
                     <ImageView
                         android:layout_width="wrap_content"

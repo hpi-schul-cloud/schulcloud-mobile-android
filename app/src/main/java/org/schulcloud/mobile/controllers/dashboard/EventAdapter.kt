@@ -5,14 +5,13 @@ import android.view.ViewGroup
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder.Companion.createBinding
-import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.utils.getUserCalendar
 import org.schulcloud.mobile.utils.timeOfDay
 import org.schulcloud.mobile.utils.toLocal
 
-class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallback<String>)
-    : BaseAdapter<Event, EventViewHolder<out ViewDataBinding>, ViewDataBinding>() {
+class EventAdapter(private val onCourseEventSelected: (String) -> Unit)
+    : BaseAdapter<Event, EventViewHolder<ViewDataBinding>, ViewDataBinding>() {
     companion object {
         const val HOLDER_GENERAL = 0
         const val HOLDER_CURRENT = 1
@@ -23,12 +22,12 @@ class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallba
         items = events
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder<out ViewDataBinding> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder<ViewDataBinding> {
         return when (viewType) {
             HOLDER_CURRENT -> CurrentEventViewHolder(createBinding(parent, R.layout.item_event_current),
-                    courseEventSelectedCallback)
+                    onCourseEventSelected)
             else -> GeneralEventViewHolder(createBinding(parent, R.layout.item_event),
-                    courseEventSelectedCallback)
+                    onCourseEventSelected)
         }
     }
 
@@ -51,7 +50,7 @@ class EventAdapter(private val courseEventSelectedCallback: OnItemSelectedCallba
         return HOLDER_GENERAL
     }
 
-    override fun onBindViewHolder(holder: EventViewHolder<out ViewDataBinding>, position: Int) {
+    override fun onBindViewHolder(holder: EventViewHolder<ViewDataBinding>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         if (holder is CurrentEventViewHolder)

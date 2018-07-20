@@ -3,7 +3,6 @@ package org.schulcloud.mobile.controllers.dashboard
 import android.databinding.ViewDataBinding
 import android.text.format.DateUtils
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
-import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemEventBinding
 import org.schulcloud.mobile.databinding.ItemEventCurrentBinding
 import org.schulcloud.mobile.models.event.Event
@@ -14,7 +13,7 @@ import org.schulcloud.mobile.utils.visibilityBool
 import java.text.DateFormat
 
 
-sealed class EventViewHolder<B : ViewDataBinding>(binding: B) : BaseViewHolder<Event, B>(binding) {
+sealed class EventViewHolder<out B : ViewDataBinding>(binding: B) : BaseViewHolder<Event, B>(binding) {
     val formattedTime: String
         get() = item.nextStart(true)?.let {
             DateUtils.formatSameDayTime(it.apply { toLocal() }.timeInMillis, getUserCalendar().timeInMillis,
@@ -22,20 +21,22 @@ sealed class EventViewHolder<B : ViewDataBinding>(binding: B) : BaseViewHolder<E
         } ?: ""
 }
 
-class GeneralEventViewHolder(binding: ItemEventBinding, private val courseEventSelectedCallback: OnItemSelectedCallback<String>) : EventViewHolder<ItemEventBinding>(binding) {
+class GeneralEventViewHolder(binding: ItemEventBinding, private val onCourseEventSelected: (String) -> Unit)
+    : EventViewHolder<ItemEventBinding>(binding) {
     override fun onItemSet() {
         binding.event = item
         binding.formattedTime = formattedTime
 
         item.courseId?.also { courseId ->
             binding.container.setOnClickListener {
-                courseEventSelectedCallback.onItemSelected(courseId)
+                onCourseEventSelected(courseId)
             }
         } ?: binding.container.setOnClickListener(null)
     }
 }
 
-class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val courseEventSelectedCallback: OnItemSelectedCallback<String>) : EventViewHolder<ItemEventCurrentBinding>(binding) {
+class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val onCourseEventSelected: (String) -> Unit)
+    : EventViewHolder<ItemEventCurrentBinding>(binding) {
     companion object {
         @JvmStatic
         fun getProgress(event: Event): Int {
@@ -63,7 +64,7 @@ class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val cours
 
         item.courseId?.also { courseId ->
             binding.container.setOnClickListener {
-                courseEventSelectedCallback.onItemSelected(courseId)
+                onCourseEventSelected(courseId)
             }
         } ?: binding.container.setOnClickListener(null)
 

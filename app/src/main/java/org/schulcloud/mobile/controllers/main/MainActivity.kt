@@ -56,6 +56,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 replaceFragment(DashboardFragment(), DashboardFragment.TAG)
             R.id.nav_courses ->
                 replaceFragment(CourseListFragment(), CourseListFragment.TAG)
+            R.id.nav_calendar ->
+                replaceFragment(CalendarFragment(), CalendarFragment.TAG)
             R.id.nav_files ->
                 replaceFragment(FileOverviewFragment(), FileOverviewFragment.TAG)
             R.id.nav_logout -> {

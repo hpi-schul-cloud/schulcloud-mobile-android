@@ -62,6 +62,9 @@
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
+    <!-- Calendar -->
+    <string name="calendar_title">Kalender</string>
+
     <!-- File -->
     <string name="file_title">Dateien</string>
     <string name="fileOverview_my">Persönliche Dateien</string>

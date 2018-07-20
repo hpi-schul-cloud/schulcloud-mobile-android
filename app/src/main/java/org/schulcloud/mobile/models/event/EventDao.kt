@@ -17,6 +17,17 @@ class EventDao(private val realm: Realm) {
                 .asLiveData()
     }
 
+    fun eventsForMonth(year: Int, month: Int): LiveData<Sequence<Event>> {
+        return realm.where(Event::class.java)
+                .findAllAsync()
+                .asLiveData()
+                .map { events ->
+                    events.asSequence().flatMap {
+                        it.getOccurrencesForMonth(year, month)
+                    }
+                }
+    }
+
     fun eventsForToday(): LiveData<List<Event>> {
         return realm.where(Event::class.java)
                 .findAllAsync()

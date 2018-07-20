@@ -16,6 +16,13 @@ fun getUserCalendar(): Calendar {
     return GregorianCalendar.getInstance()
 }
 
+fun Long.asUserCalendar(): Calendar {
+    return getUserCalendar().also {
+        it.timeInMillis = this
+        it.toLocal()
+    }
+}
+
 fun Calendar.toLocal() {
     add(Calendar.MILLISECOND, -TIMEZONE_LOCAL.getOffset(timeInMillis))
 }

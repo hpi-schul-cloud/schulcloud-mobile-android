@@ -40,6 +40,9 @@ dependencies {
     implementation "com.android.support:customtabs:${supportVersion}"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
+    // calendar
+    implementation 'com.github.alamkanak:android-week-view:1.2.6'
+
     // unit tests
     testImplementation "junit:junit:4.12"
 

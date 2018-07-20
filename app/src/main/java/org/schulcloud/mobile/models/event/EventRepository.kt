@@ -12,6 +12,10 @@ object EventRepository {
         return realm.eventDao().events()
     }
 
+    fun eventsForMonth(realm: Realm, year: Int, month: Int): LiveData<Sequence<Event>> {
+        return realm.eventDao().eventsForMonth(year, month)
+    }
+
     fun eventsForToday(realm: Realm): LiveData<List<Event>> {
         return realm.eventDao().eventsForToday()
     }

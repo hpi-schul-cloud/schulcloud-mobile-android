@@ -13,8 +13,8 @@ class HomeworkListViewModel : ViewModel() {
         Realm.getDefaultInstance()
     }
 
-    private val _homework: LiveData<RealmResults<Homework>?> = HomeworkRepository.homeworkList(realm)
+    private val _homework: LiveData<List<Homework>?> = HomeworkRepository.homeworkList(realm)
 
-    val homework: LiveData<RealmResults<Homework>?>
+    val homework: LiveData<List<Homework>?>
         get() = _homework
 }

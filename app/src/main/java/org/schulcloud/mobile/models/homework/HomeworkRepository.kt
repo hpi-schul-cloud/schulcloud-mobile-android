@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.models.homework
 
+import android.arch.lifecycle.LiveData
 import io.realm.Realm
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.GetHomeworkJob
@@ -18,7 +19,7 @@ object HomeworkRepository {
     }
 
 
-    fun homeworkList(realm: Realm): LiveRealmData<Homework>{
+    fun homeworkList(realm: Realm): LiveData<List<Homework>?> {
         return realm.homeworkDao().homeworkList()
     }
 

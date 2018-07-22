@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException
 class JWTUtil {
 
     private val KEY_USER_ID = "userId"
+    private val KEY_USER_FIRSTNAME = "firstname"
 
     fun decodeToCurrentUser(JWTEncoded: String): String? {
         try {

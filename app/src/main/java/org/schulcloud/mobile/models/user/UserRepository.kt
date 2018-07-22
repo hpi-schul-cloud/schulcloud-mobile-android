@@ -22,8 +22,10 @@ object UserRepository {
         get() = UserStorage().accessToken
 
     @JvmStatic
-    val userId: String?
-        get() = UserStorage().userId
+    val User: ()
+        get() = {
+            var user = User(UserStorage.)
+        }
 
     @JvmStatic
     val firstname: String?

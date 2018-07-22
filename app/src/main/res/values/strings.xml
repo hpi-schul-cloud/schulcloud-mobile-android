@@ -139,5 +139,6 @@
     <string name="user_settings_email">E-Mail</string>
     <string name="user_settings_current_password">Passwort</string>
     <string name="user_settings_your_account">Dein Account</string>
+    <string name="user_settings_change_account">Profil verändern</string>r
 
 </resources>

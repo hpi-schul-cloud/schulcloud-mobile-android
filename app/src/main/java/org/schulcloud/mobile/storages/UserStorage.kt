@@ -13,6 +13,7 @@ class UserStorage : BaseStorage(PREF_USER, Context.MODE_PRIVATE) {
         private const val USER_FIRSTNAME = "firstname"
         private const val USER_LASTNAME = "lastname"
         private const val USER_EMAIL = "email"
+
     }
 
     var userId: String?

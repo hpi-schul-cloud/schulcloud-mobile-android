@@ -56,11 +56,78 @@
                         style="@style/UserSettings_SubHeader"
                         android:text="@string/user_settings_email"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/UserSettings_SubHeader"
+                            android:text="@string/user_settings_forename"
+                            android:textColor="@color/text_main"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/user_settings_forename"
+                            android:layout_marginLeft="5dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/UserSettings_SubHeader"
+                            android:text="@string/user_settings_lastname"
+                            android:textColor="@color/text_main"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/user_settings_lastname"
+                            android:layout_marginLeft="5dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/UserSettings_SubHeader"
+                            android:text="@string/user_settings_gender"/>
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/genders" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/UserSettings_SubHeader"
+                            android:text="@string/user_settings_email"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/user_settings_email"
+                            android:layout_marginLeft="5dp"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/user_settings_change_account"
+                            style="@style/Button"
+                            android:background="@color/hpiRed"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="5dp"/>
+
+                    </LinearLayout>
+
                     <TextView
                         style="@style/TextHeader_Settings_H6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_notifications" />
+
 
                     <Button
                         style="@style/Button"

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class User: RealmObject() {
+open class User(id: String,firstName: String?,lastName: String?, email: String?,schoolId: String?, displayName: String?): RealmObject() {
 
     @PrimaryKey
     @SerializedName("_id")

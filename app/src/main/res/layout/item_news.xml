@@ -11,61 +11,62 @@
             type="org.schulcloud.mobile.models.news.News" />
     </data>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/news_card_view"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/news_item_margin"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/news_title"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_gravity="start"
+            android:layout_weight="0"
+            android:gravity="start"
+            android:text="@{news.title}"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/news_date"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="News Title" />
+
+        <TextView
+            android:id="@+id/news_date"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{NewsViewHolder.getShortDate(news.createdAt)}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/passiveWebView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/news_title"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="DD.MM.YYYY" />
+
+        <org.schulcloud.mobile.views.PassiveWebView
+            android:id="@+id/passiveWebView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/news_item_margin"
-            android:orientation="vertical">
+            android:layout_marginTop="8dp"
+            android:scrollbars="none"
+            app:content="@{news.content}"
+            app:layout_constraintTop_toBottomOf="@+id/news_title"
+            tools:ignore="WebViewLayout"
+            tools:text="Content" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+    </android.support.constraint.ConstraintLayout>
 
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginRight="3dp"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:text="@{news.title}"
-                    tools:text="News Title" />
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:layout_weight="0"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:textSize="14sp"
-                    android:text="@{NewsViewHolder.getShortDate(news.createdAt)}"
-                    tools:text="DD.MM.YYYY" />
-
-            </LinearLayout>
-
-            <org.schulcloud.mobile.views.PassiveWebView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:scrollbars="none"
-                app:content="@{news.content}"
-                tools:ignore="WebViewLayout"
-                tools:text="Content" />
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
 </layout>

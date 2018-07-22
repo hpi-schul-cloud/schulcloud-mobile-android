@@ -27,9 +27,6 @@
     <string name="login_demo_teacher_username">demo-lehrer@schul-cloud.org</string>
     <string name="login_demo_teacher_password">schulcloud</string>
 
-    <string name="error_email">Please insert valid E-Mail address.</string>
-    <string name="error_password">Please insert valid Password.</string>
-
     <!-- Main -->
     <string name="main_drawer_open">Navigationsleiste öffnen</string>
     <string name="main_drawer_close">Navigationsleiste schließen</string>

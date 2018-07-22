@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
-open class User(id: String,firstName: String?,lastName: String?, email: String?,schoolId: String?, displayName: String?): RealmObject() {
+open class User: RealmObject() {
 
     @PrimaryKey
     @SerializedName("_id")
@@ -15,6 +15,7 @@ open class User(id: String,firstName: String?,lastName: String?, email: String?,
     var email: String? = null
     var schoolId: String? = null
     var displayName: String? = null
+    var gender: String? = null
 
     fun shortName(): String {
         return "${firstName?.get(0)}. $lastName"

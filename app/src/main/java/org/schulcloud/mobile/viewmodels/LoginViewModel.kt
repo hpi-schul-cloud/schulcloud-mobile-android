@@ -2,8 +2,10 @@ package org.schulcloud.mobile.viewmodels
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.storages.UserStorage
 
 class LoginViewModel : ViewModel() {
 
@@ -35,6 +37,7 @@ class LoginViewModel : ViewModel() {
         return object : RequestJobCallback() {
             override fun onSuccess() {
                 loginState.value = LoginStatus.LoggedIn()
+                async { UserRepository.syncUser(UserStorage().userId!!) }
             }
 
             override fun onError(code: ErrorCode) {

@@ -5,6 +5,7 @@ import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
+import org.schulcloud.mobile.jobs.GetUserJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.CourseRepository
@@ -22,10 +23,20 @@ object UserRepository {
         get() = UserStorage().accessToken
 
     @JvmStatic
-    val User: ()
-        get() = {
-            var user = User(UserStorage.)
-        }
+    val isAuthorized: Boolean
+        get() = UserStorage().accessToken != null
+
+    @JvmStatic
+    val displayName: String?
+        get() = UserStorage().displayName
+
+    @JvmStatic
+    val schoolId: String?
+        get() = UserStorage().schoolId
+
+    @JvmStatic
+    val email: String?
+        get() = UserStorage().email
 
     @JvmStatic
     val firstname: String?
@@ -36,12 +47,9 @@ object UserRepository {
         get() = UserStorage().lastname
 
     @JvmStatic
-    val email: String?
-        get() = UserStorage().email
+    val gender: String?
+        get() = UserStorage().gender
 
-    @JvmStatic
-    val isAuthorized: Boolean
-        get() = UserStorage().accessToken != null
 
     fun login(email: String, password: String, callback: RequestJobCallback) {
         launch {
@@ -56,6 +64,27 @@ object UserRepository {
             EventRepository.syncEvents()
             HomeworkRepository.syncHomeworkList()
         }
+    }
+
+
+    suspend fun syncUser(userId: String){
+        GetUserJob(userId, object : RequestJobCallback(){
+            override fun onSuccess() {
+
+            }
+
+            override fun onError(code: RequestJobCallback.ErrorCode) {
+            }
+        }).run()
+    }
+
+    fun syncUserData(user: User){
+        UserStorage().displayName = user.displayName
+        UserStorage().email = user.email
+        UserStorage().schoolId = user.schoolId
+        UserStorage().firstname = user.firstName
+        UserStorage().lastname = user.lastName
+        UserStorage().gender = user.gender
     }
 
     fun logout() {

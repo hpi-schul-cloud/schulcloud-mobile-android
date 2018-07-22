@@ -10,10 +10,7 @@ class UserStorage : BaseStorage(PREF_USER, Context.MODE_PRIVATE) {
 
         private const val USER_ID = "id"
         private const val ACCESS_TOKEN = "token"
-        private const val USER_FIRSTNAME = "firstname"
-        private const val USER_LASTNAME = "lastname"
         private const val USER_EMAIL = "email"
-
     }
 
     var userId: String?
@@ -24,13 +21,6 @@ class UserStorage : BaseStorage(PREF_USER, Context.MODE_PRIVATE) {
         get() = getString(ACCESS_TOKEN)
         set(value) = putString(ACCESS_TOKEN, value)
 
-    var firstname: String?
-        get() = getString(USER_FIRSTNAME)
-        set(value) = putString(USER_FIRSTNAME,value)
-
-    var lastname: String?
-        get() = getString(USER_LASTNAME)
-        set(value) = putString(USER_LASTNAME,value)
 
     var email: String?
         get() = getString(USER_EMAIL)

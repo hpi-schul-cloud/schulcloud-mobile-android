@@ -94,6 +94,10 @@ class SettingsFragment: BaseFragment() {
         settings_contact.setOnClickListener({v -> openMail()})
         settings_register_device.setOnClickListener({v -> createDevice()})
 
+        user_settings_forename.text = UserRepository.firstname
+        user_settings_lastname.text = UserRepository.lastname
+        user_settings_email.text = UserRepository.email
+
         settings_devices_list.setOnClickListener({viewModel.getDevices().observe(this, Observer {
             devices -> deviceListAdapter.changeState(devices as List<Device>)
         })})

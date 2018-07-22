@@ -16,6 +16,7 @@ import org.schulcloud.mobile.models.notifications.CallbackRequest
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.DeviceRequest
 import org.schulcloud.mobile.models.topic.Topic
+import org.schulcloud.mobile.models.user.User
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -45,7 +46,6 @@ interface ApiServiceInterface {
     @GET("lessons/{id}")
     fun getTopic(@Path("id") topicId: String): Call<Topic>
 
-
     // Homework
     @GET("homework?\$populate=courseId&\$sort=dueDate:-1")
     fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
@@ -60,6 +60,7 @@ interface ApiServiceInterface {
     @GET
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
 
+    //Devices
     @GET("notification/devices")
     fun getDevices(): Call<FeathersResponse<List<Device>>>
     @GET("notification/devices/{id}")
@@ -71,5 +72,10 @@ interface ApiServiceInterface {
     @POST("notifcation/callback")
     fun sendCallback(@Body callback: CallbackRequest): Call<Void>
 
+    //User Settings
+    @GET("users/{id}")
+    fun getUser(@Path("id") userId: String): Call <User>
+    @PATCH("users/{id}")
+    fun patchUser(@Path("id") userId: String): Call<Void>
 
 }

@@ -16,6 +16,7 @@ import org.schulcloud.mobile.models.notifications.CallbackRequest
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.DeviceRequest
 import org.schulcloud.mobile.models.topic.Topic
+import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import retrofit2.Call
 import retrofit2.http.*
@@ -76,6 +77,8 @@ interface ApiServiceInterface {
     @GET("users/{id}")
     fun getUser(@Path("id") userId: String): Call <User>
     @PATCH("users/{id}")
-    fun patchUser(@Path("id") userId: String): Call<Void>
+    fun patchUser(@Path("id") userId: String, @Body user: User): Call<User>
+    @PATCH("accounts/{id}")
+    fun patchAccount(@Path("id") accountId: String, @Body account: Account): Call<Account>
 
 }

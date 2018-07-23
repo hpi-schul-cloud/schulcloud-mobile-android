@@ -139,6 +139,11 @@
     <string name="user_settings_email">E-Mail</string>
     <string name="user_settings_current_password">Passwort</string>
     <string name="user_settings_your_account">Dein Account</string>
-    <string name="user_settings_change_account">Profil verändern</string>r
+    <string name="user_settings_change_account">Profil verändern</string>
+    <string name="user_settings_password">Aktuelles Passwort</string>
+    <string name="user_settings_new_password">Neues Passwort</string>
+    <string name="user_settings_new_password_repeat">Neues Passwort wiederholen</string>
+    <string name="user_settings_password_hint"><font color="#B10438">*</font>Mindestens 8 Zeichen mit Groß- und Kleinschreibung und mindestens einer Zahl und Sonderzeichen</string>
+    <string name="user_settings_submit">Absenden</string>
 
 </resources>

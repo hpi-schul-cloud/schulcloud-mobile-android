@@ -97,7 +97,9 @@
                         <Spinner
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/genders" />
+                            android:entries="@array/genders"
+                            android:clickable="false"
+                            android:alpha="0.5"/>
 
                         <TextView
                             android:layout_width="match_parent"

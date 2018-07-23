@@ -1,19 +1,22 @@
 package org.schulcloud.mobile.models.user
-
+import org.schulcloud.mobile.models.user.Account
 import io.realm.Realm
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
 import org.schulcloud.mobile.jobs.GetUserJob
+import org.schulcloud.mobile.jobs.PatchUserJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
+import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.event.EventRepository
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.storages.UserStorage
+import org.schulcloud.mobile.utils.asLiveData
 
 object UserRepository {
     val TAG: String = UserRepository::class.java.simpleName
@@ -25,30 +28,6 @@ object UserRepository {
     @JvmStatic
     val isAuthorized: Boolean
         get() = UserStorage().accessToken != null
-
-    @JvmStatic
-    val displayName: String?
-        get() = UserStorage().displayName
-
-    @JvmStatic
-    val schoolId: String?
-        get() = UserStorage().schoolId
-
-    @JvmStatic
-    val email: String?
-        get() = UserStorage().email
-
-    @JvmStatic
-    val firstname: String?
-        get() = UserStorage().firstname
-
-    @JvmStatic
-    val lastname: String?
-        get() = UserStorage().lastname
-
-    @JvmStatic
-    val gender: String?
-        get() = UserStorage().gender
 
 
     fun login(email: String, password: String, callback: RequestJobCallback) {
@@ -66,25 +45,34 @@ object UserRepository {
         }
     }
 
+    fun currentUser(realm: Realm): RealmObjectLiveData<User>{
+        return realm.where(User::class.java)
+                .findFirstAsync()
+                .asLiveData()
+    }
+
+    fun getAccount(realm: Realm): RealmObjectLiveData<Account>{
+        return realm.where(Account::class.java)
+                .findFirstAsync()
+                .asLiveData()
+    }
 
     suspend fun syncUser(userId: String){
         GetUserJob(userId, object : RequestJobCallback(){
-            override fun onSuccess() {
-
-            }
-
-            override fun onError(code: RequestJobCallback.ErrorCode) {
-            }
+            override fun onSuccess() {}
+            override fun onError(code: RequestJobCallback.ErrorCode) {}
         }).run()
     }
 
-    fun syncUserData(user: User){
-        UserStorage().displayName = user.displayName
-        UserStorage().email = user.email
-        UserStorage().schoolId = user.schoolId
-        UserStorage().firstname = user.firstName
-        UserStorage().lastname = user.lastName
-        UserStorage().gender = user.gender
+    suspend fun patchAccount(account: Account){
+
+    }
+
+    suspend fun patchUser(user: User){
+       PatchUserJob(user, object : RequestJobCallback(){
+            override fun onSuccess() {}
+            override fun onError(code: RequestJobCallback.ErrorCode) {}
+        }).run()
     }
 
     fun logout() {

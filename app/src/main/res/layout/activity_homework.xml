@@ -6,7 +6,7 @@
 
     <data>
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
-        <import type="org.schulcloud.mobile.controllers.homework.HomeworkActivity" />
+        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
         <import type="android.graphics.Color" />
 
         <variable
@@ -75,7 +75,7 @@
                         android:id="@+id/duetill_flag"
                         android:layout_width="13dp"
                         android:layout_height="wrap_content"
-                        android:visibility="@{ViewUtilsKt.asVisibility(HomeworkActivity.dueLabelFlagRequired(viewModel.homework))}"
+                        android:visibility="@{ViewUtilsKt.asVisibility(HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework))}"
                         app:layout_constraintEnd_toStartOf="@+id/duetill_label"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintHorizontal_chainStyle="packed"
@@ -87,8 +87,8 @@
                         android:id="@+id/duetill_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.homework.dueTextAndColorId.first}"
-                        android:textColor="@{safeUnbox(viewModel.homework.dueTextAndColorId.second)}"
+                        android:text="@{HomeworkUtilsKt.getDueTextAndColorId(viewModel.homework).first}"
+                        android:textColor="@{safeUnbox(HomeworkUtilsKt.getDueTextAndColorId(viewModel.homework).second)}"
                         android:textSize="@dimen/text_smaller_size"
                         app:layout_constrainedWidth="true"
                         app:layout_constraintEnd_toEndOf="parent"

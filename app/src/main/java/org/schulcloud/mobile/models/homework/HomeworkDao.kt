@@ -15,11 +15,11 @@ class HomeworkDao(private val realm: Realm) {
                 .asLiveData()
                 .map { homeworkList ->
                     homeworkList?.let {
-                        val outdatedHomework = homeworkList.filter { it.getDueTimespanDays() < 0 }
+                        val outdatedHomework = homeworkList.filter { it.dueTimespanDays < 0 }
                                 .sortedByDescending { it.dueDate }
                                 .toList()
 
-                        val displayedHomework = homeworkList.filter { it.getDueTimespanDays() >= 0 }
+                        val displayedHomework = homeworkList.filter { it.dueTimespanDays >= 0 }
                                 .sortedBy { it.dueDate }
                                 .toMutableList()
 

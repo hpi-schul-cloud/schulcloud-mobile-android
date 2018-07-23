@@ -5,6 +5,8 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.joda.time.format.DateTimeFormat
+import org.schulcloud.mobile.R
+import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemHomeworkBinding
@@ -28,7 +30,7 @@ class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapte
     }
 
     private fun headerRequired(position: Int): Boolean {
-        if (position == 0 || items[position].getDueTimespanDays() != items[position - 1].getDueTimespanDays())
+        if (position == 0 || items[position].dueTimespanDays != items[position - 1].dueTimespanDays)
             return true
         return false
     }
@@ -37,26 +39,12 @@ class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapte
         companion object {
             @JvmStatic
             fun getHeaderText(homework: Homework): String {
-                when (homework.getDueTimespanDays()) {
-                    -1 -> {
-                        return "Gestern"
-                    }
-                    0 -> {
-                        return "Heute"
-                    }
-                    1 -> {
-                        return "Morgen"
-                    }
-                    Int.MAX_VALUE -> {
-                        return ""
-                    }
-                    else -> {
-                        return try {
-                            DateTimeFormat.forPattern("dd.MM.yyyy").print(homework.getDueTillDateTime())
-                        } catch (e: IllegalArgumentException) {
-                            ""
-                        }
-                    }
+                return when (homework.dueTimespanDays) {
+                    -1 -> SchulCloudApp.instance.resources.getString(R.string.yesterday)
+                    0 -> SchulCloudApp.instance.resources.getString(R.string.today)
+                    1 -> SchulCloudApp.instance.resources.getString(R.string.tomorrow)
+                    Int.MAX_VALUE -> SchulCloudApp.instance.resources.getString(R.string.homework_error_invalidDueDate)
+                    else -> DateTimeFormat.mediumDate().print(homework.dueDateTime)
                 }
             }
 
@@ -68,11 +56,6 @@ class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapte
                     @Suppress("DEPRECATION")
                     return Html.fromHtml(text ?: "").toString().trim()
                 }
-            }
-
-            @JvmStatic
-            fun dueLabelFlagRequired(homework: Homework): Boolean {
-                return (homework.getDueTimespanDays() <= 1)
             }
         }
 

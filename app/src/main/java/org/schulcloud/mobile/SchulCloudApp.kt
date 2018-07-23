@@ -20,7 +20,7 @@ class SchulCloudApp : Application() {
     override fun onCreate() {
         super.onCreate()
         configureRealm()
-        JodaTimeAndroid.init(this);
+        JodaTimeAndroid.init(this)
     }
 
     private fun configureRealm() {

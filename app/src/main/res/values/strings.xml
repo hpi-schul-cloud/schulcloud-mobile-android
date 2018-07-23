@@ -56,5 +56,15 @@
     <!-- Homework-->
     <string name="homework_title">Aufgaben</string>
     <string name="homework_error_empty">Es wurden keine Aufgaben gefunden.</string>
+    <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
+    <string name="homework_due_outdated">Überfällig</string>
+    <string name="homework_due_tomorrow">Morgen fällig</string>
+    <string name="homework_due_dayAfterTomorrow">Übermorgen</string>
+    <string name="homework_due_inHours">In $hours Stunden fällig</string>
+    <string name="homework_due_inDays">In $days Tagen</string>
+    <string name="yesterday">Gestern</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+
 
 </resources>

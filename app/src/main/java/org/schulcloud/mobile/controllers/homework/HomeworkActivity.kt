@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.activity_homework.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.databinding.ActivityHomeworkBinding
-import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
@@ -23,14 +22,6 @@ class HomeworkActivity : BaseActivity() {
         fun newIntent(context: Context, id: String): Intent {
             return Intent(context, HomeworkActivity::class.java)
                     .apply { putExtra(EXTRA_ID, id) }
-        }
-
-        @JvmStatic
-        fun dueLabelFlagRequired(homework: Homework?): Boolean {
-            homework?.let {
-                return (it.getDueTimespanDays() <= 1)
-            }
-            return false
         }
     }
 

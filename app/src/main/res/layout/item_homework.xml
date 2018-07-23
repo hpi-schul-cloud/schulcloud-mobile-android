@@ -6,6 +6,7 @@
     <data>
         <import type="android.graphics.Color" />
         <import type="org.schulcloud.mobile.controllers.main.HomeworkListAdapter.HomeworkViewHolder" />
+        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
 
         <variable
@@ -29,9 +30,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/homework_card_header"
             android:gravity="start|center"
-            android:padding="10dp"
-            android:paddingLeft="15dp"
-            android:paddingStart="15dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="@dimen/homework_item_margin"
+            android:paddingStart="@dimen/homework_item_margin"
+            android:paddingTop="10dp"
             android:text="@{HomeworkViewHolder.getHeaderText(homework)}"
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -82,7 +84,7 @@
                 android:id="@+id/duetill_flag"
                 android:layout_width="13dp"
                 android:layout_height="wrap_content"
-                android:visibility="@{ViewUtilsKt.asVisibility(HomeworkViewHolder.dueLabelFlagRequired(homework))}"
+                android:visibility="@{ViewUtilsKt.asVisibility(HomeworkUtilsKt.dueLabelFlagRequired(homework))}"
                 app:layout_constraintEnd_toStartOf="@+id/duetill_label"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -94,8 +96,8 @@
                 android:id="@+id/duetill_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{homework.dueTextAndColorId.first}"
-                android:textColor="@{safeUnbox(homework.dueTextAndColorId.second)}"
+                android:text="@{HomeworkUtilsKt.getDueTextAndColorId(homework).first}"
+                android:textColor="@{safeUnbox(HomeworkUtilsKt.getDueTextAndColorId(homework).second)}"
                 android:textSize="@dimen/text_smaller_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

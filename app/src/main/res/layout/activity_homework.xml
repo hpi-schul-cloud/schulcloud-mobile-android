@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.schulcloud.mobile.controllers.homework.HomeworkActivity">
@@ -20,7 +19,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar" />
+        <include
+            layout="@layout/toolbar"
+            app:title="@{viewModel.homework.title}" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
@@ -29,75 +30,81 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:scrollbars="none">
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="@dimen/homework_item_margin">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/course_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="end">
+                        android:text="@{viewModel.homework.courseId.name}"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/text_smaller_size"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toStartOf="@id/course_color"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Course" />
 
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="start">
-
-                            <TextView
-                                android:id="@+id/course_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/circle_course_color_diameter"
-                                android:layout_marginRight="@dimen/circle_course_color_diameter"
-                                android:paddingEnd="7dp"
-                                android:paddingRight="7dp"
-                                android:text="@{viewModel.homework.courseId.name}"
-                                android:textAllCaps="true"
-                                android:textSize="@dimen/text_smaller_size"
-                                app:layout_constrainedWidth="true"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="Course" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="1dp"
-                                android:src="@drawable/circle_course_color"
-                                app:setcolor="@{viewModel.homework != null? Color.parseColor(viewModel.homework.courseId.color) : Color.TRANSPARENT}"
-                                app:layout_constraintStart_toEndOf="@+id/course_title"
-                                app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/course_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:paddingTop="1dp"
+                        android:src="@drawable/circle_course_color"
+                        app:layout_constraintEnd_toStartOf="@id/guideline"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@id/course_title"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:setcolor="@{viewModel.homework != null? Color.parseColor(viewModel.homework.courseId.color) : Color.TRANSPARENT}" />
 
 
-                        </android.support.constraint.ConstraintLayout>
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="@{ViewUtilsKt.asVisibility(HomeworkActivity.dueLabelFlagRequired(viewModel.homework))}"
-                            app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:text="@{viewModel.homework.dueTextAndColorId.first}"
-                            android:textColor="@{safeUnbox(viewModel.homework.dueTextAndColorId.second)}"
-                            android:textSize="@dimen/text_smaller_size"
-                            tools:text="In x Stunden fällig" />
-
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/duetill_flag"
+                        android:layout_width="13dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{ViewUtilsKt.asVisibility(HomeworkActivity.dueLabelFlagRequired(viewModel.homework))}"
+                        app:layout_constraintEnd_toStartOf="@+id/duetill_label"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@id/guideline"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
 
                     <TextView
+                        android:id="@+id/duetill_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.homework.dueTextAndColorId.first}"
+                        android:textColor="@{safeUnbox(viewModel.homework.dueTextAndColorId.second)}"
+                        android:textSize="@dimen/text_smaller_size"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="In x Stunden fällig" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                    <TextView
+                        android:id="@+id/title"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,17 +113,22 @@
                         android:text="@{viewModel.homework.title}"
                         android:textColor="@android:color/black"
                         android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/course_title"
                         tools:text="Homework Title" />
 
                     <org.schulcloud.mobile.views.ContentWebView
-                        android:id="@+id/homework_detail_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         app:content="@{viewModel.homework.description}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/title"
                         tools:ignore="WebViewLayout" />
 
-                </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
 
             </ScrollView>
 

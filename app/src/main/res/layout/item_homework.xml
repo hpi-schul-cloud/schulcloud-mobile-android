@@ -19,128 +19,130 @@
             type="kotlin.jvm.functions.Function1" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@drawable/homework_card_header"
+            android:gravity="start|center"
+            android:padding="10dp"
+            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
+            android:text="@{HomeworkViewHolder.getHeaderText(homework)}"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:visibility="@{ViewUtilsKt.asVisibility(headerRequired)}"
+            tools:text="Header" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{() -> onSelected.invoke(homework.id)}"
+            android:padding="@dimen/homework_item_margin">
+
+            <TextView
+                android:id="@+id/course_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{homework.courseId.name}"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_smaller_size"
+                app:layout_constraintEnd_toStartOf="@id/course_color"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constrainedWidth="true"
+                tools:text="Course" />
+
+            <ImageView
+                android:id="@+id/course_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:paddingTop="1dp"
+                android:src="@drawable/circle_course_color"
+                app:layout_constraintEnd_toStartOf="@id/guideline"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/course_title"
+                app:layout_constraintTop_toTopOf="parent"
+                app:setcolor="@{Color.parseColor(homework.courseId.color)}" />
+
+
+            <ImageView
+                android:id="@+id/duetill_flag"
+                android:layout_width="13dp"
+                android:layout_height="wrap_content"
+                android:visibility="@{ViewUtilsKt.asVisibility(HomeworkViewHolder.dueLabelFlagRequired(homework))}"
+                app:layout_constraintEnd_toStartOf="@+id/duetill_label"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
+
+            <TextView
+                android:id="@+id/duetill_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{homework.dueTextAndColorId.first}"
+                android:textColor="@{safeUnbox(homework.dueTextAndColorId.second)}"
+                android:textSize="@dimen/text_smaller_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@id/duetill_flag"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constrainedWidth="true"
+                tools:text="In x Stunden fällig" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="@{ViewUtilsKt.asVisibility(headerRequired)}">
+                app:layout_constraintGuide_percent="0.5" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/homework_card_header"
-                    android:gravity="start|center"
-                    android:padding="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingStart="15dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:text="@{HomeworkViewHolder.getHeaderText(homework)}"
-                    tools:text="Header" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:orientation="vertical"
-                android:onClick="@{() -> onSelected.invoke(homework.id)}"
-                android:padding="@dimen/homework_item_margin">
+                android:layout_marginTop="5dp"
+                android:gravity="start"
+                android:text="@{homework.title}"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/course_title"
+                tools:text="Homework Title" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="4"
+                android:text="@{HomeworkViewHolder.getTextFromHtml(homework.description)}"
+                android:textSize="@dimen/text_medium_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                tools:text="Description" />
 
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="start">
+        </android.support.constraint.ConstraintLayout>
 
-                        <TextView
-                            android:id="@+id/course_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/circle_course_color_diameter"
-                            android:layout_marginRight="@dimen/circle_course_color_diameter"
-                            android:paddingEnd="7dp"
-                            android:paddingRight="7dp"
-                            android:textAllCaps="true"
-                            android:textSize="@dimen/text_smaller_size"
-                            android:text="@{homework.courseId.name}"
-                            app:layout_constrainedWidth="true"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="Course" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="1dp"
-                            android:src="@drawable/circle_course_color"
-                            app:setcolor="@{Color.parseColor(homework.courseId.color)}"
-                            app:layout_constraintStart_toEndOf="@+id/course_title"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </android.support.constraint.ConstraintLayout>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="@{ViewUtilsKt.asVisibility(HomeworkViewHolder.dueLabelFlagRequired(homework))}"
-                        app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:textColor="@{safeUnbox(homework.dueTextAndColorId.second)}"
-                        android:textSize="@dimen/text_smaller_size"
-                        android:text="@{homework.dueTextAndColorId.first}"
-                        tools:text="In x Stunden fällig" />
-
-                </LinearLayout>
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="start"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:text="@{homework.title}"
-                    tools:text="Homework Title" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:maxLines="4"
-                    android:textSize="@dimen/text_medium_size"
-                    android:text="@{HomeworkViewHolder.getTextFromHtml(homework.description)}"
-                    tools:text="Description" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
 </layout>

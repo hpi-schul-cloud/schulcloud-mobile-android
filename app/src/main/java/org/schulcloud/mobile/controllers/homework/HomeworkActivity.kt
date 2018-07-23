@@ -48,7 +48,6 @@ class HomeworkActivity : BaseActivity() {
         binding.setLifecycleOwner(this)
         setContentView(binding.root)
         setupActionBar()
-        supportActionBar?.setDisplayShowTitleEnabled(false)
         swipeRefreshLayout = swipeRefresh
         performRefresh()
     }

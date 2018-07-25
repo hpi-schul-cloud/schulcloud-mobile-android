@@ -2,6 +2,7 @@ package org.schulcloud.mobile.controllers.user_settings
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.AttributeSet
@@ -11,21 +12,25 @@ import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.controllers.course.CourseActivity.Companion.EXTRA_ID
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
 
 class UserSettingsActivity: BaseActivity(){
+    companion object {
+        val TAG = UserSettingsActivity::class.java
+    }
 
     private lateinit var userSettingsViewModel: UserSettingsViewModel
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_settings)
         userSettingsViewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
     }
 
     override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View {
-        user_edit_submit.setOnClickListener({l -> patchUser()})
+        user_edit_submit.setOnClickListener({patchUser()})
         return super.onCreateView(name, context, attrs)
     }
 
@@ -44,11 +49,15 @@ class UserSettingsActivity: BaseActivity(){
         user.lastName = user_edit_lastname.text as String
         user.gender = user_edit_gender.selectedItem.toString()
         user.email = user_edit_email.text as String
+
         if(!cutSpaces(user_edit_new_password.text.toString()).equals("")){
+            account.id = userSettingsViewModel.account.value!!.id
             account.newPassword = user_edit_new_password.text as String
             account.newPasswordRepeat = user_edit_new_password_repeat.text as String
+
             async { userSettingsViewModel.patchAccount(account) }
         }
+
         async { userSettingsViewModel.patchUser(user) }
     }
 

@@ -4,6 +4,7 @@ import android.util.Log
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.models.Sync
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.network.ApiService
@@ -19,7 +20,7 @@ class PatchUserJob(private val user: User, callback: RequestJobCallback): Reques
 
         if (response.isSuccessful) {
             if (BuildConfig.DEBUG) Log.i(TAG, "User $user.id patched!")
-            UserRepository.syncUserData(response.body()!!)
+            Sync.SingleData.with(User::class.java,response.body()!!)
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while patching user $user.id")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

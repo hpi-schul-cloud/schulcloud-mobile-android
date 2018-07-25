@@ -94,4 +94,5 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         startActivity(intent)
         finish()
     }
+
 }

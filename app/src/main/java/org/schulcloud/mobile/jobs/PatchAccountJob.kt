@@ -10,7 +10,7 @@ import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.network.ApiService
 import ru.gildor.coroutines.retrofit.awaitResponse
 
-class PatchAccountJob(private val account: Account, callback: RequestJobCallback): RequestJob() {
+class PatchAccountJob(private val account: Account, callback: RequestJobCallback): RequestJob(callback) {
     companion object {
         val TAG: String = GetDeviceJob::class.java.simpleName
     }
@@ -21,6 +21,7 @@ class PatchAccountJob(private val account: Account, callback: RequestJobCallback
         if (response.isSuccessful) {
             if (BuildConfig.DEBUG) Log.i(TAG, "Account ${account.id} patched!")
             Sync.SingleData.with(Account::class.java,response.body()!!).run()
+            callback?.success()
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while patching account ${account.id}")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

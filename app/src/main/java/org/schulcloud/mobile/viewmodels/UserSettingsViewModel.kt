@@ -14,9 +14,13 @@ class UserSettingsViewModel: ViewModel(){
     }
 
     private val _user = UserRepository.currentUser(realm)
+    private val _account = UserRepository.getAccount(realm)
 
     val user: RealmObjectLiveData<User>
         get() = _user
+
+    val account: RealmObjectLiveData<Account>
+        get() = _account
 
     suspend fun patchUser(user: User){
         UserRepository.patchUser(user)

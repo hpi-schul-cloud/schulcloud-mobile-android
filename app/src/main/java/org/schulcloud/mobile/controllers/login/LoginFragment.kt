@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.main.MainActivity
+import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.LoginViewModel
 
 class LoginFragment: BaseFragment() {

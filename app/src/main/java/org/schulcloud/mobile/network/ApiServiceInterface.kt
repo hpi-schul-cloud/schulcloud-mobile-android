@@ -80,5 +80,7 @@ interface ApiServiceInterface {
     fun patchUser(@Path("id") userId: String, @Body user: User): Call<User>
     @PATCH("accounts/{id}")
     fun patchAccount(@Path("id") accountId: String, @Body account: Account): Call<Account>
+    @GET("accounts/")
+    fun getAccountForUser(@Query("userId") userId: String): Call<Account>
 
 }

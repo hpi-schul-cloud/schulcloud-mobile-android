@@ -1,5 +1,4 @@
 package org.schulcloud.mobile.models.user
-import org.schulcloud.mobile.models.user.Account
 import io.realm.Realm
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
@@ -7,6 +6,7 @@ import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
 import org.schulcloud.mobile.jobs.GetUserJob
 import org.schulcloud.mobile.jobs.PatchUserJob
+import org.schulcloud.mobile.jobs.*
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
@@ -36,12 +36,6 @@ object UserRepository {
             withContext(DefaultDispatcher) {
                 CreateAccessTokenJob(Credentials(email, password), callback).run()
             }
-
-            // Sync data in background
-            NewsRepository.syncNews()
-            CourseRepository.syncCourses()
-            EventRepository.syncEvents()
-            HomeworkRepository.syncHomeworkList()
         }
     }
 
@@ -65,7 +59,17 @@ object UserRepository {
     }
 
     suspend fun patchAccount(account: Account){
+        PatchAccountJob(account,object: RequestJobCallback(){
+            override fun onSuccess() {}
+            override fun onError(code: RequestJobCallback.ErrorCode) {}
+        }).run()
+    }
 
+    suspend fun getAccountForUser(userId: String){
+        GetAccountForUserJob(userId, object: RequestJobCallback(){
+            override fun onSuccess() {}
+            override fun onError(code: RequestJobCallback.ErrorCode) {}
+        }).run()
     }
 
     suspend fun patchUser(user: User){

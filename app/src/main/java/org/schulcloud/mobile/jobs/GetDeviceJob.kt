@@ -23,7 +23,7 @@ class GetDeviceJob(private val deviceId: String, callback: RequestJobCallback): 
 
             // Sync
             Sync.SingleData.with(Device::class.java, response.body()!!).run()
-
+            callback?.success()
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching device $deviceId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

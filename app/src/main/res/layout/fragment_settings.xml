@@ -60,7 +60,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginLeft="5dp">
+                        android:layout_marginLeft="5dp"
+                        android:paddingBottom="20dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -99,7 +100,8 @@
                             android:layout_height="wrap_content"
                             android:entries="@array/genders"
                             android:clickable="false"
-                            android:alpha="0.5"/>
+                            android:alpha="0.5"
+                            android:id="@+id/user_settings_gender"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -111,7 +113,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/user_settings_email"
-                            android:layout_marginLeft="5dp"/>
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="20dp"/>
 
                         <Button
                             android:layout_width="wrap_content"
@@ -120,7 +123,8 @@
                             style="@style/Button"
                             android:background="@color/hpiRed"
                             android:layout_gravity="center"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/user_settings_open"/>
 
                     </LinearLayout>
 
@@ -142,20 +146,13 @@
                         android:text="@string/settings_register_device"
                         android:visibility="gone"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/devices_technical_difficulties"/>
-
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         app:cardElevation="@dimen/cardview_default_elevation"
                         app:cardCornerRadius="@dimen/cardview_default_radius"
-                        android:animateLayoutChanges="true"
-                        android:visibility="gone">
+                        android:animateLayoutChanges="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"

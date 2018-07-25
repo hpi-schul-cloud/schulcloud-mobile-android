@@ -1,0 +1,52 @@
+<resources>
+
+    <!-- General -->
+    <string name="general_action_share">Share</string>
+    <string name="general_action_showInBrowser">Show in browser</string>
+    <string name="general_action_refresh">Refresh</string>
+
+    <!-- Share -->
+    <string name="share_subject">Schul-Cloud: %1$s</string>
+    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_title">Share link</string>
+
+
+    <!-- Login -->
+    <string name="login_email_hint">E-mail</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_forgotPassword">Forgot password??</string>
+    <string name="login_login">Login</string>
+    <string name="login_error_emailInvalid">The E-mail address is invalid</string>
+    <string name="login_error_passwordEmpty">Please enter your password!</string>
+
+    <string name="login_demo">Don\'t have an account yet? Try it out!</string>
+    <string name="login_demo_student">Login as student</string>
+    <string name="login_demo_teacher">Login as teacher</string>
+
+    <!-- Main -->
+    <string name="main_drawer_open">Open navigation drawer</string>
+    <string name="main_drawer_close">Close navigation drawer</string>
+    <string name="main_drawer_dashboard">Dashboard</string>
+    <string name="main_drawer_news">News</string>
+    <string name="main_drawer_courses">Courses</string>
+    <string name="main_drawer_calendar">Calendar</string>
+    <string name="main_drawer_homework">Tasks</string>
+    <string name="main_drawer_files">Files</string>
+    <string name="main_drawer_learnstore">Resources</string>
+    <string name="main_drawer_logout">Logout</string>
+
+    <!-- Course -->
+    <string name="course_title">My courses</string>
+    <string name="course_topics">Topics</string>
+    <string name="courses_error_empty">No courses were found.</string>
+
+    <!-- Topic -->
+    <string name="topics_error_empty">No topics were found</string>
+
+    <!-- Content -->
+    <string name="content_unsupported_message">%s is currently not supported</string>
+    <string name="content_resource_client">via %1$s</string>
+    <string name="content_etherpad_openInBrowser">Etherpads currently can\'t be shown inside the app. Please use our website instead.</string>
+    <string name="contents_error_empty">No content was found.</string>
+
+</resources>

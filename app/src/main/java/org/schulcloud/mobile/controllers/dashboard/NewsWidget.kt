@@ -3,7 +3,6 @@ package org.schulcloud.mobile.controllers.dashboard
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.NewsListAdapter
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
+import org.schulcloud.mobile.views.MiddleDividerItemDecoration
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
 
 class NewsWidget : Widget() {
@@ -45,7 +45,7 @@ class NewsWidget : Widget() {
         recyclerView.apply {
             layoutManager = NoScrollLinearLayoutManager(context)
             adapter = newsAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(MiddleDividerItemDecoration(context))
         }
     }
 

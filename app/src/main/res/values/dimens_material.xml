@@ -16,7 +16,7 @@
 
     <!-- Card -->
     <dimen name="material_card_marginHorizontal">16dp</dimen>
-    <dimen name="material_card_marginVertical">6dp</dimen>
+    <dimen name="material_card_marginVertical">8dp</dimen>
     <dimen name="material_card_padding">10dp</dimen>
 
 </resources>

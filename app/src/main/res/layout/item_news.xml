@@ -17,7 +17,10 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/news_item_margin"
+        android:layout_marginStart="@dimen/news_item_margin_horizontal"
+        android:layout_marginTop="@dimen/news_item_margin_vertical"
+        android:layout_marginEnd="@dimen/news_item_margin_horizontal"
+        android:layout_marginBottom="@dimen/news_item_margin_vertical"
         android:orientation="vertical">
 
         <TextView

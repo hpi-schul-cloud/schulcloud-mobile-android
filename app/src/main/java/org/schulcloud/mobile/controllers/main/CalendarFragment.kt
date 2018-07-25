@@ -49,6 +49,14 @@ class CalendarFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.calendar_action_jumpToToday -> calendar.jumpToToday()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
     override suspend fun refresh() {
         EventRepository.syncEvents()
     }

@@ -64,6 +64,7 @@
 
     <!-- Calendar -->
     <string name="calendar_title">Kalender</string>
+    <string name="calendar_jumpToToday">Zu heute springen</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

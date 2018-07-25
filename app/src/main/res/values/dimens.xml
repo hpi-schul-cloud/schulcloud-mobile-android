@@ -11,4 +11,6 @@
 
     <dimen name="content_title_margin">8dp</dimen>
 
+    <dimen name="news_item_margin">20dp</dimen>
+
 </resources>

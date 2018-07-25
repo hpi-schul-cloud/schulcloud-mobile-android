@@ -48,6 +48,10 @@
     <string name="dashboard_events_none">Keine Termine für den Rest des Tages!</string>
     <string name="dashboard_events_event_next">danach:</string>
 
+    <!-- News -->
+    <string name="news_title">Neuigkeiten</string>
+    <string name="news_error_empty">Es wurden keine Neuigkeiten gefunden</string>
+
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>
     <string name="course_topics">Themen</string>

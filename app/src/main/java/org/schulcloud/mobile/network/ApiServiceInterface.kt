@@ -8,9 +8,11 @@ import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.models.file.DirectoryResponse
 import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.file.SignedUrlResponse
+import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
+
 
 interface ApiServiceInterface {
 
@@ -21,6 +23,10 @@ interface ApiServiceInterface {
     // Events
     @GET("calendar?all=true")
     fun listEvents(): Call<List<Event>>
+
+    //News
+    @GET("news?\$sort=createdAt:1")
+    fun listUserNews(): Call<FeathersResponse<List<News>>>
 
     // Course
     @GET("courses?\$populate[0]=teacherIds")

@@ -50,10 +50,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.nav_dashboard ->
                 replaceFragment(DashboardFragment(), DashboardFragment.TAG)
+            R.id.nav_news ->
+                replaceFragment(NewsListFragment(), NewsListFragment.TAG)
             R.id.nav_courses ->
                 replaceFragment(CourseListFragment(), CourseListFragment.TAG)
             R.id.nav_files ->

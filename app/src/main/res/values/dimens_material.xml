@@ -15,7 +15,7 @@
     <dimen name="material_listItem_icon_textSpacing">16dp</dimen>
 
     <!-- Card -->
-    <dimen name="material_card_marginHorizontal">12dp</dimen>
+    <dimen name="material_card_marginHorizontal">16dp</dimen>
     <dimen name="material_card_marginVertical">6dp</dimen>
     <dimen name="material_card_padding">10dp</dimen>
 

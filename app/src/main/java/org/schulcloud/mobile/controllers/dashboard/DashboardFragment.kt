@@ -16,7 +16,8 @@ class DashboardFragment : BaseFragment() {
 
 
     private val widgets = arrayOf(
-            EventsWidget()
+            EventsWidget(),
+            NewsWidget()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

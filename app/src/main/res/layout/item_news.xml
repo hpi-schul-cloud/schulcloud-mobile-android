@@ -9,6 +9,9 @@
         <variable
             name="news"
             type="org.schulcloud.mobile.models.news.News" />
+        <variable
+            name="formattedDate"
+            type="String" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -47,7 +50,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:maxLines="2"
-            android:text="@{NewsViewHolder.getShortDate(news.createdAt)}"
+            android:text="@{formattedDate}"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/passiveWebView"
             app:layout_constraintEnd_toEndOf="parent"

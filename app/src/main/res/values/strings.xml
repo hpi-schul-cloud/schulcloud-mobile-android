@@ -47,6 +47,8 @@
     <!-- Events -->
     <string name="dashboard_events_none">Keine Termine für den Rest des Tages!</string>
     <string name="dashboard_events_event_next">danach:</string>
+    <!-- News -->
+    <string name="dashboard_news_none">Es gibt aktuell keine Neuigkeiten</string>
 
     <!-- News -->
     <string name="news_title">Neuigkeiten</string>

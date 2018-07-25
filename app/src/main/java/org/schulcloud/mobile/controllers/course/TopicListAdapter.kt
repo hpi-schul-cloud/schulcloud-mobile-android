@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
-import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
 import org.schulcloud.mobile.databinding.ItemTopicBinding
 import org.schulcloud.mobile.models.topic.Topic
 
-class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback)
+class TopicListAdapter(private val onSelected: (String) -> Unit)
     : BaseAdapter<Topic, TopicListAdapter.TopicViewHolder, ItemTopicBinding>() {
 
     fun update(topicList: List<Topic>) {
@@ -17,7 +16,7 @@ class TopicListAdapter(private val selectedCallback: OnItemSelectedCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
         val binding = ItemTopicBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.selectedCallback = selectedCallback
+        binding.onSelected = onSelected
         return TopicViewHolder(binding)
     }
 

@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.models.event
 
 import android.arch.lifecycle.LiveData
+import com.jonaswanke.calendar.Week
 import io.realm.Realm
 import org.schulcloud.mobile.jobs.ListEventsJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
@@ -12,8 +13,8 @@ object EventRepository {
         return realm.eventDao().events()
     }
 
-    fun eventsForMonth(realm: Realm, year: Int, month: Int): LiveData<Sequence<Event>> {
-        return realm.eventDao().eventsForMonth(year, month)
+    fun eventsForWeek(realm: Realm, week: Week): LiveData<Sequence<Event>> {
+        return realm.eventDao().eventsForWeek(week)
     }
 
     fun eventsForToday(realm: Realm): LiveData<List<Event>> {

@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     // calendar
-    implementation 'com.github.quivr:android-week-view:2.2.2'
+    implementation 'com.jonaswanke.calendar:calendar:0.0.1'
 
     // unit tests
     testImplementation "junit:junit:4.12"

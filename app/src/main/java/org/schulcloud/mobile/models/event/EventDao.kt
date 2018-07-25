@@ -2,6 +2,7 @@ package org.schulcloud.mobile.models.event
 
 import android.arch.lifecycle.LiveData
 import android.util.Log
+import com.jonaswanke.calendar.Week
 import io.realm.Realm
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.utils.isToday
@@ -17,13 +18,13 @@ class EventDao(private val realm: Realm) {
                 .asLiveData()
     }
 
-    fun eventsForMonth(year: Int, month: Int): LiveData<Sequence<Event>> {
+    fun eventsForWeek(week: Week): LiveData<Sequence<Event>> {
         return realm.where(Event::class.java)
                 .findAllAsync()
                 .asLiveData()
                 .map { events ->
                     events.asSequence().flatMap {
-                        it.getOccurrencesForMonth(year, month)
+                        it.getOccurrencesForWeek(week)
                     }
                 }
     }

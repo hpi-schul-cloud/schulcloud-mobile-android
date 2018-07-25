@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.models.event
 
 import com.google.gson.annotations.SerializedName
+import com.jonaswanke.calendar.Week
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -107,19 +108,11 @@ open class Event : RealmObject() {
                 .minBy { it.timeInMillis }
     }
 
-    fun getOccurrencesForMonth(year: Int, month: Int): Sequence<Event> {
-        val event = this
+    fun getOccurrencesForWeek(week: Week): Sequence<Event> {
         val cal = getCalendar()
-        val monthStart = cal.apply {
-            set(year, month, 1, 0, 0, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.timeInMillis
-        val monthEnd = cal.apply {
-            set(year, month + 1, 1, 0, 0, 0)
-        }.timeInMillis
 
         val start = start ?: return emptySequence()
-        if (start >= monthEnd)
+        if (start >= week.end)
             return emptySequence()
         val duration = duration ?: return emptySequence()
 
@@ -128,7 +121,7 @@ open class Event : RealmObject() {
         var repetitions = included.orEmpty().asSequence().flatMap<Included, Long> {
             val attributes = it.attributes ?: return@flatMap emptySequence()
             val until = attributes.until?.parseDate()
-            if (until != null && until.timeInMillis < monthStart)
+            if (until != null && until.timeInMillis < week.start)
                 return@flatMap emptySequence()
             val weekdayNumber = attributes.weekdayNumber ?: return@flatMap emptySequence()
 
@@ -136,10 +129,11 @@ open class Event : RealmObject() {
 
             when (freq) {
                 IncludedAttributes.FREQ_DAILY -> {
-                    // calculate first occurrence in month
+                    // calculate first occurrence in week
                     cal.apply {
                         timeInMillis = start
-                        set(year, month, 0)
+                        set(Calendar.YEAR, week.year)
+                        set(Calendar.WEEK_OF_YEAR, week.week)
                     }
                     generateSequence(cal.timeInMillis) { lastStart ->
                         cal.apply {
@@ -147,7 +141,7 @@ open class Event : RealmObject() {
                             add(Calendar.DATE, 1)
                         }
 
-                        if (cal.timeInMillis < monthEnd
+                        if (cal.timeInMillis < week.end
                                 && cal.timeInMillis < until?.timeInMillis ?: Long.MAX_VALUE)
                             cal.timeInMillis
                         else
@@ -156,31 +150,19 @@ open class Event : RealmObject() {
                 }
 
                 IncludedAttributes.FREQ_WEEKLY -> {
-                    // calculate first occurrence in month
                     cal.apply {
                         timeInMillis = start
-                        set(year, month, 0)
+                        set(Calendar.YEAR, week.year)
+                        set(Calendar.WEEK_OF_YEAR, week.week)
                         set(Calendar.DAY_OF_WEEK, weekdayNumber)
-                        set(Calendar.DAY_OF_WEEK_IN_MONTH, 1)
                     }
-                    generateSequence(cal.timeInMillis) { lastStart ->
-                        cal.apply {
-                            timeInMillis = lastStart
-                            add(Calendar.WEEK_OF_MONTH, 1)
-                        }
-
-                        if (cal.timeInMillis < monthEnd
-                                && cal.timeInMillis < until?.timeInMillis ?: Long.MAX_VALUE)
-                            cal.timeInMillis
-                        else
-                            null
-                    }
+                    sequenceOf(cal.timeInMillis)
                 }
 
                 else -> emptySequence()
             }
         }
-        if (start in monthStart..(monthEnd - 1))
+        if (start in week.start until week.end)
             repetitions += sequenceOf(start)
 
         return repetitions.map { repStart ->

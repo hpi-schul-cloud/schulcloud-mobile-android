@@ -30,7 +30,7 @@
     <!-- Main -->
     <string name="main_drawer_open">Navigationsleiste öffnen</string>
     <string name="main_drawer_close">Navigationsleiste schließen</string>
-    <string name="main_drawer_dashboard">Übersicht</string>
+    <string name="main_drawer_dashboard">@string/dashboard_title</string>
     <string name="main_drawer_news">Neuigkeiten</string>
     <string name="main_drawer_courses">Kurse</string>
     <string name="main_drawer_calendar">Termine</string>
@@ -38,6 +38,9 @@
     <string name="main_drawer_files">Meine Dateien</string>
     <string name="main_drawer_learnstore">Materialien</string>
     <string name="main_drawer_logout">Abmelden</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Übersicht</string>
 
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>

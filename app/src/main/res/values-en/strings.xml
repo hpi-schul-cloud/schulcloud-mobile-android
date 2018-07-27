@@ -14,7 +14,7 @@
     <!-- Login -->
     <string name="login_email_hint">E-mail</string>
     <string name="login_password_hint">Password</string>
-    <string name="login_forgotPassword">Forgot password??</string>
+    <string name="login_forgotPassword">Forgot password?</string>
     <string name="login_login">Login</string>
     <string name="login_error_emailInvalid">The E-mail address is invalid</string>
     <string name="login_error_passwordEmpty">Please enter your password!</string>
@@ -26,7 +26,7 @@
     <!-- Main -->
     <string name="main_drawer_open">Open navigation drawer</string>
     <string name="main_drawer_close">Close navigation drawer</string>
-    <string name="main_drawer_dashboard">Dashboard</string>
+    <string name="main_drawer_dashboard">@string/dashboard_title</string>
     <string name="main_drawer_news">News</string>
     <string name="main_drawer_courses">Courses</string>
     <string name="main_drawer_calendar">Calendar</string>
@@ -34,6 +34,9 @@
     <string name="main_drawer_files">Files</string>
     <string name="main_drawer_learnstore">Resources</string>
     <string name="main_drawer_logout">Logout</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Dashboard</string>
 
     <!-- Course -->
     <string name="course_title">My courses</string>

@@ -26,6 +26,7 @@ before_install:
 install:
 - chmod a+x .travis/install-git-crypt
 - "./.travis/install-git-crypt"
+- bundle install --without documentation
 before_script:
 - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a --skin 480x800
 - emulator -avd test -no-audio -no-window &
@@ -35,13 +36,13 @@ before_script:
 - adb shell settings put global transition_animation_scale 0
 - adb shell settings put global animator_duration_scale 0
 - adb shell input keyevent 82
-- bundle install --without documentation
 after_success:
 - "./.travis/upload-apk.sh"
 script:
+- ./gradlew --stacktrace :app:check detektCheck
+- bundle exec danger --verbose
 - "./gradlew clean assembleDebug testHpiDebugUnitTest testN21DebugUnitTest"
 #- "./gradlew clean assembleDebug testDebugUnitTest connectedDebugAndroidTest"
-- bundle exec danger --verbose
 deploy:
   provider: releases
   api_key:

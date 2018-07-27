@@ -77,10 +77,10 @@ ktlint {
 }
 
 detekt {
-    version = "1.0.0.RC7-3"
+    version = "1.0.0.RC8"
     profile("main") {
         input = "$projectDir"
-        config = "$projectDir/detekt.yml"
+        config = "$rootDir/detekt.yml"
         filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
         output = "$projectDir/build/reports/detekt"
     }

@@ -103,21 +103,6 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.5" />
 
-                    <TextView
-                        android:id="@+id/title"
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="start"
-                        android:text="@{viewModel.homework.title}"
-                        android:textColor="@android:color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/course_title"
-                        tools:text="Homework Title" />
-
                     <org.schulcloud.mobile.views.ContentWebView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -125,7 +110,7 @@
                         app:content="@{viewModel.homework.description}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/title"
+                        app:layout_constraintTop_toBottomOf="@id/course_title"
                         tools:ignore="WebViewLayout" />
 
                 </android.support.constraint.ConstraintLayout>

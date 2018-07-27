@@ -6,8 +6,7 @@
     <string name="general_action_refresh">Aktualisieren</string>
 
     <!-- Share -->
-    <string name="share_subject">Schul-Cloud: %1$s</string>
-    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_subject_format">%1$s: %2$s</string>
     <string name="share_title">Link teilen</string>
 
 

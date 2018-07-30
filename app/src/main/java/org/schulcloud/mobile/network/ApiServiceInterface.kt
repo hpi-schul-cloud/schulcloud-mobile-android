@@ -4,6 +4,7 @@ import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.course.Course
+import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
 import retrofit2.http.*
@@ -26,6 +27,11 @@ interface ApiServiceInterface {
     fun listCourseTopics(@Query("courseId") courseId: String): Call<FeathersResponse<List<Topic>>>
     @GET("lessons/{id}")
     fun getTopic(@Path("id") topicId: String): Call<Topic>
+
+    //News
+
+    @GET("news?\$sort=createdAt:1")
+    fun listUserNews(): Call<FeathersResponse<List<News>>>
 
     // Homework
 

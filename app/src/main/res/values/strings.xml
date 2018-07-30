@@ -55,6 +55,10 @@
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
 
+    <!-- News -->
+    <string name="news_title">Neuigkeiten</string>
+    <string name="news_error_empty">Es wurden keine Neuigkeiten gefunden</string>
+
     <!-- Homework-->
     <string name="homework_title">Aufgaben</string>
     <string name="homework_error_empty">Es wurden keine Aufgaben gefunden.</string>
@@ -67,6 +71,5 @@
     <string name="yesterday">Gestern</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
-
 
 </resources>

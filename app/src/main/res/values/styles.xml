@@ -54,6 +54,20 @@
     </style>
 
 
+    <style name="Dashboard" />
+    <style name="Dashboard.Widget" parent="Material.Card.Margin">
+        <item name="contentPadding">0dp</item>
+        <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
+        <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
+    </style>
+    <style name="Dashboard.Widget.Title" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:layout_margin">16dp</item>
+    </style>
+    <style name="Dashboard.Widget.ButtonMore" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
     <style name="FileOverview.Card" parent="Material.Card.Margin">
         <item name="contentPadding">0dp</item>
         <item name="contentPaddingBottom">4dp</item>

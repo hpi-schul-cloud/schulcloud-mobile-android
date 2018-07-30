@@ -75,7 +75,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 .commit()
     }
 
-    private fun replaceFragment(fragment: Fragment, tag: String) {
+    fun replaceFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment, tag)
                 .addToBackStack(tag)

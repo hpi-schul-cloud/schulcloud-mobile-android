@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.NewsListAdapter
+import org.schulcloud.mobile.controllers.main.NewsListFragment
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 import org.schulcloud.mobile.views.MiddleDividerItemDecoration
@@ -46,6 +47,10 @@ class NewsWidget : Widget() {
             layoutManager = NoScrollLinearLayoutManager(context)
             adapter = newsAdapter
             addItemDecoration(MiddleDividerItemDecoration(context))
+        }
+
+        more.setOnClickListener {
+            showFragment(NewsListFragment(), NewsListFragment.TAG)
         }
     }
 

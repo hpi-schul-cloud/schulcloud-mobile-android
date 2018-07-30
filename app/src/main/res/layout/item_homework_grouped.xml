@@ -31,6 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:src="@drawable/circle_course_color"
             app:colorFilter="@{Color.parseColor(course.color)}" />
 
@@ -39,6 +41,8 @@
             style="@style/Material.ListItem_TextPrimary"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:text="@{course.name}"
             tools:text="Course name" />

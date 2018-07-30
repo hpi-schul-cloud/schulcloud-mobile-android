@@ -36,11 +36,8 @@ class CalendarFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = swipeRefresh
 
-        calendar.apply {
-            eventRequestCallback = { fetchEventsForWeek(it) }
-        }
+        calendar.eventRequestCallback = this::fetchEventsForWeek
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

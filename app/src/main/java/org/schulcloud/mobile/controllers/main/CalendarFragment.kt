@@ -51,7 +51,7 @@ class CalendarFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.calendar_action_jumpToToday -> calendar.jumpToToday()
+            R.id.calendar_action_jumpToToday -> calendar.currentWeek = Week()
             else -> return super.onOptionsItemSelected(item)
         }
         return true

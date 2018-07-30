@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     // calendar
-    implementation 'com.jonaswanke.calendar:calendar:0.0.1'
+    implementation 'com.jonaswanke.calendar:calendar:0.0.2'
 
     // unit tests
     testImplementation "junit:junit:4.12"

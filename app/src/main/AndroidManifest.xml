@@ -55,6 +55,14 @@
                 android:value=".controllers.course.CourseActivity" />
         </activity>
 
+        <activity
+            android:name=".controllers.homework.HomeworkActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".controllers.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.main.MainActivity" />
+        </activity>
 
     </application>
 

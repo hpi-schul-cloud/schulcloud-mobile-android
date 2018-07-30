@@ -8,6 +8,7 @@ import org.schulcloud.mobile.models.content.ContentDao
 import org.schulcloud.mobile.models.course.CourseDao
 import org.schulcloud.mobile.models.news.NewsDao
 import org.schulcloud.mobile.models.topic.TopicDao
+import org.schulcloud.mobile.models.homework.HomeworkDao
 
 // Convenience extension on RealmResults to return as LiveRealmData
 fun <T : RealmModel> RealmResults<T>.asLiveData(): LiveRealmData<T> = LiveRealmData(this)
@@ -25,3 +26,4 @@ fun Realm.courseDao(): CourseDao = CourseDao(this)
 fun Realm.topicDao(): TopicDao = TopicDao(this)
 fun Realm.contentDao(): ContentDao = ContentDao(this)
 fun Realm.newsDao() : NewsDao = NewsDao(this)
+fun Realm.homeworkDao() : HomeworkDao = HomeworkDao(this)

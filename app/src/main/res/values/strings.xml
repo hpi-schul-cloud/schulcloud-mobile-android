@@ -6,8 +6,7 @@
     <string name="general_action_refresh">Aktualisieren</string>
 
     <!-- Share -->
-    <string name="share_subject">Schul-Cloud: %1$s</string>
-    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_subject_format">%1$s: %2$s</string>
     <string name="share_title">Link teilen</string>
 
 
@@ -30,7 +29,7 @@
     <!-- Main -->
     <string name="main_drawer_open">Navigationsleiste öffnen</string>
     <string name="main_drawer_close">Navigationsleiste schließen</string>
-    <string name="main_drawer_dashboard">Übersicht</string>
+    <string name="main_drawer_dashboard">@string/dashboard_title</string>
     <string name="main_drawer_news">Neuigkeiten</string>
     <string name="main_drawer_courses">Kurse</string>
     <string name="main_drawer_calendar">Termine</string>
@@ -38,6 +37,9 @@
     <string name="main_drawer_files">Meine Dateien</string>
     <string name="main_drawer_learnstore">Materialien</string>
     <string name="main_drawer_logout">Abmelden</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Übersicht</string>
 
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>
@@ -56,5 +58,18 @@
     <!-- News -->
     <string name="news_title">Neuigkeiten</string>
     <string name="news_error_empty">Es wurden keine Neuigkeiten gefunden</string>
+
+    <!-- Homework-->
+    <string name="homework_title">Aufgaben</string>
+    <string name="homework_error_empty">Es wurden keine Aufgaben gefunden.</string>
+    <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
+    <string name="homework_due_outdated">Überfällig</string>
+    <string name="homework_due_tomorrow">Morgen fällig</string>
+    <string name="homework_due_dayAfterTomorrow">Übermorgen</string>
+    <string name="homework_due_inHours">In $hours Stunden fällig</string>
+    <string name="homework_due_inDays">In $days Tagen</string>
+    <string name="yesterday">Gestern</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
 
 </resources>

@@ -3,7 +3,10 @@ package org.schulcloud.mobile.models.homework
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.joda.time.*
+import org.joda.time.DateTime
+import org.joda.time.Days
+import org.joda.time.Hours
+import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.utils.HOST
 
@@ -19,10 +22,11 @@ open class Homework : RealmObject() {
     var dueDate: String? = null
     @SerializedName("private")
     var restricted: Boolean = false
-    var courseId: HomeworkCourse? = null
+    @SerializedName("courseId")
+    var course: HomeworkCourse? = null
 
     val url: String
-        get() = "${HOST}/homework/$id"
+        get() = "$HOST/homework/$id"
 
     val dueDateTime: DateTime?
         get() {

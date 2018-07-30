@@ -55,6 +55,7 @@ class DashboardFragment : BaseFragment() {
     private fun provideWidgets(): Array<Widget> {
         return arrayOf(
                 EventsWidget(),
+                HomeworkWidget(),
                 NewsWidget()
         )
     }

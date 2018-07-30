@@ -47,6 +47,10 @@
     <string name="dashboard_events_none">Keine Termine für den Rest des Tages!</string>
     <string name="dashboard_events_event_next">danach:</string>
     <string name="dashboard_events_more">Alle Termine</string>
+    <!-- Homework -->
+    <string name="dashboard_homework">@string/homework_title</string>
+    <string name="dashboard_homework_none">Es gibt aktuell keine Hausaufgaben</string>
+    <string name="dashboard_homework_more">Alle Hausaufgaben</string>
     <!-- News -->
     <string name="dashboard_news">@string/news_title</string>
     <string name="dashboard_news_none">Es gibt aktuell keine Neuigkeiten</string>

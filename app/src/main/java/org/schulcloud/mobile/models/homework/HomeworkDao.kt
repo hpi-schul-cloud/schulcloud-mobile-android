@@ -29,6 +29,15 @@ class HomeworkDao(private val realm: Realm) {
                 }
     }
 
+    fun openHomework(): LiveData<List<Homework>> {
+        return realm.where(Homework::class.java)
+                .findAllAsync()
+                .asLiveData()
+                .map { homework ->
+                    homework.filter { it.dueTimespanDays >= 0 }
+                }
+    }
+
     fun homework(id: String): LiveData<Homework?> {
         return realm.where(Homework::class.java)
                 .sort("dueDate", Sort.ASCENDING)

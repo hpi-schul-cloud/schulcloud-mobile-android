@@ -14,16 +14,16 @@ import org.schulcloud.mobile.models.homework.Homework
  * @return a Pair with duetill label text and color
  */
 fun getDueTextAndColorId(homework: Homework?): Pair<String, Int> {
-    val days: Int = homework?.dueTimespanDays ?: Int.MAX_VALUE - 1
+    val days: Int = homework?.dueTimespanDays ?: Int.MAX_VALUE-1
 
     return when (days) {
         in Int.MIN_VALUE until 0 ->
             Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_outdated), Color.RED)
         0 -> {
-            val hours = homework?.dueTimespanHours ?: Int.MAX_VALUE - 1
+            val hours = homework?.dueTimespanHours ?: Int.MAX_VALUE-1
             if (hours >= 0)
                 Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_inHours), Color.RED)
-             else
+            else
                 Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_outdated), Color.RED)
         }
         1 -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_tomorrow), Color.RED)
@@ -36,7 +36,7 @@ fun getDueTextAndColorId(homework: Homework?): Pair<String, Int> {
 
 fun dueLabelFlagRequired(homework: Homework?): Boolean {
     homework?.let {
-        return (it.dueTimespanDays <= 1)
+        return (it.dueTimespanDays ?: 2 <= 1)
     }
     return false
 }

@@ -29,33 +29,19 @@ open class Homework : RealmObject() {
         get() = "$HOST/homework/$id"
 
     val dueDateTime: DateTime?
-        get() {
-            return try {
-                DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate)
-            } catch (e: IllegalArgumentException) {
-                null
-            }
+        get() = try {
+            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate)
+        } catch (e: IllegalArgumentException) {
+            null
         }
 
-    /**
-     * returns Int.MAX_VALUE when the dueDate String is invalid and cannot be parsed to DateTime
-     */
-    val dueTimespanDays: Int
-        get() {
-            dueDateTime?.let {
-                return Days.daysBetween(LocalDateTime.now(), it.toLocalDateTime()).days
-            }
-            return Int.MAX_VALUE
+    val dueTimespanDays: Int?
+        get() = dueDateTime?.let {
+            Days.daysBetween(LocalDateTime.now(), it.toLocalDateTime()).days
         }
 
-    /**
-     * returns Int.MAX_VALUE when the dueDate String is invalid and cannot be parsed to DateTime
-     */
-    val dueTimespanHours: Int
-        get() {
-            dueDateTime?.let {
-                return Hours.hoursBetween(LocalDateTime.now(), it.toLocalDateTime()).hours
-            }
-            return Int.MAX_VALUE
+    val dueTimespanHours: Int?
+        get() = dueDateTime?.let {
+            Hours.hoursBetween(LocalDateTime.now(), it.toLocalDateTime()).hours
         }
 }

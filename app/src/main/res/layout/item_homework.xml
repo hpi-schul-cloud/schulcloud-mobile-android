@@ -17,6 +17,9 @@
             name="headerRequired"
             type="boolean" />
         <variable
+            name="headerText"
+            type="String" />
+        <variable
             name="onSelected"
             type="kotlin.jvm.functions.Function1" />
     </data>
@@ -35,7 +38,7 @@
             android:paddingLeft="@dimen/homework_item_margin"
             android:paddingStart="@dimen/homework_item_margin"
             android:paddingTop="10dp"
-            android:text="@{HomeworkViewHolder.getHeaderText(homework)}"
+            android:text="@{headerText}"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:visibility="@{ViewUtilsKt.asVisibility(headerRequired)}"

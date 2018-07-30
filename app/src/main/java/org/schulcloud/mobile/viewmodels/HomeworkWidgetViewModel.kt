@@ -12,5 +12,5 @@ class HomeworkWidgetViewModel : ViewModel() {
         Realm.getDefaultInstance()
     }
 
-    val homework: LiveData<List<Homework>> = HomeworkRepository.openHomework(realm)
+    val homework: LiveData<List<Homework>> = HomeworkRepository.openHomeworkForNextWeek(realm)
 }

@@ -18,8 +18,8 @@ object HomeworkRepository {
     fun homeworkList(realm: Realm): LiveData<List<Homework>> {
         return realm.homeworkDao().homeworkList()
     }
-    fun openHomework(realm: Realm): LiveData<List<Homework>> {
-        return realm.homeworkDao().openHomework()
+    fun openHomeworkForNextWeek(realm: Realm): LiveData<List<Homework>> {
+        return realm.homeworkDao().openHomeworkForNextWeek()
     }
 
     fun homework(realm: Realm, id: String): LiveData<Homework?> {

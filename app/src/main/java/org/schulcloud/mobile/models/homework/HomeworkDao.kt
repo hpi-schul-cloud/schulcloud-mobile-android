@@ -14,11 +14,11 @@ class HomeworkDao(private val realm: Realm) {
                 .asLiveData()
                 .map { homeworkList ->
                     homeworkList.let {
-                        val outdatedHomework = homeworkList.filter { it.dueTimespanDays < 0 }
+                        val outdatedHomework = homeworkList.filter { it.dueTimespanDays ?: -1 < 0 }
                                 .sortedByDescending { it.dueDate }
                                 .toList()
 
-                        val displayedHomework = homeworkList.filter { it.dueTimespanDays >= 0 }
+                        val displayedHomework = homeworkList.filter { it.dueTimespanDays ?: -1 >= 0 }
                                 .sortedBy { it.dueDate }
                                 .toMutableList()
 
@@ -29,12 +29,12 @@ class HomeworkDao(private val realm: Realm) {
                 }
     }
 
-    fun openHomework(): LiveData<List<Homework>> {
+    fun openHomeworkForNextWeek(): LiveData<List<Homework>> {
         return realm.where(Homework::class.java)
                 .findAllAsync()
                 .asLiveData()
-                .map { homework ->
-                    homework.filter { it.dueTimespanDays >= 0 }
+                .map {
+                    it.filter { it.dueTimespanDays ?: -1 >= 0 && it.dueTimespanDays ?: 8 <= 7 }
                 }
     }
 

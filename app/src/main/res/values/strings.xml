@@ -4,6 +4,9 @@
     <string name="general_action_share">Teilen</string>
     <string name="general_action_showInBrowser">Im Browser anzeigen</string>
     <string name="general_action_refresh">Aktualisieren</string>
+    <string name="general_date_yesterday">Gestern</string>
+    <string name="general_date_today">Heute</string>
+    <string name="general_date_tomorrow">Morgen</string>
 
     <!-- Share -->
     <string name="share_subject_format">%1$s: %2$s</string>
@@ -49,7 +52,13 @@
     <string name="dashboard_events_more">Alle Termine</string>
     <!-- Homework -->
     <string name="dashboard_homework">@string/homework_title</string>
-    <string name="dashboard_homework_none">Es gibt aktuell keine Hausaufgaben</string>
+    <string name="dashboard_homework_due0">Nächste heute fällig</string>
+    <string name="dashboard_homework_due1">Nächste morgen fällig</string>
+    <string name="dashboard_homework_dueLater">Nächste in %1$d Tagen fällig</string>
+    <plurals name="dashboard_homework_openLabel">
+        <item quantity="one">offene Aufgabe</item>
+        <item quantity="other">offene Aufgaben</item>
+    </plurals>
     <string name="dashboard_homework_more">Alle Hausaufgaben</string>
     <!-- News -->
     <string name="dashboard_news">@string/news_title</string>
@@ -83,9 +92,6 @@
     <string name="homework_due_dayAfterTomorrow">Übermorgen</string>
     <string name="homework_due_inHours">In $hours Stunden fällig</string>
     <string name="homework_due_inDays">In $days Tagen</string>
-    <string name="yesterday">Gestern</string>
-    <string name="today">Heute</string>
-    <string name="tomorrow">Morgen</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

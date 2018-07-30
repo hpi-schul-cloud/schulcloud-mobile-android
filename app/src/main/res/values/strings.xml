@@ -6,8 +6,7 @@
     <string name="general_action_refresh">Aktualisieren</string>
 
     <!-- Share -->
-    <string name="share_subject">Schul-Cloud: %1$s</string>
-    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_subject_format">%1$s: %2$s</string>
     <string name="share_title">Link teilen</string>
 
     <!-- Dialogs -->
@@ -33,7 +32,7 @@
     <!-- Main -->
     <string name="main_drawer_open">Navigationsleiste öffnen</string>
     <string name="main_drawer_close">Navigationsleiste schließen</string>
-    <string name="main_drawer_dashboard">Übersicht</string>
+    <string name="main_drawer_dashboard">@string/dashboard_title</string>
     <string name="main_drawer_news">Neuigkeiten</string>
     <string name="main_drawer_courses">Kurse</string>
     <string name="main_drawer_calendar">Termine</string>
@@ -70,6 +69,19 @@
     <string name="content_resource_client">via %1$s</string>
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
     <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
+
+    <!-- Homework-->
+    <string name="homework_title">Aufgaben</string>
+    <string name="homework_error_empty">Es wurden keine Aufgaben gefunden.</string>
+    <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
+    <string name="homework_due_outdated">Überfällig</string>
+    <string name="homework_due_tomorrow">Morgen fällig</string>
+    <string name="homework_due_dayAfterTomorrow">Übermorgen</string>
+    <string name="homework_due_inHours">In $hours Stunden fällig</string>
+    <string name="homework_due_inDays">In $days Tagen</string>
+    <string name="yesterday">Gestern</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

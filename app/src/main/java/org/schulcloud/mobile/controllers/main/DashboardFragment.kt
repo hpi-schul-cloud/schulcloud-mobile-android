@@ -14,8 +14,9 @@ class DashboardFragment: BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = "Übersicht"
+        activity?.title = "Übersicht test";
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
 
+    fun Test() {}
 }

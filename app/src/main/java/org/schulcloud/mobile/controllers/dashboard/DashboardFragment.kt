@@ -15,10 +15,7 @@ class DashboardFragment : BaseFragment() {
     override var url: String? = "$HOST/dashboard"
 
 
-    private val widgets = arrayOf(
-            EventsWidget(),
-            NewsWidget()
-    )
+    private var widgets: Array<Widget> = emptyArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +31,15 @@ class DashboardFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = swipeRefresh
 
-        if (savedInstanceState == null)
+        if (childFragmentManager.fragments.isEmpty()) {
+            widgets = provideWidgets()
             childFragmentManager.beginTransaction().apply {
-                for (fragment in widgets)
-                    add(R.id.contentList, fragment)
+                for (widget in widgets)
+                    add(R.id.contentList, widget, widget.javaClass.simpleName)
             }.commit()
+        } else
+            widgets = childFragmentManager.fragments
+                    .map { it as Widget }.toTypedArray()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -49,5 +50,12 @@ class DashboardFragment : BaseFragment() {
     override suspend fun refresh() {
         for (widget in widgets)
             widget.refresh()
+    }
+
+    private fun provideWidgets(): Array<Widget> {
+        return arrayOf(
+                EventsWidget(),
+                NewsWidget()
+        )
     }
 }

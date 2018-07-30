@@ -22,9 +22,7 @@ class NewsWidget : Widget() {
 
     private lateinit var viewModel: NewsListViewModel
     private val newsAdapter: NewsListAdapter by lazy {
-        NewsListAdapter().apply {
-            emptyIndicator = empty
-        }
+        NewsListAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +46,7 @@ class NewsWidget : Widget() {
             adapter = newsAdapter
             addItemDecoration(MiddleDividerItemDecoration(context))
         }
+        newsAdapter.emptyIndicator = empty
 
         more.setOnClickListener {
             showFragment(NewsListFragment(), NewsListFragment.TAG)

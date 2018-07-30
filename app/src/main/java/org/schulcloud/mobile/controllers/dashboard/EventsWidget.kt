@@ -22,8 +22,6 @@ class EventsWidget : Widget() {
     private val eventAdapter: EventAdapter by lazy {
         EventAdapter {
             startActivity(CourseActivity.newIntent(context!!, it))
-        }.apply {
-            emptyIndicator = empty
         }
     }
 
@@ -47,6 +45,7 @@ class EventsWidget : Widget() {
             layoutManager = NoScrollLinearLayoutManager(context)
             adapter = eventAdapter
         }
+        eventAdapter.emptyIndicator = empty
     }
 
     override suspend fun refresh() {

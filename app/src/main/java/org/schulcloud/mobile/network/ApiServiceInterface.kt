@@ -2,6 +2,7 @@ package org.schulcloud.mobile.network
 
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
+import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.topic.Topic
 import retrofit2.Call
@@ -26,4 +27,10 @@ interface ApiServiceInterface {
     @GET("lessons/{id}")
     fun getTopic(@Path("id") topicId: String): Call<Topic>
 
+    // Homework
+
+    @GET("homework?\$populate=courseId&\$sort=dueDate:-1")
+    fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
+    @GET("homework/{id}?\$populate=courseId&\$sort=dueDate:-1")
+    fun getHomework(@Path("id") homeworkId: String): Call<Homework>
 }

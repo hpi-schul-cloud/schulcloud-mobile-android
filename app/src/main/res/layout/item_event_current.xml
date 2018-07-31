@@ -22,8 +22,8 @@
         android:background="?android:attr/selectableItemBackground"
         android:minHeight="56dp"
         android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="8dp">
 
         <TextView
@@ -36,6 +36,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{event.title}"
+            android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toTopOf="@id/summary"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +75,7 @@
             android:layout_alignParentRight="true"
             android:gravity="bottom"
             android:text="@{event.location}"
+            android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toTopOf="@id/time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -86,6 +88,7 @@
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:text="@{formattedTime}"
+            android:textColor="?android:textColorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location"

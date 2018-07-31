@@ -11,6 +11,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.NewsListAdapter
 import org.schulcloud.mobile.controllers.main.NewsListFragment
 import org.schulcloud.mobile.models.news.NewsRepository
+import org.schulcloud.mobile.utils.limit
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 import org.schulcloud.mobile.views.MiddleDividerItemDecoration
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
@@ -38,7 +39,7 @@ class NewsWidget : Widget() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.news.observe(this, Observer { news ->
-            newsAdapter.update(news ?: emptyList())
+            newsAdapter.update(news?.limit(5) ?: emptyList())
         })
 
         recyclerView.apply {

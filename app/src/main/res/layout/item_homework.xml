@@ -36,7 +36,7 @@
             android:gravity="start|center"
             android:paddingBottom="10dp"
             android:paddingLeft="@dimen/homework_item_margin"
-            android:paddingStart="@dimen/homework_item_margin"
+            android:paddingRight="@dimen/homework_item_margin"
             android:paddingTop="10dp"
             android:text="@{headerText}"
             android:textColor="@android:color/black"

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 val TIMEZONE_UTC: TimeZone = TimeZone.getTimeZone("TIMEZONE_UTC")
-val UTC_FORMAT: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+val UTC_FORMAT: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
 val TIMEZONE_LOCAL: TimeZone = TimeZone.getDefault()
 
 fun getCalendar(): Calendar {

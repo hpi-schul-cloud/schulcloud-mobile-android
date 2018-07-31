@@ -7,8 +7,8 @@
 [![first-timers-only](https://img.shields.io/badge/first--timers--only-friendly-blue.svg)](https://www.firsttimersonly.com/)
 
 
-[![Semver](https://img.shields.io/badge/Semver-2.0.0-green.svg?colorB=4c1)](http://semver.org/spec/v2.0.0.html)
-[![Apache 2.0 license](https://img.shields.io/badge/License-GPLv3-green.svg?colorB=4c1)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Semver](https://img.shields.io/badge/Semver-2.0.0-green.svg?colorB=4c1)](https://semver.org/spec/v2.0.0.html)
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-green.svg?colorB=4c1)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg?colorB=4c1)](https://github.com/Naereen/badges)
 
 

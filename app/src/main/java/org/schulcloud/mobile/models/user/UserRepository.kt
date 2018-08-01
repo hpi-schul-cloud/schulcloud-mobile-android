@@ -36,9 +36,9 @@ object UserRepository {
             }
 
             // Sync data in background
+            NewsRepository.syncNews()
             CourseRepository.syncCourses()
             EventRepository.syncEvents()
-            NewsRepository.syncNews()
             HomeworkRepository.syncHomeworkList()
         }
     }

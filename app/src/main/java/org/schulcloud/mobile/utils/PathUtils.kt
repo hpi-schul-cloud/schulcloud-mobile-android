@@ -4,7 +4,6 @@ package org.schulcloud.mobile.utils
 import android.text.TextUtils
 import java.io.File
 
-
 fun combinePath(vararg parts: String): String {
     val builder = StringBuilder(parts[0])
     for (i in 1 until parts.size) {

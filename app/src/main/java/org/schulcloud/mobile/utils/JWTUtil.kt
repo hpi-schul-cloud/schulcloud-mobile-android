@@ -25,7 +25,6 @@ class JWTUtil {
             e.printStackTrace()
             null
         }
-
     }
 
     @Throws(UnsupportedEncodingException::class)

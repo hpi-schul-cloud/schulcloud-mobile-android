@@ -29,5 +29,4 @@ class SchulCloudApp : Application() {
                 .build()
         Realm.setDefaultConfiguration(config)
     }
-
 }

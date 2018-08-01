@@ -14,7 +14,6 @@ import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
 
-
 sealed class ContentViewHolder<out B : ViewDataBinding>(binding: B)
     : BaseViewHolder<ContentWrapper, B>(binding) {
     lateinit var topic: Topic

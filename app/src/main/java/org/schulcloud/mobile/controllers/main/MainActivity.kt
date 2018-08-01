@@ -34,22 +34,20 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        if(isFirstRun) {
+        if (isFirstRun) {
             nav_view.setCheckedItem(R.id.nav_dashboard)
             addFragment(DashboardFragment(), DashboardFragment.TAG)
         }
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START))
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
+        else
             super.onBackPressed()
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.nav_dashboard -> {
                 replaceFragment(DashboardFragment(), DashboardFragment.TAG)

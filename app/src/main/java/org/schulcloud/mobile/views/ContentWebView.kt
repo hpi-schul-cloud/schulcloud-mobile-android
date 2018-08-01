@@ -16,12 +16,11 @@ import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
 import java.io.IOException
 
-
 open class ContentWebView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        @AttrRes defStyleAttr: Int = 0)
-    : WebView(context, attrs, defStyleAttr) {
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : WebView(context, attrs, defStyleAttr) {
 
     companion object {
         val TAG: String = ContentWebView::class.java.simpleName
@@ -79,7 +78,10 @@ open class ContentWebView @JvmOverloads constructor(
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                request: WebResourceRequest
+            ): Boolean {
                 return openUrl(request.url)
             }
 
@@ -96,7 +98,10 @@ open class ContentWebView @JvmOverloads constructor(
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+            override fun shouldInterceptRequest(
+                view: WebView,
+                request: WebResourceRequest
+            ): WebResourceResponse? {
                 return handleRequest(request.url.toString())
             }
 
@@ -132,8 +137,13 @@ open class ContentWebView @JvmOverloads constructor(
         super.loadData(data, mimeType, encoding)
     }
 
-    override fun loadDataWithBaseURL(baseUrl: String?, data: String?, mimeType: String?,
-            encoding: String?, historyUrl: String?) {
+    override fun loadDataWithBaseURL(
+        baseUrl: String?,
+        data: String?,
+        mimeType: String?,
+        encoding: String?,
+        historyUrl: String?
+    ) {
         clear()
         super.loadDataWithBaseURL(baseUrl, data, mimeType, encoding, historyUrl)
     }

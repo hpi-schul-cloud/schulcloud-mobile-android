@@ -17,10 +17,9 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.user.UserRepository
 import java.io.IOException
 
-
 const val HEADER_COOKIE = "cookie"
 const val HEADER_CONTENT_TYPE = "content-type"
-const val HEADER_CONTENT_ENCODING = "content-encoding";
+const val HEADER_CONTENT_ENCODING = "content-encoding"
 
 const val MIME_TEXT_PLAIN = "text/plain"
 const val MIME_TEXT_HTML = "text/html"
@@ -29,7 +28,6 @@ const val MIME_APPLICATION_JSON = "application/json"
 const val ENCODING_UTF_8 = "utf-8"
 
 val HOST = API_URL.substringBeforeLast(":")
-
 
 val HTTP_CLIENT: OkHttpClient by lazy {
     OkHttpClient.Builder().addInterceptor { chain ->

@@ -9,7 +9,7 @@ import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.models.topic.Topic
 
 class ContentListAdapter
-    : BaseAdapter<ContentWrapper, ContentViewHolder<out ViewDataBinding>, ViewDataBinding>() {
+    : BaseAdapter<ContentWrapper, ContentViewHolder<ViewDataBinding>, ViewDataBinding>() {
     companion object {
         private val CONTENT_TYPES = arrayOf(ContentWrapper.COMPONENT_TEXT,
                 ContentWrapper.COMPONENT_RESOURCES, ContentWrapper.COMPONENT_INTERNAL,
@@ -24,7 +24,6 @@ class ContentListAdapter
             this.topic = topic
         items = topic?.contents?.filter { it.hidden != true }.orEmpty()
     }
-
 
     @Suppress("MagicNumber")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<out ViewDataBinding> {

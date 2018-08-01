@@ -5,8 +5,9 @@ import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.NetworkUtil
 
 abstract class RequestJob(
-        protected val callback: RequestJobCallback?,
-        private vararg val preconditions: Precondition) {
+    protected val callback: RequestJobCallback?,
+    private vararg val preconditions: Precondition
+) {
 
     enum class Precondition {
         AUTH

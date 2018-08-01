@@ -18,9 +18,9 @@ abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
     }
 
     class Data<S : RealmModel>(
-            private val clazz: Class<S>,
-            private val items: List<S>)
-        : Sync<S>(clazz) {
+        private val clazz: Class<S>,
+        private val items: List<S>
+    ) : Sync<S>(clazz) {
 
         companion object {
             fun <S : RealmModel> with(clazz: Class<S>, items: List<S>): Data<S> {
@@ -50,9 +50,9 @@ abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
     }
 
     class SingleData<S : RealmModel>(
-            private val clazz: Class<S>,
-            private val item: S)
-        : Sync<S>(clazz) {
+        private val clazz: Class<S>,
+        private val item: S
+    ) : Sync<S>(clazz) {
         companion object {
             fun <S : RealmModel> with(clazz: Class<S>, item: S): SingleData<S> {
                 return SingleData(clazz, item)

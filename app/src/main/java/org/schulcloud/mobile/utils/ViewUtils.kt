@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import org.schulcloud.mobile.R
 
-
 fun Int.dpToPx(): Int = Math.round(this * Resources.getSystem().displayMetrics.density)
 
 fun Boolean.asVisibility(): Int {

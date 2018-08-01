@@ -14,7 +14,7 @@ import org.schulcloud.mobile.controllers.main.MainActivity
 import org.schulcloud.mobile.utils.logd
 import org.schulcloud.mobile.viewmodels.LoginViewModel
 
-class LoginFragment: BaseFragment() {
+class LoginFragment : BaseFragment() {
 
     companion object {
         val TAG: String = LoginFragment::class.java.simpleName
@@ -56,7 +56,7 @@ class LoginFragment: BaseFragment() {
 
     private fun handleLoginStatus() {
         loginViewModel.loginState.observe(this, Observer { loginState ->
-            when(loginState) {
+            when (loginState) {
                 is LoginViewModel.LoginStatus.Pending -> {
                     logd(TAG, "PENDING LOGIN")
                     login_progress.visibility = View.VISIBLE
@@ -80,7 +80,7 @@ class LoginFragment: BaseFragment() {
 
     private fun handleInvalidFields(invalidInputs: MutableList<LoginViewModel.LoginInput>) {
         invalidInputs.forEach { input ->
-            when(input) {
+            when (input) {
                 LoginViewModel.LoginInput.EMAIL -> editEmail.error = getString(R.string.login_error_emailInvalid)
                 LoginViewModel.LoginInput.PASSWORD -> editPassword.error = getString(R.string.login_error_passwordEmpty)
             }

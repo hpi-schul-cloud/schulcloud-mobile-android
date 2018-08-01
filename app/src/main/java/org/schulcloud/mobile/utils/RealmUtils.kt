@@ -9,7 +9,6 @@ import org.schulcloud.mobile.models.content.ContentDao
 import org.schulcloud.mobile.models.course.CourseDao
 import org.schulcloud.mobile.models.topic.TopicDao
 
-
 // Convenience extension on RealmResults to return as LiveRealmData
 fun <T : RealmModel> RealmResults<T>.asLiveData(): LiveRealmData<T> = LiveRealmData(this)
 

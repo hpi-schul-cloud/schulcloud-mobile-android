@@ -33,5 +33,4 @@ class CreateAccessTokenJob(private val credentials: Credentials, callback: Reque
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
         }
     }
-
 }

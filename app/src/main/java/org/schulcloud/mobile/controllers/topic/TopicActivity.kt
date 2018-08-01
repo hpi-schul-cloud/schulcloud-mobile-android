@@ -18,10 +18,6 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-
-/**
- * Date: 6/11/2018
- */
 class TopicActivity : BaseActivity() {
     companion object {
         val TAG: String = TopicActivity::class.java.simpleName

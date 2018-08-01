@@ -15,6 +15,7 @@ import okhttp3.Request
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
 import java.io.IOException
+import java.lang.IllegalArgumentException
 
 open class ContentWebView @JvmOverloads constructor(
     context: Context,
@@ -116,10 +117,11 @@ open class ContentWebView @JvmOverloads constructor(
                     null
                 } catch (e: IllegalStateException) {
                     null
+                } catch (e: IllegalArgumentException) {
+                    null
                 }
             }
         }
-        setBackgroundColor(Color.TRANSPARENT)
     }
 
     override fun loadUrl(url: String?) {
@@ -149,6 +151,7 @@ open class ContentWebView @JvmOverloads constructor(
     }
 
     private fun clear() {
+        setBackgroundColor(Color.TRANSPARENT)
         // Clear content to fix size if new size is smaller than current one
         super.loadDataWithBaseURL(null, null, MIME_TEXT_HTML, ENCODING_UTF_8, null)
     }

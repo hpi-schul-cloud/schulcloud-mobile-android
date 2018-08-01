@@ -26,7 +26,7 @@ class ContentListAdapter
     }
 
     @Suppress("MagicNumber")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<out ViewDataBinding> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<ViewDataBinding> {
         return when (viewType) {
             0 -> TextViewHolder(createBinding(parent, R.layout.item_content_text))
             1 -> ResourcesViewHolder(createBinding(parent, R.layout.item_content_resources))
@@ -43,7 +43,7 @@ class ContentListAdapter
         return CONTENT_TYPES.indexOfFirst { it.equals(component, true) }
     }
 
-    override fun onBindViewHolder(holder: ContentViewHolder<out ViewDataBinding>, position: Int) {
+    override fun onBindViewHolder(holder: ContentViewHolder<ViewDataBinding>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.topic = topic
     }

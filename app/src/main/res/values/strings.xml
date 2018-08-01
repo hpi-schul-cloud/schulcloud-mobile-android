@@ -26,11 +26,11 @@
 
     <string name="login_demo">Du hast keinen Account? Jetzt testen!</string>
     <string name="login_demo_student">Als Schüler einloggen</string>
-    <string name="login_demo_student_username">demo-schueler@schul-cloud.org</string>
-    <string name="login_demo_student_password">schulcloud</string>
+    <string name="login_demo_student_username" translatable="false">demo-schueler@schul-cloud.org</string>
+    <string name="login_demo_student_password" translatable="false">schulcloud</string>
     <string name="login_demo_teacher">Als Lehrer einloggen</string>
-    <string name="login_demo_teacher_username">demo-lehrer@schul-cloud.org</string>
-    <string name="login_demo_teacher_password">schulcloud</string>
+    <string name="login_demo_teacher_username" translatable="false">demo-lehrer@schul-cloud.org</string>
+    <string name="login_demo_teacher_password" translatable="false">schulcloud</string>
 
     <!-- Main -->
     <string name="main_drawer_open">Navigationsleiste öffnen</string>
@@ -54,11 +54,12 @@
     <string name="dashboard_homework">@string/homework_title</string>
     <string name="dashboard_homework_due0">Nächste heute fällig</string>
     <string name="dashboard_homework_due1">Nächste morgen fällig</string>
-    <string name="dashboard_homework_dueLater">Nächste in %1$d Tagen fällig</string>
+    <string name="dashboard_homework_dueLater">Nächste in %d Tagen fällig</string>
     <plurals name="dashboard_homework_openLabel">
         <item quantity="one">offene Aufgabe</item>
         <item quantity="other">offene Aufgaben</item>
     </plurals>
+    <string name="dashboard_homework_weekLabel">in der nächsten Woche</string>
     <string name="dashboard_homework_more">Alle Hausaufgaben</string>
     <!-- News -->
     <string name="dashboard_news">@string/news_title</string>
@@ -72,7 +73,7 @@
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>
     <string name="course_topics">Themen</string>
-    <string name="courses_error_empty">Es wurden keine Kurse gefunden.</string>
+    <string name="courses_error_empty">Es wurden keine Kurse gefunden</string>
 
     <!-- Topic -->
     <string name="topics_error_empty">Es wurden keine Themen gefunden</string>
@@ -81,17 +82,19 @@
     <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
     <string name="content_resource_client">via %1$s</string>
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
-    <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
+    <string name="contents_error_empty">Es wurden keine Inhalte gefunden</string>
 
     <!-- Homework-->
     <string name="homework_title">Aufgaben</string>
-    <string name="homework_error_empty">Es wurden keine Aufgaben gefunden.</string>
+    <string name="homework_error_empty">Es wurden keine Aufgaben gefunden</string>
     <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
     <string name="homework_due_outdated">Überfällig</string>
-    <string name="homework_due_tomorrow">Morgen fällig</string>
-    <string name="homework_due_dayAfterTomorrow">Übermorgen</string>
-    <string name="homework_due_inHours">In $hours Stunden fällig</string>
-    <string name="homework_due_inDays">In $days Tagen</string>
+    <string name="homework_due_hours">In %d Stunden fällig</string>
+    <plurals name="homework_due_days">
+        <item quantity="one">Morgen fällig</item>
+        <item quantity="two">Übermorgen</item>
+        <item quantity="other">In %d Tagen</item>
+    </plurals>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

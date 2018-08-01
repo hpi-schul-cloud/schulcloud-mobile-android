@@ -99,8 +99,8 @@
                 android:id="@+id/duetill_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{HomeworkUtilsKt.getDueTextAndColorId(homework).first}"
-                android:textColor="@{safeUnbox(HomeworkUtilsKt.getDueTextAndColorId(homework).second)}"
+                android:text="@{HomeworkUtilsKt.getDueText(homework)}"
+                android:textColor="@{HomeworkUtilsKt.getDueColor(homework)}"
                 android:textSize="@dimen/text_smaller_size"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,7 @@
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toEndOf="@id/duetill_flag"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="In x Stunden fällig" />
+                tools:text="Due in 5 hours" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"

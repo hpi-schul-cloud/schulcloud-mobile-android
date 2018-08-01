@@ -9,11 +9,25 @@ import kotlin.properties.Delegates
 /**
  * Date: 6/21/2018
  */
-abstract class BaseAdapter<T : Any, VH : BaseViewHolder<T, B>, B : ViewDataBinding>(var emptyIndicator: View? = null)
+abstract class BaseAdapter<T : Any, VH : BaseViewHolder<T, B>, out B : ViewDataBinding>(var emptyIndicator: View? = null)
     : RecyclerView.Adapter<VH>() {
     var items: List<T> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
         emptyIndicator?.visibility = items.isEmpty().asVisibility()
+        recyclerView?.visibility = items.isNotEmpty().asVisibility()
+    }
+
+    var recyclerView: RecyclerView? = null
+        private set
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = null
+        super.onDetachedFromRecyclerView(recyclerView)
     }
 
     override fun getItemCount(): Int = items.size

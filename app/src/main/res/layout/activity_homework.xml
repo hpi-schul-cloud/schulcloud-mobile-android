@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkActivity">
+
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
+        <import type="android.graphics.Color" />
+
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/toolbar"
+            app:title="@{viewModel.homework.title}" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/homework_item_margin">
+
+                    <TextView
+                        android:id="@+id/course_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.homework.course.name}"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/text_smaller_size"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toStartOf="@id/course_color"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Course" />
+
+                    <ImageView
+                        android:id="@+id/course_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:paddingTop="1dp"
+                        android:src="@drawable/circle_course_color"
+                        app:colorFilter="@{viewModel.homework != null? Color.parseColor(viewModel.homework.course.color) : Color.TRANSPARENT}"
+                        app:layout_constraintEnd_toStartOf="@id/guideline"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@id/course_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/duetill_flag"
+                        android:layout_width="13dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{ViewUtilsKt.asVisibility(HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework))}"
+                        app:layout_constraintEnd_toStartOf="@+id/duetill_label"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@id/guideline"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/baseline_outlined_flag_16dp" />
+
+                    <TextView
+                        android:id="@+id/duetill_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{HomeworkUtilsKt.getDueText(viewModel.homework)}"
+                        android:textColor="@{HomeworkUtilsKt.getDueColor(viewModel.homework)}"
+                        android:textSize="@dimen/text_smaller_size"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="In x Stunden fällig" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guideline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                    <org.schulcloud.mobile.views.ContentWebView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        app:content="@{viewModel.homework.description}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/course_title"
+                        tools:ignore="WebViewLayout" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </ScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</layout>

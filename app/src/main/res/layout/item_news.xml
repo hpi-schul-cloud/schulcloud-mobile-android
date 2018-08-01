@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="org.schulcloud.mobile.controllers.main.NewsListAdapter.NewsViewHolder" />
+
+        <variable
+            name="news"
+            type="org.schulcloud.mobile.models.news.News" />
+        <variable
+            name="formattedDate"
+            type="String" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/news_item_margin_vertical"
+        android:layout_marginLeft="@dimen/news_item_margin_horizontal"
+        android:layout_marginRight="@dimen/news_item_margin_horizontal"
+        android:layout_marginTop="@dimen/news_item_margin_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/news_title"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="0"
+            android:gravity="start"
+            android:text="@{news.title}"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/news_date"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="News Title" />
+
+        <TextView
+            android:id="@+id/news_date"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{formattedDate}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/passiveWebView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/news_title"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="DD.MM.YYYY" />
+
+        <org.schulcloud.mobile.views.PassiveWebView
+            android:id="@+id/passiveWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scrollbars="none"
+            app:content="@{news.content}"
+            app:layout_constraintTop_toBottomOf="@+id/news_title"
+            tools:ignore="WebViewLayout"
+            tools:text="Content" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

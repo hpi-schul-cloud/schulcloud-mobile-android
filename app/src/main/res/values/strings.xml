@@ -4,11 +4,16 @@
     <string name="general_action_share">Teilen</string>
     <string name="general_action_showInBrowser">Im Browser anzeigen</string>
     <string name="general_action_refresh">Aktualisieren</string>
+    <string name="general_date_yesterday">Gestern</string>
+    <string name="general_date_today">Heute</string>
+    <string name="general_date_tomorrow">Morgen</string>
 
     <!-- Share -->
-    <string name="share_subject">Schul-Cloud: %1$s</string>
-    <string name="share_subject_general">Schul-Cloud</string>
+    <string name="share_subject_format">%1$s: %2$s</string>
     <string name="share_title">Link teilen</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_error_format">Fehler: %1$s</string>
 
 
     <!-- Login -->
@@ -21,16 +26,16 @@
 
     <string name="login_demo">Du hast keinen Account? Jetzt testen!</string>
     <string name="login_demo_student">Als Schüler einloggen</string>
-    <string name="login_demo_student_username">demo-schueler@schul-cloud.org</string>
-    <string name="login_demo_student_password">schulcloud</string>
+    <string name="login_demo_student_username" translatable="false">demo-schueler@schul-cloud.org</string>
+    <string name="login_demo_student_password" translatable="false">schulcloud</string>
     <string name="login_demo_teacher">Als Lehrer einloggen</string>
-    <string name="login_demo_teacher_username">demo-lehrer@schul-cloud.org</string>
-    <string name="login_demo_teacher_password">schulcloud</string>
+    <string name="login_demo_teacher_username" translatable="false">demo-lehrer@schul-cloud.org</string>
+    <string name="login_demo_teacher_password" translatable="false">schulcloud</string>
 
     <!-- Main -->
     <string name="main_drawer_open">Navigationsleiste öffnen</string>
     <string name="main_drawer_close">Navigationsleiste schließen</string>
-    <string name="main_drawer_dashboard">Übersicht</string>
+    <string name="main_drawer_dashboard">@string/dashboard_title</string>
     <string name="main_drawer_news">Neuigkeiten</string>
     <string name="main_drawer_courses">Kurse</string>
     <string name="main_drawer_calendar">Termine</string>
@@ -39,10 +44,36 @@
     <string name="main_drawer_learnstore">Materialien</string>
     <string name="main_drawer_logout">Abmelden</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_title">Übersicht</string>
+    <!-- Events -->
+    <string name="dashboard_events_none">Keine Termine für den Rest des Tages!</string>
+    <string name="dashboard_events_event_next">danach:</string>
+    <string name="dashboard_events_more">Alle Termine</string>
+    <!-- Homework -->
+    <string name="dashboard_homework">@string/homework_title</string>
+    <string name="dashboard_homework_due0">Nächste heute fällig</string>
+    <string name="dashboard_homework_due1">Nächste morgen fällig</string>
+    <string name="dashboard_homework_dueLater">Nächste in %d Tagen fällig</string>
+    <plurals name="dashboard_homework_openLabel">
+        <item quantity="one">offene Aufgabe</item>
+        <item quantity="other">offene Aufgaben</item>
+    </plurals>
+    <string name="dashboard_homework_weekLabel">in der nächsten Woche</string>
+    <string name="dashboard_homework_more">Alle Hausaufgaben</string>
+    <!-- News -->
+    <string name="dashboard_news">@string/news_title</string>
+    <string name="dashboard_news_none">Es gibt aktuell keine Neuigkeiten</string>
+    <string name="dashboard_news_more">Alle Neuigkeiten</string>
+
+    <!-- News -->
+    <string name="news_title">Neuigkeiten</string>
+    <string name="news_error_empty">Es wurden keine Neuigkeiten gefunden</string>
+
     <!-- Course -->
     <string name="course_title">Meine Kurse</string>
     <string name="course_topics">Themen</string>
-    <string name="courses_error_empty">Es wurden keine Kurse gefunden.</string>
+    <string name="courses_error_empty">Es wurden keine Kurse gefunden</string>
 
     <!-- Topic -->
     <string name="topics_error_empty">Es wurden keine Themen gefunden</string>
@@ -51,6 +82,35 @@
     <string name="content_unsupported_message">%s wird zurzeit nicht unterstützt</string>
     <string name="content_resource_client">via %1$s</string>
     <string name="content_etherpad_openInBrowser">Etherpads können in der App leider noch nicht angezeigt werden. Nutze dafür bitte die Webseite.</string>
-    <string name="contents_error_empty">Es wurden keine Inhalte gefunden.</string>
+    <string name="contents_error_empty">Es wurden keine Inhalte gefunden</string>
+
+    <!-- Homework-->
+    <string name="homework_title">Aufgaben</string>
+    <string name="homework_error_empty">Es wurden keine Aufgaben gefunden</string>
+    <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
+    <string name="homework_due_outdated">Überfällig</string>
+    <string name="homework_due_hours">In %d Stunden fällig</string>
+    <plurals name="homework_due_days">
+        <item quantity="one">Morgen fällig</item>
+        <item quantity="two">Übermorgen</item>
+        <item quantity="other">In %d Tagen</item>
+    </plurals>
+
+    <!-- File -->
+    <string name="file_title">Dateien</string>
+    <string name="fileOverview_my">Persönliche Dateien</string>
+    <string name="fileOverview_my_description">Hier findest du alle deine persönlichen Dateien. Auf diese Dateien hast nur du Zugriff, du kannst sie aber auch mit anderen Nutzern teilen.</string>
+    <string name="fileOverview_courses">Kurs-Dateien</string>
+    <string name="fileOverview_courses_description">Hier findest du alle Dateien, die in den jeweiligen Kursen im Unterricht verwendet werden. Alle Teilnehmer des Kurses, also der Lehrer und die Schüler, haben auf diese Dateien Zugriff.</string>
+    <string name="fileOverview_courses_error">Die Kurse konnten nicht geladen werden</string>
+    <string name="file_directory_my">Meine Dateien</string>
+    <string name="file_directory_course_unknown">Unbekannter Kurs</string>
+    <string name="file_directoryEmpty">Der Ordner ist leer</string>
+    <string name="file_fileOpen_error_404">Die Datei wurde nicht gefunden</string>
+    <string name="file_fileOpen_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
+    <string name="file_fileDownload_progress">Die Datei wird geladen&#8230;</string>
+    <string name="file_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
+    <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
+    <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
 
 </resources>

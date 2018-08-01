@@ -1,7 +1,9 @@
 package org.schulcloud.mobile.controllers.base
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
+import android.view.Menu
 import android.view.MenuItem
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -16,12 +18,27 @@ abstract class BaseFragment : Fragment() {
     var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
         new?.setOnRefreshListener { performRefresh() }
+        new?.isRefreshing = isRefreshing
+    }
+    var isRefreshing: Boolean by Delegates.observable(false) { _, _, new ->
+        swipeRefreshLayout?.isRefreshing = new
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        performRefresh()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+        menu?.findItem(R.id.base_action_share)?.isVisible = url != null
+        menu?.findItem(R.id.base_action_refresh)?.isVisible = swipeRefreshLayout != null
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.fragment_action_share -> context?.shareLink(url!!, activity?.title)
-            R.id.fragment_action_refresh -> performRefresh()
+            R.id.base_action_share -> context?.shareLink(url!!, activity?.title)
+            R.id.base_action_refresh -> performRefresh()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -29,10 +46,10 @@ abstract class BaseFragment : Fragment() {
 
     protected open suspend fun refresh() {}
     protected fun performRefresh() {
-        swipeRefreshLayout?.isRefreshing = true
+        isRefreshing = true
         launch {
             withContext(UI) { refresh() }
-            withContext(UI) { swipeRefreshLayout?.isRefreshing = false }
+            withContext(UI) { isRefreshing = false }
         }
     }
 }

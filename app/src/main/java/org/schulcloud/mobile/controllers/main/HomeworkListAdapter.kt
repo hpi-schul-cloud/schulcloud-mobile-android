@@ -11,6 +11,7 @@ import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemHomeworkBinding
 import org.schulcloud.mobile.models.homework.Homework
+import org.schulcloud.mobile.utils.formatDaysLeft
 
 class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapter<Homework, HomeworkListAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
 
@@ -38,17 +39,6 @@ class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapte
     class HomeworkViewHolder(binding: ItemHomeworkBinding) : BaseViewHolder<Homework, ItemHomeworkBinding>(binding) {
         companion object {
             @JvmStatic
-            fun getHeaderText(homework: Homework): String {
-                return when (homework.dueTimespanDays) {
-                    -1 -> SchulCloudApp.instance.resources.getString(R.string.yesterday)
-                    0 -> SchulCloudApp.instance.resources.getString(R.string.today)
-                    1 -> SchulCloudApp.instance.resources.getString(R.string.tomorrow)
-                    Int.MAX_VALUE -> SchulCloudApp.instance.resources.getString(R.string.homework_error_invalidDueDate)
-                    else -> DateTimeFormat.mediumDate().print(homework.dueDateTime)
-                }
-            }
-
-            @JvmStatic
             fun getTextFromHtml(text: String?): String {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     return Html.fromHtml(text ?: "", Html.FROM_HTML_MODE_LEGACY).toString().trim()
@@ -61,6 +51,7 @@ class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapte
 
         override fun onItemSet() {
             binding.homework = item
+            binding.headerText = item.dueDateTime.formatDaysLeft(context)
         }
     }
 }

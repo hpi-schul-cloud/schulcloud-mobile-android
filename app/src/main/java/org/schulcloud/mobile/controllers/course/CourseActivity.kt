@@ -67,7 +67,7 @@ class CourseActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_course, menu)
+        menuInflater.inflate(R.menu.activity_base, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

@@ -47,7 +47,7 @@ class NewsListFragment : BaseFragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = newsListAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         viewModel.news.observe(this, Observer { newsListAdapter.update(it?: emptyList())})

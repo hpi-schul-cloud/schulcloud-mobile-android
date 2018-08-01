@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.schulcloud.mobile.controllers.homework.HomeworkActivity">
@@ -42,7 +43,7 @@
                         android:id="@+id/course_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.homework.courseId.name}"
+                        android:text="@{viewModel.homework.course.name}"
                         android:textAllCaps="true"
                         android:textSize="@dimen/text_smaller_size"
                         app:layout_constrainedWidth="true"
@@ -63,12 +64,12 @@
                         android:layout_marginStart="8dp"
                         android:paddingTop="1dp"
                         android:src="@drawable/circle_course_color"
+                        app:colorFilter="@{viewModel.homework != null? Color.parseColor(viewModel.homework.course.color) : Color.TRANSPARENT}"
                         app:layout_constraintEnd_toStartOf="@id/guideline"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toEndOf="@id/course_title"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:setcolor="@{viewModel.homework != null? Color.parseColor(viewModel.homework.courseId.color) : Color.TRANSPARENT}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <ImageView
@@ -87,8 +88,8 @@
                         android:id="@+id/duetill_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{HomeworkUtilsKt.getDueTextAndColorId(viewModel.homework).first}"
-                        android:textColor="@{safeUnbox(HomeworkUtilsKt.getDueTextAndColorId(viewModel.homework).second)}"
+                        android:text="@{HomeworkUtilsKt.getDueText(viewModel.homework)}"
+                        android:textColor="@{HomeworkUtilsKt.getDueColor(viewModel.homework)}"
                         android:textSize="@dimen/text_smaller_size"
                         app:layout_constrainedWidth="true"
                         app:layout_constraintEnd_toEndOf="parent"

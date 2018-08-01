@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+
+        <variable
+            name="count"
+            type="Integer" />
+        <variable
+            name="timeToNext"
+            type="String" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        style="@style/Dashboard.Widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Dashboard.Widget.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_homework" />
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/homeworkCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="16sp"
+                    android:paddingRight="16sp"
+                    android:text="@{Integer.toString(count)}"
+                    android:textColor="@color/warn"
+                    android:textSize="70sp"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="RtlSymmetry"
+                    tools:text="11" />
+
+                <TextView
+                    android:id="@+id/openText"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@plurals/dashboard_homework_openLabel(count)}"
+                    app:layout_constraintBottom_toTopOf="@id/weekText"
+                    app:layout_constraintStart_toEndOf="@id/homeworkCount"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/weekText"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dashboard_homework_weekLabel"
+                    app:layout_constraintBottom_toTopOf="@id/next"
+                    app:layout_constraintStart_toEndOf="@id/homeworkCount"
+                    app:layout_constraintTop_toBottomOf="@id/openText" />
+
+                <TextView
+                    android:id="@+id/next"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{timeToNext}"
+                    android:visibility="@{ViewUtilsKt.asVisibility(count != 0)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/homeworkCount"
+                    app:layout_constraintTop_toBottomOf="@id/weekText"
+                    tools:text="Nächste in 3 Tagen fällig" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <!-- Required. Without, only some items of the RecyclerView are shown. -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_homework_grouped" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/more"
+                style="@style/Dashboard.Widget.ButtonMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dashboard_homework_more" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>

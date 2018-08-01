@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
-import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.controllers.homework.HomeworkActivity
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.utils.HOST
+import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
 class HomeworkListFragment : BaseFragment() {
 
@@ -60,7 +60,7 @@ class HomeworkListFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_course_list, menu)
+        inflater?.inflate(R.menu.fragment_base, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

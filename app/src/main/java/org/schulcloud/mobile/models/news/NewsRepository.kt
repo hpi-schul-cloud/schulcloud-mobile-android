@@ -15,7 +15,7 @@ object NewsRepository {
         }
     }
 
-    fun news(realm: Realm): LiveRealmData<News>{
+    fun news(realm: Realm): LiveRealmData<News> {
         return realm.newsDao().listNews()
     }
 
@@ -24,7 +24,7 @@ object NewsRepository {
             override fun onSuccess() {
             }
 
-            override fun onError(code:ErrorCode){
+            override fun onError(code: ErrorCode) {
             }
         }).run()
     }

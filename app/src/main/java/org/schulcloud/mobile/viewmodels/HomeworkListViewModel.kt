@@ -3,7 +3,6 @@ package org.schulcloud.mobile.viewmodels
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import io.realm.Realm
-import io.realm.RealmResults
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 

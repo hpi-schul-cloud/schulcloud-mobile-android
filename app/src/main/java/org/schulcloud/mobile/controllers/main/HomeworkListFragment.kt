@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
-import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.controllers.homework.HomeworkActivity
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.utils.HOST
+import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
 class HomeworkListFragment : BaseFragment() {
 
@@ -20,17 +20,16 @@ class HomeworkListFragment : BaseFragment() {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }
 
-    override var url: String? = "${HOST}/homework"
+    override var url: String? = "$HOST/homework"
 
     private lateinit var viewModel: HomeworkListViewModel
     private val homeworkListAdapter: HomeworkListAdapter by lazy {
-        HomeworkListAdapter{
-            startActivity(HomeworkActivity.newIntent(context!!,it))
+        HomeworkListAdapter {
+            startActivity(HomeworkActivity.newIntent(context!!, it))
         }.apply {
             emptyIndicator = empty
         }
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +37,11 @@ class HomeworkListFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this).get(HomeworkListViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         activity?.title = getString(R.string.homework_title)
         return inflater.inflate(R.layout.fragment_homework_list, container, false)
     }

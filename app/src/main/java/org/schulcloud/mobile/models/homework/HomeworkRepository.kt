@@ -6,24 +6,21 @@ import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.GetHomeworkJob
 import org.schulcloud.mobile.jobs.ListUserHomeworkJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
-import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.utils.homeworkDao
 
 object HomeworkRepository {
-
     init {
         async {
             syncHomeworkList()
         }
     }
 
-
     fun homeworkList(realm: Realm): LiveData<List<Homework>?> {
         return realm.homeworkDao().homeworkList()
     }
 
-    fun homework(realm: Realm, id: String): RealmObjectLiveData<Homework>{
+    fun homework(realm: Realm, id: String): RealmObjectLiveData<Homework> {
         return realm.homeworkDao().homework(id)
     }
 
@@ -32,7 +29,7 @@ object HomeworkRepository {
             override fun onSuccess() {
             }
 
-            override fun onError(code:ErrorCode){
+            override fun onError(code: ErrorCode) {
             }
         }).run()
     }
@@ -42,7 +39,7 @@ object HomeworkRepository {
             override fun onSuccess() {
             }
 
-            override fun onError(code:ErrorCode){
+            override fun onError(code: ErrorCode) {
             }
         }).run()
     }

@@ -12,6 +12,5 @@ class NewsDao(private val realm: Realm) {
                 .sort("createdAt", Sort.DESCENDING)
                 .findAllAsync()
                 .asLiveData()
-
     }
 }

@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions")
+
 package org.schulcloud.mobile.utils
 
 import android.content.res.Resources
@@ -10,7 +11,7 @@ import org.schulcloud.mobile.R
 
 // to be used instead of android:tint for backwards compatibility
 @BindingAdapter("setcolor")
-fun setColor(view: ImageView, color: Int){
+fun setColor(view: ImageView, color: Int) {
     view.setColorFilter(color)
 }
 

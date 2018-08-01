@@ -13,6 +13,7 @@ import org.schulcloud.mobile.models.homework.Homework
  *
  * @return a Pair with duetill label text and color
  */
+@Suppress("ComplexMethod", "MagicNumber")
 fun getDueTextAndColorId(homework: Homework?): Pair<String, Int> {
     val days: Int = homework?.dueTimespanDays ?: Int.MAX_VALUE - 1
 
@@ -23,13 +24,15 @@ fun getDueTextAndColorId(homework: Homework?): Pair<String, Int> {
             val hours = homework?.dueTimespanHours ?: Int.MAX_VALUE - 1
             if (hours >= 0)
                 Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_inHours), Color.RED)
-             else
+            else
                 Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_outdated), Color.RED)
         }
         1 -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_tomorrow), Color.RED)
         2 -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_dayAfterTomorrow), Color.BLACK)
-        in 3..7 -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_inDays), Color.BLACK)
-        Int.MAX_VALUE -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_error_invalidDueDate), Color.BLACK)
+        in 3..7 -> Pair(SchulCloudApp.instance.resources
+                .getString(R.string.homework_due_inDays), Color.BLACK)
+        Int.MAX_VALUE -> Pair(SchulCloudApp.instance.resources
+                .getString(R.string.homework_error_invalidDueDate), Color.BLACK)
         else -> Pair("", Color.TRANSPARENT)
     }
 }

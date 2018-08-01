@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions")
+
 package org.schulcloud.mobile.utils
 
 import android.arch.lifecycle.LiveData
@@ -23,10 +24,10 @@ fun <T : RealmObject> RealmQuery<T>.firstAsLiveData(): LiveData<T?> {
             .map { it?.getOrNull(0) }
 }
 
-fun Realm.newsDao() : NewsDao = NewsDao(this)
+fun Realm.newsDao(): NewsDao = NewsDao(this)
 
 fun Realm.courseDao(): CourseDao = CourseDao(this)
 fun Realm.topicDao(): TopicDao = TopicDao(this)
 fun Realm.contentDao(): ContentDao = ContentDao(this)
 
-fun Realm.homeworkDao() : HomeworkDao = HomeworkDao(this)
+fun Realm.homeworkDao(): HomeworkDao = HomeworkDao(this)

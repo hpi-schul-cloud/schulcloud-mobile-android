@@ -47,11 +47,13 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun demoLoginStudent() {
-        loginViewModel.login(getString(R.string.login_demo_student_username), getString(R.string.login_demo_student_password))
+        loginViewModel.login(getString(R.string.login_demo_student_username),
+                getString(R.string.login_demo_student_password))
     }
 
     private fun demoLoginTeacher() {
-        loginViewModel.login(getString(R.string.login_demo_teacher_username), getString(R.string.login_demo_teacher_password))
+        loginViewModel.login(getString(R.string.login_demo_teacher_username),
+                getString(R.string.login_demo_teacher_password))
     }
 
     private fun handleLoginStatus() {

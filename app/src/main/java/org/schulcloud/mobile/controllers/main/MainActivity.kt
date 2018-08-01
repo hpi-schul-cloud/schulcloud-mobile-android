@@ -52,8 +52,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_dashboard -> {
                 replaceFragment(DashboardFragment(), DashboardFragment.TAG)
             }
+            R.id.nav_news -> {
+                replaceFragment(NewsListFragment(), NewsListFragment.TAG)
+            }
             R.id.nav_courses -> {
                 replaceFragment(CourseListFragment(), CourseListFragment.TAG)
+            }
+            R.id.nav_assignments -> {
+                replaceFragment(HomeworkListFragment(), HomeworkListFragment.TAG)
             }
             R.id.nav_logout -> {
                 UserRepository.logout()

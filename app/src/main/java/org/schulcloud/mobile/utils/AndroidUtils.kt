@@ -86,8 +86,11 @@ fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = MIME_TEXT_PLAIN
         putExtra(Intent.EXTRA_SUBJECT,
-                if (titleContent != null) getString(R.string.share_subject, titleContent)
-                else getString(R.string.share_subject_general))
+                if (titleContent != null)
+                    getString(R.string.share_subject_format,
+                            getString(R.string.brand_name),
+                            titleContent)
+                else getString(R.string.brand_name))
         putExtra(Intent.EXTRA_TEXT, url)
     }
     startActivity(Intent.createChooser(intent, getString(R.string.share_title)))

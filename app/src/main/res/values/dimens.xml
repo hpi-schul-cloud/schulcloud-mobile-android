@@ -6,14 +6,21 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="grid_spacing">5dp</dimen>
+
     <dimen name="content_spacing">16dp</dimen>
 
     <dimen name="content_title_margin">8dp</dimen>
+
+    <dimen name="news_item_margin">20dp</dimen>
 
     <!-- Material Design -->
     <dimen name="material_listItem_height">48dp</dimen>
     <dimen name="material_listItem_paddingHorizontal">16dp</dimen>
     <dimen name="material_listItem_textPrimary_textSize">16sp</dimen>
 
-
+    <dimen name="circle_course_color_diameter">20dp</dimen>
+    <dimen name="text_medium_size">18sp</dimen>
+    <dimen name="text_smaller_size">16sp</dimen>
+    <dimen name="homework_item_margin">20dp</dimen>
+  
 </resources>

@@ -46,4 +46,7 @@ dependencies {
     // instrumented tests
     androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
     androidTestImplementation "com.android.support.test:runner:1.0.2"
+
+    // date and time
+    implementation 'net.danlew:android.joda:2.9.9.4'
 }

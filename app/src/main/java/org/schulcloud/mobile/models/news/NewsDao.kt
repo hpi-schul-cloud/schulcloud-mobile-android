@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models.news
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.Sort
 import org.schulcloud.mobile.utils.asLiveData

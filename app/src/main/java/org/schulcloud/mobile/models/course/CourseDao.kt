@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models.course
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.utils.firstAsLiveData

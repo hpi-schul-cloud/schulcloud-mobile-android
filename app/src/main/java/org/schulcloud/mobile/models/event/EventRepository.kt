@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models.event
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
 import org.schulcloud.mobile.jobs.ListEventsJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback

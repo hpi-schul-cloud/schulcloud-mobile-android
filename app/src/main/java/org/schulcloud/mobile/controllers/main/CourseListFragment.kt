@@ -1,9 +1,9 @@
 package org.schulcloud.mobile.controllers.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.*
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R

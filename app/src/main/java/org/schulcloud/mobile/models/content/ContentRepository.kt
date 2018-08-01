@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models.content
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import android.util.Log
 import io.realm.Realm
 import kotlinx.coroutines.experimental.async

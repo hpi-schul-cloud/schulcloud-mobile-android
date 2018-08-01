@@ -24,7 +24,7 @@
             layout="@layout/toolbar"
             app:title="@{viewModel.homework.title}" />
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/homework_item_margin">
@@ -97,7 +97,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="In x Stunden fällig" />
 
-                    <android.support.constraint.Guideline
+                    <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -114,11 +114,11 @@
                         app:layout_constraintTop_toBottomOf="@id/course_title"
                         tools:ignore="WebViewLayout" />
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </ScrollView>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

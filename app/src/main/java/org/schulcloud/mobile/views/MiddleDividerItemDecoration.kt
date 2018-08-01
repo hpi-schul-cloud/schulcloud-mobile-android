@@ -4,10 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Similar to [DividerItemDecoration], but no divider is drawn after the last item.
@@ -35,7 +35,7 @@ class MiddleDividerItemDecoration(context: Context,
         a.recycle()
     }
 
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent.layoutManager == null)
             return
 
@@ -88,7 +88,7 @@ class MiddleDividerItemDecoration(context: Context,
 
         for (i in 0 until (parent.childCount - 1)) {
             val child = parent.getChildAt(i)
-            parent.layoutManager.getDecoratedBoundsWithMargins(child, mBounds)
+            parent.layoutManager?.getDecoratedBoundsWithMargins(child, mBounds)
             val right = mBounds.right + Math.round(child.translationX)
             val left = right - divider.intrinsicWidth
             divider.setBounds(left, top, right, bottom)

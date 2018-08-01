@@ -1,16 +1,18 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.util.Base64
 import com.google.gson.JsonParser
-import java.nio.charset.Charset
 import java.io.UnsupportedEncodingException
+import java.nio.charset.Charset
 
 class JWTUtil {
-
-    private val KEY_USER_ID = "userId"
+    companion object {
+        private const val KEY_USER_ID = "userId"
+    }
 
     fun decodeToCurrentUser(JWTEncoded: String): String? {
-        try {
+        return try {
             val split = JWTEncoded.split("\\.".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             // get body of jwt
@@ -18,10 +20,10 @@ class JWTUtil {
             val bodyJson = getJson(split[1])
             val jsonObject = jsonParser.parse(bodyJson).getAsJsonObject()
 
-            return jsonObject.get(KEY_USER_ID).getAsString()
+            jsonObject.get(KEY_USER_ID).asString
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
-            return null
+            null
         }
 
     }
@@ -31,5 +33,4 @@ class JWTUtil {
         val decodedBytes = Base64.decode(strEncoded, Base64.URL_SAFE)
         return String(decodedBytes, Charset.forName("UTF-8"))
     }
-
 }

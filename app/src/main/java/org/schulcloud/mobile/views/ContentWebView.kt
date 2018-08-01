@@ -14,12 +14,13 @@ import android.webkit.WebViewClient
 import okhttp3.Request
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
+import java.io.IOException
 
 
-/**
- * Date: 6/11/2018
- */
-open class ContentWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0)
+open class ContentWebView @JvmOverloads constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = 0)
     : WebView(context, attrs, defStyleAttr) {
 
     companion object {
@@ -106,7 +107,9 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                             response.header(HEADER_CONTENT_TYPE)?.substringBefore(';'),
                             response.header(HEADER_CONTENT_ENCODING, ENCODING_UTF_8),
                             response.body()?.byteStream())
-                } catch (e: Exception) {
+                } catch (e: IOException) {
+                    null
+                } catch (e: IllegalStateException) {
                     null
                 }
             }
@@ -129,7 +132,8 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
         super.loadData(data, mimeType, encoding)
     }
 
-    override fun loadDataWithBaseURL(baseUrl: String?, data: String?, mimeType: String?, encoding: String?, historyUrl: String?) {
+    override fun loadDataWithBaseURL(baseUrl: String?, data: String?, mimeType: String?,
+            encoding: String?, historyUrl: String?) {
         clear()
         super.loadDataWithBaseURL(baseUrl, data, mimeType, encoding, historyUrl)
     }

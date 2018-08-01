@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.content.Context
@@ -7,34 +8,25 @@ import org.schulcloud.mobile.SchulCloudApp
 class NetworkUtil {
 
     companion object {
-
-        val TYPE_NOT_CONNECTED = 0
-        val TYPE_WIFI = 1
-        val TYPE_MOBILE = 2
+        const val TYPE_NOT_CONNECTED = 0
+        const val TYPE_WIFI = 1
+        const val TYPE_MOBILE = 2
 
         fun isOnline(): Boolean {
             val context = SchulCloudApp.instance
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val netInfo = cm.activeNetworkInfo
-            return netInfo != null && netInfo.isConnected
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+            return cm?.activeNetworkInfo?.isConnected ?: false
         }
 
         fun getConnectivityStatus(): Int {
             val context = SchulCloudApp.instance
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                    ?: return TYPE_NOT_CONNECTED
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
 
-            val netInfo = cm.activeNetworkInfo
-            if (netInfo != null) {
-                if (netInfo.type == ConnectivityManager.TYPE_WIFI)
-                    return TYPE_WIFI
-
-                if (netInfo.type == ConnectivityManager.TYPE_MOBILE)
-                    return TYPE_MOBILE
+            return when (cm?.activeNetworkInfo?.type) {
+                ConnectivityManager.TYPE_WIFI -> TYPE_WIFI
+                ConnectivityManager.TYPE_MOBILE -> TYPE_MOBILE
+                else -> TYPE_NOT_CONNECTED
             }
-            return TYPE_NOT_CONNECTED
         }
-
     }
-
 }

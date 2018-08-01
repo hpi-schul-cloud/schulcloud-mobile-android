@@ -15,21 +15,21 @@ import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
 
 
-/**
- * Date: 6/11/2018
- */
-sealed class ContentViewHolder<B : ViewDataBinding>(binding: B) : BaseViewHolder<ContentWrapper, B>(binding) {
+sealed class ContentViewHolder<out B : ViewDataBinding>(binding: B)
+    : BaseViewHolder<ContentWrapper, B>(binding) {
     lateinit var topic: Topic
 }
 
-class TextViewHolder(binding: ItemContentTextBinding) : ContentViewHolder<ItemContentTextBinding>(binding) {
+class TextViewHolder(binding: ItemContentTextBinding)
+    : ContentViewHolder<ItemContentTextBinding>(binding) {
     override fun onItemSet() {
         binding.wrapper = item
         binding.content = item.content
     }
 }
 
-class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHolder<ItemContentResourcesBinding>(binding) {
+class ResourcesViewHolder(binding: ItemContentResourcesBinding)
+    : ContentViewHolder<ItemContentResourcesBinding>(binding) {
     private val adapter: ResourceListAdapter
 
     init {
@@ -54,7 +54,8 @@ class ResourcesViewHolder(binding: ItemContentResourcesBinding) : ContentViewHol
     }
 }
 
-class InternalViewHolder(binding: ItemContentInternalBinding) : ContentViewHolder<ItemContentInternalBinding>(binding) {
+class InternalViewHolder(binding: ItemContentInternalBinding)
+    : ContentViewHolder<ItemContentInternalBinding>(binding) {
     override fun onItemSet() {
         binding.wrapper = item
         binding.content = item.content
@@ -66,7 +67,8 @@ class InternalViewHolder(binding: ItemContentInternalBinding) : ContentViewHolde
     }
 }
 
-class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolder<ItemContentGeogebraBinding>(binding) {
+class GeogebraViewHolder(binding: ItemContentGeogebraBinding)
+    : ContentViewHolder<ItemContentGeogebraBinding>(binding) {
     companion object {
         private const val GEOGEBRA = "https://www.geogebra.org/m/"
     }
@@ -93,7 +95,8 @@ class GeogebraViewHolder(binding: ItemContentGeogebraBinding) : ContentViewHolde
     }
 }
 
-class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolder<ItemContentEtherpadBinding>(binding) {
+class EtherpadViewHolder(binding: ItemContentEtherpadBinding)
+    : ContentViewHolder<ItemContentEtherpadBinding>(binding) {
     override fun onItemSet() {
         binding.wrapper = item
         binding.content = item.content
@@ -105,7 +108,8 @@ class EtherpadViewHolder(binding: ItemContentEtherpadBinding) : ContentViewHolde
     }
 }
 
-class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolder<ItemContentNexboardBinding>(binding) {
+class NexboardViewHolder(binding: ItemContentNexboardBinding)
+    : ContentViewHolder<ItemContentNexboardBinding>(binding) {
     companion object {
         private const val URL_SUFFIX = "?username=Test"
     }
@@ -121,7 +125,8 @@ class NexboardViewHolder(binding: ItemContentNexboardBinding) : ContentViewHolde
     }
 }
 
-class UnsupportedViewHolder(binding: ItemContentUnsupportedBinding) : ContentViewHolder<ItemContentUnsupportedBinding>(binding) {
+class UnsupportedViewHolder(binding: ItemContentUnsupportedBinding)
+    : ContentViewHolder<ItemContentUnsupportedBinding>(binding) {
     override fun onItemSet() {
         binding.wrapper = item
         binding.content = item.content

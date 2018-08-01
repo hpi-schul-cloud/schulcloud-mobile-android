@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.arch.lifecycle.LiveData
@@ -18,6 +19,7 @@ import android.util.Log
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.R
 import java.util.*
+
 
 fun logv(tag: String, msg: String, e: Exception? = null) {
     if (!BuildConfig.DEBUG)

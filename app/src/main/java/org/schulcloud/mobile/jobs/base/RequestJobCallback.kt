@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.jobs.base
 
-import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import java.util.*
 
 abstract class RequestJobCallback {
@@ -31,5 +31,4 @@ abstract class RequestJobCallback {
     fun deprecated(deprecationDate: Date) {
         launch(UI) { onDeprecated(deprecationDate) }
     }
-
 }

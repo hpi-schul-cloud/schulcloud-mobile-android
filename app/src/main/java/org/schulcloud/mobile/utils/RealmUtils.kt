@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.arch.lifecycle.LiveData

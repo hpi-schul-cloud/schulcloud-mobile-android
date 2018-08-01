@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.content.ContentValues.TAG
@@ -34,7 +35,7 @@ val HTTP_CLIENT: OkHttpClient by lazy {
     OkHttpClient.Builder().addInterceptor { chain ->
         val builder = chain.request().newBuilder()
         if (UserRepository.isAuthorized)
-            builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
+            builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token)
         chain.proceed(builder.build())
     }.build()
 }
@@ -49,7 +50,9 @@ fun String?.asUri(): Uri {
 fun Context.prepareCustomTab(): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
         setToolbarColor(ContextCompat.getColor(this@prepareCustomTab, R.color.brand_primary))
-        setCloseButtonIcon(ContextCompat.getDrawable(this@prepareCustomTab, R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
+        setCloseButtonIcon(
+                ContextCompat.getDrawable(this@prepareCustomTab,
+                        R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
         addDefaultShareMenuItem()
         setStartAnimations(this@prepareCustomTab, R.anim.slide_in_right, R.anim.slide_out_left)
         setExitAnimations(this@prepareCustomTab, R.anim.slide_in_left, R.anim.slide_out_right)

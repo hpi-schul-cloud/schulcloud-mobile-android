@@ -11,7 +11,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-abstract class BaseViewHolder<T : Any, out B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+abstract class BaseViewHolder<T : Any, out B : ViewDataBinding>(val binding: B)
+    : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
     companion object {
         fun <B : ViewDataBinding> createBinding(parent: ViewGroup, @LayoutRes layoutId: Int): B {
             return DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutId,

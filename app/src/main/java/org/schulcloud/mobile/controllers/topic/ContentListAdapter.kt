@@ -8,9 +8,6 @@ import org.schulcloud.mobile.controllers.base.BaseViewHolder.Companion.createBin
 import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.models.topic.Topic
 
-/**
- * Date: 6/10/2018
- */
 class ContentListAdapter
     : BaseAdapter<ContentWrapper, ContentViewHolder<out ViewDataBinding>, ViewDataBinding>() {
     companion object {
@@ -29,6 +26,7 @@ class ContentListAdapter
     }
 
 
+    @Suppress("MagicNumber")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder<out ViewDataBinding> {
         return when (viewType) {
             0 -> TextViewHolder(createBinding(parent, R.layout.item_content_text))

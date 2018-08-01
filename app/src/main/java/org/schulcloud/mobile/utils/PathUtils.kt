@@ -1,12 +1,10 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.text.TextUtils
 import java.io.File
 
 
-/**
- * Date: 6/19/2018
- */
 fun combinePath(vararg parts: String): String {
     val builder = StringBuilder(parts[0])
     for (i in 1 until parts.size) {

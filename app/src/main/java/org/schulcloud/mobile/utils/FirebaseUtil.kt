@@ -12,7 +12,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.main.DashboardFragment
+import org.schulcloud.mobile.controllers.dashboard.DashboardFragment
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.notifications.CallbackRequest
 import org.schulcloud.mobile.models.notifications.NotificationRepository

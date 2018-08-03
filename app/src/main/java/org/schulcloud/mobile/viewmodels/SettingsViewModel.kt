@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.viewmodels
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import io.realm.Realm
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
@@ -20,6 +21,6 @@ class SettingsViewModel: ViewModel(){
 
     private val _user = UserRepository.currentUser(realm)
 
-    val user: RealmObjectLiveData<User>
+    val user: LiveData<User?>
         get() = _user
 }

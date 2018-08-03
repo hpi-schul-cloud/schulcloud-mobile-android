@@ -1,37 +1,37 @@
-package org.schulcloud.mobile.controllers.user_settings
+package org.schulcloud.mobile.controllers.settings
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
-import kotlinx.android.synthetic.main.activity_user_settings.*
+import kotlinx.android.synthetic.main.fragment_user_settings.*
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseActivity
-import org.schulcloud.mobile.controllers.course.CourseActivity.Companion.EXTRA_ID
+import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
 
-class UserSettingsActivity: BaseActivity(){
+class UserSettingsFragment: BaseFragment(){
     companion object {
-        val TAG = UserSettingsActivity::class.java
+        val TAG = UserSettingsFragment::class.java.simpleName
     }
 
     private lateinit var userSettingsViewModel: UserSettingsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_settings)
         userSettingsViewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
     }
 
-    override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_user_settings,container)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         user_edit_submit.setOnClickListener({patchUser()})
-        return super.onCreateView(name, context, attrs)
+        super.onViewCreated(view, savedInstanceState)
     }
 
     fun patchUser(){

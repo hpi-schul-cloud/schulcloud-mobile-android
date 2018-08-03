@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.main
+package org.schulcloud.mobile.controllers.settings
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -7,25 +7,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
+import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.activity_settings.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.controllers.base.OnItemSelectedCallback
-import org.schulcloud.mobile.controllers.course.CourseActivity
-import org.schulcloud.mobile.controllers.user_settings.UserSettingsActivity
+import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.viewmodels.DeviceListViewModel
 import org.schulcloud.mobile.viewmodels.SettingsViewModel
-import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
 
-class SettingsFragment: BaseFragment() {
+class SettingsActivity: BaseActivity() {
 
     companion object {
-        var TAG: String = SettingsFragment::class.java.simpleName
+        var TAG: String = SettingsActivity::class.java.simpleName
     }
 
     fun openWebPage(url: String) {
@@ -34,19 +29,19 @@ class SettingsFragment: BaseFragment() {
         val bundle = Bundle()
         bundle.putBoolean("new_window", true)
         webIntent.putExtras(bundle)
-        this.context!!.startActivity(webIntent)
+        startActivity(webIntent)
     }
 
     fun openMail() {
         var emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "schul-cloud@hpi.de", null))
 
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Schul-Cloud Anfrage")
-        this.context!!.startActivity(emailIntent)
+        startActivity(emailIntent)
     }
 
     private val deviceListAdapter by lazy {
-        DeviceListAdapter(OnItemSelectedCallback {id ->
-            devicesViewModel.deleteDevice(id)
+        DeviceListAdapter({
+            devicesViewModel.deleteDevice(it)
         }, devices_chevron, settings_devices_empty)
     }
 
@@ -55,18 +50,13 @@ class SettingsFragment: BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         devicesViewModel = ViewModelProviders.of(this).get(DeviceListViewModel::class.java)
         settingsViewModel =  ViewModelProviders.of(this).get(SettingsViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.settings)
-        return inflater.inflate(R.layout.fragment_settings,container,false)
-    }
+    override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View {
+        title = getString(R.string.settings)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = settings_swipeRefresh
 
         settings_open_source.setOnClickListener({openWebPage(getString(R.string.settings_open_source_address))})
@@ -84,8 +74,10 @@ class SettingsFragment: BaseFragment() {
         })
 
         user_settings_open.setOnClickListener {
-            val intent = Intent(activity,UserSettingsActivity::class.java)
-            activity?.startActivity(intent)
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container,UserSettingsFragment(),UserSettingsFragment.TAG)
+                    .addToBackStack(null)
+                    .commit()
         }
 
         settings_devices_list.setOnClickListener({devicesViewModel.getDevices().observe(this, Observer {
@@ -100,6 +92,7 @@ class SettingsFragment: BaseFragment() {
         for(string in resources.getStringArray(R.array.contributors_names)) run {
             settings_contributor_list.append(string + "\n")
         }
+        return super.onCreateView(name, context, attrs)
     }
 
     override suspend fun refresh() {

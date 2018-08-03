@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.models.notifications
 
+import android.arch.lifecycle.LiveData
 import com.google.gson.JsonParser
 import io.realm.Realm
 import org.schulcloud.mobile.jobs.*
@@ -15,11 +16,11 @@ object NotificationRepository{
     var deviceToken: String? = null
         get() = DeviceStorage().deviceToken
 
-    fun getDevices(realm: Realm): LiveRealmData<Device>{
+    fun getDevices(realm: Realm): LiveData<List<Device>> {
         return realm.devicesDao().devices()
     }
 
-    fun getDevice(deviceId: String, realm: Realm): RealmObjectLiveData<Device>{
+    fun getDevice(deviceId: String, realm: Realm): LiveData<Device?>{
         return realm.devicesDao().device(deviceId)
     }
 

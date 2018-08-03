@@ -10,11 +10,9 @@ import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.news.News
-import org.schulcloud.mobile.models.devices.Device
-import org.schulcloud.mobile.models.devices.DeviceRequest
-import org.schulcloud.mobile.models.notifications.CallbackRequest
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.DeviceRequest
+import org.schulcloud.mobile.models.notifications.CallbackRequest
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User

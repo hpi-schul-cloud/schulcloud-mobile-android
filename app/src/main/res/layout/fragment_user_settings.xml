@@ -131,7 +131,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Button"
+            style="@style/Material.Button"
             android:text="@string/user_settings_submit"
             android:textSize="24sp"
             android:layout_gravity="center"

@@ -9,7 +9,6 @@ import org.schulcloud.mobile.models.course.CourseDao
 import org.schulcloud.mobile.models.event.EventDao
 import org.schulcloud.mobile.models.file.FileDao
 import org.schulcloud.mobile.models.news.NewsDao
-import org.schulcloud.mobile.models.devices.DeviceDao
 import org.schulcloud.mobile.models.notifications.DeviceDao
 import org.schulcloud.mobile.models.topic.TopicDao
 import org.schulcloud.mobile.models.homework.HomeworkDao

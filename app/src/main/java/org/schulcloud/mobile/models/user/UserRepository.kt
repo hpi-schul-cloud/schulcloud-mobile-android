@@ -1,4 +1,5 @@
 package org.schulcloud.mobile.models.user
+import android.arch.lifecycle.LiveData
 import io.realm.Realm
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
@@ -10,11 +11,6 @@ import org.schulcloud.mobile.jobs.*
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
-import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.models.event.EventRepository
-import org.schulcloud.mobile.models.news.NewsRepository
-import org.schulcloud.mobile.models.homework.HomeworkRepository
-import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.storages.UserStorage
 import org.schulcloud.mobile.utils.asLiveData
 
@@ -29,6 +25,10 @@ object UserRepository {
     val isAuthorized: Boolean
         get() = UserStorage().accessToken != null
 
+    @JvmStatic
+    val userId: String?
+        get() = UserStorage().userId
+
 
     fun login(email: String, password: String, callback: RequestJobCallback) {
         launch {
@@ -39,13 +39,13 @@ object UserRepository {
         }
     }
 
-    fun currentUser(realm: Realm): RealmObjectLiveData<User>{
+    fun currentUser(realm: Realm): LiveData<User?> {
         return realm.where(User::class.java)
                 .findFirstAsync()
                 .asLiveData()
     }
 
-    fun getAccount(realm: Realm): RealmObjectLiveData<Account>{
+    fun getAccount(realm: Realm): LiveData<Account?>{
         return realm.where(Account::class.java)
                 .findFirstAsync()
                 .asLiveData()

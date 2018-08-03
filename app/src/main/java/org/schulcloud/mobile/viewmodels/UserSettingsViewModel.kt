@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.viewmodels
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.common.UserRecoverableException
 import io.realm.Realm
@@ -16,10 +17,10 @@ class UserSettingsViewModel: ViewModel(){
     private val _user = UserRepository.currentUser(realm)
     private val _account = UserRepository.getAccount(realm)
 
-    val user: RealmObjectLiveData<User>
+    val user: LiveData<User?>
         get() = _user
 
-    val account: RealmObjectLiveData<Account>
+    val account: LiveData<Account?>
         get() = _account
 
     suspend fun patchUser(user: User){

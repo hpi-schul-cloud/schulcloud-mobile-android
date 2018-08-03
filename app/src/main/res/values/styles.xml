@@ -83,7 +83,7 @@
 
     <style name="TextHeader_Settings_H6">
         <item name="android:textSize">@dimen/material_h6</item>
-        <item name="android:textColor">@color/hpiRed</item>
+        <item name="android:textColor">@color/brand_hpiRed</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
     </style>

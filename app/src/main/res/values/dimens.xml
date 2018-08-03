@@ -14,17 +14,6 @@
     <dimen name="news_item_margin_horizontal">16dp</dimen>
     <dimen name="news_item_margin_vertical">12dp</dimen>
 
-    <!-- Material Design -->
-    <dimen name="material_listItem_height">48dp</dimen>
-    <dimen name="material_listItem_paddingHorizontal">16dp</dimen>
-    <dimen name="material_listItem_textPrimary_textSize">16sp</dimen>
-    <dimen name="material_body_1">16sp</dimen>
-    <dimen name="material_body_2">14sp</dimen>
-    <dimen name="material_b1">16sp</dimen>
-    <dimen name="material_b2">14sp</dimen>
-    <dimen name="material_h5">24sp</dimen>
-    <dimen name="material_h6">20sp</dimen>
-
     <dimen name="circle_course_color_diameter">20dp</dimen>
     <dimen name="text_medium_size">18sp</dimen>
     <dimen name="text_smaller_size">16sp</dimen>

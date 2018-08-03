@@ -2,7 +2,6 @@ package org.schulcloud.mobile.controllers.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -14,6 +13,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.dashboard.DashboardFragment
 import org.schulcloud.mobile.controllers.login.LoginActivity
+import org.schulcloud.mobile.controllers.settings.SettingsActivity
 import org.schulcloud.mobile.models.user.UserRepository
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -67,7 +67,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 showLoginActivity()
             }
             R.id.nav_settings -> {
-                replaceFragment(SettingsFragment(), SettingsFragment.TAG)
+                var intent = Intent(this,SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
 

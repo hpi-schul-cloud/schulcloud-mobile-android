@@ -19,4 +19,10 @@
     <dimen name="material_card_marginVertical">8dp</dimen>
     <dimen name="material_card_padding">10dp</dimen>
 
+    <!-- Text headers and body -->
+    <dimen name="material_b1">16sp</dimen>
+    <dimen name="material_b2">14sp</dimen>
+    <dimen name="material_h5">24sp</dimen>
+    <dimen name="material_h6">20sp</dimen>
+
 </resources>

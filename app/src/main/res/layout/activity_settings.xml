@@ -120,8 +120,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/user_settings_change_account"
-                            style="@style/Button"
-                            android:background="@color/hpiRed"
+                            style="@style/Material.Button"
+                            android:background="@color/brand_hpiRed"
                             android:layout_gravity="center"
                             android:layout_marginTop="5dp"
                             android:id="@+id/user_settings_open"/>
@@ -134,9 +134,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settings_notifications" />
 
-
                     <Button
-                        style="@style/Button"
+                        style="@style/Material.Button"
                         android:id="@+id/settings_register_device"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -47,6 +47,10 @@ dependencies {
     androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
     androidTestImplementation "com.android.support.test:runner:1.0.2"
 
+    //firebase
+    implementation "com.google.firebase:firebase-core:16.0.1"
+    implementation "com.google.firebase:firebase-messaging:17.1.0"
+
     // date and time
     implementation 'net.danlew:android.joda:2.9.9.4'
 }

@@ -21,11 +21,11 @@
         android:icon="@drawable/ic_table"
         android:title="@string/main_drawer_calendar" />
     <item
-        android:id="@+id/fragment_assignments"
+        android:id="@+id/fragment_homeworkList"
         android:icon="@drawable/ic_tasks"
         android:title="@string/main_drawer_homework" />
     <item
-        android:id="@+id/fragment_files"
+        android:id="@+id/fragment_fileOverview"
         android:icon="@drawable/ic_folder_open"
         android:title="@string/main_drawer_files" />
     <item

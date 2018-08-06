@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorAccent">@color/brand_accent</item>
@@ -10,6 +10,8 @@
         <item name="windowNoTitle">true</item>
 
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
+
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialogTheme</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base" />

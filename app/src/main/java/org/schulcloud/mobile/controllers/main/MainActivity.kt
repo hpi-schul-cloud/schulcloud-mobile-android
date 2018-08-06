@@ -2,13 +2,10 @@ package org.schulcloud.mobile.controllers.main
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.navigation.NavigationView
-import androidx.fragment.app.Fragment
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.dashboard.DashboardFragment
@@ -28,25 +25,25 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun setupNavigation(isFirstRun: Boolean) {
-        setSupportActionBar(toolbar)
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
-                R.string.main_drawer_open, R.string.main_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        nav_view.setNavigationItemSelectedListener(this)
-        if (isFirstRun) {
-            nav_view.setCheckedItem(R.id.nav_dashboard)
-            addFragment(DashboardFragment(), DashboardFragment.TAG)
-        }
+        setSupportActionBar(bottomAppBar)
+        //        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,
+        //                R.string.main_drawer_open, R.string.main_drawer_close)
+        //        drawer_layout.addDrawerListener(toggle)
+        //        toggle.syncState()
+        //
+        //        nav_view.setNavigationItemSelectedListener(this)
+        //        if (isFirstRun) {
+        //            nav_view.setCheckedItem(R.id.nav_dashboard)
+        //            addFragment(DashboardFragment(), DashboardFragment.TAG)
+        //        }
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+        //        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+        //            drawer_layout.closeDrawer(GravityCompat.START)
+        //        } else {
+        //            super.onBackPressed()
+        //        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -67,7 +64,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
         }
 
-        drawer_layout.closeDrawer(GravityCompat.START)
+        //        drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -78,10 +75,22 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun replaceFragment(fragment: Fragment, tag: String) {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container, fragment, tag)
-                .addToBackStack(tag)
-                .commit()
+        //        supportFragmentManager.beginTransaction()
+        //                .replace(R.id.container, fragment, tag)
+        //                .addToBackStack(tag)
+        //                .commit()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                val navDrawer = NavigationDrawerFragment()
+                navDrawer.show(supportFragmentManager, navDrawer.tag)
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     private fun showLoginActivity() {

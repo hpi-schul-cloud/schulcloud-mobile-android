@@ -24,19 +24,13 @@
             android:layout_height="wrap_content"
             android:text="@string/dashboard_news_none" />
 
-        <!-- Required. Without, only some items of the RecyclerView are shown. -->
-        <RelativeLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_news" />
-
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_news" />
 
         <Button
             android:id="@+id/more"

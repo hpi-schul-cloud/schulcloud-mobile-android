@@ -13,7 +13,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:ignore="PrivateResource">
 
-
             <LinearLayout
                 android:id="@+id/contentList"
                 style="@style/Material.List"
@@ -21,7 +20,6 @@
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical" />
-
 
     </androidx.core.widget.NestedScrollView>
 

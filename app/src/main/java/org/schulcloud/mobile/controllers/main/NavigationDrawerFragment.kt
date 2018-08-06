@@ -19,6 +19,15 @@ class NavigationDrawerFragment : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        NavigationUI.setupWithNavController(navigationView, findNavController(this))
+        // TODO: Handle logout
+
+        val navController = findNavController(this)
+        NavigationUI.setupWithNavController(navigationView, navController)
+        var firstNavigation = true
+        navController.addOnNavigatedListener { _, _ ->
+            if (!firstNavigation)
+                dismiss()
+            firstNavigation = !firstNavigation
+        }
     }
 }

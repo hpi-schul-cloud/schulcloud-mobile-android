@@ -1,13 +1,11 @@
 package org.schulcloud.mobile.controllers.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
-import org.schulcloud.mobile.controllers.login.LoginActivity
 
 class MainActivity : BaseActivity() {
 
@@ -33,12 +31,5 @@ class MainActivity : BaseActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
         return true
-    }
-
-    private fun showLoginActivity() {
-        val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
     }
 }

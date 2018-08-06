@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.Sort
 import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.firstAsLiveData
 import org.schulcloud.mobile.utils.map
 
 class HomeworkDao(private val realm: Realm) {
@@ -42,7 +43,6 @@ class HomeworkDao(private val realm: Realm) {
         return realm.where(Homework::class.java)
                 .sort("dueDate", Sort.ASCENDING)
                 .equalTo("id", id)
-                .findFirstAsync()
-                .asLiveData()
+                .firstAsLiveData()
     }
 }

@@ -1,57 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:behavior_hideable="true"
-    app:layout_behavior="@string/bottom_sheet_behavior">
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.NavigationDrawerViewModel" />
+        <variable
+            name="onLogout"
+            type="kotlin.jvm.functions.Function0" />
+    </data>
 
     <LinearLayout
-        android:id="@+id/header"
-        style="@style/Material.ListItem"
-        layout="@layout/item_file"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="96dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
-        <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/header"
+            style="@style/Material.ListItem"
+            layout="@layout/item_file"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="56dp"
-            android:layout_marginLeft="56dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_weight="1"
-            tools:text="Klara Fall" />
+            android:minHeight="96dp">
 
-        <ImageView
-            style="@style/Material.ListItem_Icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:padding="16dp"
-            app:srcCompat="@drawable/ic_sign_out_alt" />
+            <TextView
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@{viewModel.user.name}"
+                android:layout_weight="1"
+                tools:text="Klara Fall" />
+
+            <ImageView
+                style="@style/Material.ListItem_Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:onClick="@{() -> onLogout.invoke()}"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="16dp"
+                app:srcCompat="@drawable/ic_sign_out_alt" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/material_divider" />
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:menu="@menu/activity_main_drawer" />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/material_divider" />
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:menu="@menu/activity_main_drawer" />
-
-</LinearLayout>
+</layout>

@@ -6,11 +6,13 @@
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorAccent">@color/brand_accent</item>
 
+        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
 
+        <item name="actionOverflowButtonStyle">@style/AppTheme.ActionButtonOverflowStyle</item>
         <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialogTheme</item>
     </style>
 
@@ -18,8 +20,12 @@
 
     <style name="AppTheme.TranslucentStatus" />
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="AppTheme.BottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
+    </style>
 
 </resources>

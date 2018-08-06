@@ -1,16 +1,16 @@
 package org.schulcloud.mobile.controllers.dashboard
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.widget_news.*
 import org.joda.time.Days
 import org.joda.time.LocalDateTime
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.main.HomeworkListFragment
 import org.schulcloud.mobile.databinding.WidgetHomeworkBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.viewmodels.HomeworkWidgetViewModel
@@ -24,7 +24,8 @@ class HomeworkWidget : Widget() {
     private lateinit var viewModel: HomeworkWidgetViewModel
     private val adapter: HomeworkAdapter by lazy {
         HomeworkAdapter {
-            showFragment(HomeworkListFragment(), HomeworkListFragment.TAG)
+            findNavController(this)
+                    .navigate(R.id.action_dashboardFragment_to_homeworkListFragment)
         }
     }
     private lateinit var binding: WidgetHomeworkBinding
@@ -70,7 +71,8 @@ class HomeworkWidget : Widget() {
         }
 
         more.setOnClickListener {
-            showFragment(HomeworkListFragment(), HomeworkListFragment.TAG)
+            findNavController(this)
+                    .navigate(R.id.action_dashboardFragment_to_homeworkListFragment)
         }
     }
 

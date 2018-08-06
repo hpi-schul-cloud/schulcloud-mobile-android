@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.drawer_navigation.*
 import org.schulcloud.mobile.R
 
 class NavigationDrawerFragment : BottomSheetDialogFragment() {
@@ -16,5 +19,6 @@ class NavigationDrawerFragment : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        NavigationUI.setupWithNavController(navigationView, findNavController(this))
     }
 }

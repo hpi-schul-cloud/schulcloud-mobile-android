@@ -8,17 +8,13 @@
     android:fitsSystemWindows="true"
     tools:context="org.schulcloud.mobile.controllers.main.MainActivity">
 
-    <ScrollView
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <View
+        <fragment
+            android:id="@+id/navHost"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="2000dp" />
-
-    </ScrollView>
+            android:layout_height="wrap_content"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"

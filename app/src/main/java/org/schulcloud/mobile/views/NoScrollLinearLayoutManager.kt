@@ -12,5 +12,4 @@ class NoScrollLinearLayoutManager(context: Context,
     override fun canScrollVertically(): Boolean {
         return false
     }
-
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/fragment_dashboard">
+
+    <fragment
+        android:id="@+id/fragment_dashboard"
+        android:name="org.schulcloud.mobile.controllers.dashboard.DashboardFragment"
+        android:label="DashboardFragment"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_newsListFragment"
+            app:destination="@id/fragment_newsList" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_courseListFragment"
+            app:destination="@id/fragment_courseList" />
+        <!--<action
+            android:id="@+id/action_dashboardFragment_to_calendarFragment"
+            app:destination="@id/fragment_calendar" />-->
+        <action
+            android:id="@+id/action_dashboardFragment_to_homeworkListFragment"
+            app:destination="@id/fragment_homeworkList" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_fileOverviewFragment"
+            app:destination="@id/fragment_fileOverview" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_newsList"
+        android:name="org.schulcloud.mobile.controllers.main.NewsListFragment"
+        tools:layout="@layout/fragment_news_list" />
+
+    <fragment
+        android:id="@+id/fragment_courseList"
+        android:name="org.schulcloud.mobile.controllers.main.CourseListFragment"
+        tools:layout="@layout/fragment_course_list" />
+
+    <!--<fragment
+        android:id="@+id/fragment_calendar"
+        android:name="org.schulcloud.mobile.controllers.main.CalendarFragment"
+        tools:layout="@layout/fragment_calendar" />-->
+
+    <fragment
+        android:id="@+id/fragment_homeworkList"
+        android:name="org.schulcloud.mobile.controllers.main.HomeworkListFragment"
+        tools:layout="@layout/fragment_homework_list" />
+
+    <fragment
+        android:id="@+id/fragment_fileOverview"
+        android:name="org.schulcloud.mobile.controllers.main.FileOverviewFragment"
+        tools:layout="@layout/fragment_file_overview" />
+
+</navigation>

@@ -4,46 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group
-        android:id="@+id/nav_group_1"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_th_large"
-            android:title="@string/main_drawer_dashboard" />
-        <item
-            android:id="@+id/nav_news"
-            android:icon="@drawable/ic_newspaper"
-            android:title="@string/main_drawer_news" />
-        <item
-            android:id="@+id/nav_courses"
-            android:icon="@drawable/ic_graduation_cap"
-            android:title="@string/main_drawer_courses" />
-        <item
-            android:id="@+id/nav_calendar"
-            android:icon="@drawable/ic_table"
-            android:title="@string/main_drawer_calendar" />
-        <item
-            android:id="@+id/nav_assignments"
-            android:icon="@drawable/ic_tasks"
-            android:title="@string/main_drawer_homework" />
-        <item
-            android:id="@+id/nav_files"
-            android:icon="@drawable/ic_folder_open"
-            android:title="@string/main_drawer_files" />
-        <item
-            android:id="@+id/nav_learnstore"
-            android:icon="@drawable/ic_search"
-            android:title="@string/main_drawer_learnstore" />
-    </group>
-
-    <group
-        android:id="@+id/nav_group_2"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_sign_out_alt"
-            android:title="@string/main_drawer_logout" />
-    </group>
+    <item
+        android:id="@+id/fragment_dashboard"
+        android:icon="@drawable/ic_th_large"
+        android:title="@string/main_drawer_dashboard" />
+    <item
+        android:id="@+id/fragment_newsList"
+        android:icon="@drawable/ic_newspaper"
+        android:title="@string/main_drawer_news" />
+    <item
+        android:id="@+id/fragment_courseList"
+        android:icon="@drawable/ic_graduation_cap"
+        android:title="@string/main_drawer_courses" />
+    <item
+        android:id="@+id/fragment_calendar"
+        android:icon="@drawable/ic_table"
+        android:title="@string/main_drawer_calendar" />
+    <item
+        android:id="@+id/fragment_assignments"
+        android:icon="@drawable/ic_tasks"
+        android:title="@string/main_drawer_homework" />
+    <item
+        android:id="@+id/fragment_files"
+        android:icon="@drawable/ic_folder_open"
+        android:title="@string/main_drawer_files" />
+    <item
+        android:id="@+id/fragment_learnstore"
+        android:icon="@drawable/ic_search"
+        android:title="@string/main_drawer_learnstore" />
 
 </menu>

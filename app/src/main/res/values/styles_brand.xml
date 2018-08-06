@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.BottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
+    <style name="AppTheme.ActionButtonOverflowStyle" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_vert_white_24dp</item>
     </style>
 
     <style name="AppTheme.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">

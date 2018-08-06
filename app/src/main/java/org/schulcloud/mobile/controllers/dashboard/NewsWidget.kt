@@ -1,15 +1,15 @@
 package org.schulcloud.mobile.controllers.dashboard
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.NewsListAdapter
-import org.schulcloud.mobile.controllers.main.NewsListFragment
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.utils.limit
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
@@ -50,7 +50,8 @@ class NewsWidget : Widget() {
         newsAdapter.emptyIndicator = empty
 
         more.setOnClickListener {
-            showFragment(NewsListFragment(), NewsListFragment.TAG)
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_dashboardFragment_to_newsListFragment)
         }
     }
 

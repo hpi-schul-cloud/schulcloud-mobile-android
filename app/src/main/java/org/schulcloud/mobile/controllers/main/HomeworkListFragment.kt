@@ -1,17 +1,15 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.os.Bundle
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.*
 import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.homework.HomeworkActivity
-import org.schulcloud.mobile.models.homework.HomeworkRepository
-import org.schulcloud.mobile.utils.HOST
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
 class HomeworkListFragment : BaseFragment() {
@@ -20,7 +18,7 @@ class HomeworkListFragment : BaseFragment() {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }
 
-    override var url: String? = "${HOST}/homework"
+//    override var url: String? = "${HOST}/homework"
 
     private lateinit var viewModel: HomeworkListViewModel
     private val homeworkListAdapter: HomeworkListAdapter by lazy {
@@ -46,7 +44,7 @@ class HomeworkListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = swipeRefresh
+//        swipeRefreshLayout = swipeRefresh
 
         viewModel.homework.observe(this, Observer {
             homeworkListAdapter.update(it ?: emptyList())
@@ -60,11 +58,11 @@ class HomeworkListFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_base, menu)
+        inflater?.inflate(R.menu.fragment_main, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override suspend fun refresh() {
-        HomeworkRepository.syncHomeworkList()
-    }
+//    override suspend fun refresh() {
+//        HomeworkRepository.syncHomeworkList()
+//    }
 }

@@ -1,16 +1,14 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.os.Bundle
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.*
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.models.news.NewsRepository
-import org.schulcloud.mobile.utils.HOST
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 
 class NewsListFragment : BaseFragment() {
@@ -19,7 +17,7 @@ class NewsListFragment : BaseFragment() {
         val TAG: String = NewsListFragment::class.java.simpleName
     }
 
-    override var url: String? = "$HOST/news"
+//    override var url: String? = "$HOST/news"
 
     private val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter().apply {
@@ -42,7 +40,7 @@ class NewsListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = swipeRefresh
+//        swipeRefreshLayout = swipeRefresh
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -58,7 +56,7 @@ class NewsListFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override suspend fun refresh() {
-        NewsRepository.syncNews()
-    }
+//    override suspend fun refresh() {
+//        NewsRepository.syncNews()
+//    }
 }

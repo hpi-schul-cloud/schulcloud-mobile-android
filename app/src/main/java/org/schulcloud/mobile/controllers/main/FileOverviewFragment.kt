@@ -1,17 +1,15 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.os.Bundle
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.view.*
 import kotlinx.android.synthetic.main.fragment_file_overview.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.file.FileActivity
-import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.utils.HOST
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
 class FileOverviewFragment : BaseFragment() {
@@ -19,7 +17,7 @@ class FileOverviewFragment : BaseFragment() {
         val TAG: String = FileOverviewFragment::class.java.simpleName
     }
 
-    override var url: String? = "$HOST/files"
+//    override var url: String? = "$HOST/files"
 
     private lateinit var viewModel: FileOverviewViewModel
     private val coursesAdapter: FileOverviewCourseAdapter by lazy {
@@ -43,7 +41,7 @@ class FileOverviewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = swipeRefresh
+//        swipeRefreshLayout = swipeRefresh
         personal_card.setOnClickListener {
             startActivity(FileActivity.newIntent(context!!, FileRepository.pathPersonal()))
         }
@@ -63,7 +61,7 @@ class FileOverviewFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override suspend fun refresh() {
-        CourseRepository.syncCourses()
-    }
+//    override suspend fun refresh() {
+//        CourseRepository.syncCourses()
+//    }
 }

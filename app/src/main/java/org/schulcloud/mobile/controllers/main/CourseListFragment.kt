@@ -1,16 +1,14 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.os.Bundle
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
-import android.view.*
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.course.CourseActivity
-import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.utils.HOST
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
@@ -19,7 +17,7 @@ class CourseListFragment : BaseFragment() {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
 
-    override var url: String? = "$HOST/courses"
+//    override var url: String? = "$HOST/courses"
 
     private lateinit var viewModel: CourseListViewModel
     private val coursesAdapter: CourseListAdapter by lazy {
@@ -43,7 +41,7 @@ class CourseListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = swipeRefresh
+//        swipeRefreshLayout = swipeRefresh
 
         viewModel.courses.observe(this, Observer { courses ->
             coursesAdapter.update(courses!!)
@@ -57,11 +55,11 @@ class CourseListFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_base, menu)
+        inflater?.inflate(R.menu.fragment_main, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override suspend fun refresh() {
-        CourseRepository.syncCourses()
-    }
+//    override suspend fun refresh() {
+//        CourseRepository.syncCourses()
+//    }
 }

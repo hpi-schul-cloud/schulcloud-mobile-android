@@ -1,12 +1,11 @@
 package org.schulcloud.mobile.controllers.base
 
 import android.content.pm.PackageManager
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.appcompat.app.AppCompatActivity
-import android.view.MenuItem
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
@@ -44,16 +43,7 @@ abstract class BaseActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onBackPressed() {
-        if (!navigateUp())
-            super.onBackPressed()
-    }
-
-
     protected fun setupActionBar() {
-        if (toolbar != null)
-            setSupportActionBar(toolbar)
-
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }

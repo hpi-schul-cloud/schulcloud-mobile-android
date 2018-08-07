@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -30,9 +30,6 @@ abstract class MainFragment : BaseFragment() {
 
     abstract val config: MainFragmentConfig
 
-    var title by Delegates.observable<String?>(null) { _, _, new ->
-        mainViewModel.title.value = new
-    }
     open var url: String? = null
     protected var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
@@ -54,14 +51,10 @@ abstract class MainFragment : BaseFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh)
-        (activity as MainActivity).setSupportActionBar(view.findViewById(R.id.toolbar))
-    }
-
     override fun onResume() {
         super.onResume()
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
+        (activity as MainActivity).setSupportActionBar(view?.findViewById(R.id.toolbar))
         notifyConfigChanged()
     }
 
@@ -88,6 +81,14 @@ abstract class MainFragment : BaseFragment() {
             else -> return super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    protected fun setTitle(title: String) {
+        mainViewModel.title.value = title
+    }
+
+    protected fun setTitle(@StringRes titleRes: Int) {
+        mainViewModel.title.value = getString(titleRes)
     }
 
     protected open suspend fun refresh() {}

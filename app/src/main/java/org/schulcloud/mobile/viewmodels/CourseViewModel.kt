@@ -8,9 +8,6 @@ import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.topic.TopicRepository
 
-/**
- * Date: 6/9/2018
- */
 class CourseViewModel(id: String) : ViewModel() {
 
     private val realm: Realm by lazy {

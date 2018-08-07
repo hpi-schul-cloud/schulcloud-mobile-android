@@ -28,15 +28,16 @@ class NavigationDrawerFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DrawerNavigationBinding.inflate(layoutInflater)
-        binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
-        binding.onLogout = {
-            UserRepository.logout()
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            activity?.finish()
+        val binding = DrawerNavigationBinding.inflate(layoutInflater).also {
+            it.viewModel = viewModel
+            it.setLifecycleOwner(this)
+            it.onLogout = {
+                UserRepository.logout()
+                val intent = Intent(context, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                activity?.finish()
+            }
         }
         return binding.root
     }

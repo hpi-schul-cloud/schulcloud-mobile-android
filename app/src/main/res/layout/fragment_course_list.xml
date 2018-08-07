@@ -15,6 +15,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <include layout="@layout/toolbar" />
+
             <TextView
                 android:id="@android:id/empty"
                 style="@style/Content_Text.Empty"

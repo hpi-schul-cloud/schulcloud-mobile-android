@@ -14,12 +14,11 @@ import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
+import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph
 import org.schulcloud.mobile.R
 import java.util.*
 
-/**
- * Date: 6/15/2018
- */
 
 fun Map<String, String>.asBundle(): Bundle {
     return Bundle().apply {
@@ -65,3 +64,14 @@ fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): I
     ta.recycle()
     return colors
 }
+
+/** Copied from [NavigationUI#findStartDestination] */
+val NavGraph.nestedStartDestination: NavDestination
+    get() {
+        var startDestination: NavDestination = this
+        while (startDestination is NavGraph) {
+            val parent = startDestination
+            startDestination = parent.findNode(parent.startDestination)
+        }
+        return startDestination
+    }

@@ -41,12 +41,12 @@ class FileActivity : BaseActivity() {
     private lateinit var binding: ActivityFileBinding
     private lateinit var viewModel: FileViewModel
     private val directoryAdapter: DirectoryAdapter by lazy {
-        DirectoryAdapter { name ->
+        org.schulcloud.mobile.controllers.file.DirectoryAdapter { name ->
             startActivity(newIntent(this, combinePath(viewModel.path, name)))
         }
     }
     private val fileAdapter: FileAdapter by lazy {
-        FileAdapter({ loadFile(it, false) },
+        org.schulcloud.mobile.controllers.file.FileAdapter({ loadFile(it, false) },
                 { loadFile(it, true) })
     }
 
@@ -81,12 +81,12 @@ class FileActivity : BaseActivity() {
         performRefresh()
     }
 
-    override fun navigateUp(): Boolean {
-        return if (viewModel.path.getPathParts(3).size > 2) {
-            startActivity(newIntent(this, viewModel.path.parentDirectory))
-            true
-        } else false
-    }
+//    override fun navigateUp(): Boolean {
+//        return if (viewModel.path.getPathParts(3).size > 2) {
+//            startActivity(newIntent(this, viewModel.path.parentDirectory))
+//            true
+//        } else false
+//    }
 
     private fun init(intent: Intent) {
         val path = intent.getStringExtra(EXTRA_PATH)

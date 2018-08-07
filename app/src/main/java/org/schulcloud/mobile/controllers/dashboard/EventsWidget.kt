@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.widget_events.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.course.CourseActivity
+import org.schulcloud.mobile.controllers.course.CourseFragment
 import org.schulcloud.mobile.models.event.EventRepository
 import org.schulcloud.mobile.viewmodels.EventListViewModel
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
@@ -21,7 +21,7 @@ class EventsWidget : Widget() {
     private lateinit var viewModel: EventListViewModel
     private val eventAdapter: EventAdapter by lazy {
         EventAdapter {
-            startActivity(CourseActivity.newIntent(context!!, it))
+            startActivity(CourseFragment.newIntent(context!!, it))
         }
     }
 

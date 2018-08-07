@@ -2,9 +2,12 @@ package org.schulcloud.mobile.controllers.main
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.schulcloud.mobile.R
@@ -20,6 +23,7 @@ class MainActivity : BaseActivity() {
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
+    private val navController: NavController by lazy { findNavController(navHost) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +57,13 @@ class MainActivity : BaseActivity() {
         fab.setOnClickListener { viewModel.onFabClicked.call() }
     }
 
-    override fun onSupportNavigateUp() = findNavController(navHost).navigateUp()
+    override fun setSupportActionBar(toolbar: Toolbar?) {
+        super.setSupportActionBar(toolbar)
+        if (toolbar != null)
+            NavigationUI.setupWithNavController(toolbar, navController)
+    }
+
+    override fun onSupportNavigateUp() = navController.navigateUp()
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         viewModel.onOptionsItemSelected.value = item

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.graphics.Color" />
-        <import type="org.schulcloud.mobile.controllers.main.CourseListAdapter.CourseViewHolder" />
+        <import type="org.schulcloud.mobile.controllers.course.CourseAdapter.CourseViewHolder" />
 
         <variable
             name="course"

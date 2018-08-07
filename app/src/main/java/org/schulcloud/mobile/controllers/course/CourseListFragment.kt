@@ -1,48 +1,56 @@
-package org.schulcloud.mobile.controllers.main
+package org.schulcloud.mobile.controllers.course
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.controllers.course.CourseActivity
+import org.schulcloud.mobile.controllers.main.FragmentType
+import org.schulcloud.mobile.controllers.main.MainFragment
+import org.schulcloud.mobile.controllers.main.MainFragmentConfig
+import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-class CourseListFragment : BaseFragment() {
+class CourseListFragment : MainFragment() {
     companion object {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
 
-//    override var url: String? = "$HOST/courses"
+    override val config: MainFragmentConfig = MainFragmentConfig(
+            fragmentType = FragmentType.PRIMARY,
+            fabIconRes = R.drawable.ic_newspaper_white_24dp
+    )
+    override var url: String? = "/courses"
+
 
     private lateinit var viewModel: CourseListViewModel
-    private val coursesAdapter: CourseListAdapter by lazy {
-        CourseListAdapter {
-            startActivity(CourseActivity.newIntent(context!!, it))
-        }.apply {
-            emptyIndicator = empty
+    private val coursesAdapter: CourseAdapter by lazy {
+        CourseAdapter {
+            val action = CourseListFragmentDirections
+                    .actionFragmentCourseListToFragmentCourse(it)
+            findNavController(this).navigate(action)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this).get(CourseListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.course_title)
         return inflater.inflate(R.layout.fragment_course_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        swipeRefreshLayout = swipeRefresh
 
+        coursesAdapter.emptyIndicator = empty
         viewModel.courses.observe(this, Observer { courses ->
             coursesAdapter.update(courses!!)
         })
@@ -54,12 +62,12 @@ class CourseListFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_main_top, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onResume() {
+        super.onResume()
+        setTitle(R.string.course_title)
     }
 
-//    override suspend fun refresh() {
-//        CourseRepository.syncCourses()
-//    }
+    override suspend fun refresh() {
+        CourseRepository.syncCourses()
+    }
 }

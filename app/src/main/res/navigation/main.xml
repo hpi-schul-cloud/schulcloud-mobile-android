@@ -35,8 +35,20 @@
 
     <fragment
         android:id="@+id/fragment_courseList"
-        android:name="org.schulcloud.mobile.controllers.main.CourseListFragment"
-        tools:layout="@layout/fragment_course_list" />
+        android:name="org.schulcloud.mobile.controllers.course.CourseListFragment"
+        tools:layout="@layout/fragment_course_list">
+        <action
+            android:id="@+id/action_fragment_courseList_to_fragment_course"
+            app:destination="@id/fragment_course" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_course"
+        android:name="org.schulcloud.mobile.controllers.course.CourseFragment"
+        tools:layout="@layout/fragment_course">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 
     <!--<fragment
         android:id="@+id/fragment_calendar"

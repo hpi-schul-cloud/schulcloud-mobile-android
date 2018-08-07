@@ -44,7 +44,7 @@ class DashboardFragment : MainFragment() {
 
     override fun onResume() {
         super.onResume()
-        title = getString(R.string.dashboard_title)
+        setTitle(R.string.dashboard_title)
     }
 
     override suspend fun refresh() {

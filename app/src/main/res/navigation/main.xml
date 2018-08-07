@@ -64,7 +64,7 @@
     <!-- Task -->
     <fragment
         android:id="@+id/fragment_homeworkList"
-        android:name="org.schulcloud.mobile.controllers.main.HomeworkListFragment"
+        android:name="org.schulcloud.mobile.controllers.homework.HomeworkListFragment"
         tools:layout="@layout/fragment_homework_list" />
 
     <!-- File -->

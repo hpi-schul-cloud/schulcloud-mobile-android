@@ -1,31 +1,28 @@
-package org.schulcloud.mobile.controllers.main
+package org.schulcloud.mobile.controllers.homework
 
 import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import org.joda.time.format.DateTimeFormat
-import org.schulcloud.mobile.R
-import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemHomeworkBinding
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.utils.formatDaysLeft
 
-class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapter<Homework, HomeworkListAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
+class HomeworkAdapter(private val onSelected: (String) -> Unit) : BaseAdapter<Homework, HomeworkAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
 
     fun update(homeworkList: List<Homework>) {
         items = homeworkList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkListAdapter.HomeworkViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkViewHolder {
         val binding = ItemHomeworkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.onSelected = onSelected
         return HomeworkViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeworkListAdapter.HomeworkViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeworkViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.binding.headerRequired = headerRequired(position)
     }

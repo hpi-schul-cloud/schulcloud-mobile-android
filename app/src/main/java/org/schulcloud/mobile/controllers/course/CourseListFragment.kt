@@ -22,9 +22,6 @@ class CourseListFragment : MainFragment() {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
 
-    override var url: String? = "/courses"
-
-
     private lateinit var viewModel: CourseListViewModel
     private val courseAdapter: CourseAdapter by lazy {
         CourseAdapter {
@@ -34,6 +31,8 @@ class CourseListFragment : MainFragment() {
         }
     }
 
+
+    override var url: String? = "/courses"
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.course_title)

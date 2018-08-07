@@ -6,7 +6,7 @@
 
     <data>
         <import type="android.graphics.Color" />
-        <import type="org.schulcloud.mobile.controllers.main.HomeworkListAdapter.HomeworkViewHolder" />
+        <import type="org.schulcloud.mobile.controllers.homework.HomeworkAdapter.HomeworkViewHolder" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
 

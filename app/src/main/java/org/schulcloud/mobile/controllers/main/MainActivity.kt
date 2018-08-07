@@ -40,20 +40,21 @@ class MainActivity : BaseActivity() {
             }
             fab.setImageResource(config.fabIconRes)
         })
+        bottomAppBar.setNavigationOnClickListener {
+            val navDrawer = org.schulcloud.mobile.controllers.main.NavigationDrawerFragment()
+            navDrawer.show(supportFragmentManager, navDrawer.tag)
+        }
         fab.setOnClickListener { viewModel.onFabClicked.call() }
     }
 
     override fun onSupportNavigateUp() = findNavController(navHost).navigateUp()
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
             android.R.id.home -> {
                 val navDrawer = NavigationDrawerFragment()
                 navDrawer.show(supportFragmentManager, navDrawer.tag)
             }
 
-            else -> return super.onOptionsItemSelected(item)
-        }
         return true
     }
 }

@@ -41,6 +41,9 @@ abstract class MainFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainViewModel.onOptionsItemSelected.observe(this, Observer {
+            onOptionsItemSelected(it)
+        })
         mainViewModel.onFabClicked.observe(this, Observer { onFabClicked() })
         performRefresh()
     }

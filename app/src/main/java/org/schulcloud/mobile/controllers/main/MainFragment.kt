@@ -31,7 +31,7 @@ abstract class MainFragment : BaseFragment() {
     abstract val config: MainFragmentConfig
 
     open var url: String? = null
-    protected var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
+    private var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
         new?.setOnRefreshListener { performRefresh() }
         new?.isRefreshing = isRefreshing
@@ -46,9 +46,13 @@ abstract class MainFragment : BaseFragment() {
             onOptionsItemSelected(it)
         })
         mainViewModel.onFabClicked.observe(this, Observer { onFabClicked() })
-        performRefresh()
 
         setHasOptionsMenu(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        performRefresh()
     }
 
     override fun onResume() {

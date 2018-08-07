@@ -23,6 +23,10 @@
         <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
     </style>
 
+    <style name="AppTheme.LightActionBar">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
     <style name="AppTheme.DarkActionBar">
         <item name="actionOverflowButtonStyle">@style/AppTheme.ActionButtonOverflowStyle</item>
     </style>

@@ -29,7 +29,7 @@ class CourseListFragment : MainFragment() {
 
 
     private lateinit var viewModel: CourseListViewModel
-    private val adapter: CourseAdapter by lazy {
+    private val courseAdapter: CourseAdapter by lazy {
         CourseAdapter {
             findNavController(this).navigate(
                     R.id.action_global_fragment_course,
@@ -49,14 +49,14 @@ class CourseListFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter.emptyIndicator = empty
+        courseAdapter.emptyIndicator = empty
         viewModel.courses.observe(this, Observer { courses ->
-            adapter.update(courses!!)
+            courseAdapter.update(courses!!)
         })
 
         recyclerView.apply {
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = adapter
+            adapter = courseAdapter
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
         }
     }
@@ -65,6 +65,7 @@ class CourseListFragment : MainFragment() {
         super.onResume()
         setTitle(R.string.course_title)
     }
+
 
     override suspend fun refresh() {
         CourseRepository.syncCourses()

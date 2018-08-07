@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.main.NewsListAdapter
+import org.schulcloud.mobile.controllers.news.NewsAdapter
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.utils.limit
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
@@ -22,8 +22,8 @@ class NewsWidget : Widget() {
     }
 
     private lateinit var viewModel: NewsListViewModel
-    private val newsAdapter: NewsListAdapter by lazy {
-        NewsListAdapter()
+    private val newsAdapter: NewsAdapter by lazy {
+        NewsAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +50,7 @@ class NewsWidget : Widget() {
         newsAdapter.emptyIndicator = empty
 
         more.setOnClickListener {
-            NavHostFragment.findNavController(this)
+            findNavController(this)
                     .navigate(R.id.action_dashboardFragment_to_newsListFragment)
         }
     }

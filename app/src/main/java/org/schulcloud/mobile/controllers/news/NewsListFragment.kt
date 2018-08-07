@@ -1,62 +1,65 @@
-package org.schulcloud.mobile.controllers.main
+package org.schulcloud.mobile.controllers.news
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.controllers.main.FragmentType
+import org.schulcloud.mobile.controllers.main.MainFragment
+import org.schulcloud.mobile.controllers.main.MainFragmentConfig
+import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 
-class NewsListFragment : BaseFragment() {
-
+class NewsListFragment : MainFragment() {
     companion object {
         val TAG: String = NewsListFragment::class.java.simpleName
     }
 
-//    override var url: String? = "$HOST/news"
-
-    private val newsListAdapter: NewsListAdapter by lazy {
-        NewsListAdapter().apply {
-            emptyIndicator = empty
-        }
+    private val newsAdapter: NewsAdapter by lazy {
+        NewsAdapter()
     }
     private lateinit var viewModel: NewsListViewModel
 
+
+    override fun provideConfig() = MainFragmentConfig(
+            fragmentType = FragmentType.PRIMARY,
+            title = getString(R.string.news_title)
+    )
+
+    override var url: String? = "/news"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this).get(NewsListViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.news_title)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_news_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        swipeRefreshLayout = swipeRefresh
+
+        newsAdapter.emptyIndicator = empty
+        viewModel.news.observe(this, Observer {
+            newsAdapter.update(it ?: emptyList())
+        })
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = newsListAdapter
+            adapter = newsAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
-
-        viewModel.news.observe(this, Observer { newsListAdapter.update(it?: emptyList())})
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_news_list, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
-//    override suspend fun refresh() {
-//        NewsRepository.syncNews()
-//    }
+    override suspend fun refresh() {
+        NewsRepository.syncNews()
+    }
 }

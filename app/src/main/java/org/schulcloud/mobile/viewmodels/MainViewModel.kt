@@ -9,6 +9,7 @@ import org.schulcloud.mobile.utils.SingleLiveEvent
 
 class MainViewModel : ViewModel() {
     val config: MutableLiveData<MainFragmentConfig> = MutableLiveData()
+    val title: MutableLiveData<String> = MutableLiveData()
     val onOptionsItemSelected: SingleLiveEvent<MenuItem> = SingleLiveEvent()
     val onFabClicked: SingleLiveEvent<Void> = SingleLiveEvent()
 }

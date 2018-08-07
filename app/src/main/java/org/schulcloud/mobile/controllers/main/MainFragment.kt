@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.DrawableRes
@@ -22,9 +24,15 @@ import java.io.File
 import kotlin.properties.Delegates
 
 abstract class MainFragment : BaseFragment() {
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+    }
+
     abstract val config: MainFragmentConfig
 
-    abstract val title: String
+    var title by Delegates.observable<String?>(null) { _, _, new ->
+        mainViewModel.title.value = new
+    }
     open var url: String? = null
     protected var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
@@ -35,10 +43,6 @@ abstract class MainFragment : BaseFragment() {
         swipeRefreshLayout?.isRefreshing = new
     }
 
-    private val mainViewModel: MainViewModel by lazy {
-        ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel.onOptionsItemSelected.observe(this, Observer {
@@ -46,13 +50,14 @@ abstract class MainFragment : BaseFragment() {
         })
         mainViewModel.onFabClicked.observe(this, Observer { onFabClicked() })
         performRefresh()
+
+        setHasOptionsMenu(config.menuTopRes != 0)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh)
         (activity as MainActivity).setSupportActionBar(view.findViewById(R.id.toolbar))
-        activity!!.title = title
     }
 
     override fun onResume() {
@@ -60,6 +65,10 @@ abstract class MainFragment : BaseFragment() {
         notifyConfigChanged()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(config.menuTopRes, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.base_action_share -> {
@@ -93,7 +102,9 @@ data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
 
     @MenuRes
-    val menuRes: Int = 0,
+    val menuTopRes: Int = 0,
+    @MenuRes
+    val menuBottomRes: Int = 0,
     val supportsRefresh: Boolean = true,
 
     val fabVisible: Boolean = true,

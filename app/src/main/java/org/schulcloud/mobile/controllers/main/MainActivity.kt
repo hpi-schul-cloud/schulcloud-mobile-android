@@ -26,12 +26,14 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.config.observe(this, Observer { config ->
-            bottomAppBar.menu.clear()
-            if (config.menuRes != 0)
-                bottomAppBar.inflateMenu(config.menuRes)
-            bottomAppBar.inflateMenu(R.menu.fragment_main)
-            if (!config.supportsRefresh)
-                bottomAppBar.menu.findItem(R.id.base_action_refresh)?.isVisible = false
+            bottomAppBar.apply {
+                menu.clear()
+                if (config.menuBottomRes != 0)
+                    inflateMenu(config.menuBottomRes)
+                inflateMenu(R.menu.fragment_main)
+                if (!config.supportsRefresh)
+                    menu.findItem(R.id.base_action_refresh)?.isVisible = false
+            }
 
             fab.visibilityBool = config.fabVisible && config.fabIconRes != 0
             bottomAppBar.fabAlignmentMode = when (config.fragmentType) {
@@ -40,6 +42,7 @@ class MainActivity : BaseActivity() {
             }
             fab.setImageResource(config.fabIconRes)
         })
+        viewModel.title.observe(this, Observer { supportActionBar?.title = it })
 
         bottomAppBar.setNavigationOnClickListener {
             val navDrawer = org.schulcloud.mobile.controllers.main.NavigationDrawerFragment()

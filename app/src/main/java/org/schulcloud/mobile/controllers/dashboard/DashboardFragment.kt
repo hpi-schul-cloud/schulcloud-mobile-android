@@ -17,9 +17,10 @@ class DashboardFragment : MainFragment() {
 
     override val config: MainFragmentConfig = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
+            menuTopRes = R.menu.activity_main_drawer,
+            menuBottomRes = R.menu.activity_main_drawer,
             fabIconRes = R.drawable.ic_share_white_24dp
     )
-    override val title get() = getString(R.string.dashboard_title)
     override var url: String? = "/dashboard"
 
 
@@ -46,6 +47,11 @@ class DashboardFragment : MainFragment() {
         } else
             widgets = childFragmentManager.fragments
                     .map { it as Widget }.toTypedArray()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        title = getString(R.string.dashboard_title)
     }
 
     override suspend fun refresh() {

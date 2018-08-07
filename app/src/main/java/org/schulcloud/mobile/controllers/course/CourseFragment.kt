@@ -1,7 +1,5 @@
 package org.schulcloud.mobile.controllers.course
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,17 +22,9 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 class CourseFragment : MainFragment() {
     companion object {
         val TAG: String = CourseFragment::class.java.simpleName
-        const val EXTRA_ID = "org.schulcloud.extras.EXTRA_ID"
-
-        fun newIntent(context: Context, id: String): Intent {
-            return Intent(context, CourseFragment::class.java)
-                    .apply { putExtra(EXTRA_ID, id) }
-        }
     }
 
-    override val config: MainFragmentConfig = MainFragmentConfig(
-            fabIconRes = R.drawable.ic_launcher_white
-    )
+    override val config: MainFragmentConfig = MainFragmentConfig()
     override var url: String? = null
         get() = viewModel.course.value?.url
 

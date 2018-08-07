@@ -23,18 +23,17 @@ class CourseListFragment : MainFragment() {
     }
 
     override val config: MainFragmentConfig = MainFragmentConfig(
-            fragmentType = FragmentType.PRIMARY,
-            fabIconRes = R.drawable.ic_newspaper_white_24dp
+            fragmentType = FragmentType.PRIMARY
     )
     override var url: String? = "/courses"
 
 
     private lateinit var viewModel: CourseListViewModel
-    private val coursesAdapter: CourseAdapter by lazy {
+    private val adapter: CourseAdapter by lazy {
         CourseAdapter {
-            val action = CourseListFragmentDirections
-                    .actionFragmentCourseListToFragmentCourse(it)
-            findNavController(this).navigate(action)
+            findNavController(this).navigate(
+                    R.id.action_global_fragment_course,
+                    CourseFragmentArgs.Builder(it).build().toBundle())
         }
     }
 
@@ -50,14 +49,14 @@ class CourseListFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        coursesAdapter.emptyIndicator = empty
+        adapter.emptyIndicator = empty
         viewModel.courses.observe(this, Observer { courses ->
-            coursesAdapter.update(courses!!)
+            adapter.update(courses!!)
         })
 
         recyclerView.apply {
             layoutManager = GridLayoutManager(activity, 2)
-            adapter = coursesAdapter
+            adapter = adapter
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
         }
     }

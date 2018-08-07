@@ -28,11 +28,13 @@
             app:destination="@id/fragment_fileOverview" />
     </fragment>
 
+    <!-- News -->
     <fragment
         android:id="@+id/fragment_newsList"
-        android:name="org.schulcloud.mobile.controllers.main.NewsListFragment"
+        android:name="org.schulcloud.mobile.controllers.news.NewsListFragment"
         tools:layout="@layout/fragment_news_list" />
 
+    <!-- Course -->
     <fragment
         android:id="@+id/fragment_courseList"
         android:name="org.schulcloud.mobile.controllers.course.CourseListFragment"
@@ -49,17 +51,23 @@
             android:name="id"
             app:argType="string" />
     </fragment>
+    <action
+        android:id="@+id/action_global_fragment_course"
+        app:destination="@id/fragment_course" />
 
+    <!-- Calendar -->
     <!--<fragment
         android:id="@+id/fragment_calendar"
         android:name="org.schulcloud.mobile.controllers.main.CalendarFragment"
         tools:layout="@layout/fragment_calendar" />-->
 
+    <!-- Task -->
     <fragment
         android:id="@+id/fragment_homeworkList"
         android:name="org.schulcloud.mobile.controllers.main.HomeworkListFragment"
         tools:layout="@layout/fragment_homework_list" />
 
+    <!-- File -->
     <fragment
         android:id="@+id/fragment_fileOverview"
         android:name="org.schulcloud.mobile.controllers.main.FileOverviewFragment"

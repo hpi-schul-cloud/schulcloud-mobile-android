@@ -64,14 +64,3 @@ fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): I
     ta.recycle()
     return colors
 }
-
-/** Copied from [NavigationUI#findStartDestination] */
-val NavGraph.nestedStartDestination: NavDestination
-    get() {
-        var startDestination: NavDestination = this
-        while (startDestination is NavGraph) {
-            val parent = startDestination
-            startDestination = parent.findNode(parent.startDestination)
-        }
-        return startDestination
-    }

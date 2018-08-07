@@ -30,9 +30,6 @@ class MainActivity : BaseActivity() {
                 menu.clear()
                 if (config.menuBottomRes != 0)
                     inflateMenu(config.menuBottomRes)
-                inflateMenu(R.menu.fragment_main)
-                if (!config.supportsRefresh)
-                    menu.findItem(R.id.base_action_refresh)?.isVisible = false
             }
 
             fab.visibilityBool = config.fabVisible && config.fabIconRes != 0

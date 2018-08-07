@@ -51,7 +51,7 @@ abstract class MainFragment : BaseFragment() {
         mainViewModel.onFabClicked.observe(this, Observer { onFabClicked() })
         performRefresh()
 
-        setHasOptionsMenu(config.menuTopRes != 0)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,9 +66,16 @@ abstract class MainFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(config.menuTopRes, menu)
+        if (config.menuTopRes != 0)
+            inflater?.inflate(config.menuTopRes, menu)
+
+        inflater?.inflate(R.menu.fragment_main_top, menu)
+        if (!config.supportsRefresh)
+            menu?.findItem(R.id.base_action_refresh)?.isVisible = false
+
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.base_action_share -> {

@@ -58,7 +58,7 @@ class HomeworkListFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_main, menu)
+        inflater?.inflate(R.menu.fragment_main_top, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

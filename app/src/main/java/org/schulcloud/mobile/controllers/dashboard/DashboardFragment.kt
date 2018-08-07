@@ -17,19 +17,12 @@ class DashboardFragment : MainFragment() {
 
     override val config: MainFragmentConfig = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
-            menuTopRes = R.menu.activity_main_drawer,
-            menuBottomRes = R.menu.activity_main_drawer,
-            fabIconRes = R.drawable.ic_share_white_24dp
+            fabIconRes = R.drawable.ic_share_dark_24dp
     )
     override var url: String? = "/dashboard"
 
 
     private var widgets: Array<Widget> = emptyArray()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_dashboard, container, false)

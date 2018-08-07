@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
-import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,7 +27,7 @@ abstract class MainFragment : BaseFragment() {
         ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
     }
 
-    abstract val config: MainFragmentConfig
+    protected lateinit var config: MainFragmentConfig
 
     open var url: String? = null
     private var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
@@ -40,8 +39,11 @@ abstract class MainFragment : BaseFragment() {
         swipeRefreshLayout?.isRefreshing = new
     }
 
+    abstract fun provideConfig(): MainFragmentConfig
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        config = provideConfig()
         mainViewModel.onOptionsItemSelected.observe(this, Observer {
             onOptionsItemSelected(it)
         })
@@ -87,13 +89,6 @@ abstract class MainFragment : BaseFragment() {
         return true
     }
 
-    protected fun setTitle(title: String) {
-        mainViewModel.title.value = title
-    }
-
-    protected fun setTitle(@StringRes titleRes: Int) {
-        mainViewModel.title.value = getString(titleRes)
-    }
 
     protected open suspend fun refresh() {}
     protected fun performRefresh() {
@@ -106,12 +101,15 @@ abstract class MainFragment : BaseFragment() {
 
     open fun onFabClicked() {}
     protected fun notifyConfigChanged() {
+        config = provideConfig()
         mainViewModel.config.value = config
     }
 }
 
 data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
+
+    val title: String,
 
     @MenuRes
     val menuTopRes: Int = 0,

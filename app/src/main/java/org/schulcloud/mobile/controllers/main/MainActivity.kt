@@ -30,6 +30,8 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.config.observe(this, Observer { config ->
+            supportActionBar?.title = config.title
+
             bottomAppBar.apply {
                 menu.clear()
                 if (config.menuBottomRes != 0)
@@ -43,7 +45,6 @@ class MainActivity : BaseActivity() {
             }
             fab.setImageResource(config.fabIconRes)
         })
-        viewModel.title.observe(this, Observer { supportActionBar?.title = it })
 
         bottomAppBar.setNavigationOnClickListener {
             val navDrawer = org.schulcloud.mobile.controllers.main.NavigationDrawerFragment()

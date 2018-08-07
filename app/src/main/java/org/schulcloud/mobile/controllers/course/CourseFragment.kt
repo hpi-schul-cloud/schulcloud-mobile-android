@@ -24,17 +24,20 @@ class CourseFragment : MainFragment() {
         val TAG: String = CourseFragment::class.java.simpleName
     }
 
-    override val config: MainFragmentConfig = MainFragmentConfig()
-    override var url: String? = null
-        get() = viewModel.course.value?.url
-
-
     private lateinit var viewModel: CourseViewModel
     private val topicsAdapter: TopicListAdapter by lazy {
         org.schulcloud.mobile.controllers.course.TopicListAdapter { id ->
             startActivity(TopicActivity.newIntent(context!!, id))
         }
     }
+
+
+    override var url: String? = null
+        get() = viewModel.course.value?.url
+
+    override fun provideConfig() = MainFragmentConfig(
+            title = viewModel.course.value?.name ?: getString(R.string.courseDetail_error_notFound_title)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +59,7 @@ class CourseFragment : MainFragment() {
 
         topicsAdapter.emptyIndicator = empty
         viewModel.course.observe(this, Observer { course ->
-            setTitle(course?.name ?: getString(R.string.courseDetail_error_notFound_title))
+            notifyConfigChanged()
         })
         viewModel.topics.observe(this, Observer {
             topicsAdapter.update(it ?: emptyList())

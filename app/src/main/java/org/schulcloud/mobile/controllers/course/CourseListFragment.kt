@@ -22,9 +22,6 @@ class CourseListFragment : MainFragment() {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
 
-    override val config: MainFragmentConfig = MainFragmentConfig(
-            fragmentType = FragmentType.PRIMARY
-    )
     override var url: String? = "/courses"
 
 
@@ -36,6 +33,11 @@ class CourseListFragment : MainFragment() {
                     CourseFragmentArgs.Builder(it).build().toBundle())
         }
     }
+
+    override fun provideConfig() = MainFragmentConfig(
+            fragmentType = FragmentType.PRIMARY,
+            title = getString(R.string.course_title)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +61,6 @@ class CourseListFragment : MainFragment() {
             adapter = courseAdapter
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setTitle(R.string.course_title)
     }
 
 

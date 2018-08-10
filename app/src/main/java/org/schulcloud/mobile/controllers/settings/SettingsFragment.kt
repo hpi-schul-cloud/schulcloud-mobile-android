@@ -2,25 +2,26 @@ package org.schulcloud.mobile.controllers.settings
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
-import kotlinx.android.synthetic.main.activity_settings.*
+import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_settings.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.viewmodels.DeviceListViewModel
 import org.schulcloud.mobile.viewmodels.SettingsViewModel
 
-class SettingsActivity: BaseActivity() {
+class SettingsFragment: BaseFragment() {
 
     companion object {
-        var TAG: String = SettingsActivity::class.java.simpleName
+        var TAG: String = SettingsFragment::class.java.simpleName
     }
 
     fun openWebPage(url: String) {
@@ -54,9 +55,13 @@ class SettingsActivity: BaseActivity() {
         settingsViewModel =  ViewModelProviders.of(this).get(SettingsViewModel::class.java)
     }
 
-    override fun onCreateView(name: String?, context: Context?, attrs: AttributeSet?): View {
-        title = getString(R.string.settings)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    {
+        return layoutInflater.inflate(R.layout.fragment_settings,container,false)
+    }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         swipeRefreshLayout = settings_swipeRefresh
 
         settings_open_source.setOnClickListener({openWebPage(getString(R.string.settings_open_source_address))})
@@ -74,10 +79,7 @@ class SettingsActivity: BaseActivity() {
         })
 
         user_settings_open.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container,UserSettingsFragment(),UserSettingsFragment.TAG)
-                    .addToBackStack(null)
-                    .commit()
+            startActivity(UserSettingsActivity.newIntent(context!!,TAG))
         }
 
         settings_devices_list.setOnClickListener({devicesViewModel.getDevices().observe(this, Observer {
@@ -92,7 +94,12 @@ class SettingsActivity: BaseActivity() {
         for(string in resources.getStringArray(R.array.contributors_names)) run {
             settings_contributor_list.append(string + "\n")
         }
-        return super.onCreateView(name, context, attrs)
+    }
+
+    fun replaceFragment(fragment: Fragment, tag: String){
+        activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.container,fragment,tag)
+                .commit()
     }
 
     override suspend fun refresh() {

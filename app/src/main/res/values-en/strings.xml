@@ -137,6 +137,6 @@
     <string name="user_settings_password">Current password</string>
     <string name="user_settings_new_password">New password</string>
     <string name="user_settings_new_password_repeat">Repeat new password</string>
-    <string name="user_settings_password_hint"><font color="#B10438">*</font>At least 8 upper and lower case letters with numbers</string>
+    <string name="user_settings_password_hint"><font color="#B10438">*</font>At least 8 upper and lower case letters with numbers and special characters</string>
     <string name="user_settings_submit">Submit</string>
 </resources>

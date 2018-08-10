@@ -8,20 +8,15 @@ import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.utils.map
 
 class UserSettingsViewModel: ViewModel(){
     private val realm by lazy {
         Realm.getDefaultInstance()
     }
 
-    private val _user = UserRepository.currentUser(realm)
-    private val _account = UserRepository.getAccount(realm)
-
-    val user: LiveData<User?>
-        get() = _user
-
-    val account: LiveData<Account?>
-        get() = _account
+    val user = UserRepository.currentUser(realm)
+    val account = UserRepository.getAccount(realm)
 
     suspend fun patchUser(user: User){
         UserRepository.patchUser(user)

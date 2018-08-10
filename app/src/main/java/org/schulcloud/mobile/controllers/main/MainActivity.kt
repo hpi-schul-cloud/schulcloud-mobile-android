@@ -13,7 +13,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.dashboard.DashboardFragment
 import org.schulcloud.mobile.controllers.login.LoginActivity
-import org.schulcloud.mobile.controllers.settings.SettingsActivity
+import org.schulcloud.mobile.controllers.settings.SettingsFragment
 import org.schulcloud.mobile.models.user.UserRepository
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -67,8 +67,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 showLoginActivity()
             }
             R.id.nav_settings -> {
-                var intent = Intent(this,SettingsActivity::class.java)
-                startActivity(intent)
+                replaceFragment(SettingsFragment(), SettingsFragment.TAG)
             }
         }
 

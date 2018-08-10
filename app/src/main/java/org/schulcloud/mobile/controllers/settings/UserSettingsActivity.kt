@@ -1,37 +1,41 @@
 package org.schulcloud.mobile.controllers.settings
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
-import kotlinx.android.synthetic.main.fragment_user_settings.*
+import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
 
-class UserSettingsFragment: BaseFragment(){
+class UserSettingsActivity: BaseActivity(){
     companion object {
-        val TAG = UserSettingsFragment::class.java.simpleName
+        val TAG = UserSettingsActivity::class.java.simpleName
+        const val EXTRA_ID = "org.schulcloud.extras.EXTRA_ID"
+        fun newIntent(context: Context, id: String): Intent {
+            return Intent(context, UserSettingsActivity::class.java)
+                    .apply { putExtra(EXTRA_ID, id) }
+        }
     }
 
-    private lateinit var userSettingsViewModel: UserSettingsViewModel
+    private lateinit var viewModel: UserSettingsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userSettingsViewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user_settings,container)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        user_edit_submit.setOnClickListener({patchUser()})
-        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
+        setContentView(R.layout.activity_user_settings)
+        user_edit_submit.setOnClickListener({ patchUser() })
+        viewModel.user.observe(this, Observer { user ->
+            user_edit_email.setText(user!!.email)
+            user_edit_forename.setText(user!!.firstName)
+            user_edit_lastname.setText(user!!.lastName)
+            user_edit_gender.setSelection(resources.getStringArray(R.array.genders).indexOf(user!!.gender))
+        })
     }
 
     fun patchUser(){
@@ -51,14 +55,14 @@ class UserSettingsFragment: BaseFragment(){
         user.email = user_edit_email.text as String
 
         if(!cutSpaces(user_edit_new_password.text.toString()).equals("")){
-            account.id = userSettingsViewModel.account.value!!.id
+            account.id = viewModel.account.value!!.id
             account.newPassword = user_edit_new_password.text as String
             account.newPasswordRepeat = user_edit_new_password_repeat.text as String
 
-            async { userSettingsViewModel.patchAccount(account) }
+            async { viewModel.patchAccount(account) }
         }
 
-        async { userSettingsViewModel.patchUser(user) }
+        async { viewModel.patchUser(user) }
     }
 
     fun cutSpaces(input: String): String{

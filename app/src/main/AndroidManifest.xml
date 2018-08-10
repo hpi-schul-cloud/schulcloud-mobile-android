@@ -67,7 +67,7 @@
         </activity>
 
         <activity
-            android:name=".controllers.file.FileActivity"
+            android:name=".controllers.settings.UserSettingsActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".controllers.main.MainActivity">
             <meta-data
@@ -76,12 +76,12 @@
         </activity>
 
         <activity
-        android:name=".controllers.settings.SettingsActivity"
-        android:launchMode="singleTop"
-        android:parentActivityName=".controllers.main.MainActivity">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".controllers.main.MainActivity" />
+            android:name=".controllers.file.FileActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".controllers.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.main.MainActivity" />
         </activity>
 
     </application>

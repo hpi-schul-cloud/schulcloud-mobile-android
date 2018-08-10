@@ -6,7 +6,7 @@ import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 import io.realm.Realm
 import kotlinx.coroutines.experimental.async
-import org.schulcloud.mobile.controllers.settings.SettingsActivity
+import org.schulcloud.mobile.controllers.settings.SettingsFragment
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.DeviceRequest
@@ -31,7 +31,7 @@ class DeviceListViewModel: ViewModel(){
 
     class deviceCallback(var viewModel: DeviceListViewModel): RequestJobCallback() {
         override fun onError(code: ErrorCode) {
-            Log.i(SettingsActivity.TAG, ErrorCode.ERROR.toString())
+            Log.i(SettingsFragment.TAG, ErrorCode.ERROR.toString())
         }
 
         override fun onSuccess() {

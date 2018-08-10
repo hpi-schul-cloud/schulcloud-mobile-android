@@ -13,6 +13,7 @@ import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.storages.UserStorage
 import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.userDao
 
 object UserRepository {
     val TAG: String = UserRepository::class.java.simpleName
@@ -40,15 +41,11 @@ object UserRepository {
     }
 
     fun currentUser(realm: Realm): LiveData<User?> {
-        return realm.where(User::class.java)
-                .findFirstAsync()
-                .asLiveData()
+        return realm.userDao().currentUser(realm)
     }
 
     fun getAccount(realm: Realm): LiveData<Account?>{
-        return realm.where(Account::class.java)
-                .findFirstAsync()
-                .asLiveData()
+        return realm.userDao().getAccount(realm)
     }
 
     suspend fun syncUser(userId: String){

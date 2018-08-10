@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.network
 
 import com.google.gson.GsonBuilder
+import info.guardianproject.netcipher.client.TlsOnlySocketFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
@@ -9,6 +10,9 @@ import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.HOST
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.net.ssl.SSLContext
+import javax.net.ssl.X509TrustManager
+
 
 object ApiService {
 
@@ -20,7 +24,24 @@ object ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
+        var trustAllCerts = object : X509TrustManager {
+            override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
+                 val myTrustedAnchors:  Array<java.security.cert.X509Certificate> = emptyArray()
+                return myTrustedAnchors;
+            }
+
+            override fun checkServerTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) {
+            }
+
+            override fun checkClientTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) {
+            }
+        }
+
+        val sslContext = SSLContext.getInstance("TLSv1.2")
+        sslContext.init(null, arrayOf(trustAllCerts), null)
+
         val client = OkHttpClient.Builder()
+                .sslSocketFactory(TlsOnlySocketFactory(sslContext.socketFactory), trustAllCerts)
                 .addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()

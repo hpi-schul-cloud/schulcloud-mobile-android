@@ -16,11 +16,13 @@ fun getDueText(homework: Homework?): String {
     return when (days) {
         null -> SchulCloudApp.instance.getString(R.string.homework_error_invalidDueDate)
         in Int.MIN_VALUE until 0 -> SchulCloudApp.instance.getString(R.string.homework_due_outdated)
-        0 ->
-            if (homework.dueTimespanHours ?: Int.MAX_VALUE >= 0)
-                SchulCloudApp.instance.getString(R.string.homework_due_hours)
+        0 -> {
+            val hours = homework.dueTimespanHours ?: Int.MAX_VALUE
+            if (hours >= 0)
+                SchulCloudApp.instance.getString(R.string.homework_due_hours, hours)
             else
                 SchulCloudApp.instance.getString(R.string.homework_due_outdated)
+        }
         in 1..7 -> SchulCloudApp.instance.resources.getQuantityString(R.plurals.homework_due_days, days, days)
         else -> ""
     }

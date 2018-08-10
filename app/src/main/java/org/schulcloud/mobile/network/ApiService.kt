@@ -24,7 +24,8 @@ object ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        var trustAllCerts = object : X509TrustManager {
+        // TODO: manage trust certificates correctly
+       /*var trustAllCerts = object : X509TrustManager {
             override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
                  val myTrustedAnchors:  Array<java.security.cert.X509Certificate> = emptyArray()
                 return myTrustedAnchors;
@@ -38,10 +39,10 @@ object ApiService {
         }
 
         val sslContext = SSLContext.getInstance("TLSv1.2")
-        sslContext.init(null, arrayOf(trustAllCerts), null)
+        sslContext.init(null, arrayOf(trustAllCerts), null)*/
 
         val client = OkHttpClient.Builder()
-                .sslSocketFactory(TlsOnlySocketFactory(sslContext.socketFactory), trustAllCerts)
+              //  .sslSocketFactory(TlsOnlySocketFactory(sslContext.socketFactory), trustAllCerts)
                 .addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()

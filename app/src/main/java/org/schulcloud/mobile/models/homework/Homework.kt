@@ -3,10 +3,7 @@ package org.schulcloud.mobile.models.homework
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.joda.time.DateTime
-import org.joda.time.Days
-import org.joda.time.Hours
-import org.joda.time.LocalDateTime
+import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.utils.HOST
 
@@ -37,7 +34,7 @@ open class Homework : RealmObject() {
 
     val dueTimespanDays: Int?
         get() = dueDateTime?.let {
-            Days.daysBetween(LocalDateTime.now(), it.toLocalDateTime()).days
+            Days.daysBetween(LocalDate.now(), it.toLocalDate()).days
         }
 
     val dueTimespanHours: Int?

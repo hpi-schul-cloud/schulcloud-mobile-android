@@ -26,7 +26,7 @@ class NewsListAdapter
         override fun onItemSet() {
             binding.news = item
             binding.formattedDate = item.createdAt?.parseDate()?.let {
-                DateUtils.formatDateTime(context, it.timeInMillis, DateUtils.FORMAT_SHOW_DATE)
+                DateUtils.formatDateTime(context, it.timeInMillis, DateUtils.FORMAT_NUMERIC_DATE)
             } ?: ""
         }
     }

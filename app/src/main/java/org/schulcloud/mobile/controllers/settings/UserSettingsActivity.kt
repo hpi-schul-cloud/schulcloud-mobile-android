@@ -30,11 +30,16 @@ class UserSettingsActivity: BaseActivity(){
         viewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
         setContentView(R.layout.activity_user_settings)
         user_edit_submit.setOnClickListener({ patchUser() })
+
         viewModel.user.observe(this, Observer { user ->
             user_edit_email.setText(user!!.email)
             user_edit_forename.setText(user!!.firstName)
             user_edit_lastname.setText(user!!.lastName)
             user_edit_gender.setSelection(resources.getStringArray(R.array.genders).indexOf(user!!.gender))
+        })
+
+        viewModel.account.observe(this, Observer { account ->
+
         })
     }
 
@@ -49,15 +54,15 @@ class UserSettingsActivity: BaseActivity(){
         }
         val user = User()
         val account = Account()
-        user.firstName = user_edit_forename.text as String
-        user.lastName = user_edit_lastname.text as String
+        user.firstName = user_edit_forename.text.toString()
+        user.lastName = user_edit_lastname.text.toString()
         user.gender = user_edit_gender.selectedItem.toString()
-        user.email = user_edit_email.text as String
+        user.email = user_edit_email.text.toString()
 
         if(!cutSpaces(user_edit_new_password.text.toString()).equals("")){
-            account.id = viewModel.account.value!!.id
-            account.newPassword = user_edit_new_password.text as String
-            account.newPasswordRepeat = user_edit_new_password_repeat.text as String
+            account.id = ""
+            account.newPassword = user_edit_new_password.text.toString()
+            account.newPasswordRepeat = user_edit_new_password_repeat.text.toString()
 
             async { viewModel.patchAccount(account) }
         }

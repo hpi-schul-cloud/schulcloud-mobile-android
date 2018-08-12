@@ -17,7 +17,7 @@ class RealmObjectLiveData<T : RealmObject>(private val result: T) : LiveData<T?>
 
     private val listener = RealmChangeListener<T> { result ->
         if (result.isLoaded)
-            value = if (result.isLoaded) realm.copyFromRealm(result) else null
+            value = if (result.isLoaded and result.isManaged and result.isValid) realm.copyFromRealm(result) else null
     }
 
     override fun onActive() {

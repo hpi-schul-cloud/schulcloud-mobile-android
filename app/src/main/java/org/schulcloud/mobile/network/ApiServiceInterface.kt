@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.network
 
+import com.google.gson.JsonArray
 import okhttp3.ResponseBody
+import org.json.JSONArray
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
@@ -64,7 +66,7 @@ interface ApiServiceInterface {
     fun getDevices(): Call<FeathersResponse<List<Device>>>
     @GET("notification/devices/{id}")
     fun getDevice(@Path("id") deviceId: String): Call<Device>
-    @POST("notification/devicse")
+    @POST("notification/devices")
     fun createDevice(@Body device: DeviceRequest): Call<Void>
     @DELETE("notifcation/devices/{id}")
     fun deleteDevice(@Path("id") deviceId: String): Call<String>
@@ -79,6 +81,6 @@ interface ApiServiceInterface {
     @PATCH("accounts/{id}")
     fun patchAccount(@Path("id") accountId: String, @Body account: Account): Call<Account>
     @GET("accounts/")
-    fun getAccountForUser(@Query("userId") userId: String): Call<Account>
+    fun getAccountForUser(@Query("userId") userId: String): Call<JsonArray>
 
 }

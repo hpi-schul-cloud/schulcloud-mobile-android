@@ -41,11 +41,11 @@ object UserRepository {
     }
 
     fun currentUser(realm: Realm): LiveData<User?> {
-        return realm.userDao().currentUser(realm)
+        return realm.userDao().currentUser()
     }
 
     fun getAccount(realm: Realm): LiveData<Account?>{
-        return realm.userDao().getAccount(realm)
+        return realm.userDao().getAccount()
     }
 
     suspend fun syncUser(userId: String){
@@ -71,8 +71,8 @@ object UserRepository {
 
     suspend fun patchUser(user: User){
        PatchUserJob(user, object : RequestJobCallback(){
-            override fun onSuccess() {}
-            override fun onError(code: RequestJobCallback.ErrorCode) {}
+           override fun onSuccess() {}
+           override fun onError(code: RequestJobCallback.ErrorCode) {}
         }).run()
     }
 

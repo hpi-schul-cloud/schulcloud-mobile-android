@@ -66,6 +66,11 @@ class MainActivity : BaseActivity() {
 
     override fun onSupportNavigateUp() = navController.navigateUp()
 
+    override fun onBackPressed() {
+        if (!navController.popBackStack())
+            super.onBackPressed()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         viewModel.onOptionsItemSelected.value = item
         return true

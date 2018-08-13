@@ -139,4 +139,5 @@
     <string name="user_settings_new_password_repeat">Repeat new password</string>
     <string name="user_settings_password_hint"><font color="#B10438">*</font>At least 8 upper and lower case letters with numbers and special characters</string>
     <string name="user_settings_submit">Submit</string>
+    <string name="passwords_do_not_match"><font color="#CC0438">The passords do not match</font></string>
 </resources>

@@ -145,5 +145,6 @@
     <string name="user_settings_new_password_repeat">Neues Passwort wiederholen</string>
     <string name="user_settings_password_hint"><font color="#B10438">*</font>Mindestens 8 Zeichen mit Groß- und Kleinschreibung und mindestens einer Zahl und Sonderzeichen</string>
     <string name="user_settings_submit">Absenden</string>
+    <string name="passwords_do_not_match"><font color="#CC0438">Die Passwörter stimmen nicht überein</font></string>
 
 </resources>

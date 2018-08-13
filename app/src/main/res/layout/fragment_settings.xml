@@ -75,7 +75,7 @@
                         <Spinner
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/genders"
+                            android:entries="@array/genders_de"
                             android:clickable="false"
                             android:alpha="0.5"
                             android:id="@+id/user_settings_gender"/>

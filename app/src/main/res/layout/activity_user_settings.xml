@@ -46,7 +46,7 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/genders"
+        android:entries="@array/genders_de"
         android:id="@+id/user_edit_gender"
         android:layout_marginLeft="5dp" />
 
@@ -95,7 +95,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:id="@+id/user_new_password_layout">
 
         <TextView
             android:layout_width="match_parent"
@@ -110,7 +111,6 @@
             android:hint="@string/user_settings_new_password_repeat"
             android:layout_marginLeft="5dp"
             android:inputType="textPassword"/>
-
     </LinearLayout>
 
     <TextView
@@ -118,7 +118,8 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:text="@string/user_settings_password_hint"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:id="@+id/password_conditions"/>
 
     <Button
         android:layout_width="wrap_content"

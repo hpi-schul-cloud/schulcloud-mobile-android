@@ -74,7 +74,7 @@ class SettingsFragment: BaseFragment() {
             user_settings_forename.text = user!!.firstName
             user_settings_lastname.text = user.lastName
             user_settings_email.text = user.email
-            user_settings_gender.setSelection(resources.getStringArray(R.array.genders)
+            user_settings_gender.setSelection(resources.getStringArray(R.array.genders_en)
                     .indexOf(user.gender))
         })
 

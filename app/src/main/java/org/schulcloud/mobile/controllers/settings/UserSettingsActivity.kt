@@ -5,7 +5,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
@@ -24,7 +29,10 @@ class UserSettingsActivity: BaseActivity(){
         }
     }
 
+    private lateinit var mAccount: Account
+    private lateinit var mUser: User
     private lateinit var viewModel: UserSettingsViewModel
+    private lateinit var mShake: AnimationSet
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
@@ -35,42 +43,81 @@ class UserSettingsActivity: BaseActivity(){
             user_edit_email.setText(user!!.email)
             user_edit_forename.setText(user!!.firstName)
             user_edit_lastname.setText(user!!.lastName)
-            user_edit_gender.setSelection(resources.getStringArray(R.array.genders).indexOf(user!!.gender))
+            user_edit_gender.setSelection(resources.getStringArray(R.array.genders_en).indexOf(user!!.gender))
+            mUser = user
         })
 
         viewModel.account.observe(this, Observer { account ->
-
+            mAccount = account!!
         })
+
+
+
+        user_edit_new_password.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s!!.isNotEmpty()){
+                    user_new_password_layout.visibility = View.VISIBLE
+                }else{
+                    user_new_password_layout.visibility = View.GONE
+                }
+            }
+        })
+
     }
 
     fun patchUser(){
-        if(cutSpaces(user_edit_password.text.toString()).equals("")){
+        if(user_edit_password.text.toString().isNotEmpty()){
             user_edit_password.startAnimation(resources.getAnimation(R.anim.shake) as Animation)
             return
         }
-        if(!cutSpaces(user_edit_new_password.text.toString()).equals("") && !user_edit_new_password.text.equals(user_edit_new_password_repeat)){
-            user_edit_new_password.startAnimation(resources.getAnimation(R.anim.shake) as Animation)
-            return
-        }
-        val user = User()
-        val account = Account()
-        user.firstName = user_edit_forename.text.toString()
-        user.lastName = user_edit_lastname.text.toString()
-        user.gender = user_edit_gender.selectedItem.toString()
-        user.email = user_edit_email.text.toString()
 
-        if(!cutSpaces(user_edit_new_password.text.toString()).equals("")){
-            account.id = ""
+        doPassword()
+        doUser()
+    }
+
+    fun checkNewPassword() : Boolean{
+        if(user_edit_new_password.text.length < 8)
+            return false
+        if(!user_edit_new_password.text.toString().matches(Regex("[a-zA-Z0-9 \\D]")))
+            return false
+        return true
+    }
+
+    fun doPassword(){
+        val account = Account()
+
+        if(user_edit_new_password.text.toString().equals("")){
+            if(!checkNewPassword()){
+                password_conditions.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
+                return
+            }
+
+            if(!user_edit_new_password.text.equals(user_edit_new_password_repeat.text)) {
+                user_edit_new_password_repeat.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
+                user_edit_new_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
+                return
+            }
+
+            account.id = mAccount.id
             account.newPassword = user_edit_new_password.text.toString()
             account.newPasswordRepeat = user_edit_new_password_repeat.text.toString()
 
             async { viewModel.patchAccount(account) }
         }
-
-        async { viewModel.patchUser(user) }
     }
 
-    fun cutSpaces(input: String): String{
-        return input.replace(" ","")
+    fun doUser(){
+        val user = User()
+
+        user.firstName = user_edit_forename.text.toString()
+        user.lastName = user_edit_lastname.text.toString()
+        if(user_edit_gender.selectedItemPosition != 0)
+            user.gender = resources.getStringArray(R.array.genders_en)[
+                    resources.getStringArray(R.array.genders_de).indexOf(user_edit_gender.selectedItem.toString())]
+        user.email = user_edit_email.text.toString()
+        user.id = mUser.id
+        async { viewModel.patchUser(user) }
     }
 }

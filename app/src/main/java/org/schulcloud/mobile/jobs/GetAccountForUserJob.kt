@@ -21,10 +21,11 @@ class GetAccountForUserJob(private val userId: String, callback: RequestJobCallb
 
         if (response.isSuccessful) {
             if (BuildConfig.DEBUG) Log.i(TAG, "Account for user $userId received")
+            var body = response.body().toString().substring(1,response.body().toString().length - 1)
 
             // Sync
             val gson = Gson()
-            val account = gson.fromJson(response.body().toString(),Account::class.java)
+            val account = gson.fromJson(body,Account::class.java)
             Sync.SingleData.with(Account::class.java, account).run()
             callback?.success()
         } else {

@@ -7,7 +7,7 @@ abstract class BaseStorage(name: String, mode: Int) {
 
     private val preferences: SharedPreferences = SchulCloudApp.instance.getSharedPreferences(name, mode)
 
-    fun getString(key: String, defValue: String? = null) : String? = preferences.getString(key, defValue)
+    fun getString(key: String, defValue: String? = null): String? = preferences.getString(key, defValue)
 
     fun putString(key: String, value: String?) {
         preferences
@@ -22,5 +22,4 @@ abstract class BaseStorage(name: String, mode: Int) {
                 .clear()
                 .apply()
     }
-
 }

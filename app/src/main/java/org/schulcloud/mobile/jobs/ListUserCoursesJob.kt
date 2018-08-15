@@ -16,20 +16,16 @@ class ListUserCoursesJob(callback: RequestJobCallback) : RequestJob(callback) {
     }
 
     override suspend fun onRun() {
-
         val response = ApiService.getInstance().listUserCourses().awaitResponse()
-        if(response.isSuccessful) {
-
-            if (BuildConfig.DEBUG) Log.i(TAG, "Courses received")
+        if (response.isSuccessful) {
+            Log.i(TAG, "Courses received")
 
             // Sync
             Sync.Data.with(Course::class.java, response.body()!!.data!!)
                     .run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching courses list")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
         }
     }
-
 }

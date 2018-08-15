@@ -22,7 +22,6 @@ class GetHomeworkJob(private val homeworkId: String, callback: RequestJobCallbac
 
             // Sync
             Sync.SingleData.with(Homework::class.java, response.body()!!).run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching homework $homeworkId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

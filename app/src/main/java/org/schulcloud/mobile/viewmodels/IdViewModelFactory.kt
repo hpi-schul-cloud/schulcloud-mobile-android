@@ -3,9 +3,6 @@ package org.schulcloud.mobile.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-/**
- * Date: 6/9/2018
- */
 class IdViewModelFactory(private val id: String) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

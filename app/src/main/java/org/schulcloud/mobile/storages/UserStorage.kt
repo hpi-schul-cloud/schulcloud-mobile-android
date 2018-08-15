@@ -19,5 +19,4 @@ class UserStorage : BaseStorage(PREF_USER, Context.MODE_PRIVATE) {
     var accessToken: String?
         get() = getString(ACCESS_TOKEN)
         set(value) = putString(ACCESS_TOKEN, value)
-
 }

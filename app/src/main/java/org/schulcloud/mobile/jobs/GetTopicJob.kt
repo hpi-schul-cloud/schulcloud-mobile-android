@@ -22,7 +22,6 @@ class GetTopicJob(private val topicId: String, callback: RequestJobCallback) : R
 
             // Sync
             Sync.SingleData.with(Topic::class.java, response.body()!!).run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching topic $topicId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

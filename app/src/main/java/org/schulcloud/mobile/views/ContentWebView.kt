@@ -14,13 +14,14 @@ import androidx.annotation.AttrRes
 import okhttp3.Request
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
+import java.io.IOException
+import java.lang.IllegalArgumentException
 
-
-/**
- * Date: 6/11/2018
- */
-open class ContentWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0)
-    : WebView(context, attrs, defStyleAttr) {
+open class ContentWebView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : WebView(context, attrs, defStyleAttr) {
 
     companion object {
         val TAG: String = ContentWebView::class.java.simpleName
@@ -77,7 +78,10 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                request: WebResourceRequest
+            ): Boolean {
                 return openUrl(request.url)
             }
 
@@ -94,7 +98,10 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+            override fun shouldInterceptRequest(
+                view: WebView,
+                request: WebResourceRequest
+            ): WebResourceResponse? {
                 return handleRequest(request.url.toString())
             }
 
@@ -105,12 +112,15 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                             response.header(HEADER_CONTENT_TYPE)?.substringBefore(';'),
                             response.header(HEADER_CONTENT_ENCODING, ENCODING_UTF_8),
                             response.body()?.byteStream())
-                } catch (e: Exception) {
+                } catch (e: IOException) {
+                    null
+                } catch (e: IllegalStateException) {
+                    null
+                } catch (e: IllegalArgumentException) {
                     null
                 }
             }
         }
-        setBackgroundColor(Color.TRANSPARENT)
     }
 
     override fun loadUrl(url: String?) {
@@ -128,12 +138,19 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
         super.loadData(data, mimeType, encoding)
     }
 
-    override fun loadDataWithBaseURL(baseUrl: String?, data: String?, mimeType: String?, encoding: String?, historyUrl: String?) {
+    override fun loadDataWithBaseURL(
+        baseUrl: String?,
+        data: String?,
+        mimeType: String?,
+        encoding: String?,
+        historyUrl: String?
+    ) {
         clear()
         super.loadDataWithBaseURL(baseUrl, data, mimeType, encoding, historyUrl)
     }
 
     private fun clear() {
+        setBackgroundColor(Color.TRANSPARENT)
         // Clear content to fix size if new size is smaller than current one
         super.loadDataWithBaseURL(null, null, MIME_TEXT_HTML, ENCODING_UTF_8, null)
     }

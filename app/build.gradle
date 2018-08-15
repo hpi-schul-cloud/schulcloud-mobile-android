@@ -5,6 +5,8 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
 kotlin {
     experimental {
         coroutines "enable"
@@ -62,6 +64,27 @@ android {
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
         }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+ktlint {
+    version = "0.21.0"
+    android = true
+    reporters = org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE
+    ignoreFailures = true
+}
+
+detekt {
+    version = "1.0.0.RC8"
+    profile("main") {
+        input = "$projectDir"
+        config = "$rootDir/detekt.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        output = "$projectDir/build/reports/detekt"
     }
 }
 

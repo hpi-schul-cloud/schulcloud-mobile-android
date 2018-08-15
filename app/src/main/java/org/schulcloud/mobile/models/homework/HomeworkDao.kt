@@ -3,6 +3,7 @@ package org.schulcloud.mobile.models.homework
 import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.Sort
+import org.schulcloud.mobile.utils.WEEK_IN_DAYS
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.utils.firstAsLiveData
 import org.schulcloud.mobile.utils.map
@@ -35,7 +36,7 @@ class HomeworkDao(private val realm: Realm) {
                 .findAllAsync()
                 .asLiveData()
                 .map {
-                    it.filter { it.dueTimespanDays ?: -1 >= 0 && it.dueTimespanDays ?: 8 <= 7 }
+                    it.filter { it.dueTimespanDays in 0..WEEK_IN_DAYS }
                 }
     }
 

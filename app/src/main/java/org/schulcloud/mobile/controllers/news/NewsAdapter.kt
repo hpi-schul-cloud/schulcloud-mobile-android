@@ -16,13 +16,17 @@ class NewsAdapter
         items = newsList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): NewsViewHolder {
         val binding = ItemNewsBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
         return NewsViewHolder(binding)
     }
 
-    class NewsViewHolder(binding: ItemNewsBinding) : BaseViewHolder<News, ItemNewsBinding>(binding) {
+    class NewsViewHolder(binding: ItemNewsBinding) :
+            BaseViewHolder<News, ItemNewsBinding>(binding) {
         override fun onItemSet() {
             binding.news = item
             binding.formattedDate = item.createdAt?.parseDate()?.let {

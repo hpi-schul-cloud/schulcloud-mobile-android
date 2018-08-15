@@ -3,7 +3,7 @@
 buildscript {
     ext {
         kotlinVersion = '1.2.51'
-        buildToolsVersion   = '27.0.3'
+        buildToolsVersion   = '28.0.2'
         minSdkVersion       = 16
         targetSdkVersion    = 28
         compileSdkVersion   = 28
@@ -14,13 +14,20 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0-beta05'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "io.realm:realm-gradle-plugin:5.1.0"
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha04"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha05"
+
+        classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:3.2.0"
     }
+}
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC8"
 }
 
 allprojects {

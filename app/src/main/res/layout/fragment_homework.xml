@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkActivity">
+    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkFragment">
 
     <data>
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
@@ -56,10 +56,10 @@
                         android:id="@+id/course_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
                         android:paddingTop="1dp"
                         android:src="@drawable/circle_course_color"
                         app:colorFilter="@{viewModel.homework != null? Color.parseColor(viewModel.homework.course.color) : Color.TRANSPARENT}"
@@ -114,7 +114,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

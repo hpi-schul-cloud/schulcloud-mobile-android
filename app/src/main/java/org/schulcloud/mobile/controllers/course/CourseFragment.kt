@@ -36,31 +36,31 @@ class CourseFragment : MainFragment() {
         get() = viewModel.course.value?.url
 
     override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.course.value?.name ?: getString(R.string.courseDetail_error_notFound_title)
+            title = viewModel.course.value?.name ?: getString(R.string.general_error_notFound)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         val args = CourseFragmentArgs.fromBundle(arguments)
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.id))
                 .get(CourseViewModel::class.java)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = FragmentCourseBinding.inflate(layoutInflater).also {
+        return FragmentCourseBinding.inflate(layoutInflater).also {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
-        }
-        return binding.root
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        topicsAdapter.emptyIndicator = empty
-        viewModel.course.observe(this, Observer { course ->
+        viewModel.course.observe(this, Observer {
             notifyConfigChanged()
         })
+
+        topicsAdapter.emptyIndicator = empty
         viewModel.topics.observe(this, Observer {
             topicsAdapter.update(it ?: emptyList())
         })

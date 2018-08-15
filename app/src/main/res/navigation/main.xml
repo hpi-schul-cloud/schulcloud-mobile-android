@@ -38,11 +38,7 @@
     <fragment
         android:id="@+id/fragment_courseList"
         android:name="org.schulcloud.mobile.controllers.course.CourseListFragment"
-        tools:layout="@layout/fragment_course_list">
-        <action
-            android:id="@+id/action_fragment_courseList_to_fragment_course"
-            app:destination="@id/fragment_course" />
-    </fragment>
+        tools:layout="@layout/fragment_course_list" />
     <fragment
         android:id="@+id/fragment_course"
         android:name="org.schulcloud.mobile.controllers.course.CourseFragment"
@@ -66,6 +62,17 @@
         android:id="@+id/fragment_homeworkList"
         android:name="org.schulcloud.mobile.controllers.homework.HomeworkListFragment"
         tools:layout="@layout/fragment_homework_list" />
+    <fragment
+        android:id="@+id/fragment_homework"
+        android:name="org.schulcloud.mobile.controllers.homework.HomeworkFragment"
+        tools:layout="@layout/fragment_homework">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_homework"
+        app:destination="@id/fragment_homework" />
 
     <!-- File -->
     <fragment

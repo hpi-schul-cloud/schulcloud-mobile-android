@@ -22,7 +22,6 @@ class GetCourseJob(private val courseId: String, callback: RequestJobCallback) :
 
             // Sync
             Sync.SingleData.with(Course::class.java, response.body()!!).run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching course $courseId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

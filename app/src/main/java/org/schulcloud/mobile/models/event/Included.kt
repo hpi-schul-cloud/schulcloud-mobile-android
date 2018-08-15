@@ -22,6 +22,7 @@ open class IncludedAttributes : RealmObject() {
 
 
     var weekdayNumber: Int? = null
+        @Suppress("MagicNumber")
         get() = when (weekday) {
             "SU" -> 1
             "MO" -> 2

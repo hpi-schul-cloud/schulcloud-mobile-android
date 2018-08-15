@@ -4,7 +4,7 @@ import android.os.Bundle
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 
-class LoginActivity: BaseActivity() {
+class LoginActivity : BaseActivity() {
 
     companion object {
         val TAG: String = LoginActivity::class.java.simpleName
@@ -14,7 +14,7 @@ class LoginActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if(supportFragmentManager.findFragmentByTag(LoginFragment.TAG) == null) {
+        if (supportFragmentManager.findFragmentByTag(LoginFragment.TAG) == null) {
             showLoginFragment()
         }
     }

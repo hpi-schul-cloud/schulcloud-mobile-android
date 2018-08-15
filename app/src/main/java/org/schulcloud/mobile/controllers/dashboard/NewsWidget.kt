@@ -19,6 +19,7 @@ import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
 class NewsWidget : Widget() {
     companion object {
         val TAG: String = NewsWidget::class.java.simpleName
+        const val LIMIT = 5
     }
 
     private lateinit var viewModel: NewsListViewModel
@@ -39,7 +40,7 @@ class NewsWidget : Widget() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.news.observe(this, Observer { news ->
-            newsAdapter.update(news?.limit(5) ?: emptyList())
+            newsAdapter.update(news?.limit(LIMIT) ?: emptyList())
         })
 
         recyclerView.apply {

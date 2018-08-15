@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package org.schulcloud.mobile.utils
 
 import androidx.lifecycle.LiveData
@@ -35,6 +37,6 @@ fun Realm.courseDao(): CourseDao = CourseDao(this)
 fun Realm.topicDao(): TopicDao = TopicDao(this)
 fun Realm.contentDao(): ContentDao = ContentDao(this)
 
-fun Realm.homeworkDao() : HomeworkDao = HomeworkDao(this)
+fun Realm.homeworkDao(): HomeworkDao = HomeworkDao(this)
 
 fun Realm.fileDao(): FileDao = FileDao(this)

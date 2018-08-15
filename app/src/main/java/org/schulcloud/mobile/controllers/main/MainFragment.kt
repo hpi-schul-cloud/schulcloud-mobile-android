@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -62,8 +63,14 @@ abstract class MainFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
-        (activity as MainActivity).setSupportActionBar(view?.findViewById(R.id.toolbar))
+
+        view?.findViewById<Toolbar>(R.id.toolbar).also {
+            it?.title = config.title
+            (activity as MainActivity).setSupportActionBar(it)
+        }
+
         notifyConfigChanged()
     }
 

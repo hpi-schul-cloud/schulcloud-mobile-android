@@ -2,6 +2,7 @@
 <resources>
 
     <color name="brand_primary">#78aae5</color>
+    <color name="brand_primary12">#1F78aae5</color>
     <color name="brand_primaryLight">#a0c3ec</color>
     <color name="brand_primaryDark">#4d8fdd</color>
     <color name="brand_accent">@color/brand_primary</color>

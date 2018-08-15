@@ -17,6 +17,7 @@ import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.NavigationDrawerViewModel
 
 class NavigationDrawerFragment : BottomSheetDialogFragment() {
+    // TODO: rounded corners are missing
     private lateinit var viewModel: NavigationDrawerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

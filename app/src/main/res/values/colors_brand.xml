@@ -2,6 +2,7 @@
 <resources>
 
     <color name="brand_primary">@color/brand_hpiRed</color>
+    <color name="brand_primary12">#1FB10438</color>
     <!-- 40% black overlay -->
     <color name="brand_primaryLight">#e8915a</color>
     <!-- 30% white overlay -->

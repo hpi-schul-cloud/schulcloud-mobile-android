@@ -11,63 +11,52 @@
             type="org.schulcloud.mobile.viewmodels.CourseViewModel" />
     </data>
 
-    <LinearLayout
+    <org.schulcloud.mobile.views.ScrollContentView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <include layout="@layout/toolbar" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
 
-            <androidx.core.widget.NestedScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:ignore="PrivateResource">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_margin="16dp"
+                    android:text="@{viewModel.course.description.trim()}"
+                    android:visibility="@{ViewUtilsKt.toVisible(viewModel.course.description.trim())}"
+                    tools:text="Course Description\n\n..." />
 
-                    <TextView
-                        style="@style/TextAppearance.AppCompat.Body1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:text="@{viewModel.course.description.trim()}"
-                        android:visibility="@{ViewUtilsKt.toVisible(viewModel.course.description.trim())}"
-                        tools:text="Course Description\n\n..." />
+                <TextView
+                    style="@style/Content_Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_topics" />
 
-                    <TextView
-                        style="@style/Content_Subhead"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/course_topics" />
+                <TextView
+                    android:id="@android:id/empty"
+                    style="@style/Content_Text.Empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/topics_error_empty" />
 
-                    <TextView
-                        android:id="@android:id/empty"
-                        style="@style/Content_Text.Empty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/topics_error_empty" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_topic" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_topic" />
+            </LinearLayout>
 
-                </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </LinearLayout>
+    </org.schulcloud.mobile.views.ScrollContentView>
 </layout>

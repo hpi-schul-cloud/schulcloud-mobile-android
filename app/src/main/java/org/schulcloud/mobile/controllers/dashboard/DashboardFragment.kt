@@ -21,8 +21,7 @@ class DashboardFragment : MainFragment() {
 
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
-            title = getString(R.string.dashboard_title),
-            fabIconRes = R.drawable.ic_share_dark_24dp
+            title = getString(R.string.dashboard_title)
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

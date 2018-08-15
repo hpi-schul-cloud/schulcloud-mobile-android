@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{Integer.toString(homeworkCount)}"
-            android:textColor="@color/warn"
+            android:textColor="@color/brand_primary"
             tools:text="3" />
 
     </LinearLayout>

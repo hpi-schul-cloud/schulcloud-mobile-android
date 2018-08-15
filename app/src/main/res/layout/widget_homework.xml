@@ -42,7 +42,6 @@
                     android:paddingEnd="16sp"
                     android:paddingRight="16sp"
                     android:text="@{Integer.toString(count)}"
-                    android:textColor="@color/warn"
                     android:textSize="70sp"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"

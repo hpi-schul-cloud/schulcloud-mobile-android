@@ -5,12 +5,12 @@ import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.annotation.AttrRes
 import android.util.AttributeSet
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.AttrRes
 import okhttp3.Request
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
@@ -34,6 +34,7 @@ open class ContentWebView @JvmOverloads constructor(context: Context, attrs: Att
                 + "    <style>\n"
                 + "        * {\n"
                 + "            max-width: 100%;\n"
+                + "            word-wrap: break-word;\n"
                 + "        }\n"
                 + "        body {\n"
                 + "            margin: 0;\n"

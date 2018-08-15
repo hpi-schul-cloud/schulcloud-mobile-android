@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/login_bg"
     android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/containerLogin"
         android:layout_width="match_parent"
+        android:divider="@android:drawable/divider_horizontal_dark"
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"

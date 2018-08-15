@@ -13,7 +13,7 @@ import org.schulcloud.mobile.controllers.news.NewsAdapter
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.utils.limit
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
-import org.schulcloud.mobile.views.MiddleDividerItemDecoration
+import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
 
 class NewsWidget : Widget() {
@@ -45,7 +45,7 @@ class NewsWidget : Widget() {
         recyclerView.apply {
             layoutManager = NoScrollLinearLayoutManager(context)
             adapter = newsAdapter
-            addItemDecoration(MiddleDividerItemDecoration(context))
+            addItemDecoration(DividerItemDecoration(context))
         }
         newsAdapter.emptyIndicator = empty
 

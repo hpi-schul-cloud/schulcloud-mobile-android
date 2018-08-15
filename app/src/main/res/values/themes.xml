@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorAccent">@color/brand_accent</item>
+        <item name="android:windowBackground">@color/background</item>
 
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
 

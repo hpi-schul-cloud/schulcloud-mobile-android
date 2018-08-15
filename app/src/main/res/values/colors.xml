@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="background">#F5F5F5</color>
+
     <color name="text_main">#DE000000</color>
 
-    <color name="login_bg">#EEEEEE</color>
     <color name="login_text">@color/text_main</color>
 
     <color name="button_gray">#5a6065</color>

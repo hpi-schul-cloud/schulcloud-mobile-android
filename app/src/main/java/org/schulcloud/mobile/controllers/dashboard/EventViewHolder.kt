@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.controllers.dashboard
 
-import androidx.databinding.ViewDataBinding
 import android.text.format.DateUtils
+import androidx.databinding.ViewDataBinding
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemEventBinding
 import org.schulcloud.mobile.databinding.ItemEventCurrentBinding

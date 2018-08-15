@@ -35,11 +35,6 @@
         <item name="android:gravity">start|center_vertical</item>
         <item name="drawableEnd">@drawable/ic_open_in_new_24dp</item>
     </style>
-    <style name="Content_Subhead" parent="TextAppearance.AppCompat.Title">
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-    </style>
     <style name="Content_LinkExternal">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_course.*
 import org.schulcloud.mobile.R
@@ -21,6 +20,7 @@ import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import org.schulcloud.mobile.views.DividerItemDecoration
 
 class CourseFragment : MainFragment() {
     companion object {
@@ -73,7 +73,7 @@ class CourseFragment : MainFragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = topicsAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(context))
         }
     }
 

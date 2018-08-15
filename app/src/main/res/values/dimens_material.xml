@@ -14,6 +14,8 @@
     <dimen name="material_listItem_icon_size">24dp</dimen>
     <dimen name="material_listItem_icon_textSpacing">16dp</dimen>
 
+    <dimen name="material_divider_size">1dp</dimen>
+
     <!-- Card -->
     <dimen name="material_card_marginHorizontal">16dp</dimen>
     <dimen name="material_card_marginVertical">8dp</dimen>

@@ -9,9 +9,15 @@ val TIMEZONE_UTC: TimeZone = TimeZone.getTimeZone("TIMEZONE_UTC")
 val UTC_FORMAT: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
 val TIMEZONE_LOCAL: TimeZone = TimeZone.getDefault()
 
+const val WEEK_IN_DAYS = 7
+const val DAY_IN_HOURS = 24
+const val HOUR_IN_MINUTES = 60
+const val MINUTE_IN_SECONDS = 60
+
 fun getCalendar(): Calendar {
     return GregorianCalendar.getInstance(TIMEZONE_UTC)
 }
+
 fun getUserCalendar(): Calendar {
     return GregorianCalendar.getInstance()
 }
@@ -19,6 +25,7 @@ fun getUserCalendar(): Calendar {
 fun Calendar.toLocal() {
     add(Calendar.MILLISECOND, -TIMEZONE_LOCAL.getOffset(timeInMillis))
 }
+
 fun Calendar.fromLocal() {
     add(Calendar.MILLISECOND, TIMEZONE_LOCAL.getOffset(timeInMillis))
 }
@@ -42,11 +49,11 @@ var Calendar.timeOfDay: Long
         var time = value
         set(Calendar.MILLISECOND, (value % DateUtils.SECOND_IN_MILLIS).toInt())
         time /= DateUtils.SECOND_IN_MILLIS
-        set(Calendar.SECOND, (time % 60).toInt())
-        time /= 60
-        set(Calendar.MINUTE, (time % 60).toInt())
-        time /= 60
-        set(Calendar.HOUR_OF_DAY, (time % 24).toInt())
+        set(Calendar.SECOND, (time % MINUTE_IN_SECONDS).toInt())
+        time /= MINUTE_IN_SECONDS
+        set(Calendar.MINUTE, (time % HOUR_IN_MINUTES).toInt())
+        time /= HOUR_IN_MINUTES
+        set(Calendar.HOUR_OF_DAY, (time % DAY_IN_HOURS).toInt())
     }
 
 var Calendar.dayOfWeek: Int

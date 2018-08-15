@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
 import android.content.ContentValues.TAG
@@ -17,13 +18,9 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.user.UserRepository
 import java.io.IOException
 
-
-/**
- * Date: 6/11/2018
- */
 const val HEADER_COOKIE = "cookie"
 const val HEADER_CONTENT_TYPE = "content-type"
-const val HEADER_CONTENT_ENCODING = "content-encoding";
+const val HEADER_CONTENT_ENCODING = "content-encoding"
 
 const val MIME_TEXT_PLAIN = "text/plain"
 const val MIME_TEXT_HTML = "text/html"
@@ -33,12 +30,11 @@ const val ENCODING_UTF_8 = "utf-8"
 
 val HOST = API_URL.substringBeforeLast(":")
 
-
 val HTTP_CLIENT: OkHttpClient by lazy {
     OkHttpClient.Builder().addInterceptor { chain ->
         val builder = chain.request().newBuilder()
         if (UserRepository.isAuthorized)
-            builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token);
+            builder.addHeader(HEADER_COOKIE, "jwt=" + UserRepository.token)
         chain.proceed(builder.build())
     }.build()
 }
@@ -53,7 +49,9 @@ fun String?.asUri(): Uri {
 fun Context.prepareCustomTab(): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
         setToolbarColor(ContextCompat.getColor(this@prepareCustomTab, R.color.brand_primary))
-        setCloseButtonIcon(ContextCompat.getDrawable(this@prepareCustomTab, R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
+        setCloseButtonIcon(
+                ContextCompat.getDrawable(this@prepareCustomTab,
+                        R.drawable.ic_arrow_back_white_24dp)!!.asBitmap())
         addDefaultShareMenuItem()
         setStartAnimations(this@prepareCustomTab, R.anim.slide_in_right, R.anim.slide_out_left)
         setExitAnimations(this@prepareCustomTab, R.anim.slide_in_left, R.anim.slide_out_right)

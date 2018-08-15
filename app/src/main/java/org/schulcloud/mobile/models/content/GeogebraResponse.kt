@@ -1,8 +1,5 @@
 package org.schulcloud.mobile.models.content
 
-/**
- * Date: 6/18/2018
- */
 class GeogebraResponse {
     var responses: Responses? = null
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.R.id.swipeRefresh
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.utils.HOST
 

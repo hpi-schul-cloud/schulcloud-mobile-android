@@ -34,8 +34,11 @@ class NewsListFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this).get(NewsListViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         activity?.title = getString(R.string.news_title)
         return inflater.inflate(R.layout.fragment_news_list, container, false)
     }
@@ -50,7 +53,7 @@ class NewsListFragment : BaseFragment() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
-        viewModel.news.observe(this, Observer { newsListAdapter.update(it?: emptyList())})
+        viewModel.news.observe(this, Observer { newsListAdapter.update(it ?: emptyList()) })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

@@ -10,12 +10,11 @@ import android.util.AttributeSet
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.isLtr
 
-
-/**
- * Date: 6/11/2018
- */
-open class CompatTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0)
-    : AppCompatTextView(context, attrs, defStyleAttr) {
+open class CompatTextView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    @AttrRes defStyleAttr: Int = 0
+) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     companion object {
         val TAG: String = CompatTextView::class.java.simpleName
@@ -25,6 +24,7 @@ open class CompatTextView @JvmOverloads constructor(context: Context, attrs: Att
         initAttrs(attrs)
     }
 
+    @Suppress("ComplexMethod")
     private fun initAttrs(attrs: AttributeSet?) {
         if (attrs == null)
             return

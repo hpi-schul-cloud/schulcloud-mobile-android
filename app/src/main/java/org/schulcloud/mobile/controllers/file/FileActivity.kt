@@ -81,6 +81,7 @@ class FileActivity : BaseActivity() {
         performRefresh()
     }
 
+    @Suppress("MagicNumber")
     override fun navigateUp(): Boolean {
         return if (viewModel.path.getPathParts(3).size > 2) {
             startActivity(newIntent(this, viewModel.path.parentDirectory))
@@ -131,6 +132,7 @@ class FileActivity : BaseActivity() {
     }
 
 
+    @Suppress("MagicNumber")
     private fun loadFile(file: File, download: Boolean) {
         launch(UI) {
             try {

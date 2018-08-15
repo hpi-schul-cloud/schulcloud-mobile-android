@@ -13,13 +13,17 @@ import org.schulcloud.mobile.databinding.ItemHomeworkBinding
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.utils.formatDaysLeft
 
-class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapter<Homework, HomeworkListAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
+class HomeworkListAdapter(private val onSelected: (String) -> Unit) :
+        BaseAdapter<Homework, HomeworkListAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
 
     fun update(homeworkList: List<Homework>) {
         items = homeworkList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeworkListAdapter.HomeworkViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): HomeworkListAdapter.HomeworkViewHolder {
         val binding = ItemHomeworkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.onSelected = onSelected
         return HomeworkViewHolder(binding)
@@ -36,7 +40,8 @@ class HomeworkListAdapter(private val onSelected: (String) -> Unit) : BaseAdapte
         return false
     }
 
-    class HomeworkViewHolder(binding: ItemHomeworkBinding) : BaseViewHolder<Homework, ItemHomeworkBinding>(binding) {
+    class HomeworkViewHolder(binding: ItemHomeworkBinding) :
+            BaseViewHolder<Homework, ItemHomeworkBinding>(binding) {
         companion object {
             @JvmStatic
             fun getTextFromHtml(text: String?): String {

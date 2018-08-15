@@ -36,7 +36,11 @@ class CourseListFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this).get(CourseListViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         activity?.title = getString(R.string.course_title)
         return inflater.inflate(R.layout.fragment_course_list, container, false)
     }

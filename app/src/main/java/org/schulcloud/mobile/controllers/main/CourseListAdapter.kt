@@ -25,7 +25,7 @@ class CourseListAdapter(private val onSelected: (String) -> Unit)
         companion object {
             @JvmStatic
             fun teachersToShort(teachers: List<User>?): String {
-                return teachers?.joinToString(", ") { it.shortName() } ?: ""
+                return teachers?.joinToString(", ") { it.shortName } ?: ""
             }
         }
 

@@ -18,14 +18,12 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-
-/**
- * Date: 6/11/2018
- */
 class TopicActivity : BaseActivity() {
     companion object {
         val TAG: String = TopicActivity::class.java.simpleName
         const val EXTRA_ID = "org.schulcloud.extras.EXTRA_ID"
+
+        const val COL_WIDTH = 440
 
         fun newIntent(context: Context, id: String): Intent {
             return Intent(context, TopicActivity::class.java)
@@ -57,7 +55,7 @@ class TopicActivity : BaseActivity() {
         // calculate amount of columns
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-        val spans = Math.max(1, metrics.widthPixels / 440.dpToPx())
+        val spans = Math.max(1, metrics.widthPixels / COL_WIDTH.dpToPx())
 
         recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL)

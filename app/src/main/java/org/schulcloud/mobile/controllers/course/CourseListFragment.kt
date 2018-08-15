@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_course_list.*
 import org.schulcloud.mobile.R
@@ -25,8 +24,7 @@ class CourseListFragment : MainFragment() {
     private lateinit var viewModel: CourseListViewModel
     private val courseAdapter: CourseAdapter by lazy {
         CourseAdapter {
-            findNavController(this).navigate(
-                    R.id.action_global_fragment_course,
+            navController.navigate(R.id.action_global_fragment_course,
                     CourseFragmentArgs.Builder(it).build().toBundle())
         }
     }
@@ -52,7 +50,7 @@ class CourseListFragment : MainFragment() {
 
         courseAdapter.emptyIndicator = empty
         viewModel.courses.observe(this, Observer { courses ->
-            courseAdapter.update(courses!!)
+            courseAdapter.update(courses ?: emptyList())
         })
 
         recyclerView.apply {
@@ -61,7 +59,6 @@ class CourseListFragment : MainFragment() {
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
         }
     }
-
 
     override suspend fun refresh() {
         CourseRepository.syncCourses()

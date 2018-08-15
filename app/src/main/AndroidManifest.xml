@@ -44,15 +44,6 @@
             android:name=".controllers.topic.TopicActivity"
             android:launchMode="singleTop" />
 
-        <activity
-            android:name=".controllers.file.FileActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".controllers.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.main.MainActivity" />
-        </activity>
-
     </application>
 
 </manifest>

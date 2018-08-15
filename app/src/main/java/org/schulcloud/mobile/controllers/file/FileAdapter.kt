@@ -1,9 +1,8 @@
 package org.schulcloud.mobile.controllers.file
 
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
@@ -12,16 +11,13 @@ import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.utils.fileExtension
 
 
-class FileAdapter(private val onSelected: (File) -> Unit,
-                  private val onDownload: (File) -> Unit)
-    : BaseAdapter<File, FileAdapter.FileViewHolder, ItemFileBinding>() {
+class FileAdapter(
+    private val onSelected: (File) -> Unit,
+    private val onDownload: (File) -> Unit
+) : BaseAdapter<File, FileAdapter.FileViewHolder, ItemFileBinding>() {
 
     fun update(fileList: List<File>) {
         items = fileList
-    }
-
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        val context = recyclerView.context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileViewHolder {

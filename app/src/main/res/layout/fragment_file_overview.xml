@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,8 +51,8 @@
                             style="@style/FileOverview.Card_Icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_user" />
@@ -55,8 +61,8 @@
                             style="@style/FileOverview.Card_Title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
                             android:text="@string/fileOverview_my"
                             app:layout_constraintBottom_toBottomOf="@id/personal_icon"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -67,9 +73,9 @@
                             style="@style/FileOverview.Card_Description"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
                             android:text="@string/fileOverview_my_description"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -101,8 +107,8 @@
                             style="@style/FileOverview.Card_Icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
+                            android:layout_marginLeft="8dp"
                             android:tint="@android:color/white"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -113,8 +119,8 @@
                             style="@style/FileOverview.Card_Title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
                             android:text="@string/fileOverview_courses"
                             app:layout_constraintBottom_toBottomOf="@id/courses_icon"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -126,9 +132,9 @@
                             style="@style/FileOverview.Card_Description"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
                             android:text="@string/fileOverview_courses_description"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -148,9 +154,9 @@
                             style="@style/TextAppearance.AppCompat.Small"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="4dp"
+                            android:layout_marginRight="8dp"
                             android:gravity="center"
                             android:minHeight="32dp"
                             android:text="@string/fileOverview_courses_error"
@@ -162,8 +168,8 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.main
+package org.schulcloud.mobile.controllers.file
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ class FileOverviewCourseAdapter(private val onSelected: (String) -> Unit)
         items = courseList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileOverviewCourseAdapter.CourseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
         val binding = ItemFileCourseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.onSelected = onSelected
         return CourseViewHolder(binding)

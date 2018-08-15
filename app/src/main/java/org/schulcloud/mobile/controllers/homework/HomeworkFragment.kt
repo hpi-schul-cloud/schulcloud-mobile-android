@@ -51,7 +51,6 @@ class HomeworkFragment : MainFragment() {
         })
     }
 
-
     override suspend fun refresh() {
         viewModel.homework.value?.also {
             HomeworkRepository.syncHomework(it.id)

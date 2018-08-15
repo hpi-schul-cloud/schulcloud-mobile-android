@@ -8,6 +8,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -27,7 +29,10 @@ abstract class MainFragment : BaseFragment() {
         ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
     }
 
+    protected val navController: NavController
+        get() = findNavController(this)
     protected lateinit var config: MainFragmentConfig
+        private set
 
     open var url: String? = null
     private var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
@@ -38,6 +43,7 @@ abstract class MainFragment : BaseFragment() {
     protected var isRefreshing: Boolean by Delegates.observable(false) { _, _, new ->
         swipeRefreshLayout?.isRefreshing = new
     }
+        private set
 
     abstract fun provideConfig(): MainFragmentConfig
 

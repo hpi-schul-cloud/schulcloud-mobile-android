@@ -77,7 +77,18 @@
     <!-- File -->
     <fragment
         android:id="@+id/fragment_fileOverview"
-        android:name="org.schulcloud.mobile.controllers.main.FileOverviewFragment"
+        android:name="org.schulcloud.mobile.controllers.file.FileOverviewFragment"
         tools:layout="@layout/fragment_file_overview" />
+    <fragment
+        android:id="@+id/fragment_file"
+        android:name="org.schulcloud.mobile.controllers.file.FileFragment"
+        tools:layout="@layout/fragment_file">
+        <argument
+            android:name="path"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_file"
+        app:destination="@id/fragment_file" />
 
 </navigation>

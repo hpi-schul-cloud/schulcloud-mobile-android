@@ -72,7 +72,6 @@ class CourseFragment : MainFragment() {
         }
     }
 
-
     override suspend fun refresh() {
         viewModel.course.value?.also {
             CourseRepository.syncCourse(it.id)

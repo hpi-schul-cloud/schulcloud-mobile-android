@@ -16,21 +16,21 @@
         android:id="@+id/fragment_courseList"
         android:icon="@drawable/ic_graduation_cap"
         android:title="@string/main_drawer_courses" />
-    <item
+    <!--<item
         android:id="@+id/fragment_calendar"
         android:icon="@drawable/ic_table"
-        android:title="@string/main_drawer_calendar" />
+        android:title="@string/main_drawer_calendar" />-->
     <item
         android:id="@+id/fragment_homeworkList"
         android:icon="@drawable/ic_tasks"
         android:title="@string/main_drawer_homework" />
     <item
         android:id="@+id/fragment_fileOverview"
-        android:icon="@drawable/ic_folder_open"
+        android:icon="@drawable/ic_folder_open_dark"
         android:title="@string/main_drawer_files" />
-    <item
+    <!--<item
         android:id="@+id/fragment_learnstore"
         android:icon="@drawable/ic_search"
-        android:title="@string/main_drawer_learnstore" />
+        android:title="@string/main_drawer_learnstore" />-->
 
 </menu>

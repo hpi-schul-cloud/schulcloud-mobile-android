@@ -14,7 +14,7 @@
             type="String" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         style="@style/Dashboard.Widget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -100,7 +100,7 @@
 
             </RelativeLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/more"
                 style="@style/Dashboard.Widget.ButtonMore"
                 android:layout_width="wrap_content"
@@ -109,5 +109,5 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

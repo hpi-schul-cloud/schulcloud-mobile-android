@@ -28,7 +28,7 @@
                 android:orientation="vertical"
                 android:paddingBottom="8dp">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/personal_card"
                     style="@style/FileOverview.Card"
                     android:layout_width="match_parent"
@@ -83,10 +83,10 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     style="@style/FileOverview.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -164,7 +164,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 

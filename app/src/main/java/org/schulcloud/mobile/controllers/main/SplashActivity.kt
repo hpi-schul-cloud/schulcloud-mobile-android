@@ -1,8 +1,8 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.models.user.UserRepository
 

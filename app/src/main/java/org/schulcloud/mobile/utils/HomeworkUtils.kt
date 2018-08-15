@@ -21,7 +21,7 @@ fun getDueText(homework: Homework?): String {
                 SchulCloudApp.instance.getString(R.string.homework_due_hours)
             else
                 SchulCloudApp.instance.getString(R.string.homework_due_outdated)
-        in 1..7 -> SchulCloudApp.instance.resources.getQuantityString(R.plurals.homework_due_days, days, days)
+        in 1..WEEK_IN_DAYS -> SchulCloudApp.instance.resources.getQuantityString(R.plurals.homework_due_days, days, days)
         else -> ""
     }
 }
@@ -30,11 +30,11 @@ fun getDueColor(homework: Homework?): Int {
     return when (homework?.dueTimespanDays) {
         null -> Color.BLACK
         in Int.MIN_VALUE..1 -> Color.RED
-        in 2..7 -> Color.BLACK
+        in 2..WEEK_IN_DAYS -> Color.BLACK
         else -> Color.TRANSPARENT
     }
 }
 
 fun dueLabelFlagRequired(homework: Homework?): Boolean {
-    return homework?.dueTimespanDays ?: 2 <= 1
+    return homework?.dueTimespanDays ?: Int.MAX_VALUE <= 1
 }

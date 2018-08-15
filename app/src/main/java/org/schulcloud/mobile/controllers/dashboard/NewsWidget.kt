@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.main.NewsListAdapter
 import org.schulcloud.mobile.controllers.main.NewsListFragment
 import org.schulcloud.mobile.models.news.NewsRepository
@@ -20,6 +19,7 @@ import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
 class NewsWidget : Widget() {
     companion object {
         val TAG: String = NewsWidget::class.java.simpleName
+        const val LIMIT = 5
     }
 
     private lateinit var viewModel: NewsListViewModel
@@ -40,7 +40,7 @@ class NewsWidget : Widget() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.news.observe(this, Observer { news ->
-            newsAdapter.update(news?.limit(5) ?: emptyList())
+            newsAdapter.update(news?.limit(LIMIT) ?: emptyList())
         })
 
         recyclerView.apply {

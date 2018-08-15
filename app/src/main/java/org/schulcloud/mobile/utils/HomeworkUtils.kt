@@ -6,40 +6,35 @@ import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.models.homework.Homework
 
 /**
- * Returns text and text color for the duetill label of a Homework object
+ * Returns text for the duetill label of a homework
  * depending on how many days and hours are left until its dueDate.
  *
  * When there is more than a week left, this function returns an empty String
- *
- * @return a Pair with duetill label text and color
  */
-@Suppress("ComplexMethod", "MagicNumber")
-fun getDueTextAndColorId(homework: Homework?): Pair<String, Int> {
-    val days: Int = homework?.dueTimespanDays ?: Int.MAX_VALUE - 1
-
+fun getDueText(homework: Homework?): String {
+    val days = homework?.dueTimespanDays
     return when (days) {
-        in Int.MIN_VALUE until 0 ->
-            Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_outdated), Color.RED)
-        0 -> {
-            val hours = homework?.dueTimespanHours ?: Int.MAX_VALUE - 1
-            if (hours >= 0)
-                Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_inHours), Color.RED)
+        null -> SchulCloudApp.instance.getString(R.string.homework_error_invalidDueDate)
+        in Int.MIN_VALUE until 0 -> SchulCloudApp.instance.getString(R.string.homework_due_outdated)
+        0 ->
+            if (homework.dueTimespanHours ?: Int.MAX_VALUE >= 0)
+                SchulCloudApp.instance.getString(R.string.homework_due_hours)
             else
-                Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_outdated), Color.RED)
-        }
-        1 -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_tomorrow), Color.RED)
-        2 -> Pair(SchulCloudApp.instance.resources.getString(R.string.homework_due_dayAfterTomorrow), Color.BLACK)
-        in 3..7 -> Pair(SchulCloudApp.instance.resources
-                .getString(R.string.homework_due_inDays), Color.BLACK)
-        Int.MAX_VALUE -> Pair(SchulCloudApp.instance.resources
-                .getString(R.string.homework_error_invalidDueDate), Color.BLACK)
-        else -> Pair("", Color.TRANSPARENT)
+                SchulCloudApp.instance.getString(R.string.homework_due_outdated)
+        in 1..7 -> SchulCloudApp.instance.resources.getQuantityString(R.plurals.homework_due_days, days, days)
+        else -> ""
+    }
+}
+
+fun getDueColor(homework: Homework?): Int {
+    return when (homework?.dueTimespanDays) {
+        null -> Color.BLACK
+        in Int.MIN_VALUE..1 -> Color.RED
+        in 2..7 -> Color.BLACK
+        else -> Color.TRANSPARENT
     }
 }
 
 fun dueLabelFlagRequired(homework: Homework?): Boolean {
-    homework?.let {
-        return (it.dueTimespanDays <= 1)
-    }
-    return false
+    return homework?.dueTimespanDays ?: 2 <= 1
 }

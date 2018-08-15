@@ -1,12 +1,12 @@
 package org.schulcloud.mobile.jobs
 
+import android.util.Log
+import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Sync
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.network.ApiService
-import org.schulcloud.mobile.utils.loge
-import org.schulcloud.mobile.utils.logi
 import ru.gildor.coroutines.retrofit.awaitResponse
 
 class GetTopicJob(private val topicId: String, callback: RequestJobCallback) : RequestJob(callback) {
@@ -18,12 +18,12 @@ class GetTopicJob(private val topicId: String, callback: RequestJobCallback) : R
         val response = ApiService.getInstance().getTopic(topicId).awaitResponse()
 
         if (response.isSuccessful) {
-            logi(TAG, "Topics $topicId received")
+            if (BuildConfig.DEBUG) Log.i(TAG, "Topics $topicId received")
 
             // Sync
             Sync.SingleData.with(Topic::class.java, response.body()!!).run()
         } else {
-            loge(TAG, "Error while fetching topic $topicId")
+            if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching topic $topicId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
         }
     }

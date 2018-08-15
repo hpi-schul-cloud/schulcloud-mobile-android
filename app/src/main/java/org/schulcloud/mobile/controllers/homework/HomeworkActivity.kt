@@ -44,7 +44,7 @@ class HomeworkActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_homework, menu)
+        menuInflater.inflate(R.menu.activity_base, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

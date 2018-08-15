@@ -4,14 +4,15 @@ package org.schulcloud.mobile.utils
 
 import android.content.res.Resources
 import android.databinding.BindingAdapter
+import android.support.annotation.ColorInt
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import android.widget.ImageView
 import org.schulcloud.mobile.R
 
 // to be used instead of android:tint for backwards compatibility
-@BindingAdapter("setcolor")
-fun setColor(view: ImageView, color: Int) {
+@BindingAdapter("colorFilter")
+fun setColor(view: ImageView, @ColorInt color: Int){
     view.setColorFilter(color)
 }
 
@@ -29,3 +30,9 @@ fun String?.toVisible(): Int = this.isNullOrEmpty().not().asVisibility()
 fun SwipeRefreshLayout.setup() {
     setColorSchemeColors(*context.getColorArray(R.array.brand_swipeRefreshColors))
 }
+
+var View.visibilityBool: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if (value) View.VISIBLE else View.GONE
+    }

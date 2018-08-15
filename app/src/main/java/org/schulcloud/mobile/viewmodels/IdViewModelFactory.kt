@@ -11,6 +11,7 @@ class IdViewModelFactory(private val id: String) : ViewModelProvider.NewInstance
             CourseViewModel::class.java -> CourseViewModel(id) as T
             TopicViewModel::class.java -> TopicViewModel(id) as T
             HomeworkViewModel::class.java -> HomeworkViewModel(id) as T
+            FileViewModel::class.java -> FileViewModel(id) as T
             else -> throw IllegalArgumentException("Can't instantiate view model of type $modelClass")
         }
     }

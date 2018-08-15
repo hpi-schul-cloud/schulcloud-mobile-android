@@ -6,7 +6,6 @@ import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.GetHomeworkJob
 import org.schulcloud.mobile.jobs.ListUserHomeworkJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
-import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.utils.homeworkDao
 
 object HomeworkRepository {
@@ -16,11 +15,14 @@ object HomeworkRepository {
         }
     }
 
-    fun homeworkList(realm: Realm): LiveData<List<Homework>?> {
+    fun homeworkList(realm: Realm): LiveData<List<Homework>> {
         return realm.homeworkDao().homeworkList()
     }
+    fun openHomeworkForNextWeek(realm: Realm): LiveData<List<Homework>> {
+        return realm.homeworkDao().openHomeworkForNextWeek()
+    }
 
-    fun homework(realm: Realm, id: String): RealmObjectLiveData<Homework> {
+    fun homework(realm: Realm, id: String): LiveData<Homework?> {
         return realm.homeworkDao().homework(id)
     }
 

@@ -1,14 +1,15 @@
 package org.schulcloud.mobile.jobs
 
-import org.schulcloud.mobile.jobs.base.RequestJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
-import org.schulcloud.mobile.models.Credentials
-import org.schulcloud.mobile.network.ApiService
-import org.schulcloud.mobile.storages.UserStorage
+import android.util.Log
+import org.schulcloud.mobile.BuildConfig
+import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.utils.JWTUtil
-import org.schulcloud.mobile.utils.logi
-import org.schulcloud.mobile.utils.logw
+import org.schulcloud.mobile.network.ApiService
+import org.schulcloud.mobile.models.Credentials
+import org.schulcloud.mobile.jobs.base.RequestJob
+import org.schulcloud.mobile.storages.UserStorage
 import ru.gildor.coroutines.retrofit.awaitResponse
+import org.schulcloud.mobile.jobs.base.RequestJobCallback
 
 class CreateAccessTokenJob(private val credentials: Credentials, callback: RequestJobCallback) : RequestJob(callback) {
 
@@ -21,7 +22,7 @@ class CreateAccessTokenJob(private val credentials: Credentials, callback: Reque
         val token = response.body()
 
         if (response.isSuccessful && token != null) {
-            logi(TAG, "AccessToken created")
+            if (BuildConfig.DEBUG) Log.i(TAG, "AccessToken created")
 
             val userStorage = UserStorage()
             userStorage.accessToken = token.accessToken!!
@@ -29,7 +30,7 @@ class CreateAccessTokenJob(private val credentials: Credentials, callback: Reque
 
             callback?.success()
         } else {
-            logw(TAG, "AccessToken not created")
+            if (BuildConfig.DEBUG) Log.w(TAG, "AccessToken not created")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
         }
     }

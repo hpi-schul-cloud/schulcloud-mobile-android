@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.controllers.dashboard.DashboardFragment
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.models.user.UserRepository
 
@@ -49,18 +50,16 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_dashboard -> {
+            R.id.nav_dashboard ->
                 replaceFragment(DashboardFragment(), DashboardFragment.TAG)
-            }
-            R.id.nav_news -> {
+            R.id.nav_news ->
                 replaceFragment(NewsListFragment(), NewsListFragment.TAG)
-            }
-            R.id.nav_courses -> {
+            R.id.nav_courses ->
                 replaceFragment(CourseListFragment(), CourseListFragment.TAG)
-            }
-            R.id.nav_assignments -> {
+            R.id.nav_assignments ->
                 replaceFragment(HomeworkListFragment(), HomeworkListFragment.TAG)
-            }
+            R.id.nav_files ->
+                replaceFragment(FileOverviewFragment(), FileOverviewFragment.TAG)
             R.id.nav_logout -> {
                 UserRepository.logout()
                 showLoginActivity()
@@ -77,7 +76,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 .commit()
     }
 
-    private fun replaceFragment(fragment: Fragment, tag: String) {
+    fun replaceFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment, tag)
                 .addToBackStack(tag)

@@ -22,6 +22,7 @@ import org.schulcloud.mobile.views.ItemOffsetDecoration
 class TopicFragment : MainFragment() {
     companion object {
         val TAG: String = TopicFragment::class.java.simpleName
+        const val SPAN_WIDTH_MIN = 440
     }
 
     override var url: String? = null
@@ -62,7 +63,7 @@ class TopicFragment : MainFragment() {
         // calculate amount of columns
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        val spans = Math.max(1, metrics.widthPixels / 440.dpToPx())
+        val spans = Math.max(1, metrics.widthPixels / SPAN_WIDTH_MIN.dpToPx())
 
         contentsAdapter.emptyIndicator = empty
         recyclerView.apply {

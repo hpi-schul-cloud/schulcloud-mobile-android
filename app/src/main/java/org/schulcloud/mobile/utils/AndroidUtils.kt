@@ -15,8 +15,6 @@ import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph
 import org.schulcloud.mobile.R
 import java.util.*
 

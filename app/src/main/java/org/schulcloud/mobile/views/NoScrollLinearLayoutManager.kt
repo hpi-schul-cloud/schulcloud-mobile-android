@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoScrollLinearLayoutManager(
     context: Context,
-    @RecyclerView.Orientation orientation: Int = VERTICAL,
+    @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL,
     reverseLayout: Boolean = false
 ) : LinearLayoutManager(context, orientation, reverseLayout) {
 

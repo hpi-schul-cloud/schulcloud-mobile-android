@@ -9,7 +9,6 @@ import androidx.annotation.AttrRes
 import kotlinx.android.synthetic.main.view_content_scroll.view.*
 import org.schulcloud.mobile.R
 
-
 open class ScrollContentView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

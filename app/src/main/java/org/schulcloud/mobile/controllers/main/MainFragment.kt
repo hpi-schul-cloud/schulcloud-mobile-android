@@ -16,10 +16,7 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.utils.HOST
-import org.schulcloud.mobile.utils.combinePath
-import org.schulcloud.mobile.utils.setup
-import org.schulcloud.mobile.utils.shareLink
+import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
 import java.io.File
 import kotlin.properties.Delegates
@@ -90,6 +87,8 @@ abstract class MainFragment : BaseFragment() {
                 context?.shareLink(link, activity?.title)
             }
             R.id.base_action_refresh -> performRefresh()
+        // TODO: Remove when deep linking is readded
+            R.id.base_action_openInBrowser -> context?.openUrl(url.asUri())
             else -> return super.onOptionsItemSelected(item)
         }
         return true

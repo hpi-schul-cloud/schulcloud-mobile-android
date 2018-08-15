@@ -50,6 +50,17 @@
     <action
         android:id="@+id/action_global_fragment_course"
         app:destination="@id/fragment_course" />
+    <fragment
+        android:id="@+id/fragment_topic"
+        android:name="org.schulcloud.mobile.controllers.topic.TopicFragment"
+        tools:layout="@layout/fragment_topic">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_topic"
+        app:destination="@id/fragment_topic" />
 
     <!-- Calendar -->
     <!--<fragment

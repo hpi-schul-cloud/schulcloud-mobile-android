@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.ActionButtonOverflowStyle" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_more_vert_white_24dp</item>
-    </style>
-
     <style name="AppTheme.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>

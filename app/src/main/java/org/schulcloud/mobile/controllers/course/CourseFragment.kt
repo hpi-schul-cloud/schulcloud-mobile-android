@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_course.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
-import org.schulcloud.mobile.controllers.topic.TopicActivity
+import org.schulcloud.mobile.controllers.topic.TopicFragmentArgs
 import org.schulcloud.mobile.databinding.FragmentCourseBinding
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
@@ -26,8 +26,9 @@ class CourseFragment : MainFragment() {
 
     private lateinit var viewModel: CourseViewModel
     private val topicsAdapter: TopicListAdapter by lazy {
-        org.schulcloud.mobile.controllers.course.TopicListAdapter { id ->
-            startActivity(TopicActivity.newIntent(context!!, id))
+        org.schulcloud.mobile.controllers.course.TopicListAdapter {
+            navController.navigate(R.id.action_global_fragment_topic,
+                    TopicFragmentArgs.Builder(it).build().toBundle())
         }
     }
 
@@ -47,7 +48,7 @@ class CourseFragment : MainFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return FragmentCourseBinding.inflate(layoutInflater).also {
+        return FragmentCourseBinding.inflate(inflater, container, false).also {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }.root

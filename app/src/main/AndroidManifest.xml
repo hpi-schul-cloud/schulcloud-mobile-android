@@ -40,10 +40,6 @@
 
         <activity android:name=".controllers.login.LoginActivity" />
 
-        <activity
-            android:name=".controllers.topic.TopicActivity"
-            android:launchMode="singleTop" />
-
     </application>
 
 </manifest>

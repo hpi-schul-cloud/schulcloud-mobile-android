@@ -21,14 +21,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:theme="@style/AppTheme.DarkActionBar"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:backgroundTint="?colorPrimary"
         app:fabAlignmentMode="center"
         app:hideOnScroll="true"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_menu_white_24dp">
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
+        app:navigationIcon="@drawable/ic_menu_white_24dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

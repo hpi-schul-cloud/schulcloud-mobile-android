@@ -32,10 +32,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.activity_action_share -> shareLink(url!!, supportActionBar?.title)
+            R.id.base_action_share -> shareLink(url!!, supportActionBar?.title)
+            R.id.base_action_refresh -> performRefresh()
         // TODO: Remove when deep linking is readded
-            R.id.activity_action_openInBrowser -> openUrl(url.asUri())
-            R.id.activity_action_refresh -> performRefresh()
+            R.id.base_action_openInBrowser -> openUrl(url.asUri())
             else -> return super.onOptionsItemSelected(item)
         }
         return true
@@ -56,8 +56,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine {cont ->
-        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED){
+    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine { cont ->
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             cont.resume(true)
             return@suspendCoroutine
         }

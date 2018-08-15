@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/base_action_openInBrowser"
-        android:icon="@drawable/ic_open_in_new_24dp"
-        android:title="@string/general_action_showInBrowser"
+        android:id="@+id/course_action_gotoFiles"
+        android:icon="@drawable/ic_folder_open"
+        android:title="@string/course_action_gotoFiles"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -71,6 +71,7 @@
     <string name="course_title">My courses</string>
     <string name="course_topics">Topics</string>
     <string name="courses_error_empty">No courses were found</string>
+    <string name="course_action_gotoFiles">@string/fileOverview_courses</string>
 
     <!-- Topic -->
     <string name="topics_error_empty">No topics were found</string>

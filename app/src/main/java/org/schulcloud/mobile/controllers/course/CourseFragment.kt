@@ -2,6 +2,7 @@ package org.schulcloud.mobile.controllers.course
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
@@ -10,11 +11,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_course.*
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.file.FileFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.controllers.topic.TopicFragmentArgs
 import org.schulcloud.mobile.databinding.FragmentCourseBinding
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
@@ -37,7 +40,8 @@ class CourseFragment : MainFragment() {
         get() = viewModel.course.value?.url
 
     override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.course.value?.name ?: getString(R.string.general_error_notFound)
+            title = viewModel.course.value?.name ?: getString(R.string.general_error_notFound),
+            menuBottomRes = R.menu.fragment_course_bottom
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +75,17 @@ class CourseFragment : MainFragment() {
             adapter = topicsAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.course_action_gotoFiles ->
+                navController.navigate(R.id.action_global_fragment_file,
+                        FileFragmentArgs.Builder(FileRepository.pathCourse(viewModel.course.value!!.id))
+                                .build().toBundle())
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     override suspend fun refresh() {

@@ -6,24 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.annotation.AttrRes
-import kotlinx.android.synthetic.main.view_content_scroll.view.*
+import kotlinx.android.synthetic.main.view_content.view.*
 import org.schulcloud.mobile.R
 
 
-open class ScrollContentView @JvmOverloads constructor(
+open class ContentView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
     companion object {
-        val TAG: String = ScrollContentView::class.java.simpleName
+        val TAG: String = ContentView::class.java.simpleName
     }
 
     private var initialized: Boolean = false
 
     init {
         orientation = VERTICAL
-        View.inflate(context, R.layout.view_content_scroll, this)
+        View.inflate(context, R.layout.view_content, this)
         initialized = true
     }
 

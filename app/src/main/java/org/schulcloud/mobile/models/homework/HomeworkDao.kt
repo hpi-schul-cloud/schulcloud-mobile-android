@@ -42,8 +42,8 @@ class HomeworkDao(private val realm: Realm) {
 
     fun homework(id: String): LiveData<Homework?> {
         return realm.where(Homework::class.java)
-                .sort("dueDate", Sort.ASCENDING)
                 .equalTo("id", id)
+                .sort("dueDate", Sort.ASCENDING)
                 .firstAsLiveData()
     }
 }

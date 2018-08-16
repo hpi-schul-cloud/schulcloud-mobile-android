@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.schulcloud.mobile.controllers.homework.HomeworkFragment">
     <data>
+        <import type="android.graphics.Color" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
 
         <variable
@@ -12,7 +13,7 @@
             type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
     </data>
 
-    <org.schulcloud.mobile.views.ScrollContentView
+    <org.schulcloud.mobile.views.ContentView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -52,7 +53,7 @@
                     android:layout_marginRight="8dp"
                     android:paddingTop="1dp"
                     android:src="@drawable/circle_course_color"
-                    app:colorFilter="@{viewModel.homework != null ? viewModel.homework.course.color : '#0000'}"
+                    app:colorFilter="@{viewModel.homework != null ? Color.parseColor(viewModel.homework.course.color) : Color.TRANSPARENT}"
                     app:layout_constraintEnd_toStartOf="@id/guideline"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -95,7 +96,7 @@
                 <org.schulcloud.mobile.views.ContentWebView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="4dp"
                     app:content="@{viewModel.homework.description}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -106,6 +107,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </org.schulcloud.mobile.views.ScrollContentView>
+    </org.schulcloud.mobile.views.ContentView>
 
 </layout>

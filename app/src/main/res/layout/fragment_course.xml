@@ -11,7 +11,7 @@
             type="org.schulcloud.mobile.viewmodels.CourseViewModel" />
     </data>
 
-    <org.schulcloud.mobile.views.ScrollContentView
+    <org.schulcloud.mobile.views.ContentView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -58,5 +58,5 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </org.schulcloud.mobile.views.ScrollContentView>
+    </org.schulcloud.mobile.views.ContentView>
 </layout>

@@ -9,7 +9,7 @@
             type="org.schulcloud.mobile.viewmodels.FileViewModel" />
     </data>
 
-    <org.schulcloud.mobile.views.ScrollContentView
+    <org.schulcloud.mobile.views.ContentView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -57,5 +57,5 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </org.schulcloud.mobile.views.ScrollContentView>
+    </org.schulcloud.mobile.views.ContentView>
 </layout>

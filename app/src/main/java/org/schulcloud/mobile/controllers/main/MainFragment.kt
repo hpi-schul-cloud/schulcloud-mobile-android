@@ -102,7 +102,7 @@ abstract class MainFragment : BaseFragment() {
     }
 
 
-    protected open suspend fun refresh() {}
+    protected abstract suspend fun refresh()
     protected fun performRefresh() {
         isRefreshing = true
         launch {

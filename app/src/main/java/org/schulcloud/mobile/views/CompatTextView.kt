@@ -3,10 +3,10 @@ package org.schulcloud.mobile.views
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
-import android.util.AttributeSet
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.isLtr
 

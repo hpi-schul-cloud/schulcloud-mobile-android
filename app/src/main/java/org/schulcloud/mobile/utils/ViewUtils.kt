@@ -14,6 +14,7 @@ import org.schulcloud.mobile.R
 @BindingConversion
 @ColorInt
 fun convertStringToColor(color: String) = Color.parseColor(color)
+
 @BindingConversion
 fun convertStringToDrawable(color: String) = ColorDrawable(Color.parseColor(color))
 

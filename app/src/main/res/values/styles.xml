@@ -78,4 +78,10 @@
     <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
     <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
 
+    <!-- Custom Views -->
+    <style name="Widget.App.ContentTextView" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:maxLines">4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>

@@ -1,7 +1,5 @@
 package org.schulcloud.mobile.controllers.homework
 
-import android.os.Build
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.schulcloud.mobile.controllers.base.BaseAdapter
@@ -39,18 +37,6 @@ class HomeworkAdapter(private val onSelected: (String) -> Unit) :
 
     class HomeworkViewHolder(binding: ItemHomeworkBinding) :
             BaseViewHolder<Homework, ItemHomeworkBinding>(binding) {
-        companion object {
-            @JvmStatic
-            fun getTextFromHtml(text: String?): String {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    return Html.fromHtml(text ?: "", Html.FROM_HTML_MODE_LEGACY).toString().trim()
-                } else {
-                    @Suppress("DEPRECATION")
-                    return Html.fromHtml(text ?: "").toString().trim()
-                }
-            }
-        }
-
         override fun onItemSet() {
             binding.homework = item
             binding.headerText = item.dueDateTime.formatDaysLeft(context)

@@ -9,6 +9,7 @@
 
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
 
+        <item name="contentTextViewStyle">@style/Widget.App.ContentTextView</item>
         <item name="materialCardViewStyle">@style/Widget.App.MaterialCardStyle</item>
         <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
     </style>

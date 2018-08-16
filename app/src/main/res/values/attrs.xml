@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="AppTheme">
+        <attr name="contentTextViewStyle" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="CompatTextView">
         <attr name="drawableStart" format="reference" />
         <attr name="drawableEnd" format="reference" />

@@ -19,4 +19,7 @@ object NewsRepository {
     suspend fun syncNews() {
         ListUserNewsJob(RequestJobCallback()).run()
     }
+    suspend fun syncNews(id: String) {
+        GetNewsJob(id, RequestJobCallback()).run()
+    }
 }

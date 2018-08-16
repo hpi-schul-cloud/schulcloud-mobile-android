@@ -22,7 +22,10 @@ class NewsListFragment : MainFragment() {
     }
 
     private val newsAdapter: NewsAdapter by lazy {
-        NewsAdapter()
+        NewsAdapter {
+            navController.navigate(R.id.action_global_fragment_news,
+                    NewsFragmentArgs.Builder(it).build().toBundle())
+        }
     }
     private lateinit var viewModel: NewsListViewModel
 

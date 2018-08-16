@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.news.NewsAdapter
+import org.schulcloud.mobile.controllers.news.NewsFragmentArgs
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.utils.limit
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
@@ -24,7 +26,10 @@ class NewsWidget : Widget() {
 
     private lateinit var viewModel: NewsListViewModel
     private val newsAdapter: NewsAdapter by lazy {
-        NewsAdapter()
+        NewsAdapter {
+            findNavController(this).navigate(R.id.action_global_fragment_news,
+                    NewsFragmentArgs.Builder(it).build().toBundle())
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

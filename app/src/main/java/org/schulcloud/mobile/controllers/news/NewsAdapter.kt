@@ -7,8 +7,8 @@ import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemNewsBinding
 import org.schulcloud.mobile.models.news.News
 
-class NewsAdapter
-    : BaseAdapter<News, NewsAdapter.NewsViewHolder, ItemNewsBinding>() {
+class NewsAdapter(private val onSelected: (String) -> Unit) :
+        BaseAdapter<News, NewsAdapter.NewsViewHolder, ItemNewsBinding>() {
 
     fun update(newsList: List<News>) {
         items = newsList
@@ -18,8 +18,8 @@ class NewsAdapter
         parent: ViewGroup,
         viewType: Int
     ): NewsViewHolder {
-        val binding = ItemNewsBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding.onSelected = onSelected
         return NewsViewHolder(binding)
     }
 

@@ -25,10 +25,9 @@ class HomeworkListFragment : MainFragment() {
     private lateinit var viewModel: HomeworkListViewModel
     private val homeworkAdapter: HomeworkAdapter by lazy {
         HomeworkAdapter {
-            findNavController(this).navigate(
+            navController.navigate(
                     R.id.action_global_fragment_homework,
-                    HomeworkFragmentArgs.Builder(it).build().toBundle()
-            )
+                    HomeworkFragmentArgs.Builder(it).build().toBundle())
         }
     }
 

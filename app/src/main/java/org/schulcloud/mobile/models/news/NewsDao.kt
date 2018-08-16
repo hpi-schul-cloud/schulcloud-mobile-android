@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.Sort
 import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.firstAsLiveData
 
 class NewsDao(private val realm: Realm) {
 
@@ -12,5 +13,11 @@ class NewsDao(private val realm: Realm) {
                 .sort("createdAt", Sort.DESCENDING)
                 .findAllAsync()
                 .asLiveData()
+    }
+
+    fun news(id: String): LiveData<News?> {
+        return realm.where(News::class.java)
+                .equalTo("id", id)
+                .firstAsLiveData()
     }
 }

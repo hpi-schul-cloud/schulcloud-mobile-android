@@ -23,7 +23,7 @@ class HomeworkFragment : MainFragment() {
 
 
     override var url: String? = null
-        get() = viewModel.homework.value?.id
+        get() = "homework/${viewModel.homework.value?.id}"
 
     override fun provideConfig() = MainFragmentConfig(
             title = viewModel.homework.value?.title ?: getString(R.string.general_error_notFound)

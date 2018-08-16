@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.widget_news.*
 import org.joda.time.Days
@@ -70,10 +71,8 @@ class HomeworkWidget : Widget() {
             adapter = this@HomeworkWidget.adapter
         }
 
-        more.setOnClickListener {
-            findNavController(this)
-                    .navigate(R.id.action_dashboardFragment_to_homeworkListFragment)
-        }
+        more.setOnClickListener(Navigation.createNavigateOnClickListener(
+                R.id.action_dashboardFragment_to_homeworkListFragment))
     }
 
     override suspend fun refresh() {

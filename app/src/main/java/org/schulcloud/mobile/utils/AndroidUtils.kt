@@ -1,8 +1,6 @@
 @file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,8 +13,8 @@ import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import org.schulcloud.mobile.R
 import java.util.*
 

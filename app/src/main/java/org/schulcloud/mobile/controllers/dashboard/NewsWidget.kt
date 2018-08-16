@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.news.NewsAdapter
@@ -50,10 +50,8 @@ class NewsWidget : Widget() {
         }
         newsAdapter.emptyIndicator = empty
 
-        more.setOnClickListener {
-            findNavController(this)
-                    .navigate(R.id.action_dashboardFragment_to_newsListFragment)
-        }
+        more.setOnClickListener(Navigation.createNavigateOnClickListener(
+                R.id.action_dashboardFragment_to_newsListFragment))
     }
 
     override suspend fun refresh() {

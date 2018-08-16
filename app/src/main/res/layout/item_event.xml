@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
-
         <variable
             name="event"
             type="org.schulcloud.mobile.models.event.Event" />
@@ -52,7 +50,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{event.summary}"
-            android:visibility="@{ViewUtilsKt.asVisibility(!event.title.equals(event.summary))}"
+            android:visibility="@{!event.title.equals(event.summary)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
             app:layout_constraintStart_toStartOf="parent"

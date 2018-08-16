@@ -4,11 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.schulcloud.mobile.controllers.homework.HomeworkFragment">
-
     <data>
-        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
-        <import type="android.graphics.Color" />
 
         <variable
             name="viewModel"
@@ -55,7 +52,7 @@
                     android:layout_marginRight="8dp"
                     android:paddingTop="1dp"
                     android:src="@drawable/circle_course_color"
-                    app:colorFilter="@{viewModel.homework != null? Color.parseColor(viewModel.homework.course.color) : Color.TRANSPARENT}"
+                    app:colorFilter="@{viewModel.homework != null ? viewModel.homework.course.color : '#0000'}"
                     app:layout_constraintEnd_toStartOf="@id/guideline"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -67,7 +64,7 @@
                     android:id="@+id/duetill_flag"
                     android:layout_width="13dp"
                     android:layout_height="wrap_content"
-                    android:visibility="@{ViewUtilsKt.asVisibility(HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework))}"
+                    android:visibility="@{HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework)}"
                     app:layout_constraintEnd_toStartOf="@+id/duetill_label"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintHorizontal_chainStyle="packed"

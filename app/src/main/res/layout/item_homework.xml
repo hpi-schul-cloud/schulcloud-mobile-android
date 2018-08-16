@@ -3,12 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-        <import type="android.graphics.Color" />
         <import type="org.schulcloud.mobile.controllers.homework.HomeworkAdapter.HomeworkViewHolder" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
-        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
 
         <variable
             name="homework"
@@ -41,7 +38,7 @@
             android:text="@{headerText}"
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:visibility="@{ViewUtilsKt.asVisibility(headerRequired)}"
+            android:visibility="@{headerRequired}"
             tools:text="Header" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +71,7 @@
                 android:layout_marginStart="8dp"
                 android:paddingTop="1dp"
                 android:src="@drawable/circle_course_color"
-                app:colorFilter="@{Color.parseColor(homework.course.color)}"
+                app:colorFilter="@{homework.course.color}"
                 app:layout_constraintEnd_toStartOf="@id/guideline"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -87,7 +84,7 @@
                 android:id="@+id/duetill_flag"
                 android:layout_width="13dp"
                 android:layout_height="wrap_content"
-                android:visibility="@{ViewUtilsKt.asVisibility(HomeworkUtilsKt.dueLabelFlagRequired(homework))}"
+                android:visibility="@{HomeworkUtilsKt.dueLabelFlagRequired(homework)}"
                 app:layout_constraintEnd_toStartOf="@+id/duetill_label"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintHorizontal_chainStyle="packed"

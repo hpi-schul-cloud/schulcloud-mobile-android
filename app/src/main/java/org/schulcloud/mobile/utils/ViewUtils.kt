@@ -3,21 +3,23 @@
 package org.schulcloud.mobile.utils
 
 import android.content.res.Resources
-import androidx.databinding.BindingAdapter
-import androidx.annotation.ColorInt
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
-import android.widget.ImageView
+import androidx.annotation.ColorInt
+import androidx.databinding.BindingConversion
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.schulcloud.mobile.R
 
-// to be used instead of android:tint for backwards compatibility
-@BindingAdapter("colorFilter")
-fun setColor(view: ImageView, @ColorInt color: Int){
-    view.setColorFilter(color)
-}
+@BindingConversion
+@ColorInt
+fun convertStringToColor(color: String) = Color.parseColor(color)
+@BindingConversion
+fun convertStringToDrawable(color: String) = ColorDrawable(Color.parseColor(color))
 
 fun Int.dpToPx(): Int = Math.round(this * Resources.getSystem().displayMetrics.density)
 
+@BindingConversion
 fun Boolean.asVisibility(): Int {
     if (this)
         return View.VISIBLE

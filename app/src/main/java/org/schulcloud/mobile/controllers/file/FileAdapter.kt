@@ -29,6 +29,7 @@ class FileAdapter(
 
     class FileViewHolder(binding: ItemFileBinding) : BaseViewHolder<File, ItemFileBinding>(binding) {
         companion object {
+            @Suppress("MaxLineLength")
             val ICON_RES = mapOf(
                     "txt" to R.drawable.thumb_txt, "doc" to R.drawable.thumb_doc, "docx" to R.drawable.thumb_doc, "pdf" to R.drawable.thumb_pdf,
                     "xls" to R.drawable.thumb_xls, "xlsx" to R.drawable.thumb_xls,

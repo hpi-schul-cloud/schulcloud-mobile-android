@@ -5,21 +5,23 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.util.Log
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Similar to [DividerItemDecoration], but no divider is drawn after the last item.
  */
-class MiddleDividerItemDecoration(context: Context,
-                                  @RecyclerView.Orientation val orientation: Int = VERTICAL)
-    : RecyclerView.ItemDecoration() {
+class MiddleDividerItemDecoration(
+    context: Context,
+    @RecyclerView.Orientation val orientation: Int = VERTICAL
+) : RecyclerView.ItemDecoration() {
     companion object {
         private val TAG = MiddleDividerItemDecoration::class.java.simpleName
 
-        const val HORIZONTAL = LinearLayout.HORIZONTAL
-        const val VERTICAL = LinearLayout.VERTICAL
+        @RecyclerView.Orientation
+        const val HORIZONTAL = RecyclerView.HORIZONTAL
+        @RecyclerView.Orientation
+        const val VERTICAL = RecyclerView.VERTICAL
         private val ATTRS = intArrayOf(android.R.attr.listDivider)
     }
 
@@ -30,7 +32,7 @@ class MiddleDividerItemDecoration(context: Context,
         val a = context.obtainStyledAttributes(ATTRS)
         val div = a.getDrawable(0)
         if (div == null)
-            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this " + "MiddleDividerItemDecoration.")
+            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this MiddleDividerItemDecoration.")
         divider = div
         a.recycle()
     }

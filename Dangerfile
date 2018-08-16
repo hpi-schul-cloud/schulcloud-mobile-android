@@ -9,10 +9,6 @@ end
 # Warn when there is a big PR
 warn('a large PR') if git.lines_of_code > 500
 
-# ktlint
-checkstyle_format.base_path = Dir.pwd
-checkstyle_format.report 'app/build/reports/ktlint/ktlint-hpiDebug.xml'
-
 # detekt
 checkstyle_format.report 'app/build/reports/detekt/detekt-checkstyle.xml'
 

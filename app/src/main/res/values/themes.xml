@@ -9,24 +9,26 @@
 
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
 
-        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialogTheme</item>
+        <item name="materialCardViewStyle">@style/Widget.App.MaterialCardStyle</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.TranslucentStatus" />
 
+    <style name="AppTheme.LightActionBar">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="AppTheme.BottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
-    </style>
-
-    <style name="AppTheme.LightActionBar">
-        <item name="colorPrimary">@android:color/white</item>
-        <item name="colorPrimaryDark">@android:color/white</item>
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.App.BottomSheetStyle</item>
     </style>
 
 </resources>

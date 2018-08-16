@@ -25,6 +25,7 @@
             layout="@layout/item_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:minHeight="96dp">
 
             <TextView
@@ -64,8 +65,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:itemBackground="@drawable/bg_drawer_item"
-            app:itemIconTint="@drawable/text_drawer_item"
-            app:itemTextColor="@drawable/text_drawer_item"
+            app:itemIconTint="@color/text_drawer_item"
+            app:itemTextColor="@color/text_drawer_item"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:menu="@menu/activity_main_drawer" />
 

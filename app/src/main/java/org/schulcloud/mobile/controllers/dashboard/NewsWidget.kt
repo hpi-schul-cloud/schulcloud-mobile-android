@@ -46,7 +46,7 @@ class NewsWidget : Widget() {
         recyclerView.apply {
             layoutManager = NoScrollLinearLayoutManager(context)
             adapter = newsAdapter
-            addItemDecoration(DividerItemDecoration(context))
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.MIDDLE))
         }
         newsAdapter.emptyIndicator = empty
 

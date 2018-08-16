@@ -18,7 +18,7 @@
     <item
         android:id="@+id/fragment_courseList"
         android:checkable="true"
-        android:icon="@drawable/ic_graduation_cap"
+        android:icon="@drawable/ic_course_black"
         android:title="@string/main_drawer_courses" />
     <!--<item
         android:id="@+id/fragment_calendar"
@@ -33,7 +33,7 @@
     <item
         android:id="@+id/fragment_fileOverview"
         android:checkable="true"
-        android:icon="@drawable/ic_folder_open_dark"
+        android:icon="@drawable/ic_folder_open_black"
         android:title="@string/main_drawer_files" />
     <!--<item
         android:id="@+id/fragment_learnstore"

@@ -2,11 +2,13 @@ package org.schulcloud.mobile.controllers.homework
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkBinding
@@ -26,7 +28,8 @@ class HomeworkFragment : MainFragment() {
         get() = "homework/${viewModel.homework.value?.id}"
 
     override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.homework.value?.title ?: getString(R.string.general_error_notFound)
+            title = viewModel.homework.value?.title ?: getString(R.string.general_error_notFound),
+            menuBottomRes = R.menu.fragment_homework_bottom
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +52,17 @@ class HomeworkFragment : MainFragment() {
         viewModel.homework.observe(this, Observer {
             notifyConfigChanged()
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.homework_action_gotoCourse ->
+                navController.navigate(R.id.action_global_fragment_course,
+                        CourseFragmentArgs.Builder(viewModel.homework.value!!.course!!.id)
+                                .build().toBundle())
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     override suspend fun refresh() {

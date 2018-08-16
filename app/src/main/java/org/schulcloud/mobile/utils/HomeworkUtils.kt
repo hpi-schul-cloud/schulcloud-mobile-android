@@ -1,8 +1,8 @@
 package org.schulcloud.mobile.utils
 
-import android.graphics.Color
+import android.content.Context
+import androidx.core.content.ContextCompat
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.models.homework.Homework
 
 /**
@@ -11,28 +11,28 @@ import org.schulcloud.mobile.models.homework.Homework
  *
  * When there is more than a week left, this function returns an empty String
  */
-fun getDueText(homework: Homework?): String {
+fun Context.getDueText(homework: Homework?): String {
     val days = homework?.dueTimespanDays
     return when (days) {
-        null -> SchulCloudApp.instance.getString(R.string.homework_error_invalidDueDate)
-        in Int.MIN_VALUE until 0 -> SchulCloudApp.instance.getString(R.string.homework_due_outdated)
+        null -> getString(R.string.homework_error_invalidDueDate)
+        in Int.MIN_VALUE until 0 -> getString(R.string.homework_due_outdated)
         0 ->
             if (homework.dueTimespanHours ?: Int.MAX_VALUE >= 0)
-                SchulCloudApp.instance.getString(R.string.homework_due_hours, homework.dueTimespanHours)
+                getString(R.string.homework_due_hours, homework.dueTimespanHours)
             else
-                SchulCloudApp.instance.getString(R.string.homework_due_outdated)
-        in 1..WEEK_IN_DAYS -> SchulCloudApp.instance.resources.getQuantityString(R.plurals.homework_due_days, days, days)
+                getString(R.string.homework_due_outdated)
+        in 1..WEEK_IN_DAYS -> resources.getQuantityString(R.plurals.homework_due_days, days, days)
         else -> ""
     }
 }
 
-fun getDueColor(homework: Homework?): Int {
-    return when (homework?.dueTimespanDays) {
-        null -> Color.BLACK
-        in Int.MIN_VALUE..1 -> Color.RED
-        in 2..WEEK_IN_DAYS -> Color.BLACK
-        else -> Color.TRANSPARENT
-    }
+fun Context.getDueColor(homework: Homework?): Int {
+    return ContextCompat.getColor(this, when (homework?.dueTimespanDays) {
+        null -> R.color.material_text_primary_dark
+        in Int.MIN_VALUE..1 -> R.color.brand_primary
+        in 2..WEEK_IN_DAYS -> R.color.material_text_primary_dark
+        else -> android.R.color.transparent
+    })
 }
 
 fun dueLabelFlagRequired(homework: Homework?): Boolean {

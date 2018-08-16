@@ -1,134 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-    android:animateLayoutChanges="true">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextHeader_Settings_H6"
-        android:text="@string/user_settings_change_account"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_settings_forename"
-        style="@style/UserSettings_SubHeader"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_edit_forename"
-        android:layout_marginLeft="5dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_settings_lastname"
-        style="@style/UserSettings_SubHeader"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_edit_lastname"
-        android:layout_marginLeft="5dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_settings_gender"
-        style="@style/UserSettings_SubHeader"/>
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/genders_de"
-        android:id="@+id/user_edit_gender"
-        android:layout_marginLeft="5dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_settings_email"
-        style="@style/UserSettings_SubHeader"
-        android:layout_marginTop="10dp"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_edit_email"
-        android:layout_marginLeft="5dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_settings_password"
-        style="@style/UserSettings_SubHeader" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="************"
-        android:id="@+id/user_edit_password"
-        android:layout_marginLeft="5dp"
-        android:inputType="textPassword"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/user_settings_new_password"
-        style="@style/UserSettings_SubHeader"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Neues Passwort"
-        android:inputType="textPassword"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/user_edit_new_password"/>
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:id="@+id/user_new_password_layout">
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:animateLayoutChanges="true"
+        android:id="@+id/user_settings_layout"
+        android:focusable="false">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/user_settings_new_password_repeat"
+            style="@style/TextHeader_Settings_H6"
+            android:text="@string/user_settings_change_account"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_settings_forename"
             style="@style/UserSettings_SubHeader"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user_edit_new_password_repeat"
-            android:hint="@string/user_settings_new_password_repeat"
+            android:id="@+id/user_edit_forename"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_settings_lastname"
+            style="@style/UserSettings_SubHeader"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_edit_lastname"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_settings_gender"
+            style="@style/UserSettings_SubHeader"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/genders_de"
+            android:id="@+id/user_edit_gender"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_settings_email"
+            style="@style/UserSettings_SubHeader"
+            android:layout_marginTop="10dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_edit_email"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_settings_password"
+            style="@style/UserSettings_SubHeader" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="************"
+            android:id="@+id/user_edit_password"
             android:layout_marginLeft="5dp"
             android:inputType="textPassword"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_settings_new_password"
+            style="@style/UserSettings_SubHeader"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Neues Passwort"
+            android:inputType="textPassword"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/user_edit_new_password"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/user_new_password_layout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/user_settings_new_password_repeat"
+                style="@style/UserSettings_SubHeader"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_edit_new_password_repeat"
+                android:hint="@string/user_settings_new_password_repeat"
+                android:layout_marginLeft="5dp"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/user_settings_password_hint"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/password_conditions"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Material.Button"
+            android:text="@string/user_settings_submit"
+            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/user_edit_submit"
+            android:focusable="false" />
+
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="@string/user_settings_password_hint"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/password_conditions"/>
-
-    <Button
+    <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Material.Button"
-        android:text="@string/user_settings_submit"
-        android:textSize="24sp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:id="@+id/user_edit_submit"/>
+        style="?android:attr/progressBarStyleLarge"
+        tools:visibility="visible"
+        android:visibility="invisible"
+        android:id="@+id/patch_progress"/>
 
-</LinearLayout>
+</FrameLayout>

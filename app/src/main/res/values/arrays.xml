@@ -12,15 +12,15 @@
     <string-array name="genders_de">
         <item>Kein Geschlecht ausgewählt</item>
         <item>Männlich</item>
-        <item>Weilbich</item>
+        <item>Weiblich</item>
         <item>Etwas Anderes</item>
     </string-array>
 
     <string-array name="genders_en">
         <item>No gender selected</item>
-        <item>Boy</item>
-        <item>Girl</item>
-        <item>Something else</item>
+        <item>male</item>
+        <item>female</item>
+        <item>other</item>
     </string-array>
 
 </resources>

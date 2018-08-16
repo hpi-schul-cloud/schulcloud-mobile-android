@@ -19,6 +19,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
+        multiDexEnabled true
 
         versionName rootProject.versionName
         versionCode rootProject.versionCode
@@ -37,12 +38,12 @@ android {
 
     productFlavors {
         hpi {
-            buildConfigField "String", "API_URL", '"https://schul-cloud.org:8080"'
+            buildConfigField "String", "API_URL", '"http://192.168.178.56:3030"'
         }
 
         n21 {
             applicationId "cloud.niedersachsen.mobile"
-            buildConfigField "String", "API_URL", '"https://niedersachsen.cloud:8080"'
+            buildConfigField "String", "API_URL", '"http://192.168.178.56:3030"'
         }
     }
 

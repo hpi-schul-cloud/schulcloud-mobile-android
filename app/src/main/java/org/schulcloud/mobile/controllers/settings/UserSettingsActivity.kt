@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import kotlinx.android.synthetic.main.activity_user_settings.*
@@ -37,7 +36,7 @@ class UserSettingsActivity: BaseActivity(){
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
         setContentView(R.layout.activity_user_settings)
-        user_edit_submit.setOnClickListener({ patchUser() })
+        user_edit_submit.setOnClickListener({ async{ patch() } })
 
         viewModel.user.observe(this, Observer { user ->
             user_edit_email.setText(user!!.email)
@@ -67,14 +66,22 @@ class UserSettingsActivity: BaseActivity(){
 
     }
 
-    fun patchUser(){
-        if(user_edit_password.text.toString().isNotEmpty()){
-            user_edit_password.startAnimation(resources.getAnimation(R.anim.shake) as Animation)
+    fun patch(){
+        if(user_edit_password.text.isEmpty()){
+            user_edit_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
             return
         }
 
-        doPassword()
-        doUser()
+        patch_progress.visibility = View.VISIBLE
+        user_settings_layout.isClickable = false
+        user_settings_layout.alpha = 0.5f
+
+        var passwordIsCorrect = false
+
+        async {
+            passwordIsCorrect = viewModel.checkPassword(mAccount.username!!,user_edit_password.text.toString())
+            runOnUiThread{loginCallback(passwordIsCorrect)}
+        }
     }
 
     fun checkNewPassword() : Boolean{
@@ -119,5 +126,26 @@ class UserSettingsActivity: BaseActivity(){
         user.email = user_edit_email.text.toString()
         user.id = mUser.id
         async { viewModel.patchUser(user) }
+    }
+
+    fun loginCallback(passwordIsCorrect: Boolean){
+        if(passwordIsCorrect) {
+            if (user_edit_new_password.text.isNotEmpty()) {
+                mUser.email
+                doPassword()
+            }
+
+            doUser()
+        }
+
+        runOnUiThread {
+            patch_progress.visibility = View.INVISIBLE
+            user_settings_layout.isClickable = true
+            user_settings_layout.alpha = 1f
+        }
+
+        if(!passwordIsCorrect){
+            runOnUiThread{user_edit_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))}
+        }
     }
 }

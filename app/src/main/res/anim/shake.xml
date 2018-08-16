@@ -5,30 +5,31 @@
         <rotate
             android:pivotY="50%"
             android:pivotX="50%"
-            android:toDegrees="20"
+            android:fromDegrees="0"
+            android:toDegrees="10"
             android:duration="200"/>
 
         <rotate
             android:startOffset="200"
             android:pivotY="50%"
             android:pivotX="50%"
-            android:fromDegrees="20"
-            android:toDegrees="-20"
+            android:fromDegrees="10"
+            android:toDegrees="-10"
             android:duration="200"/>
 
         <rotate
             android:startOffset="400"
             android:pivotY="50%"
             android:pivotX="50%"
-            android:fromDegrees="-20"
-            android:toDegrees="20"
+            android:fromDegrees="-10"
+            android:toDegrees="10"
             android:duration="200"/>
 
         <rotate
             android:startOffset="600"
             android:pivotY="50%"
             android:pivotX="50%"
-            android:fromDegrees="20"
+            android:fromDegrees="10"
             android:toDegrees="0"
             android:duration="200"/>
     </set>

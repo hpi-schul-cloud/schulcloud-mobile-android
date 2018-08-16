@@ -53,7 +53,7 @@ Implementing a `RecyclerView.Adapter` is pretty simple, and we've made it even e
 
 ### HTML-Content
 
-For displaying HTML-based formatted content, please use [`ContentWebView`][ContentWebView]. It takes care of loading internal content (using authentication), correct opening of links (external vs internal) and resizes content designed for larger screens.
+For displaying HTML-based formatted content, please use either [`ContentTextView`][ContentTextView] (for unformatted previews up to four lines) or [`ContentWebView`][ContentWebView] (for longer, formatted content). ContentWebView takes care of loading internal content (using authentication), correct opening of links (external vs internal) and resizes content designed for larger screens.
 
 External links are opened using [`openUrl`][WebUtils], which creates a `CustomTab` behind the scenes.
 
@@ -111,5 +111,6 @@ Showing an indeterminate progress dialog is as simple as wrapping a `suspend`-fu
 [ListUserCoursesJob]: ./app/src/main/java/org/schulcloud/mobile/jobs/ListUserCoursesJob.kt
 [ContentWebView]: ./app/src/main/java/org/schulcloud/mobile/views/ContentWebView.kt
 [PassiveWebView]: ./app/src/main/java/org/schulcloud/mobile/views/PassiveWebView.kt
+[ContentTextView]: ./app/src/main/java/org/schulcloud/mobile/views/ContentTextView.kt
 [DialogUtils]: ./app/src/main/java/org/schulcloud/mobile/utils/DialogUtils.kt
 [WebUtils]: ./app/src/main/java/org/schulcloud/mobile/utils/WebUtils.kt

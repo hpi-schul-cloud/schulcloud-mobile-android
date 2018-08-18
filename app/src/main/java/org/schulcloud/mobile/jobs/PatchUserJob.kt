@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.jobs
 
 import android.util.Log
+import com.google.gson.Gson
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
@@ -17,10 +18,13 @@ class PatchUserJob(private val user: User, callback: RequestJobCallback): Reques
 
     override suspend fun onRun() {
         val response = ApiService.getInstance().patchUser(user.id,user).awaitResponse()
+        var newUser = Gson().fromJson<User>(response.body()!!,User::class.java)
+        if(newUser.gender == null)
+            newUser.gender = "null"
 
         if (response.isSuccessful) {
             if (BuildConfig.DEBUG) Log.i(TAG, "User $user.id patched!")
-            Sync.SingleData.with(User::class.java,response.body()!!)
+            Sync.SingleData.with(User::class.java,newUser)
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while patching user $user.id")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_settings.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
@@ -48,7 +49,7 @@ class SettingsFragment: BaseFragment() {
 
     private lateinit var devicesViewModel: DeviceListViewModel
     private lateinit var settingsViewModel: SettingsViewModel
-
+    private lateinit var genderReferences: Array<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         devicesViewModel = ViewModelProviders.of(this).get(DeviceListViewModel::class.java)
@@ -69,13 +70,14 @@ class SettingsFragment: BaseFragment() {
         settings_imprint.setOnClickListener({openWebPage(getString(R.string.settings_imprint))})
         settings_contact.setOnClickListener({openMail()})
         settings_register_device.setOnClickListener({devicesViewModel.createDevice()})
+        genderReferences = resources.getStringArray(R.array.genders)
+        populateSpinner()
 
         settingsViewModel.user.observe(this, Observer { user ->
             user_settings_forename.text = user!!.firstName
             user_settings_lastname.text = user.lastName
             user_settings_email.text = user.email
-            user_settings_gender.setSelection(resources.getStringArray(R.array.genders_en)
-                    .indexOf(user.gender))
+            user_settings_gender.setSelection(genderReferences.indexOf(user.gender))
         })
 
         user_settings_open.setOnClickListener {
@@ -104,5 +106,14 @@ class SettingsFragment: BaseFragment() {
 
     override suspend fun refresh() {
         NotificationRepository.syncDevices()
+    }
+
+    fun populateSpinner(){
+        var strings: MutableList<String> = mutableListOf()
+        for(item: Int in settingsViewModel.genderIds){
+            strings.add(resources.getString(item))
+        }
+        var spinnerAdapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,strings)
+        user_settings_gender.adapter = spinnerAdapter
     }
 }

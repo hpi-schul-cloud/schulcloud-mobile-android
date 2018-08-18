@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.network
 
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import org.schulcloud.mobile.models.AccessToken
@@ -75,9 +76,9 @@ interface ApiServiceInterface {
 
     //User Settings
     @GET("users/{id}")
-    fun getUser(@Path("id") userId: String): Call <User>
+    fun getUser(@Path("id") userId: String): Call <JsonObject>
     @PATCH("users/{id}")
-    fun patchUser(@Path("id") userId: String, @Body user: User): Call<User>
+    fun patchUser(@Path("id") userId: String, @Body user: User): Call<JsonObject>
     @PATCH("accounts/{id}")
     fun patchAccount(@Path("id") accountId: String, @Body account: Account): Call<Account>
     @GET("accounts/")

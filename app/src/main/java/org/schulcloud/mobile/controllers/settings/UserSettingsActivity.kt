@@ -8,14 +8,16 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
+import org.schulcloud.mobile.viewmodels.SettingsViewModel
 import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
 
 class UserSettingsActivity: BaseActivity(){
@@ -31,26 +33,27 @@ class UserSettingsActivity: BaseActivity(){
     private lateinit var mAccount: Account
     private lateinit var mUser: User
     private lateinit var viewModel: UserSettingsViewModel
-    private lateinit var mShake: AnimationSet
+    private lateinit var genderReferences: Array<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(UserSettingsViewModel::class.java)
         setContentView(R.layout.activity_user_settings)
+        genderReferences = resources.getStringArray(R.array.genders)
+        populateSpinner()
         user_edit_submit.setOnClickListener({ async{ patch() } })
 
         viewModel.user.observe(this, Observer { user ->
             user_edit_email.setText(user!!.email)
             user_edit_forename.setText(user!!.firstName)
             user_edit_lastname.setText(user!!.lastName)
-            user_edit_gender.setSelection(resources.getStringArray(R.array.genders_en).indexOf(user!!.gender))
+            user_edit_gender.setSelection(genderReferences.indexOf(user.gender))
             mUser = user
         })
 
         viewModel.account.observe(this, Observer { account ->
             mAccount = account!!
         })
-
-
 
         user_edit_new_password.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -79,8 +82,15 @@ class UserSettingsActivity: BaseActivity(){
         var passwordIsCorrect = false
 
         async {
-            passwordIsCorrect = viewModel.checkPassword(mAccount.username!!,user_edit_password.text.toString())
-            runOnUiThread{loginCallback(passwordIsCorrect)}
+            viewModel.checkPassword(mAccount.username!!,user_edit_password.text.toString(),object: RequestJobCallback(){
+                override fun onError(code: ErrorCode) {
+                    loginCallback(false)
+                }
+
+                override fun onSuccess() {
+                    loginCallback(true)
+                }
+            })
         }
     }
 
@@ -120,9 +130,7 @@ class UserSettingsActivity: BaseActivity(){
 
         user.firstName = user_edit_forename.text.toString()
         user.lastName = user_edit_lastname.text.toString()
-        if(user_edit_gender.selectedItemPosition != 0)
-            user.gender = resources.getStringArray(R.array.genders_en)[
-                    resources.getStringArray(R.array.genders_de).indexOf(user_edit_gender.selectedItem.toString())]
+        user.gender = genderReferences[user_edit_gender.selectedItemPosition]
         user.email = user_edit_email.text.toString()
         user.id = mUser.id
         async { viewModel.patchUser(user) }
@@ -134,7 +142,6 @@ class UserSettingsActivity: BaseActivity(){
                 mUser.email
                 doPassword()
             }
-
             doUser()
         }
 
@@ -147,5 +154,14 @@ class UserSettingsActivity: BaseActivity(){
         if(!passwordIsCorrect){
             runOnUiThread{user_edit_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))}
         }
+    }
+
+    fun populateSpinner(){
+        var strings: MutableList<String> = mutableListOf()
+        for(item: Int in viewModel.genderIds){
+            strings.add(resources.getString(item))
+        }
+        var spinnerAdapter = ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,strings)
+        user_edit_gender.adapter = spinnerAdapter
     }
 }

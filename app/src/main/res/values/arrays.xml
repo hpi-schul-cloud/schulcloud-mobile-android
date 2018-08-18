@@ -9,15 +9,8 @@
         <item>Elias Lehnert</item>
     </string-array>
 
-    <string-array name="genders_de">
-        <item>Kein Geschlecht ausgewählt</item>
-        <item>Männlich</item>
-        <item>Weiblich</item>
-        <item>Etwas Anderes</item>
-    </string-array>
-
-    <string-array name="genders_en">
-        <item>No gender selected</item>
+    <string-array name="genders">
+        <item>null</item>
         <item>male</item>
         <item>female</item>
         <item>other</item>

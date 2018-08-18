@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.common.UserRecoverableException
 import io.realm.Realm
+import org.schulcloud.mobile.R
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.user.Account
@@ -16,22 +17,23 @@ class UserSettingsViewModel: ViewModel(){
         Realm.getDefaultInstance()
     }
 
-    val user = UserRepository.currentUser(realm)
+    val user: LiveData<User?>
+        get() = UserRepository.currentUser(realm)
     val account = UserRepository.getAccount(realm)
+    val genderIds = intArrayOf(R.string.gender_not_selected, R.string.gender_male,
+            R.string.gender_female, R.string.gender_other)
 
     suspend fun patchUser(user: User){
         UserRepository.patchUser(user)
     }
 
-    fun checkPassword(email: String,password: String): Boolean{
+    fun resyncUser(user: User){
+
+    }
+
+    fun checkPassword(email: String,password: String,callback: RequestJobCallback){
         var isRight: Boolean = false
-        UserRepository.login(email,password,object: RequestJobCallback(){
-            override fun onSuccess() {
-                isRight = true
-            }
-            override fun onError(code: ErrorCode) {}
-        })
-        return isRight
+        UserRepository.login(email,password,callback)
     }
 
     suspend fun patchAccount(account: Account){

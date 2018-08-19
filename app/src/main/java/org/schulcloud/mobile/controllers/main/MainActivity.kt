@@ -9,12 +9,19 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.dashboard.DashboardFragment
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.controllers.settings.SettingsFragment
+import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.event.EventRepository
+import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.models.news.NewsRepository
+import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.storages.UserStorage
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,6 +33,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupNavigation(savedInstanceState == null)
+        async{syncRepos()}
     }
 
     private fun setupNavigation(isFirstRun: Boolean) {
@@ -74,6 +82,18 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    suspend private fun syncRepos(){
+        NewsRepository.syncNews()
+        CourseRepository.syncCourses()
+        EventRepository.syncEvents()
+        HomeworkRepository.syncHomeworkList()
+        UserRepository.syncUser(UserStorage().userId!!)
+        UserRepository.getAccountForUser(UserStorage().userId!!)
+        NotificationRepository.syncDevices()
+        CourseRepository.syncCourses()
+    }
+
 
     private fun addFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction()

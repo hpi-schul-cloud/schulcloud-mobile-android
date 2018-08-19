@@ -21,7 +21,6 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        async{syncRepos()}
 
         if(UserRepository.isAuthorized) {
             startApp()
@@ -34,17 +33,6 @@ class SplashActivity : AppCompatActivity() {
         val intent = Intent(this@SplashActivity, LoginActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    suspend private fun syncRepos(){
-        NewsRepository.syncNews()
-        CourseRepository.syncCourses()
-        EventRepository.syncEvents()
-        HomeworkRepository.syncHomeworkList()
-        UserRepository.syncUser(UserStorage().userId!!)
-        UserRepository.getAccountForUser(UserStorage().userId!!)
-        NotificationRepository.syncDevices()
-        CourseRepository.syncCourses()
     }
 
     private fun startApp() {

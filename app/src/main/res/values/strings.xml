@@ -150,4 +150,6 @@
     <string name="gender_male">Männlich</string>
     <string name="gender_female">Weiblich</string>
     <string name="gender_other">Etwas anderes</string>
+    <string name="user_patch_successful">Dein Profil wurde erfolgreich verändert!</string>
+    <string name="user_something_went_wrong">Irgendetwas ist schiefgegangen! Versuche es später noch einmal.</string>
 </resources>

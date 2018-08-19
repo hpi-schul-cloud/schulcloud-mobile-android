@@ -23,20 +23,18 @@ class UserSettingsViewModel: ViewModel(){
     val genderIds = intArrayOf(R.string.gender_not_selected, R.string.gender_male,
             R.string.gender_female, R.string.gender_other)
 
-    suspend fun patchUser(user: User){
-        UserRepository.patchUser(user)
-    }
-
-    fun resyncUser(user: User){
-
+    suspend fun patchUser(user: User,callback: RequestJobCallback){
+        UserRepository.patchUser(user,callback)
     }
 
     fun checkPassword(email: String,password: String,callback: RequestJobCallback){
-        var isRight: Boolean = false
         UserRepository.login(email,password,callback)
     }
 
-    suspend fun patchAccount(account: Account){
-        UserRepository.patchAccount(account)
+    suspend fun patchAccount(account: Account, callback: RequestJobCallback){
+        if(account.newPassword != "")
+            UserRepository.patchAccount(account,callback)
+        else
+            callback.success()
     }
 }

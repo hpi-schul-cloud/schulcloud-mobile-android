@@ -8,10 +8,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.toast
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
@@ -19,6 +22,7 @@ import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.viewmodels.SettingsViewModel
 import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
+import java.util.*
 
 class UserSettingsActivity: BaseActivity(){
     companion object {
@@ -34,6 +38,17 @@ class UserSettingsActivity: BaseActivity(){
     private lateinit var mUser: User
     private lateinit var viewModel: UserSettingsViewModel
     private lateinit var genderReferences: Array<String>
+    private var stage = 0
+    private var callback = object: RequestJobCallback(){
+        override fun onError(code: ErrorCode) {
+            stage += 1
+            handlePatch(stage,true)
+        }
+        override fun onSuccess() {
+            stage += 1
+            handlePatch(stage,false)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +56,7 @@ class UserSettingsActivity: BaseActivity(){
         setContentView(R.layout.activity_user_settings)
         genderReferences = resources.getStringArray(R.array.genders)
         populateSpinner()
-        user_edit_submit.setOnClickListener({ async{ patch() } })
+        user_edit_submit.setOnClickListener({ async{ handlePatch(stage,false)} })
 
         viewModel.user.observe(this, Observer { user ->
             user_edit_email.setText(user!!.email)
@@ -69,30 +84,6 @@ class UserSettingsActivity: BaseActivity(){
 
     }
 
-    fun patch(){
-        if(user_edit_password.text.isEmpty()){
-            user_edit_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
-            return
-        }
-
-        patch_progress.visibility = View.VISIBLE
-        user_settings_layout.isClickable = false
-        user_settings_layout.alpha = 0.5f
-
-        var passwordIsCorrect = false
-
-        async {
-            viewModel.checkPassword(mAccount.username!!,user_edit_password.text.toString(),object: RequestJobCallback(){
-                override fun onError(code: ErrorCode) {
-                    loginCallback(false)
-                }
-
-                override fun onSuccess() {
-                    loginCallback(true)
-                }
-            })
-        }
-    }
 
     fun checkNewPassword() : Boolean{
         if(user_edit_new_password.text.length < 8)
@@ -102,58 +93,76 @@ class UserSettingsActivity: BaseActivity(){
         return true
     }
 
-    fun doPassword(){
-        val account = Account()
+    fun handlePatch(stage: Int,error: Boolean){
+        when(stage){
+            0 -> {
+                if(user_edit_new_password.text.toString() != "") {
+                    if (!checkNewPassword()) {
+                        password_conditions.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                        return
+                    }
 
-        if(user_edit_new_password.text.toString().equals("")){
-            if(!checkNewPassword()){
-                password_conditions.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
-                return
+                    if (!user_edit_new_password.text.equals(user_edit_new_password_repeat.text)) {
+                        user_edit_new_password_repeat.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                        user_edit_new_password.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                        return
+                    }
+                }
+
+                if(user_edit_password.text.toString() == ""){
+                    user_edit_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
+                    return
+                }else{
+                    patch_progress.visibility = View.VISIBLE
+                    user_settings_layout.alpha = 0.5f
+                    viewModel.checkPassword(mUser.displayName!!,user_edit_password.text.toString(),callback)
+                }
+
             }
-
-            if(!user_edit_new_password.text.equals(user_edit_new_password_repeat.text)) {
-                user_edit_new_password_repeat.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
-                user_edit_new_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))
-                return
+            1 -> {
+                if(error) {
+                    user_edit_password.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                    reset()
+                    return
+                }
+                val user = User()
+                user.firstName = user_edit_forename.text.toString()
+                user.lastName = user_edit_lastname.text.toString()
+                user.gender = if(user_edit_gender.selectedItemPosition == 0) null else genderReferences[user_edit_gender.selectedItemPosition]
+                user.email = user_edit_email.text.toString()
+                user.id = mUser.id
+                async{viewModel.patchUser(user,callback)}
             }
-
-            account.id = mAccount.id
-            account.newPassword = user_edit_new_password.text.toString()
-            account.newPasswordRepeat = user_edit_new_password_repeat.text.toString()
-
-            async { viewModel.patchAccount(account) }
+            2 -> {
+                if(error){
+                    reset()
+                    toast(R.string.user_something_went_wrong)
+                    return
+                }
+                var account = Account()
+                account.id = mAccount.id
+                account.newPassword = user_edit_new_password.text.toString()
+                account.newPasswordRepeat = user_edit_new_password_repeat.text.toString()
+                async{viewModel.patchAccount(account,callback)}
+            }
+            3 -> {
+                patch_progress.visibility = View.GONE
+                user_settings_layout.alpha = 1.0f
+                toast(R.string.user_patch_successful)
+                finish()
+                if(error){
+                    reset()
+                    toast(R.string.user_something_went_wrong)
+                    return
+                }
+            }
         }
     }
 
-    fun doUser(){
-        val user = User()
-
-        user.firstName = user_edit_forename.text.toString()
-        user.lastName = user_edit_lastname.text.toString()
-        user.gender = genderReferences[user_edit_gender.selectedItemPosition]
-        user.email = user_edit_email.text.toString()
-        user.id = mUser.id
-        async { viewModel.patchUser(user) }
-    }
-
-    fun loginCallback(passwordIsCorrect: Boolean){
-        if(passwordIsCorrect) {
-            if (user_edit_new_password.text.isNotEmpty()) {
-                mUser.email
-                doPassword()
-            }
-            doUser()
-        }
-
-        runOnUiThread {
-            patch_progress.visibility = View.INVISIBLE
-            user_settings_layout.isClickable = true
-            user_settings_layout.alpha = 1f
-        }
-
-        if(!passwordIsCorrect){
-            runOnUiThread{user_edit_password.startAnimation(AnimationUtils.loadAnimation(this,R.anim.shake))}
-        }
+    fun reset(){
+        patch_progress.visibility = View.GONE
+        user_settings_layout.alpha = 1.0f
+        stage = 0
     }
 
     fun populateSpinner(){

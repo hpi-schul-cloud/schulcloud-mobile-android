@@ -144,4 +144,6 @@
     <string name="gender_male">male</string>
     <string name="gender_female">female</string>
     <string name="gender_other">something else</string>
+    <string name="user_patch_successful">Your profile has been changed!</string>
+    <string name="user_something_went_wrong">Something went wrong! Try again later.</string>
 </resources>

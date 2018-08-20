@@ -87,8 +87,12 @@ class FileFragment : MainFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fun updateEmptyMessage() {
-            empty.visibilityBool = (viewModel.directories.value?.isEmpty() ?: false)
-                    && (viewModel.files.value?.isEmpty() ?: false)
+            val directoriesEmpty = viewModel.directories.value?.isEmpty() ?: true
+            val filesEmpty = viewModel.files.value?.isEmpty() ?: true
+
+            empty.visibilityBool = directoriesEmpty && filesEmpty
+            directoriesHeader.visibilityBool = !directoriesEmpty
+            filesHeader.visibilityBool = !filesEmpty
         }
 
         viewModel.directories.observe(this, Observer {

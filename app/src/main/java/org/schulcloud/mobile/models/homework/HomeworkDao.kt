@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.Sort
 import org.schulcloud.mobile.utils.WEEK_IN_DAYS
-import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.allAsLiveData
 import org.schulcloud.mobile.utils.firstAsLiveData
 import org.schulcloud.mobile.utils.map
 
@@ -12,8 +12,7 @@ class HomeworkDao(private val realm: Realm) {
 
     fun homeworkList(): LiveData<List<Homework>> {
         return realm.where(Homework::class.java)
-                .findAllAsync()
-                .asLiveData()
+                .allAsLiveData()
                 .map { homeworkList ->
                     homeworkList.let {
                         val outdatedHomework = homeworkList.filter { it.dueTimespanDays ?: -1 < 0 }
@@ -33,8 +32,7 @@ class HomeworkDao(private val realm: Realm) {
 
     fun openHomeworkForNextWeek(): LiveData<List<Homework>> {
         return realm.where(Homework::class.java)
-                .findAllAsync()
-                .asLiveData()
+                .allAsLiveData()
                 .map {
                     it.filter { it.dueTimespanDays in 0..WEEK_IN_DAYS }
                 }

@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.topic
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -13,9 +14,9 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentTopicBinding
+import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.topic.TopicRepository
-import org.schulcloud.mobile.utils.dpToPx
-import org.schulcloud.mobile.utils.map
+import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
@@ -27,10 +28,16 @@ class TopicFragment : MainFragment() {
 
     override var url: String? = null
         get() = viewModel.topic.value?.url
+
     override fun provideConfig() = viewModel.topic
-            .map { topic ->
+            .combineLatest(viewModel.topic.switchMap {
+                it?.courseId?.let { viewModel.course(it) } ?: null.asLiveData<Course?>()
+            })
+            .map { (topic, course) ->
                 MainFragmentConfig(
                         title = topic?.name ?: getString(R.string.general_error_notFound),
+                        subtitle = course?.name,
+                        toolbarColor = course?.color?.let { Color.parseColor(it) },
                         menuBottomRes = R.menu.fragment_topic_bottom
                 )
             }

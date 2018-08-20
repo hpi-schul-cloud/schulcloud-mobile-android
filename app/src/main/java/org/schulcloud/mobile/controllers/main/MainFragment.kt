@@ -126,6 +126,7 @@ data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
 
     val title: String,
+    val subtitle: String? = null,
     @ColorInt
     val toolbarColor: Int? = null,
 

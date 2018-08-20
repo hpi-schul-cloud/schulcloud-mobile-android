@@ -5,6 +5,11 @@ import androidx.core.content.ContextCompat
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.homework.Homework
 
+fun dueLabelRequired(homework: Homework?): Boolean {
+    val days = homework?.dueTimespanDays
+    return days == null || days <= WEEK_IN_DAYS
+}
+
 /**
  * Returns text for the duetill label of a homework
  * depending on how many days and hours are left until its dueDate.

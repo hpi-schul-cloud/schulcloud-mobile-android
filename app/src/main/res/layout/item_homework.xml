@@ -68,13 +68,13 @@
                 android:text="@{homework.title}"
                 android:textColor="@color/material_text_secondary_dark"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/duetill_label"
+                app:layout_constraintEnd_toStartOf="@id/dueLabel"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="@sample/homework.json/data/title" />
 
             <org.schulcloud.mobile.views.CompatTextView
-                android:id="@+id/duetill_label"
+                android:id="@+id/dueLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{HomeworkUtilsKt.getDueText(context, homework)}"

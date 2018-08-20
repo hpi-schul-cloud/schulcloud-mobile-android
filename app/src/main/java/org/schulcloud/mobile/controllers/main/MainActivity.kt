@@ -46,6 +46,7 @@ class MainActivity : BaseActivity() {
 
         viewModel.config.observe(this, Observer { config ->
             supportActionBar?.title = config.title
+            supportActionBar?.subtitle = config.subtitle
             updateToolbarColor()
 
             bottomAppBar.apply {

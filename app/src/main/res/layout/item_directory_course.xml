@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
@@ -17,13 +18,15 @@
         android:background="?android:attr/selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(course.id)}">
 
-        <View
+        <ImageView
             style="@style/Material.ListItem_Icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
-            android:background="@{course.color}"
-            tools:background="@color/brand_primary" />
+            android:padding="0dp"
+            app:colorFilter="@{course.color}"
+            app:srcCompat="@drawable/ic_folder"
+            tools:colorFilter="@{@color/brand_primary}" />
 
         <TextView
             style="@style/Material.ListItem_TextPrimary"

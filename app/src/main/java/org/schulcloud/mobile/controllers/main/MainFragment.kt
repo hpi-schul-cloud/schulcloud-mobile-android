@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.Toolbar
@@ -122,6 +123,8 @@ data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
 
     val title: String,
+    @ColorInt
+    val toolbarColor: Int? = null,
 
     @MenuRes
     val menuTopRes: Int = 0,

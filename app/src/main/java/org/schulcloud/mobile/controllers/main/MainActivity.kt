@@ -1,8 +1,18 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.graphics.Color.*
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageButton
+import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.children
+import androidx.core.view.doOnNextLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -24,6 +34,7 @@ class MainActivity : BaseActivity() {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
     private val navController: NavController by lazy { findNavController(navHost) }
+    private var toolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +42,7 @@ class MainActivity : BaseActivity() {
 
         viewModel.config.observe(this, Observer { config ->
             supportActionBar?.title = config.title
+            updateToolbarColor()
 
             bottomAppBar.apply {
                 menu.clear()
@@ -60,8 +72,11 @@ class MainActivity : BaseActivity() {
 
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
+
+        this.toolbar = toolbar
         if (toolbar != null)
             NavigationUI.setupWithNavController(toolbar, navController)
+        updateToolbarColor()
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp()
@@ -71,8 +86,68 @@ class MainActivity : BaseActivity() {
             super.onBackPressed()
     }
 
+    override fun openOptionsMenu() {
+        super.openOptionsMenu()
+        updateToolbarColor()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         viewModel.onOptionsItemSelected.value = item
         return true
+    }
+
+
+    private fun updateToolbarColor() {
+        val toolbar = toolbar ?: return
+        val color = viewModel.config.value?.toolbarColor
+                ?: ContextCompat.getColor(this, R.color.toolbar_background_default)
+
+        // Formula from [Color#luminance()]
+        val isLight = 0.2126 * red(color) + 0.7152 * green(color) + 0.0722 * blue(color) > 0.5 * 255
+
+        val textColor = ContextCompat.getColor(this,
+                if (isLight) R.color.material_text_primary_dark
+                else R.color.material_text_primary_light)
+        val textColorFilter = PorterDuffColorFilter(textColor, PorterDuff.Mode.SRC_ATOP)
+
+        // Background
+        toolbar.setBackgroundColor(color)
+
+        // Icons
+        for (view in toolbar.children)
+            when (view) {
+            // Back button
+                is ImageButton -> {
+                    view.drawable.colorFilter = textColorFilter
+                }
+
+            // Option items
+                is ActionMenuView -> {
+                    view.doOnNextLayout {
+                        for (innerView in view.children) {
+                            if (innerView !is ActionMenuItemView)
+                                continue
+
+                            for (drawable in innerView.compoundDrawables) {
+                                if (drawable == null)
+                                    continue
+
+                                innerView.post {
+                                    drawable.colorFilter = textColorFilter
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        // Title + subtitle
+        toolbar.setTitleTextColor(textColor)
+        toolbar.setSubtitleTextColor(textColor)
+
+        // Overflow icon
+        toolbar.overflowIcon?.also {
+            DrawableCompat.setTint(it, textColor)
+        }
     }
 }

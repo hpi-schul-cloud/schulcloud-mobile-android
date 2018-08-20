@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.course
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -39,10 +40,14 @@ class CourseFragment : MainFragment() {
     override var url: String? = null
         get() = viewModel.course.value?.url
 
-    override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.course.value?.name ?: getString(R.string.general_error_notFound),
-            menuBottomRes = R.menu.fragment_course_bottom
-    )
+    override fun provideConfig(): MainFragmentConfig {
+        val course = viewModel.course.value
+        return MainFragmentConfig(
+                title = course?.name ?: getString(R.string.general_error_notFound),
+                toolbarColor = if (course != null) Color.parseColor(course.color) else null,
+                menuBottomRes = R.menu.fragment_course_bottom
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val args = CourseFragmentArgs.fromBundle(arguments)

@@ -14,21 +14,22 @@ private const val TAG = "PathUtils"
 
 fun String.getPathParts(limit: Int = 0): List<String> = trimSlashes().split(File.separator, limit = limit)
 
-fun combinePath(vararg parts: String?): String {
-    val builder = StringBuilder(parts[0] ?: "")
-    for (i in 1 until parts.size) {
-        if (parts[i] == null || TextUtils.isEmpty(parts[i]))
+fun combinePath(vararg parts: String?): String = parts.toList().combinePath()
+fun List<String?>.combinePath(): String {
+    val builder = StringBuilder(this[0] ?: "")
+    for (i in 1 until size) {
+        if (this[i] == null || TextUtils.isEmpty(this[i]))
             continue
 
         val endsWithSeparator = builder.isNotEmpty() && builder[builder.length - 1] == File.separatorChar
-        val beginsWithSeparator = parts[i]!!.isNotEmpty() && parts[i]!![0] == File.separatorChar
+        val beginsWithSeparator = this[i]!!.isNotEmpty() && this[i]!![0] == File.separatorChar
 
         if (endsWithSeparator && beginsWithSeparator)
-            builder.append(parts[i]!!.substring(1))
+            builder.append(this[i]!!.substring(1))
         else if (!endsWithSeparator && !beginsWithSeparator)
-            builder.append(File.separatorChar).append(parts[i])
+            builder.append(File.separatorChar).append(this[i])
         else
-            builder.append(parts[i])
+            builder.append(this[i])
     }
     return builder.toString()
 }

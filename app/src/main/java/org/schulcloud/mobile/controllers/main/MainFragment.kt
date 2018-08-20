@@ -25,9 +25,9 @@ import java.io.File
 import kotlin.properties.Delegates
 
 abstract class MainFragment : BaseFragment() {
-    private val mainViewModel: MainViewModel by lazy {
-        ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
-    }
+    protected val mainActivity: MainActivity get() = activity as MainActivity
+    protected val mainViewModel: MainViewModel
+        get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
 
     protected val navController: NavController
         get() = findNavController(this)
@@ -50,8 +50,6 @@ abstract class MainFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        config = provideConfig()
-
         mainViewModel.onOptionsItemSelected.observe(this, Observer {
             onOptionsItemSelected(it)
         })
@@ -68,17 +66,17 @@ abstract class MainFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
-
-        view?.findViewById<Toolbar>(R.id.toolbar).also {
-            it?.title = config.value?.title
-            (activity as MainActivity).setSupportActionBar(it)
-        }
-
+        config = provideConfig()
         config.observe(this, Observer {
             activity?.invalidateOptionsMenu()
             it?.also { mainViewModel.config.value = it }
         })
+
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
+
+        view?.findViewById<Toolbar>(R.id.toolbar).also {
+            mainActivity.setSupportActionBar(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -128,7 +126,7 @@ abstract class MainFragment : BaseFragment() {
 data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
 
-    val title: String,
+    val title: String?,
     val subtitle: String? = null,
     @ColorInt
     val toolbarColor: Int? = null,

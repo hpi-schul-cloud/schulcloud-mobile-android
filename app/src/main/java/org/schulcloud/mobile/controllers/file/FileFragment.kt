@@ -44,13 +44,13 @@ class FileFragment : MainFragment() {
     }
     private lateinit var viewModel: FileViewModel
     private val directoryAdapter: DirectoryAdapter by lazy {
-        org.schulcloud.mobile.controllers.file.DirectoryAdapter {
+        DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,
                     FileFragmentArgs.Builder(combinePath(viewModel.path, it)).build().toBundle())
         }
     }
     private val fileAdapter: FileAdapter by lazy {
-        org.schulcloud.mobile.controllers.file.FileAdapter({ loadFile(it, false) },
+        FileAdapter({ loadFile(it, false) },
                 { loadFile(it, true) })
     }
 
@@ -58,17 +58,10 @@ class FileFragment : MainFragment() {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())
             .map { course ->
-                val parts = args.path.getPathParts()
+                breadcrumbs.setPath(args.path, course)
+
                 MainFragmentConfig(
-                        title = when {
-                        // Nested folder
-                            parts.size > 2 -> parts.last()
-                        // Private folder root
-                            args.path.startsWith(FileRepository.CONTEXT_MY_API) -> getString(R.string.file_directory_my)
-                        // Course folder root
-                            course != null -> course.name ?: getString(R.string.file_directory_course_unknown)
-                            else -> throw IllegalArgumentException("Path ${args.path} is not supported")
-                        },
+                        title = null,
                         toolbarColor = course?.color?.let { Color.parseColor(it) },
                         menuBottomRes = R.menu.fragment_file_bottom,
                         menuBottomHiddenIds = listOf(
@@ -93,7 +86,6 @@ class FileFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Content
         fun updateEmptyMessage() {
             empty.visibilityBool = (viewModel.directories.value?.isEmpty() ?: false)
                     && (viewModel.files.value?.isEmpty() ?: false)
@@ -120,12 +112,26 @@ class FileFragment : MainFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        mainActivity.setToolbarWrapper(toolbarWrapper)
+
+        breadcrumbs.setPath(args.path)
+        breadcrumbs.onPathSelected = { path ->
+            navController.navigate(R.id.action_global_fragment_file,
+                    FileFragmentArgs.Builder(path).build().toBundle())
+        }
+        mainViewModel.toolbarColors.observe(this, Observer {
+            breadcrumbs.setTextColor(it.textColor)
+        })
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.file_action_gotoCourse ->
                 navController.navigate(R.id.action_global_fragment_course,
-                        CourseFragmentArgs.Builder(getCourseFromFolder()!!)
-                                .build().toBundle())
+                        CourseFragmentArgs.Builder(getCourseFromFolder()!!).build().toBundle())
             else -> return super.onOptionsItemSelected(item)
         }
         return true

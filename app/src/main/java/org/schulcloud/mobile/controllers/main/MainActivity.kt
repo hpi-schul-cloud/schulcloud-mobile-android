@@ -7,6 +7,7 @@ import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
@@ -27,6 +28,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.utils.visibilityBool
 import org.schulcloud.mobile.viewmodels.MainViewModel
+import org.schulcloud.mobile.viewmodels.ToolbarColors
 
 class MainActivity : BaseActivity() {
     companion object {
@@ -39,15 +41,16 @@ class MainActivity : BaseActivity() {
     }
     private val navController: NavController by lazy { findNavController(navHost) }
     private var toolbar: Toolbar? = null
+    private var toolbarWrapper: ViewGroup? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         viewModel.config.observe(this, Observer { config ->
-            supportActionBar?.title = config.title
+            title = config.title
             supportActionBar?.subtitle = config.subtitle
-            updateToolbarColor()
+            recalculateToolbarColor()
 
             bottomAppBar.apply {
                 menu.clear()
@@ -67,6 +70,10 @@ class MainActivity : BaseActivity() {
             fab.setImageResource(config.fabIconRes)
         })
 
+        viewModel.toolbarColors.observe(this, Observer {
+            updateToolbarColor()
+        })
+
         bottomAppBar.setNavigationOnClickListener {
             val navDrawer = org.schulcloud.mobile.controllers.main.NavigationDrawerFragment()
             navDrawer.show(supportFragmentManager, navDrawer.tag)
@@ -82,9 +89,14 @@ class MainActivity : BaseActivity() {
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
 
+//        toolbar?.title = viewModel.config.value?.title
         this.toolbar = toolbar
         if (toolbar != null)
             NavigationUI.setupWithNavController(toolbar, navController)
+        updateToolbarColor()
+    }
+    fun setToolbarWrapper(toolbarWrapper: ViewGroup) {
+        this.toolbarWrapper = toolbarWrapper
         updateToolbarColor()
     }
 
@@ -106,8 +118,7 @@ class MainActivity : BaseActivity() {
     }
 
 
-    private fun updateToolbarColor() {
-        val toolbar = toolbar ?: return
+    private fun recalculateToolbarColor() {
         val color = viewModel.config.value?.toolbarColor
                 ?: ContextCompat.getColor(this, R.color.toolbar_background_default)
 
@@ -117,22 +128,31 @@ class MainActivity : BaseActivity() {
         val textColor = ContextCompat.getColor(this,
                 if (isLight) R.color.material_text_primary_dark
                 else R.color.material_text_primary_light)
-        val textColorFilter = PorterDuffColorFilter(textColor, PorterDuff.Mode.SRC_ATOP)
+
+        val statusBarColor = ColorUtils.blendARGB(color, Color.BLACK, DARKEN_FACTOR)
+
+        viewModel.toolbarColors.value = ToolbarColors(color, textColor, isLight, statusBarColor)
+    }
+
+    private fun updateToolbarColor() {
+        val colors = viewModel.toolbarColors.value ?: return
+        val toolbar = toolbar
 
         // Background
-        toolbar.setBackgroundColor(color)
+        toolbarWrapper?.setBackgroundColor(colors.color)
+        toolbar?.setBackgroundColor(colors.color)
 
         // Icons
-        for (view in toolbar.children)
-            when (view) {
-            // Back button
-                is ImageButton -> {
-                    view.drawable.colorFilter = textColorFilter
-                }
+        if (toolbar != null) {
+            val textColorFilter =
+                    PorterDuffColorFilter(colors.textColor, PorterDuff.Mode.SRC_ATOP)
+            for (view in toolbar.children)
+                when (view) {
+                // Back button
+                    is ImageButton -> view.drawable.colorFilter = textColorFilter
 
-            // Option items
-                is ActionMenuView -> {
-                    view.doOnNextLayout {
+                // Option items
+                    is ActionMenuView -> view.doOnNextLayout {
                         for (innerView in view.children) {
                             if (innerView !is ActionMenuItemView)
                                 continue
@@ -148,19 +168,19 @@ class MainActivity : BaseActivity() {
                         }
                     }
                 }
-            }
+        }
 
         // Title + subtitle
-        toolbar.setTitleTextColor(textColor)
-        toolbar.setSubtitleTextColor(textColor)
+        toolbar?.setTitleTextColor(colors.textColor)
+        toolbar?.setSubtitleTextColor(colors.textColor)
 
         // Overflow icon
-        toolbar.overflowIcon?.also {
-            DrawableCompat.setTint(it, textColor)
+        toolbar?.overflowIcon?.also {
+            DrawableCompat.setTint(it, colors.textColor)
         }
 
         // Status bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            window?.statusBarColor = ColorUtils.blendARGB(color, Color.BLACK, DARKEN_FACTOR)
+            window?.statusBarColor = colors.statusBarColor
     }
 }

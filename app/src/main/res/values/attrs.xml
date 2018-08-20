@@ -3,6 +3,7 @@
 
     <declare-styleable name="AppTheme">
         <attr name="contentTextViewStyle" format="reference" />
+        <attr name="breadcrumbsViewStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="CompatTextView">
@@ -14,6 +15,10 @@
         <attr name="drawableTopVisible" format="reference" />
         <attr name="drawableBottom" format="reference" />
         <attr name="drawableBottomVisible" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="BreadcrumbsView">
+        <attr name="android:textSize" />
     </declare-styleable>
 
 </resources>

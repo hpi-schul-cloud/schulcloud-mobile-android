@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -11,9 +10,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.App.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+            android:theme="@style/ThemeOverlay.App.Dark.ActionBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

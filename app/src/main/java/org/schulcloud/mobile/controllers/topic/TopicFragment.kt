@@ -19,6 +19,7 @@ import org.schulcloud.mobile.models.topic.TopicRepository
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
+import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
 class TopicFragment : MainFragment() {
@@ -77,7 +78,9 @@ class TopicFragment : MainFragment() {
         recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL)
             adapter = contentsAdapter
-            addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing))
+            addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing_half))
+            addItemDecoration(DividerItemDecoration.middle(context))
+            addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing_half))
         }
     }
 

@@ -13,11 +13,13 @@ import org.schulcloud.mobile.R
 
 /**
  * Similar to [android.support.v7.widget.DividerItemDecoration], but with configurable divider locations (before first
- * and after last item).
+ * and after last item) and insets.
  */
 class DividerItemDecoration(
     context: Context,
     @LinearLayoutCompat.DividerMode val showDividers: Int = BEGINNING or MIDDLE or END,
+    val inset: Int? = null,
+    val insetStart: Int? = null,
     @RecyclerView.Orientation val orientation: Int = VERTICAL
 ) : RecyclerView.ItemDecoration() {
     companion object {
@@ -31,6 +33,17 @@ class DividerItemDecoration(
         const val HORIZONTAL = LinearLayout.HORIZONTAL
         const val VERTICAL = LinearLayout.VERTICAL
         private val ATTRS = intArrayOf(android.R.attr.listDivider)
+
+        fun middle(
+            context: Context,
+            @LinearLayoutCompat.DividerMode showDividers: Int = BEGINNING or MIDDLE or END,
+            @RecyclerView.Orientation orientation: Int = VERTICAL
+        ): DividerItemDecoration {
+            return DividerItemDecoration(context,
+                    showDividers,
+                    inset = context.resources.getDimensionPixelOffset(R.dimen.material_dividerMiddle_inset),
+                    orientation = orientation)
+        }
     }
 
     private var divider = ResourcesCompat.getDrawable(context.resources, R.drawable.divider_dark, context.theme)!!
@@ -61,6 +74,12 @@ class DividerItemDecoration(
             right = parent.width
         }
 
+        fun drawDividerHorizontal(canvas: Canvas, left: Int, top: Int, right: Int, bottom: Int) {
+            val insetStart = insetStart ?: inset ?: 0
+            val insetEnd = inset ?: 0
+            drawDivider(canvas, left + insetStart, top, right - insetEnd, bottom)
+        }
+
         val childCount = parent.childCount
         for (i in 0 until childCount) {
             if (!hasDividersBefore(parent, i))
@@ -70,7 +89,7 @@ class DividerItemDecoration(
             parent.getDecoratedBoundsWithMargins(child, bounds)
             val top = bounds.top + Math.round(child.translationY)
             val bottom = top + divider.intrinsicHeight
-            drawDivider(canvas, left, top, right, bottom)
+            drawDividerHorizontal(canvas, left, top, right, bottom)
         }
 
         if (hasDividersBefore(parent, childCount)) {
@@ -81,7 +100,7 @@ class DividerItemDecoration(
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 bounds.bottom + Math.round(child.translationY)
             }
-            drawDivider(canvas, left, bottom - 2 * divider.intrinsicHeight, right, bottom)
+            drawDividerHorizontal(canvas, left, bottom - 2 * divider.intrinsicHeight, right, bottom)
         }
 
         canvas.restore()
@@ -102,6 +121,12 @@ class DividerItemDecoration(
             bottom = parent.height
         }
 
+        fun drawDividerVertical(canvas: Canvas, left: Int, top: Int, right: Int, bottom: Int) {
+            val insetStart = insetStart ?: inset ?: 0
+            val insetEnd = inset ?: 0
+            drawDivider(canvas, left, top + insetStart, right, bottom - insetEnd)
+        }
+
         val childCount = parent.childCount
         for (i in 0 until childCount) {
             if (!hasDividersBefore(parent, i))
@@ -111,7 +136,7 @@ class DividerItemDecoration(
             parent.layoutManager?.getDecoratedBoundsWithMargins(child, bounds)
             val left = bounds.right + Math.round(child.translationX)
             val right = left + divider.intrinsicWidth
-            drawDivider(canvas, left, top, right, bottom)
+            drawDividerVertical(canvas, left, top, right, bottom)
         }
 
         if (hasDividersBefore(parent, childCount)) {
@@ -122,7 +147,7 @@ class DividerItemDecoration(
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 bounds.right + Math.round(child.translationY)
             }
-            drawDivider(canvas, right - 2 * divider.intrinsicWidth, top, right, bottom)
+            drawDividerVertical(canvas, right - 2 * divider.intrinsicWidth, top, right, bottom)
         }
 
         canvas.restore()

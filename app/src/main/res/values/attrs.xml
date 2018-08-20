@@ -7,9 +7,13 @@
 
     <declare-styleable name="CompatTextView">
         <attr name="drawableStart" format="reference" />
+        <attr name="drawableStartVisible" format="boolean" />
         <attr name="drawableEnd" format="reference" />
+        <attr name="drawableEndVisible" format="reference" />
         <attr name="drawableTop" format="reference" />
+        <attr name="drawableTopVisible" format="reference" />
         <attr name="drawableBottom" format="reference" />
+        <attr name="drawableBottomVisible" format="reference" />
     </declare-styleable>
 
 </resources>

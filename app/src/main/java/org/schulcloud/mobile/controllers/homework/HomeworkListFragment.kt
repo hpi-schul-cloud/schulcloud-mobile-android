@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_homework_list.*
@@ -24,11 +23,15 @@ class HomeworkListFragment : MainFragment() {
 
     private lateinit var viewModel: HomeworkListViewModel
     private val homeworkAdapter: HomeworkAdapter by lazy {
-        HomeworkAdapter {
+        HomeworkAdapter({
             navController.navigate(
                     R.id.action_global_fragment_homework,
                     HomeworkFragmentArgs.Builder(it).build().toBundle())
-        }
+        }, {
+            navController.navigate(
+                    R.id.action_global_fragment_course,
+                    HomeworkFragmentArgs.Builder(it).build().toBundle())
+        })
     }
 
 

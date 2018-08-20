@@ -8,9 +8,10 @@ import org.schulcloud.mobile.databinding.ItemHomeworkBinding
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.utils.formatDaysLeft
 
-class HomeworkAdapter(private val onSelected: (String) -> Unit) :
-        BaseAdapter<Homework, HomeworkAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
-
+class HomeworkAdapter(
+    private val onSelected: (String) -> Unit,
+    private val onCourseSelected: (String) -> Unit
+) : BaseAdapter<Homework, HomeworkAdapter.HomeworkViewHolder, ItemHomeworkBinding>() {
     fun update(homeworkList: List<Homework>) {
         items = homeworkList
     }
@@ -21,6 +22,7 @@ class HomeworkAdapter(private val onSelected: (String) -> Unit) :
     ): HomeworkViewHolder {
         val binding = ItemHomeworkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.onSelected = onSelected
+        binding.onCourseSelected = onCourseSelected
         return HomeworkViewHolder(binding)
     }
 

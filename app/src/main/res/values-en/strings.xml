@@ -4,6 +4,7 @@
     <string name="general_action_share">Share</string>
     <string name="general_action_showInBrowser">Show in browser</string>
     <string name="general_action_refresh">Refresh</string>
+    <string name="general_action_gotoCourse">Go to course</string>
     <string name="general_date_yesterday">Yesterday</string>
     <string name="general_date_today">Today</string>
     <string name="general_date_tomorrow">Tomorrow</string>
@@ -71,7 +72,7 @@
     <string name="course_title">My courses</string>
     <string name="course_topics">Topics</string>
     <string name="courses_error_empty">No courses were found</string>
-    <string name="course_action_gotoFiles">@string/fileOverview_courses</string>
+    <string name="course_action_gotoFiles">Go to course files</string>
 
     <!-- Topic -->
     <string name="topics_error_empty">No topics were found</string>

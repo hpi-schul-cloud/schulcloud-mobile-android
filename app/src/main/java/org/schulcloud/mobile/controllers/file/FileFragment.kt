@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
@@ -67,7 +69,11 @@ class FileFragment : MainFragment() {
                             course != null -> course.name ?: getString(R.string.file_directory_course_unknown)
                             else -> throw IllegalArgumentException("Path ${args.path} is not supported")
                         },
-                        toolbarColor = course?.color?.let { Color.parseColor(it) }
+                        toolbarColor = course?.color?.let { Color.parseColor(it) },
+                        menuBottomRes = R.menu.fragment_file_bottom,
+                        menuBottomHiddenIds = listOf(
+                                if (course == null) R.id.file_action_gotoCourse else 0
+                        )
                 )
             }
 
@@ -112,6 +118,17 @@ class FileFragment : MainFragment() {
             adapter = fileAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.file_action_gotoCourse ->
+                navController.navigate(R.id.action_global_fragment_course,
+                        CourseFragmentArgs.Builder(getCourseFromFolder()!!)
+                                .build().toBundle())
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
     }
 
     override suspend fun refresh() {

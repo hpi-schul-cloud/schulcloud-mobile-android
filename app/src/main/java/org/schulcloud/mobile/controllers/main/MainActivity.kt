@@ -51,8 +51,12 @@ class MainActivity : BaseActivity() {
 
             bottomAppBar.apply {
                 menu.clear()
-                if (config.menuBottomRes != 0)
+                if (config.menuBottomRes != 0) {
                     inflateMenu(config.menuBottomRes)
+                    for (id in config.menuBottomHiddenIds)
+                        if (id != 0)
+                            menu?.findItem(id)?.isVisible = false
+                }
             }
 
             fab.visibilityBool = config.fabVisible && config.fabIconRes != 0

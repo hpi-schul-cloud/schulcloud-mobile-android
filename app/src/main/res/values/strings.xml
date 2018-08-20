@@ -4,6 +4,7 @@
     <string name="general_action_share">Teilen</string>
     <string name="general_action_showInBrowser">Im Browser anzeigen</string>
     <string name="general_action_refresh">Aktualisieren</string>
+    <string name="general_action_gotoCourse">Zum Kurs</string>
     <string name="general_date_yesterday">Gestern</string>
     <string name="general_date_today">Heute</string>
     <string name="general_date_tomorrow">Morgen</string>
@@ -97,7 +98,6 @@
         <item quantity="two">Übermorgen</item>
         <item quantity="other">In %d Tagen</item>
     </plurals>
-    <string name="homework_action_gotoCourse">Zum Kurs</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

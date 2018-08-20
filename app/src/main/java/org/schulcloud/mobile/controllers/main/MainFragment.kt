@@ -89,6 +89,9 @@ abstract class MainFragment : BaseFragment() {
         inflater?.inflate(R.menu.fragment_main_top, menu)
         if (config.value?.supportsRefresh == false)
             menu?.findItem(R.id.base_action_refresh)?.isVisible = false
+        for (id in config.value?.menuTopHiddenIds.orEmpty())
+            if (id != 0)
+                menu?.findItem(id)?.isVisible = false
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -132,8 +135,10 @@ data class MainFragmentConfig(
 
     @MenuRes
     val menuTopRes: Int = 0,
+    val menuTopHiddenIds: List<Int> = emptyList(),
     @MenuRes
     val menuBottomRes: Int = 0,
+    val menuBottomHiddenIds: List<Int> = emptyList(),
     val supportsRefresh: Boolean = true,
 
     val fabVisible: Boolean = true,

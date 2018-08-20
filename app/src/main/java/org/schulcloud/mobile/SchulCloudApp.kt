@@ -1,13 +1,12 @@
 package org.schulcloud.mobile
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.danlew.android.joda.JodaTimeAndroid
 import org.schulcloud.mobile.config.Config
 
-class SchulCloudApp : Application() {
-
+class SchulCloudApp : MultiDexApplication() {
     companion object {
         val TAG: String = SchulCloudApp::class.java.simpleName
         lateinit var instance: SchulCloudApp

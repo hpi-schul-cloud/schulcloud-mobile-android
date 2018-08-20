@@ -35,7 +35,7 @@
             android:paddingRight="@dimen/homework_item_margin"
             android:paddingBottom="10dp"
             android:text="@{headerText}"
-            android:textColor="@color/material_text_primary_dark"
+            android:textColor="@color/material_text_secondary_dark"
             android:textSize="20sp"
             android:visibility="@{headerRequired}"
             tools:text="Header" />
@@ -127,7 +127,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="start"
                 android:text="@{homework.title}"
-                android:textColor="@color/material_text_primary_dark"
+                android:textColor="@color/material_text_secondary_dark"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

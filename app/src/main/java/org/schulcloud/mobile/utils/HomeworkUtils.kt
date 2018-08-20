@@ -28,9 +28,9 @@ fun Context.getDueText(homework: Homework?): String {
 
 fun Context.getDueColor(homework: Homework?): Int {
     return ContextCompat.getColor(this, when (homework?.dueTimespanDays) {
-        null -> R.color.material_text_primary_dark
+        null -> R.color.material_text_secondary_dark
         in Int.MIN_VALUE..1 -> R.color.brand_primary
-        in 2..WEEK_IN_DAYS -> R.color.material_text_primary_dark
+        in 2..WEEK_IN_DAYS -> R.color.material_text_secondary_dark
         else -> android.R.color.transparent
     })
 }

@@ -58,7 +58,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/material_divider" />
+            android:background="@color/material_divider_dark" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"

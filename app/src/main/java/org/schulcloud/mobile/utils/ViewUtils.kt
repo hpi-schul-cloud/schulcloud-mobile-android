@@ -2,6 +2,7 @@
 
 package org.schulcloud.mobile.utils
 
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -20,6 +21,9 @@ fun convertStringToColor(color: String) = Color.parseColor(color)
 
 @BindingConversion
 fun convertStringToDrawable(color: String) = ColorDrawable(Color.parseColor(color))
+
+@BindingConversion
+fun convertStringToColorStateList(color: String) = ColorStateList.valueOf(Color.parseColor(color))
 
 @BindingAdapter("displayDate")
 fun showDate(view: TextView, date: String?) {

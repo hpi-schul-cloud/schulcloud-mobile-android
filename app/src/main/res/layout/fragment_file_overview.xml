@@ -103,7 +103,7 @@
                         android:tint="@android:color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_graduation_cap" />
+                        app:srcCompat="@drawable/ic_course_black" />
 
                     <TextView
                         android:id="@+id/fileOverview_courses_tv_title"

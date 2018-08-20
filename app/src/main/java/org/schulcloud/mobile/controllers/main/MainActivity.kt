@@ -6,17 +6,15 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.ImageButton
-import androidx.appcompat.view.menu.ActionMenuItemView
-import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
-import androidx.core.view.doOnNextLayout
+import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -26,6 +24,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.utils.setTintCompat
 import org.schulcloud.mobile.utils.visibilityBool
 import org.schulcloud.mobile.viewmodels.MainViewModel
 import org.schulcloud.mobile.viewmodels.ToolbarColors
@@ -42,6 +41,7 @@ class MainActivity : BaseActivity() {
     private val navController: NavController by lazy { findNavController(navHost) }
     private var toolbar: Toolbar? = null
     private var toolbarWrapper: ViewGroup? = null
+    private var optionsMenu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,7 @@ class MainActivity : BaseActivity() {
         viewModel.config.observe(this, Observer { config ->
             title = config.title
             supportActionBar?.subtitle = config.subtitle
-            recalculateToolbarColor()
+            recalculateToolbarColors()
 
             bottomAppBar.apply {
                 menu.clear()
@@ -71,7 +71,7 @@ class MainActivity : BaseActivity() {
         })
 
         viewModel.toolbarColors.observe(this, Observer {
-            updateToolbarColor()
+            updateToolbarColors()
         })
 
         bottomAppBar.setNavigationOnClickListener {
@@ -89,15 +89,15 @@ class MainActivity : BaseActivity() {
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
 
-//        toolbar?.title = viewModel.config.value?.title
         this.toolbar = toolbar
         if (toolbar != null)
             NavigationUI.setupWithNavController(toolbar, navController)
-        updateToolbarColor()
+        updateToolbarColors()
     }
+
     fun setToolbarWrapper(toolbarWrapper: ViewGroup) {
         this.toolbarWrapper = toolbarWrapper
-        updateToolbarColor()
+        updateToolbarColors()
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp()
@@ -109,7 +109,18 @@ class MainActivity : BaseActivity() {
 
     override fun openOptionsMenu() {
         super.openOptionsMenu()
-        updateToolbarColor()
+        updateToolbarColors()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        optionsMenu = menu
+        updateToolbarColors()
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun invalidateOptionsMenu() {
+        super.invalidateOptionsMenu()
+        updateToolbarColors()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -118,7 +129,7 @@ class MainActivity : BaseActivity() {
     }
 
 
-    private fun recalculateToolbarColor() {
+    private fun recalculateToolbarColors() {
         val color = viewModel.config.value?.toolbarColor
                 ?: ContextCompat.getColor(this, R.color.toolbar_background_default)
 
@@ -134,7 +145,7 @@ class MainActivity : BaseActivity() {
         viewModel.toolbarColors.value = ToolbarColors(color, textColor, isLight, statusBarColor)
     }
 
-    private fun updateToolbarColor() {
+    private fun updateToolbarColors() {
         val colors = viewModel.toolbarColors.value ?: return
         val toolbar = toolbar
 
@@ -142,32 +153,19 @@ class MainActivity : BaseActivity() {
         toolbarWrapper?.setBackgroundColor(colors.color)
         toolbar?.setBackgroundColor(colors.color)
 
-        // Icons
-        if (toolbar != null) {
-            val textColorFilter =
-                    PorterDuffColorFilter(colors.textColor, PorterDuff.Mode.SRC_ATOP)
+        // Back button
+        val textColorFilter =
+                PorterDuffColorFilter(colors.textColor, PorterDuff.Mode.SRC_ATOP)
+        if (toolbar != null)
             for (view in toolbar.children)
-                when (view) {
-                // Back button
-                    is ImageButton -> view.drawable.colorFilter = textColorFilter
-
-                // Option items
-                    is ActionMenuView -> view.doOnNextLayout {
-                        for (innerView in view.children) {
-                            if (innerView !is ActionMenuItemView)
-                                continue
-
-                            for (drawable in innerView.compoundDrawables) {
-                                if (drawable == null)
-                                    continue
-
-                                innerView.post {
-                                    drawable.colorFilter = textColorFilter
-                                }
-                            }
-                        }
-                    }
+                if (view is ImageButton) {
+                    view.drawable?.colorFilter = textColorFilter
+                    break
                 }
+
+        // Option items
+        optionsMenu?.forEach { item ->
+            item.icon?.setTintCompat(colors.textColor)
         }
 
         // Title + subtitle
@@ -175,9 +173,7 @@ class MainActivity : BaseActivity() {
         toolbar?.setSubtitleTextColor(colors.textColor)
 
         // Overflow icon
-        toolbar?.overflowIcon?.also {
-            DrawableCompat.setTint(it, colors.textColor)
-        }
+        toolbar?.overflowIcon?.setTintCompat(colors.textColor)
 
         // Status bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)

@@ -1,8 +1,10 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.graphics.Color
 import android.graphics.Color.*
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageButton
@@ -10,6 +12,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
 import androidx.core.view.doOnNextLayout
@@ -28,6 +31,7 @@ import org.schulcloud.mobile.viewmodels.MainViewModel
 class MainActivity : BaseActivity() {
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
+        private const val DARKEN_FACTOR = 0.2f
     }
 
     private val viewModel: MainViewModel by lazy {
@@ -149,5 +153,9 @@ class MainActivity : BaseActivity() {
         toolbar.overflowIcon?.also {
             DrawableCompat.setTint(it, textColor)
         }
+
+        // Status bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            window?.statusBarColor = ColorUtils.blendARGB(color, Color.BLACK, DARKEN_FACTOR)
     }
 }

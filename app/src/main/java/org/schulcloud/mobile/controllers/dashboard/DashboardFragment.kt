@@ -8,6 +8,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
+import org.schulcloud.mobile.utils.asLiveData
 
 class DashboardFragment : MainFragment() {
     companion object {
@@ -18,11 +19,10 @@ class DashboardFragment : MainFragment() {
 
 
     override var url: String? = "/dashboard"
-
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.dashboard_title)
-    )
+    ).asLiveData()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_dashboard, container, false)

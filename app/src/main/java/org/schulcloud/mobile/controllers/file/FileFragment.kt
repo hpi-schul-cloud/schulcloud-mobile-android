@@ -2,6 +2,7 @@ package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
+import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
@@ -39,7 +41,6 @@ class FileFragment : MainFragment() {
         FileFragmentArgs.fromBundle(arguments)
     }
     private lateinit var viewModel: FileViewModel
-    private var courseTitle: String? = null
     private val directoryAdapter: DirectoryAdapter by lazy {
         org.schulcloud.mobile.controllers.file.DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,
@@ -51,21 +52,24 @@ class FileFragment : MainFragment() {
                 { loadFile(it, true) })
     }
 
-    override fun provideConfig(): MainFragmentConfig {
-        val parts = args.path.getPathParts()
-        val title = when {
-        // Nested folder
-            parts.size > 2 -> parts.last()
-        // Private folder root
-            args.path.startsWith(FileRepository.CONTEXT_MY_API) -> getString(R.string.file_directory_my)
-        // Course folder root
-            getCourseFromFolder() != null -> courseTitle ?: getString(R.string.file_directory_course_unknown)
-            else -> throw IllegalArgumentException("Path ${args.path} is not supported")
-        }
-        return MainFragmentConfig(
-                title = title
-        )
-    }
+    override fun provideConfig() = (getCourseFromFolder()?.let {
+        CourseRepository.course(viewModel.realm, it)
+    } ?: null.asLiveData<Course>())
+            .map { course ->
+                val parts = args.path.getPathParts()
+                MainFragmentConfig(
+                        title = when {
+                        // Nested folder
+                            parts.size > 2 -> parts.last()
+                        // Private folder root
+                            args.path.startsWith(FileRepository.CONTEXT_MY_API) -> getString(R.string.file_directory_my)
+                        // Course folder root
+                            course != null -> course.name ?: getString(R.string.file_directory_course_unknown)
+                            else -> throw IllegalArgumentException("Path ${args.path} is not supported")
+                        },
+                        toolbarColor = course?.color?.let { Color.parseColor(it) }
+                )
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.path))
@@ -82,15 +86,6 @@ class FileFragment : MainFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Title
-        getCourseFromFolder()?.also {
-            CourseRepository.course(viewModel.realm, it)
-                    .observe(this, Observer {
-                        courseTitle = it?.name
-                        notifyConfigChanged()
-                    })
-        }
 
         // Content
         fun updateEmptyMessage() {
@@ -129,7 +124,7 @@ class FileFragment : MainFragment() {
 
     private fun getCourseFromFolder(): String? {
         val parts = args.path.getPathParts()
-        if (parts.size > 2 || !args.path.startsWith(FileRepository.CONTEXT_COURSES))
+        if (!args.path.startsWith(FileRepository.CONTEXT_COURSES))
             return null
         return parts[1]
     }

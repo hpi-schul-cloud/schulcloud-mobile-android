@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
@@ -13,6 +12,7 @@ import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
@@ -26,11 +26,13 @@ class HomeworkFragment : MainFragment() {
 
     override var url: String? = null
         get() = "homework/${viewModel.homework.value?.id}"
-
-    override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.homework.value?.title ?: getString(R.string.general_error_notFound),
-            menuBottomRes = R.menu.fragment_homework_bottom
-    )
+    override fun provideConfig() = viewModel.homework
+            .map { homework ->
+                MainFragmentConfig(
+                        title = homework?.title ?: getString(R.string.general_error_notFound),
+                        menuBottomRes = R.menu.fragment_homework_bottom
+                )
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val args = HomeworkFragmentArgs.fromBundle(arguments)
@@ -44,14 +46,6 @@ class HomeworkFragment : MainFragment() {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.homework.observe(this, Observer {
-            notifyConfigChanged()
-        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions")
+
 package org.schulcloud.mobile.utils
 
 import android.content.Context
@@ -14,6 +15,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import org.schulcloud.mobile.R
 import java.util.*
@@ -26,6 +28,7 @@ fun Map<String, String>.asBundle(): Bundle {
     }
 }
 
+fun <T> T?.asLiveData(): LiveData<T> = MutableLiveData<T>().also { it.value = this }
 fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> = Transformations.map(this, func)
 fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> = Transformations.switchMap(this, func)
 

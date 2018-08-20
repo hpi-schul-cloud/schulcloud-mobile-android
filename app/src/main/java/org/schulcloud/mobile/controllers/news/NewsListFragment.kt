@@ -14,6 +14,7 @@ import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.news.NewsRepository
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 
 class NewsListFragment : MainFragment() {
@@ -30,12 +31,11 @@ class NewsListFragment : MainFragment() {
     private lateinit var viewModel: NewsListViewModel
 
 
+    override var url: String? = "/news"
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.news_title)
-    )
-
-    override var url: String? = "/news"
+    ).asLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,6 @@ class NewsListFragment : MainFragment() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
     }
-
 
     override suspend fun refresh() {
         NewsRepository.syncNews()

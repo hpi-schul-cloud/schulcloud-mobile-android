@@ -14,6 +14,7 @@ import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
 class HomeworkListFragment : MainFragment() {
@@ -39,7 +40,7 @@ class HomeworkListFragment : MainFragment() {
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.homework_title)
-    )
+    ).asLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

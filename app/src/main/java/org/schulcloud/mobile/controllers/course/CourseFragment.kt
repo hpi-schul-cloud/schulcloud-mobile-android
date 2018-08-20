@@ -19,6 +19,7 @@ import org.schulcloud.mobile.databinding.FragmentCourseBinding
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
+import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.views.DividerItemDecoration
@@ -40,9 +41,8 @@ class CourseFragment : MainFragment() {
     override var url: String? = null
         get() = viewModel.course.value?.url
 
-    override fun provideConfig(): MainFragmentConfig {
-        val course = viewModel.course.value
-        return MainFragmentConfig(
+    override fun provideConfig() = viewModel.course.map { course ->
+        MainFragmentConfig(
                 title = course?.name ?: getString(R.string.general_error_notFound),
                 toolbarColor = if (course != null) Color.parseColor(course.color) else null,
                 menuBottomRes = R.menu.fragment_course_bottom
@@ -65,10 +65,6 @@ class CourseFragment : MainFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.course.observe(this, Observer {
-            notifyConfigChanged()
-        })
 
         topicsAdapter.emptyIndicator = empty
         viewModel.topics.observe(this, Observer {

@@ -15,6 +15,7 @@ import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
 class FileOverviewFragment : MainFragment() {
@@ -35,7 +36,7 @@ class FileOverviewFragment : MainFragment() {
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.file_title)
-    )
+    ).asLiveData()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

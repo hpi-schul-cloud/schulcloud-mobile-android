@@ -8,6 +8,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -30,8 +31,10 @@ abstract class MainFragment : BaseFragment() {
 
     protected val navController: NavController
         get() = findNavController(this)
-    protected lateinit var config: MainFragmentConfig
+    protected lateinit var config: LiveData<MainFragmentConfig>
         private set
+
+    protected abstract fun provideConfig(): LiveData<MainFragmentConfig>
 
     open var url: String? = null
     private var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
@@ -44,11 +47,11 @@ abstract class MainFragment : BaseFragment() {
     }
         private set
 
-    abstract fun provideConfig(): MainFragmentConfig
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         config = provideConfig()
+
         mainViewModel.onOptionsItemSelected.observe(this, Observer {
             onOptionsItemSelected(it)
         })
@@ -68,19 +71,23 @@ abstract class MainFragment : BaseFragment() {
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
 
         view?.findViewById<Toolbar>(R.id.toolbar).also {
-            it?.title = config.title
+            it?.title = config.value?.title
             (activity as MainActivity).setSupportActionBar(it)
         }
 
-        notifyConfigChanged()
+        config.observe(this, Observer {
+            activity?.invalidateOptionsMenu()
+            it?.also { mainViewModel.config.value = it }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        if (config.menuTopRes != 0)
-            inflater?.inflate(config.menuTopRes, menu)
+        val menuTopRes = config.value?.menuTopRes
+        if (menuTopRes != null && menuTopRes != 0)
+            inflater?.inflate(menuTopRes, menu)
 
         inflater?.inflate(R.menu.fragment_main_top, menu)
-        if (!config.supportsRefresh)
+        if (config.value?.supportsRefresh == false)
             menu?.findItem(R.id.base_action_refresh)?.isVisible = false
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -113,10 +120,6 @@ abstract class MainFragment : BaseFragment() {
     }
 
     open fun onFabClicked() {}
-    protected fun notifyConfigChanged() {
-        config = provideConfig()
-        mainViewModel.config.value = config
-    }
 }
 
 data class MainFragmentConfig(

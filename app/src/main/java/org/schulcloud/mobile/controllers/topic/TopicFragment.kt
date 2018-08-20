@@ -15,6 +15,7 @@ import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentTopicBinding
 import org.schulcloud.mobile.models.topic.TopicRepository
 import org.schulcloud.mobile.utils.dpToPx
+import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
@@ -26,11 +27,13 @@ class TopicFragment : MainFragment() {
 
     override var url: String? = null
         get() = viewModel.topic.value?.url
-
-    override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.topic.value?.name ?: getString(R.string.general_error_notFound),
-            menuBottomRes = R.menu.fragment_topic_bottom
-    )
+    override fun provideConfig() = viewModel.topic
+            .map { topic ->
+                MainFragmentConfig(
+                        title = topic?.name ?: getString(R.string.general_error_notFound),
+                        menuBottomRes = R.menu.fragment_topic_bottom
+                )
+            }
 
     private lateinit var viewModel: TopicViewModel
     private val contentsAdapter: ContentListAdapter by lazy {
@@ -55,7 +58,6 @@ class TopicFragment : MainFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.topic.observe(this, Observer {
-            notifyConfigChanged()
             contentsAdapter.update(it)
         })
 

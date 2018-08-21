@@ -15,7 +15,7 @@ private const val TAG = "PathUtils"
 fun String.getPathParts(limit: Int = 0): List<String> = trimSlashes().split(File.separator, limit = limit)
 
 fun combinePath(vararg parts: String?): String {
-    val builder = StringBuilder(parts[0])
+    val builder = StringBuilder(parts[0] ?: "")
     for (i in 1 until parts.size) {
         if (parts[i] == null || TextUtils.isEmpty(parts[i]))
             continue

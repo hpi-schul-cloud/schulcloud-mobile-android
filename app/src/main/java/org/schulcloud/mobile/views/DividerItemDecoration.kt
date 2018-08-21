@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.schulcloud.mobile.R
 
 /**
- * Similar to [android.support.v7.widget.DividerItemDecoration], but with configurable divider locations (before first
+ * Similar to [androidx.recyclerview.widget.DividerItemDecoration], but with configurable divider locations (before first
  * and after last item) and insets.
  */
 class DividerItemDecoration(
@@ -61,23 +61,18 @@ class DividerItemDecoration(
 
     private fun drawVertical(canvas: Canvas, parent: RecyclerView) {
         canvas.save()
-        val left: Int
-        val right: Int
 
-        if (parent.clipToPadding) {
-            left = parent.paddingLeft
-            right = parent.width - parent.paddingRight
-            canvas.clipRect(left, parent.paddingTop, right,
+        if (parent.clipToPadding)
+            canvas.clipRect(parent.paddingLeft,
+                    parent.paddingTop,
+                    parent.width - parent.paddingRight,
                     parent.height - parent.paddingBottom)
-        } else {
-            left = 0
-            right = parent.width
-        }
 
-        fun drawDividerHorizontal(canvas: Canvas, left: Int, top: Int, right: Int, bottom: Int) {
+        fun drawDividerHorizontal(canvas: Canvas, top: Int, bottom: Int = top + divider.intrinsicHeight) {
             val insetStart = insetStart ?: inset ?: 0
             val insetEnd = inset ?: 0
-            drawDivider(canvas, left + insetStart, top, right - insetEnd, bottom)
+            drawDivider(canvas, bounds.left + insetStart, top,
+                    bounds.right - insetEnd, bottom)
         }
 
         val childCount = parent.childCount
@@ -88,8 +83,7 @@ class DividerItemDecoration(
             val child = parent[i]
             parent.getDecoratedBoundsWithMargins(child, bounds)
             val top = bounds.top + Math.round(child.translationY)
-            val bottom = top + divider.intrinsicHeight
-            drawDividerHorizontal(canvas, left, top, right, bottom)
+            drawDividerHorizontal(canvas, top)
         }
 
         if (hasDividersBefore(parent, childCount)) {
@@ -100,7 +94,7 @@ class DividerItemDecoration(
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 bounds.bottom + Math.round(child.translationY)
             }
-            drawDividerHorizontal(canvas, left, bottom - 2 * divider.intrinsicHeight, right, bottom)
+            drawDividerHorizontal(canvas, bottom - 2 * divider.intrinsicHeight, bottom)
         }
 
         canvas.restore()
@@ -108,23 +102,18 @@ class DividerItemDecoration(
 
     private fun drawHorizontal(canvas: Canvas, parent: RecyclerView) {
         canvas.save()
-        val top: Int
-        val bottom: Int
 
-        if (parent.clipToPadding) {
-            top = parent.paddingTop
-            bottom = parent.height - parent.paddingBottom
-            canvas.clipRect(parent.paddingLeft, top,
-                    parent.width - parent.paddingRight, bottom)
-        } else {
-            top = 0
-            bottom = parent.height
-        }
+        if (parent.clipToPadding)
+            canvas.clipRect(parent.paddingLeft,
+                    parent.paddingTop,
+                    parent.width - parent.paddingRight,
+                    parent.height - parent.paddingBottom)
 
-        fun drawDividerVertical(canvas: Canvas, left: Int, top: Int, right: Int, bottom: Int) {
+        fun drawDividerVertical(canvas: Canvas, left: Int, right: Int = left + divider.intrinsicWidth) {
             val insetStart = insetStart ?: inset ?: 0
             val insetEnd = inset ?: 0
-            drawDivider(canvas, left, top + insetStart, right, bottom - insetEnd)
+            drawDivider(canvas, left, bounds.top + insetStart,
+                    right, bounds.bottom - insetEnd)
         }
 
         val childCount = parent.childCount
@@ -135,8 +124,7 @@ class DividerItemDecoration(
             val child = parent.getChildAt(i)
             parent.layoutManager?.getDecoratedBoundsWithMargins(child, bounds)
             val left = bounds.right + Math.round(child.translationX)
-            val right = left + divider.intrinsicWidth
-            drawDividerVertical(canvas, left, top, right, bottom)
+            drawDividerVertical(canvas, left)
         }
 
         if (hasDividersBefore(parent, childCount)) {
@@ -147,7 +135,7 @@ class DividerItemDecoration(
                 parent.getDecoratedBoundsWithMargins(child, bounds)
                 bounds.right + Math.round(child.translationY)
             }
-            drawDividerVertical(canvas, right - 2 * divider.intrinsicWidth, top, right, bottom)
+            drawDividerVertical(canvas, right - 2 * divider.intrinsicWidth, right)
         }
 
         canvas.restore()

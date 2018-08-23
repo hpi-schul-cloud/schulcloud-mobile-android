@@ -15,15 +15,23 @@ import androidx.databinding.BindingConversion
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.schulcloud.mobile.R
 
+const val COLOR_BLACK_STRING = "#00000000"
+
+private fun safeColor(color: String?): String {
+    return if (color == null || color.isBlank())
+        COLOR_BLACK_STRING
+    else color
+}
+
 @BindingConversion
 @ColorInt
-fun convertStringToColor(color: String) = Color.parseColor(color)
+fun convertStringToColor(color: String?) = Color.parseColor(safeColor(color))
 
 @BindingConversion
-fun convertStringToDrawable(color: String) = ColorDrawable(Color.parseColor(color))
+fun convertStringToDrawable(color: String?) = ColorDrawable(Color.parseColor(safeColor(color)))
 
 @BindingConversion
-fun convertStringToColorStateList(color: String) = ColorStateList.valueOf(Color.parseColor(color))
+fun convertStringToColorStateList(color: String?) = ColorStateList.valueOf(Color.parseColor(safeColor(color)))
 
 @BindingAdapter("displayDate")
 fun showDate(view: TextView, date: String?) {

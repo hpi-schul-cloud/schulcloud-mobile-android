@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="org.schulcloud.mobile.controllers.homework.HomeworkAdapter.HomeworkViewHolder" />
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
 
         <variable
@@ -94,6 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@{homework.description}"
+                android:visibility="@{ViewUtilsKt.toVisible(homework.description)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
@@ -106,6 +108,7 @@
                 android:onClick="@{() -> onCourseSelected.invoke(homework.course.id)}"
                 android:text="@{homework.course.name}"
                 android:textColor="@android:color/white"
+                android:visibility="@{ViewUtilsKt.toVisible(homework.course.name)}"
                 app:chipBackgroundColor="@{homework.course.color}"
                 app:chipIcon="@drawable/ic_brand_course_black"
                 app:chipIconTint="@android:color/white"

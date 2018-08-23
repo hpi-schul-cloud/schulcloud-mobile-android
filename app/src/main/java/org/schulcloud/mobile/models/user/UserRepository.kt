@@ -62,13 +62,7 @@ object UserRepository {
 
     suspend fun syncCurrentUser() {
         UserStorage().userId?.also {
-            GetUserJob(it, object : RequestJobCallback() {
-                override fun onSuccess() {
-                }
-
-                override fun onError(code: ErrorCode) {
-                }
-            }).run()
+            GetUserJob(it, RequestJobCallback()).run()
         } ?: Log.w(TAG, "Request to sync current user while not signed in")
     }
 }

@@ -1,13 +1,14 @@
 package org.schulcloud.mobile.controllers.login
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
@@ -15,7 +16,6 @@ import org.schulcloud.mobile.controllers.main.MainActivity
 import org.schulcloud.mobile.viewmodels.LoginViewModel
 
 class LoginFragment : BaseFragment() {
-
     companion object {
         val TAG: String = LoginFragment::class.java.simpleName
     }
@@ -34,15 +34,23 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnLogin.setOnClickListener { login() }
-        btn_demo_student.setOnClickListener { demoLoginStudent() }
-        btn_demo_teacher.setOnClickListener { demoLoginTeacher() }
+        passwordInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                login()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+        loginBtn.setOnClickListener { login() }
+        demo_student.setOnClickListener { demoLoginStudent() }
+        demo_teacher.setOnClickListener { demoLoginTeacher() }
+
         handleLoginStatus()
     }
 
     private fun login() {
-        val email = editEmail.text.toString().trim()
-        val password = editPassword.text.toString()
+        val email = emailInput.text.toString().trim()
+        val password = passwordInput.text.toString()
         loginViewModel.login(email, password)
     }
 
@@ -61,7 +69,8 @@ class LoginFragment : BaseFragment() {
             when (loginState) {
                 is LoginViewModel.LoginStatus.Pending -> {
                     Log.d(TAG, "PENDING LOGIN")
-                    login_progress.visibility = View.VISIBLE
+                    progress.visibility = View.VISIBLE
+                    loginBtn.isEnabled = false
                 }
                 is LoginViewModel.LoginStatus.LoggedIn -> {
                     Log.d(TAG, "LOGGED IN")
@@ -69,12 +78,14 @@ class LoginFragment : BaseFragment() {
                 }
                 is LoginViewModel.LoginStatus.InvalidInputs -> {
                     Log.d(TAG, "INVALID FIELDS")
-                    login_progress.visibility = View.GONE
+                    progress.visibility = View.GONE
+                    loginBtn.isEnabled = true
                     handleInvalidFields(loginState.invalidInputs)
                 }
                 is LoginViewModel.LoginStatus.Error -> {
                     Log.d(TAG, "ERROR: " + loginState.error)
-                    login_progress.visibility = View.GONE
+                    progress.visibility = View.GONE
+                    loginBtn.isEnabled = true
                 }
             }
         })
@@ -83,8 +94,10 @@ class LoginFragment : BaseFragment() {
     private fun handleInvalidFields(invalidInputs: MutableList<LoginViewModel.LoginInput>) {
         invalidInputs.forEach { input ->
             when (input) {
-                LoginViewModel.LoginInput.EMAIL -> editEmail.error = getString(R.string.login_error_emailInvalid)
-                LoginViewModel.LoginInput.PASSWORD -> editPassword.error = getString(R.string.login_error_passwordEmpty)
+                LoginViewModel.LoginInput.EMAIL ->
+                    emailInput.error = getString(R.string.login_error_emailInvalid)
+                LoginViewModel.LoginInput.PASSWORD ->
+                    passwordInput.error = getString(R.string.login_error_passwordEmpty)
             }
         }
     }

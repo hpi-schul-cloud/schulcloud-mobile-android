@@ -22,18 +22,6 @@
         <item name="android:color">?android:attr/textColorPrimaryInverse</item>
     </style>
 
-    <!-- Buttons -->
-    <style name="Material.Button">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:minWidth">88dp</item>
-        <item name="android:minHeight">36dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:background">@drawable/button_main</item>
-    </style>
-
     <!-- List -->
     <style name="Material.List">
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>

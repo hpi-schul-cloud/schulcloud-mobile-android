@@ -22,15 +22,15 @@
     <string name="login_email_hint">E-Mail</string>
     <string name="login_password_hint">Passwort</string>
     <string name="login_forgotPassword">Passwort vergessen?</string>
-    <string name="login_login">Login</string>
+    <string name="login_login">Anmelden</string>
     <string name="login_error_emailInvalid">Die E-Mail-Adresse ist ungültig</string>
     <string name="login_error_passwordEmpty">Bitte gib dein Passwort ein!</string>
 
-    <string name="login_demo">Du hast keinen Account? Jetzt testen!</string>
-    <string name="login_demo_student">Als Schüler einloggen</string>
+    <string name="login_demo">Du hast noch keinen Account? Jetzt testen!</string>
+    <string name="login_demo_student">Demo als Schüler</string>
     <string name="login_demo_student_username" translatable="false">demo-schueler@schul-cloud.org</string>
     <string name="login_demo_student_password" translatable="false">schulcloud</string>
-    <string name="login_demo_teacher">Als Lehrer einloggen</string>
+    <string name="login_demo_teacher">Demo als Lehrer</string>
     <string name="login_demo_teacher_username" translatable="false">demo-lehrer@schul-cloud.org</string>
     <string name="login_demo_teacher_password" translatable="false">schulcloud</string>
 

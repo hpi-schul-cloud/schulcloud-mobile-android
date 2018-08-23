@@ -6,16 +6,6 @@
         <item name="popupTheme">@style/ThemeOverlay.App.PopupOverlay</item>
     </style>
 
-    <style name="LoginTextInput" parent="Widget.Design.TextInputLayout">
-        <!-- Hint color and label color in FALSE state -->
-        <item name="android:textColor">@color/text_main</item>
-        <item name="android:textColorHint">@color/text_main</item>
-        <item name="android:textSize">20sp</item>
-        <!--<item name="android:textSize">20sp</item>-->
-        <item name="colorAccent">@color/brand_primary</item>
-        <item name="colorControlNormal">@color/text_main</item>
-        <item name="colorControlActivated">@color/brand_primary</item>
-    </style>
     <style name="Animation.Activity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>

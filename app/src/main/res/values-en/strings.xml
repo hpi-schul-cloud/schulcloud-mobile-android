@@ -27,8 +27,8 @@
     <string name="login_error_passwordEmpty">Please enter your password!</string>
 
     <string name="login_demo">Don\'t have an account yet? Try it out!</string>
-    <string name="login_demo_student">Login as student</string>
-    <string name="login_demo_teacher">Login as teacher</string>
+    <string name="login_demo_student">Demo as a student</string>
+    <string name="login_demo_teacher">Demo as a teacher</string>
 
     <!-- Main -->
     <string name="main_drawer_open">Open navigation drawer</string>

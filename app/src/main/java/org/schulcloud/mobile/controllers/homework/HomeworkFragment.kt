@@ -54,10 +54,10 @@ class HomeworkFragment : MainFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.homework_action_gotoCourse ->
+            R.id.homework_action_gotoCourse -> viewModel.homework.value?.course?.id?.also { id ->
                 navController.navigate(R.id.action_global_fragment_course,
-                        CourseFragmentArgs.Builder(viewModel.homework.value!!.course!!.id)
-                                .build().toBundle())
+                        CourseFragmentArgs.Builder(id).build().toBundle())
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true

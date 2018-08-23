@@ -138,9 +138,10 @@ class FileFragment : MainFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.file_action_gotoCourse ->
+            R.id.file_action_gotoCourse -> getCourseFromFolder()?.also { id ->
                 navController.navigate(R.id.action_global_fragment_course,
-                        CourseFragmentArgs.Builder(getCourseFromFolder()!!).build().toBundle())
+                        CourseFragmentArgs.Builder(id).build().toBundle())
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true

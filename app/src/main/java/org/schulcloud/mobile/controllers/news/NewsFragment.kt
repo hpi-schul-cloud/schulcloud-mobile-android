@@ -24,6 +24,7 @@ class NewsFragment : MainFragment() {
 
     override var url: String? = null
         get() = "news/${viewModel.news.value?.id}"
+
     override fun provideConfig() = viewModel.news
             .map { news ->
                 MainFragmentConfig(
@@ -46,8 +47,6 @@ class NewsFragment : MainFragment() {
     }
 
     override suspend fun refresh() {
-        viewModel.news.value?.also {
-            NewsRepository.syncNews(it.id)
-        }
+        NewsRepository.syncNews(viewModel.id)
     }
 }

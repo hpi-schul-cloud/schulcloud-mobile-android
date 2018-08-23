@@ -6,7 +6,7 @@ import io.realm.Realm
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 
-class HomeworkViewModel(id: String) : ViewModel() {
+class HomeworkViewModel(val id: String) : ViewModel() {
     private val realm: Realm by lazy {
         Realm.getDefaultInstance()
     }

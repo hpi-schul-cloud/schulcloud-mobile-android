@@ -90,9 +90,7 @@ class CourseFragment : MainFragment() {
     }
 
     override suspend fun refresh() {
-        viewModel.course.value?.also {
-            CourseRepository.syncCourse(it.id)
-            TopicRepository.syncTopics(it.id)
-        }
+        CourseRepository.syncCourse(viewModel.id)
+        TopicRepository.syncTopics(viewModel.id)
     }
 }

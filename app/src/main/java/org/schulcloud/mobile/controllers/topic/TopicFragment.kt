@@ -88,8 +88,6 @@ class TopicFragment : MainFragment() {
     }
 
     override suspend fun refresh() {
-        viewModel.topic.value?.also {
-            TopicRepository.syncTopic(it.id)
-        }
+        TopicRepository.syncTopic(viewModel.id)
     }
 }

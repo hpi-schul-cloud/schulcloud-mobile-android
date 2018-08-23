@@ -22,7 +22,6 @@ class GetUserJob(private val userId: String, callback: RequestJobCallback) : Req
 
             // Sync
             Sync.SingleData.with(User::class.java, response.body()!!).run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching user $userId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

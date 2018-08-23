@@ -161,6 +161,7 @@ class FileFragment : MainFragment() {
         return parts[1]
     }
 
+    @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(UI) {
         try {
             val response = ApiService.getInstance().generateSignedUrl(
@@ -182,19 +183,22 @@ class FileFragment : MainFragment() {
                         this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
                         return@withProgressDialog
                     }
-                    this@FileFragment.context?.showGenericSuccess(getString(R.string.file_fileDownload_success, file.name))
+                    this@FileFragment.context?.showGenericSuccess(
+                            getString(R.string.file_fileDownload_success, file.name))
                 }
-
             } else {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(Uri.parse(response.url), response.header?.contentType)
                 }
-                if (intent.resolveActivity(activity?.packageManager) != null)
+                val packageManager = activity?.packageManager
+                if (packageManager != null && intent.resolveActivity(packageManager) != null)
                     startActivity(intent)
                 else
-                    this@FileFragment.context?.showGenericError(getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
+                    this@FileFragment.context?.showGenericError(
+                            getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
             }
         } catch (e: HttpException) {
+            @Suppress("MagicNumber")
             when (e.code()) {
                 404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
             }

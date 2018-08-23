@@ -37,7 +37,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
     init {
         dividerDrawable = ResourcesCompat.getDrawable(context.resources,
                 R.drawable.ic_chevron_right_black_24dp, context.theme)
-        showDividers = SHOW_DIVIDER_MIDDLE or SHOW_DIVIDER_END
+        showDividers = SHOW_DIVIDER_MIDDLE
 
         context.withStyledAttributes(attrs, R.styleable.BreadcrumbsView,
                 defStyleAttr, R.style.Widget_App_BreadcrumbsView) {

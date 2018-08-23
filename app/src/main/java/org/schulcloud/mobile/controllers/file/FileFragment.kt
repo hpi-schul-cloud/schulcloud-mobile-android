@@ -122,7 +122,12 @@ class FileFragment : MainFragment() {
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
         breadcrumbs.setPath(args.path)
-        breadcrumbs.onPathSelected = { path ->
+        breadcrumbs.onPathSelected = callback@{ path ->
+            if (path == args.path) {
+                performRefresh()
+                return@callback
+            }
+
             navController.navigate(R.id.action_global_fragment_file,
                     FileFragmentArgs.Builder(path).build().toBundle())
         }

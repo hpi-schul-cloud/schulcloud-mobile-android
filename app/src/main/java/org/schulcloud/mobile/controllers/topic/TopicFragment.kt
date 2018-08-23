@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -81,7 +82,7 @@ class TopicFragment : MainFragment() {
             layoutManager = StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL)
             adapter = contentsAdapter
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing_half))
-            addItemDecoration(DividerItemDecoration.middle(context, DividerItemDecoration.MIDDLE))
+            addItemDecoration(DividerItemDecoration.middle(context, LinearLayoutCompat.SHOW_DIVIDER_MIDDLE))
             addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing_half))
         }
     }

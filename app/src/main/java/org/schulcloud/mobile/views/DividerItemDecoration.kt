@@ -3,8 +3,7 @@ package org.schulcloud.mobile.views
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.widget.LinearLayout
-import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.appcompat.widget.LinearLayoutCompat.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.get
 import androidx.core.view.isEmpty
@@ -17,34 +16,37 @@ import org.schulcloud.mobile.R
  */
 class DividerItemDecoration(
     context: Context,
-    @LinearLayoutCompat.DividerMode val showDividers: Int = BEGINNING or MIDDLE or END,
+    @DividerMode val showDividers: Int = SHOW_DIVIDER_BEGINNING or SHOW_DIVIDER_MIDDLE or SHOW_DIVIDER_END,
     val inset: Int? = null,
     val insetStart: Int? = null,
-    @RecyclerView.Orientation val orientation: Int = VERTICAL
+    @RecyclerView.Orientation val orientation: Int = RecyclerView.VERTICAL
 ) : RecyclerView.ItemDecoration() {
+    @Suppress("ShiftFlags")
     companion object {
-        private val TAG = DividerItemDecoration::class.java.simpleName
-
-        const val NONE = LinearLayout.SHOW_DIVIDER_NONE
-        const val BEGINNING = LinearLayout.SHOW_DIVIDER_BEGINNING
-        const val MIDDLE = LinearLayout.SHOW_DIVIDER_MIDDLE
-        const val END = LinearLayout.SHOW_DIVIDER_END
-
-        const val HORIZONTAL = LinearLayout.HORIZONTAL
-        const val VERTICAL = LinearLayout.VERTICAL
-        private val ATTRS = intArrayOf(android.R.attr.listDivider)
+        //        const val DIVIDERS_NONE = LinearLayoutCompat.SHOW_DIVIDER_NONE
+        //        const val DIVIDERS_BEGINNING = 1 shl 0
+        //        const val DIVIDERS_MIDDLE = 1 shl 1
+        //        const val DIVIDERS_END = 1 shl 2
 
         fun middle(
             context: Context,
-            @LinearLayoutCompat.DividerMode showDividers: Int = BEGINNING or MIDDLE or END,
-            @RecyclerView.Orientation orientation: Int = VERTICAL
+            @DividerMode showDividers: Int = SHOW_DIVIDER_BEGINNING or SHOW_DIVIDER_MIDDLE or SHOW_DIVIDER_END,
+            @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL
         ): DividerItemDecoration {
-            return DividerItemDecoration(context,
-                    showDividers,
+            return DividerItemDecoration(context, showDividers,
                     inset = context.resources.getDimensionPixelOffset(R.dimen.material_dividerMiddle_inset),
                     orientation = orientation)
         }
     }
+
+//    @IntDef(flag = true, value = [
+//        DIVIDERS_NONE,
+//        DIVIDERS_BEGINNING,
+//        DIVIDERS_MIDDLE,
+//        DIVIDERS_END
+//    ])
+//    @Retention(AnnotationRetention.SOURCE)
+//    annotation class DividerMode
 
     private var divider = ResourcesCompat.getDrawable(context.resources, R.drawable.divider_dark, context.theme)!!
     private val bounds = Rect()
@@ -53,7 +55,7 @@ class DividerItemDecoration(
         if (parent.layoutManager == null)
             return
 
-        if (orientation == VERTICAL)
+        if (orientation == RecyclerView.VERTICAL)
             drawVertical(c, parent)
         else
             drawHorizontal(c, parent)
@@ -142,9 +144,9 @@ class DividerItemDecoration(
     }
 
     private fun hasDividersBefore(parent: RecyclerView, index: Int) = when (index) {
-        0 -> (showDividers and BEGINNING) != 0
-        parent.childCount -> (showDividers and END) != 0
-        else -> (showDividers and MIDDLE) != 0
+        0 -> (showDividers and SHOW_DIVIDER_BEGINNING) != 0
+        parent.childCount -> (showDividers and SHOW_DIVIDER_END) != 0
+        else -> (showDividers and SHOW_DIVIDER_MIDDLE) != 0
     }
 
     private fun drawDivider(canvas: Canvas, left: Int, top: Int, right: Int, bottom: Int) {

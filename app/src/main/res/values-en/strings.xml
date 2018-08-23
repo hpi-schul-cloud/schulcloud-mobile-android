@@ -45,6 +45,7 @@
     <!-- Dashboard -->
     <string name="dashboard_title">Dashboard</string>
     <!-- Events -->
+    <string name="dashboard_events">Schedule</string>
     <string name="dashboard_events_none">No events for the rest of the day!</string>
     <string name="dashboard_events_event_next">afterwards:</string>
     <string name="dashboard_events_more">All events</string>

@@ -61,8 +61,8 @@
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
     </style>
-    <style name="Dashboard.Widget.Title" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="android:layout_margin">16dp</item>
+    <style name="Dashboard.Widget.Title" parent="Material.ListHeader">
+        <!--<item name="android:layout_margin">16dp</item>-->
     </style>
     <style name="Dashboard.Widget.ButtonMore" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_margin">8dp</item>

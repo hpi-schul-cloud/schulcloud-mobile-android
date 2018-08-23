@@ -19,16 +19,14 @@
         android:paddingRight="24dp"
         android:paddingBottom="36dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_logo"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:gravity="center_horizontal|bottom"
-            android:text="@string/brand_name"
-            android:textColor="@color/brand_primary"
-            app:autoSizeMaxTextSize="56sp"
-            app:autoSizeMinTextSize="24sp"
-            app:autoSizeTextType="uniform" />
+            android:layout_height="192dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/brand_name"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            app:srcCompat="@mipmap/logo_text" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -66,7 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:animateLayoutChanges="true">
 
             <ProgressBar
                 android:id="@+id/progress"
@@ -123,6 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
             android:text="@string/login_demo_teacher" />
 
     </LinearLayout>

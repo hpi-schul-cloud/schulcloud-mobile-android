@@ -21,11 +21,13 @@ fun Context.getDueText(homework: Homework?): String {
     return when (days) {
         null -> getString(R.string.homework_error_invalidDueDate)
         in Int.MIN_VALUE until 0 -> getString(R.string.homework_due_outdated)
-        0 ->
-            if (homework.dueTimespanHours ?: Int.MAX_VALUE >= 0)
-                getString(R.string.homework_due_hours, homework.dueTimespanHours)
+        0 -> {
+            val hours = homework.dueTimespanHours ?: Int.MAX_VALUE
+            if (hours >= 0)
+                resources.getQuantityString(R.plurals.homework_due_hours, hours, hours)
             else
                 getString(R.string.homework_due_outdated)
+        }
         in 1..WEEK_IN_DAYS -> resources.getQuantityString(R.plurals.homework_due_days, days, days)
         else -> ""
     }

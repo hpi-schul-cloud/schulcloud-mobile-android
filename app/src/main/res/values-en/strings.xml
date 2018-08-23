@@ -51,9 +51,11 @@
     <string name="dashboard_events_more">All events</string>
     <!-- Homework -->
     <string name="dashboard_homework">@string/homework_title</string>
-    <string name="dashboard_homework_due0">Next due today</string>
-    <string name="dashboard_homework_due1">Next due tomorrow</string>
-    <string name="dashboard_homework_dueLater">Next due in %d days</string>
+    <string name="dashboard_homework_dueToday">Next due today</string>
+    <plurals name="dashboard_homework_due">
+        <item quantity="one">Next due tomorrow</item>
+        <item quantity="other">Next due in %d days</item>
+    </plurals>
     <plurals name="dashboard_homework_openLabel">
         <item quantity="one">open assignment</item>
         <item quantity="other">open assignments</item>
@@ -89,7 +91,10 @@
     <string name="homework_error_empty">No assignments were found</string>
     <string name="homework_error_invalidDueDate">Date invalid</string>
     <string name="homework_due_outdated">Overdue</string>
-    <string name="homework_due_hours">Due in %d hours</string>
+    <plurals name="homework_due_hours">
+        <item quantity="one">Due in %d hour</item>
+        <item quantity="other">Due in %d hours</item>
+    </plurals>
     <plurals name="homework_due_days">
         <item quantity="one">Due tomorrow</item>
         <item quantity="other">Due in %d days</item>

@@ -55,9 +55,11 @@
     <string name="dashboard_events_more">Alle Termine</string>
     <!-- Homework -->
     <string name="dashboard_homework">@string/homework_title</string>
-    <string name="dashboard_homework_due0">Nächste heute fällig</string>
-    <string name="dashboard_homework_due1">Nächste morgen fällig</string>
-    <string name="dashboard_homework_dueLater">Nächste in %d Tagen fällig</string>
+    <string name="dashboard_homework_dueToday">Nächste heute fällig</string>
+    <plurals name="dashboard_homework_due">
+        <item quantity="one">Nächste morgen fällig</item>
+        <item quantity="other">Nächste in %d Tagen fällig</item>
+    </plurals>
     <plurals name="dashboard_homework_openLabel">
         <item quantity="one">offene Aufgabe</item>
         <item quantity="other">offene Aufgaben</item>
@@ -93,7 +95,10 @@
     <string name="homework_error_empty">Es wurden keine Aufgaben gefunden</string>
     <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
     <string name="homework_due_outdated">Überfällig</string>
-    <string name="homework_due_hours">In %d Stunden fällig</string>
+    <plurals name="homework_due_hours">
+        <item quantity="one">In %d Stunden fällig</item>
+        <item quantity="other">In %d Stunden fällig</item>
+    </plurals>
     <plurals name="homework_due_days">
         <item quantity="one">Morgen fällig</item>
         <item quantity="two">Übermorgen</item>

@@ -56,11 +56,10 @@ class HomeworkWidget : Widget() {
                 ""
             else {
                 val days = Days.daysBetween(LocalDateTime.now(), nextTime.toLocalDateTime()).days
-                when (days) {
-                    0 -> context!!.getString(R.string.dashboard_homework_due0)
-                    1 -> context!!.getString(R.string.dashboard_homework_due1)
-                    else -> context!!.getString(R.string.dashboard_homework_dueLater, days)
-                }
+                if (days == 0)
+                    context!!.getString(R.string.dashboard_homework_dueToday)
+                else
+                    context!!.resources.getQuantityString(R.plurals.dashboard_homework_due, days, days)
             }
 
             adapter.update(homework ?: emptyList())

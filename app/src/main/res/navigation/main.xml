@@ -9,7 +9,6 @@
     <fragment
         android:id="@+id/fragment_dashboard"
         android:name="org.schulcloud.mobile.controllers.dashboard.DashboardFragment"
-        android:label="DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_dashboardFragment_to_newsListFragment"

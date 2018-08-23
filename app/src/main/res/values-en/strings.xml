@@ -37,7 +37,7 @@
     <string name="main_drawer_news">News</string>
     <string name="main_drawer_courses">Courses</string>
     <string name="main_drawer_calendar">Calendar</string>
-    <string name="main_drawer_homework">Tasks</string>
+    <string name="main_drawer_homework">Assignments</string>
     <string name="main_drawer_files">Files</string>
     <string name="main_drawer_learnstore">Resources</string>
     <string name="main_drawer_logout">Logout</string>

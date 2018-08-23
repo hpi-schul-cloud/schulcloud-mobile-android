@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/file_action_gotoCourse"
-        android:icon="@drawable/ic_course"
+        android:icon="@drawable/ic_brand_course"
         android:title="@string/general_action_gotoCourse"
         app:showAsAction="ifRoom" />
 

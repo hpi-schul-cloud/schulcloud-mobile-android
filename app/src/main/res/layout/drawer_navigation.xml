@@ -51,7 +51,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:onClick="@{() -> onLogout.invoke()}"
                 android:padding="16dp"
-                app:srcCompat="@drawable/ic_sign_out_alt" />
+                app:srcCompat="@drawable/ic_brand_signout" />
 
         </LinearLayout>
 

@@ -46,7 +46,7 @@
                         android:layout_marginLeft="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_user" />
+                        app:srcCompat="@drawable/ic_brand_user" />
 
                     <TextView
                         style="@style/FileOverview.Card_Title"
@@ -103,7 +103,7 @@
                         android:tint="@android:color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_course_black" />
+                        app:srcCompat="@drawable/ic_brand_course_black" />
 
                     <TextView
                         android:id="@+id/fileOverview_courses_tv_title"

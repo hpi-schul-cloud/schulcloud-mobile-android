@@ -12,10 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.runBlocking
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.models.notifications.Device
 import org.schulcloud.mobile.models.notifications.NotificationRepository
+import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.DeviceListViewModel
 import org.schulcloud.mobile.viewmodels.SettingsViewModel
 
@@ -72,13 +75,7 @@ class SettingsFragment: BaseFragment() {
         settings_register_device.setOnClickListener({devicesViewModel.createDevice()})
         genderReferences = resources.getStringArray(R.array.genders)
         populateSpinner()
-
-        settingsViewModel.user.observe(this, Observer { user ->
-            user_settings_forename.text = user!!.firstName
-            user_settings_lastname.text = user.lastName
-            user_settings_email.text = user.email
-            user_settings_gender.setSelection(genderReferences.indexOf(user.gender))
-        })
+        populateView()
 
         user_settings_open.setOnClickListener {
             startActivity(UserSettingsActivity.newIntent(context!!,TAG))
@@ -98,10 +95,12 @@ class SettingsFragment: BaseFragment() {
         }
     }
 
-    fun replaceFragment(fragment: Fragment, tag: String){
-        activity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.container,fragment,tag)
-                .commit()
+    override fun onResume() {
+        super.onResume()
+        runBlocking {
+            settingsViewModel.resyncUser()
+            populateView()
+        }
     }
 
     override suspend fun refresh() {
@@ -115,5 +114,14 @@ class SettingsFragment: BaseFragment() {
         }
         var spinnerAdapter = ArrayAdapter<String>(context,R.layout.support_simple_spinner_dropdown_item,strings)
         user_settings_gender.adapter = spinnerAdapter
+    }
+
+    fun populateView(){
+        settingsViewModel.user.observe(this, Observer { user ->
+            user_settings_forename.text = user!!.firstName
+            user_settings_lastname.text = user.lastName
+            user_settings_email.text = user.email
+            user_settings_gender.setSelection(genderReferences.indexOf(user.gender))
+        })
     }
 }

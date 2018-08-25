@@ -56,19 +56,8 @@ class UserSettingsActivity: BaseActivity(){
         setContentView(R.layout.activity_user_settings)
         genderReferences = resources.getStringArray(R.array.genders)
         populateSpinner()
+        populateView()
         user_edit_submit.setOnClickListener({ async{ handlePatch(stage,false)} })
-
-        viewModel.user.observe(this, Observer { user ->
-            user_edit_email.setText(user!!.email)
-            user_edit_forename.setText(user!!.firstName)
-            user_edit_lastname.setText(user!!.lastName)
-            user_edit_gender.setSelection(genderReferences.indexOf(user.gender))
-            mUser = user
-        })
-
-        viewModel.account.observe(this, Observer { account ->
-            mAccount = account!!
-        })
 
         user_edit_new_password.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -87,8 +76,8 @@ class UserSettingsActivity: BaseActivity(){
 
     fun checkNewPassword() : Boolean{
         if(user_edit_new_password.text.length < 8)
-            return false
-        if(!user_edit_new_password.text.toString().matches(Regex("[a-zA-Z0-9 \\D]")))
+            return false^
+        if(!user_edit_new_password.text.toString().matches(Regex("[a-zA-Z0-9 ]")))
             return false
         return true
     }
@@ -115,7 +104,7 @@ class UserSettingsActivity: BaseActivity(){
                 }else{
                     patch_progress.visibility = View.VISIBLE
                     user_settings_layout.alpha = 0.5f
-                    viewModel.checkPassword(mUser.displayName!!,user_edit_password.text.toString(),callback)
+                    viewModel.checkPassword(mAccount.username!!,user_edit_password.text.toString(),callback)
                 }
 
             }
@@ -146,15 +135,20 @@ class UserSettingsActivity: BaseActivity(){
                 async{viewModel.patchAccount(account,callback)}
             }
             3 -> {
+                if(error){
+                    toast(R.string.user_something_went_wrong)
+                }else{
+                    toast(R.string.user_patch_successful)
+                }
                 patch_progress.visibility = View.GONE
                 user_settings_layout.alpha = 1.0f
-                toast(R.string.user_patch_successful)
+                viewModel.user.observe(this, Observer { user ->
+                    mUser = user!!
+                })
+                viewModel.account.observe(this,Observer { account ->
+                  mAccount = account!!
+                })
                 finish()
-                if(error){
-                    reset()
-                    toast(R.string.user_something_went_wrong)
-                    return
-                }
             }
         }
     }
@@ -172,5 +166,19 @@ class UserSettingsActivity: BaseActivity(){
         }
         var spinnerAdapter = ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,strings)
         user_edit_gender.adapter = spinnerAdapter
+    }
+
+    fun populateView(){
+        viewModel.user.observe(this, Observer { user ->
+            user_edit_email.setText(user!!.email)
+            user_edit_forename.setText(user!!.firstName)
+            user_edit_lastname.setText(user!!.lastName)
+            user_edit_gender.setSelection(genderReferences.indexOf(user.gender))
+            mUser = user
+        })
+
+        viewModel.account.observe(this, Observer { account ->
+            mAccount = account!!
+        })
     }
 }

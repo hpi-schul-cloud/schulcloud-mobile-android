@@ -2,35 +2,27 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
     <set android:interpolator="@android:anim/accelerate_decelerate_interpolator">
-        <rotate
-            android:pivotY="50%"
-            android:pivotX="50%"
-            android:fromDegrees="0"
-            android:toDegrees="10"
+        <translate
+            android:fromXDelta="0%"
+            android:toXDelta="5%"
             android:duration="200"/>
 
-        <rotate
+        <translate
             android:startOffset="200"
-            android:pivotY="50%"
-            android:pivotX="50%"
-            android:fromDegrees="10"
-            android:toDegrees="-10"
+            android:fromXDelta="0%"
+            android:toXDelta="-10%"
             android:duration="200"/>
 
-        <rotate
+        <translate
             android:startOffset="400"
-            android:pivotY="50%"
-            android:pivotX="50%"
-            android:fromDegrees="-10"
-            android:toDegrees="10"
+            android:fromXDelta="0%"
+            android:toXDelta="10%"
             android:duration="200"/>
 
-        <rotate
+        <translate
             android:startOffset="600"
-            android:pivotY="50%"
-            android:pivotX="50%"
-            android:fromDegrees="10"
-            android:toDegrees="0"
+            android:fromXDelta="0%"
+            android:toXDelta="-5%"
             android:duration="200"/>
     </set>
 

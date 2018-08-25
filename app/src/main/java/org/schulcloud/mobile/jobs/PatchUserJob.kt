@@ -25,6 +25,7 @@ class PatchUserJob(private val user: User, callback: RequestJobCallback): Reques
         if (response.isSuccessful) {
             if (BuildConfig.DEBUG) Log.i(TAG, "User $user.id patched!")
             Sync.SingleData.with(User::class.java,newUser)
+            callback?.success()
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while patching user $user.id")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

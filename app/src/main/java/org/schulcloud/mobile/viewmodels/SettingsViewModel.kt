@@ -12,6 +12,7 @@ import org.schulcloud.mobile.models.notifications.NotificationRepository
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.storages.UserStorage
 
 class SettingsViewModel: ViewModel(){
     companion object {
@@ -22,9 +23,15 @@ class SettingsViewModel: ViewModel(){
         Realm.getDefaultInstance()
     }
 
-    val user = UserRepository.currentUser(realm)
-    val account = UserRepository.getAccount(realm)
+    val user: LiveData<User?>
+        get() = UserRepository.currentUser(realm)
+    val account: LiveData<User?>
+        get() = UserRepository.currentUser(realm)
     val genderIds = intArrayOf(R.string.gender_not_selected,R.string.gender_male,
     R.string.gender_female, R.string.gender_other)
+
+    suspend fun resyncUser(){
+        UserRepository.syncUser(UserStorage().userId!!)
+    }
 
 }

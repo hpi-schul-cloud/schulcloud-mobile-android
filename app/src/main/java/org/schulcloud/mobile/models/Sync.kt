@@ -71,8 +71,8 @@ abstract class Sync<S : RealmModel>(private val clazz: Class<S>) {
                     // if (BuildConfig.DEBUG) Log.d(TAG, "DATA: Deleted " + results.size + " local resources from type " + clazz.simpleName)
                 } else if(BuildConfig.DEBUG) Log.d(TAG, "DATA: Deleted 0 local resources from type " + clazz.simpleName)
                 */
-                realm.close()
             }
+            realm.close()
 
         }
     }

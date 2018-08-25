@@ -10,6 +10,7 @@ import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.storages.UserStorage
 import org.schulcloud.mobile.utils.map
 
 class UserSettingsViewModel: ViewModel(){
@@ -36,5 +37,9 @@ class UserSettingsViewModel: ViewModel(){
             UserRepository.patchAccount(account,callback)
         else
             callback.success()
+    }
+
+    suspend fun resyncUser(){
+        UserRepository.syncUser(UserStorage().userId!!)
     }
 }

@@ -69,7 +69,7 @@ object UserRepository {
     }
 
     suspend fun patchUser(user: User,callback: RequestJobCallback){
-       PatchUserJob(user,callback)
+       PatchUserJob(user,callback).run()
     }
 
     fun logout() {

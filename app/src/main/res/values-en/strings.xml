@@ -141,9 +141,9 @@
     <string name="user_settings_submit">Submit</string>
     <string name="passwords_do_not_match"><font color="#CC0438">The passords do not match</font></string>
     <string name="gender_not_selected">No gender selected</string>
-    <string name="gender_male">male</string>
-    <string name="gender_female">female</string>
-    <string name="gender_other">something else</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="gender_other">Something else</string>
     <string name="user_patch_successful">Your profile has been changed!</string>
     <string name="user_something_went_wrong">Something went wrong! Try again later.</string>
 </resources>

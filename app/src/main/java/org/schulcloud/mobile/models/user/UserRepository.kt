@@ -17,7 +17,6 @@ import org.schulcloud.mobile.utils.userDao
 
 object UserRepository {
     val TAG: String = UserRepository::class.java.simpleName
-    var patchStage = 0
 
     @JvmStatic
     val token: String?
@@ -57,8 +56,7 @@ object UserRepository {
     }
 
     suspend fun patchAccount(account: Account,callback: RequestJobCallback){
-        PatchAccountJob(account,callback)
-        patchStage = 0
+        PatchAccountJob(account,callback).run()
     }
 
     suspend fun getAccountForUser(userId: String){

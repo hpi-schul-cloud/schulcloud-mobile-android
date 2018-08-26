@@ -33,7 +33,7 @@ class UserSettingsViewModel: ViewModel(){
     }
 
     suspend fun patchAccount(account: Account, callback: RequestJobCallback){
-        if(account.newPassword != "")
+        if(account.password != "")
             UserRepository.patchAccount(account,callback)
         else
             callback.success()

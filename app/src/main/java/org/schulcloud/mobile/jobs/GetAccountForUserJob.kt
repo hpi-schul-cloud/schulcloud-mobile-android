@@ -26,6 +26,7 @@ class GetAccountForUserJob(private val userId: String, callback: RequestJobCallb
             // Sync
             val gson = Gson()
             val account = gson.fromJson(body,Account::class.java)
+            account.password = ""
             Sync.SingleData.with(Account::class.java, account).run()
             callback?.success()
         } else {

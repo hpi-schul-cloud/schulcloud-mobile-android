@@ -8,10 +8,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_user_settings.*
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.toast
@@ -20,9 +18,7 @@ import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.Account
 import org.schulcloud.mobile.models.user.User
-import org.schulcloud.mobile.viewmodels.SettingsViewModel
 import org.schulcloud.mobile.viewmodels.UserSettingsViewModel
-import java.util.*
 
 class UserSettingsActivity: BaseActivity(){
     companion object {
@@ -39,6 +35,7 @@ class UserSettingsActivity: BaseActivity(){
     private lateinit var viewModel: UserSettingsViewModel
     private lateinit var genderReferences: Array<String>
     private var stage = 0
+    private var isRunning = false
     private var callback = object: RequestJobCallback(){
         override fun onError(code: ErrorCode) {
             stage += 1
@@ -57,7 +54,10 @@ class UserSettingsActivity: BaseActivity(){
         genderReferences = resources.getStringArray(R.array.genders)
         populateSpinner()
         populateView()
-        user_edit_submit.setOnClickListener({ async{ handlePatch(stage,false)} })
+        user_edit_submit.setOnClickListener({
+            if(!isRunning)
+                async { handlePatch(stage, false) }
+        })
 
         user_edit_new_password.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -75,9 +75,13 @@ class UserSettingsActivity: BaseActivity(){
 
 
     fun checkNewPassword() : Boolean{
-        if(user_edit_new_password.text.length < 8)
-            return false^
-        if(!user_edit_new_password.text.toString().matches(Regex("[a-zA-Z0-9 ]")))
+        var newPassword = user_edit_new_password.text.toString()
+        if(newPassword.length < 8)
+            return false
+        if(!(newPassword.contains(Regex("[a-z]"))
+                && newPassword.contains(Regex("[A-Z]"))
+                && newPassword.contains(Regex("[0-9]"))
+                && newPassword.contains(Regex("[\\W]"))))
             return false
         return true
     }
@@ -91,7 +95,7 @@ class UserSettingsActivity: BaseActivity(){
                         return
                     }
 
-                    if (!user_edit_new_password.text.equals(user_edit_new_password_repeat.text)) {
+                    if (!user_edit_new_password.text.toString().equals(user_edit_new_password_repeat.text.toString())) {
                         user_edit_new_password_repeat.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                         user_edit_new_password.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                         return
@@ -104,6 +108,7 @@ class UserSettingsActivity: BaseActivity(){
                 }else{
                     patch_progress.visibility = View.VISIBLE
                     user_settings_layout.alpha = 0.5f
+                    isRunning = true
                     viewModel.checkPassword(mAccount.username!!,user_edit_password.text.toString(),callback)
                 }
 
@@ -130,8 +135,8 @@ class UserSettingsActivity: BaseActivity(){
                 }
                 var account = Account()
                 account.id = mAccount.id
-                account.newPassword = user_edit_new_password.text.toString()
-                account.newPasswordRepeat = user_edit_new_password_repeat.text.toString()
+                account.password = user_edit_new_password.text.toString()
+                account.verification = user_edit_new_password_repeat.text.toString()
                 async{viewModel.patchAccount(account,callback)}
             }
             3 -> {
@@ -142,6 +147,7 @@ class UserSettingsActivity: BaseActivity(){
                 }
                 patch_progress.visibility = View.GONE
                 user_settings_layout.alpha = 1.0f
+                isRunning = false
                 viewModel.user.observe(this, Observer { user ->
                     mUser = user!!
                 })

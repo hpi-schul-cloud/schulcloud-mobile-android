@@ -12,8 +12,6 @@ open class Account: RealmObject() {
 
     var username: String? = null
     var password: String? = null
+    var verification: String? = null
     var userId: String? = null
-
-    var newPassword: String? = null
-    var newPasswordRepeat: String? = null
 }

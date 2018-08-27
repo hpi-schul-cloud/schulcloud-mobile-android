@@ -13,17 +13,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
-import kotlin.properties.Delegates
 
-abstract class MainFragment : BaseFragment(), Refreshable {
+
+abstract class MainFragment(refreshableImpl: RefreshableImpl = RefreshableImpl()) : BaseFragment(),
+        Refreshable by refreshableImpl {
+
     protected val mainActivity: MainActivity get() = activity as MainActivity
     protected val mainViewModel: MainViewModel
         get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
@@ -36,15 +34,10 @@ abstract class MainFragment : BaseFragment(), Refreshable {
     protected abstract fun provideConfig(): LiveData<MainFragmentConfig>
 
     open var url: String? = null
-    private var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
-        new?.setup()
-        new?.setOnRefreshListener { performRefresh() }
-        new?.isRefreshing = isRefreshing
+
+    init {
+        refreshableImpl.refresh = { refresh() }
     }
-    protected var isRefreshing: Boolean by Delegates.observable(false) { _, _, new ->
-        swipeRefreshLayout?.isRefreshing = new
-    }
-        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,13 +104,7 @@ abstract class MainFragment : BaseFragment(), Refreshable {
     }
 
 
-    protected fun performRefresh() {
-        isRefreshing = true
-        launch {
-            withContext(UI) { refresh() }
-            withContext(UI) { isRefreshing = false }
-        }
-    }
+    abstract suspend fun refresh()
 
     open fun onFabClicked() {}
 }

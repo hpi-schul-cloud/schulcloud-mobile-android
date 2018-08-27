@@ -11,8 +11,7 @@
             name="viewModel"
             type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
     </data>
-
-    <org.schulcloud.mobile.views.ContentView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,10 +29,8 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:background="@null"
-
                 android:layout_height="wrap_content"
-                app:tabBackground="@null"
+                android:background="@null"
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
 
@@ -42,8 +39,10 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarWrapper" />
 
-    </org.schulcloud.mobile.views.ContentView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

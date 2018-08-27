@@ -17,7 +17,10 @@ import org.schulcloud.mobile.views.DividerItemDecoration
 
 class SubmissionsFragment : HomeworkTabFragment() {
     private val submissionsAdapter by lazy {
-        SubmissionsAdapter { viewModel.selectedStudent.value = it }
+        SubmissionsAdapter {
+            viewModel.selectionByUser = true
+            viewModel.selectedStudent.value = it
+        }
     }
 
 

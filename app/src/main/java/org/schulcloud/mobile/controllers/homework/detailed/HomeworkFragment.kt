@@ -75,8 +75,9 @@ class HomeworkFragment : MainFragment() {
                     if (homework == null)
                         return@Observer
 
-                    pagerAdapter.setHomework(homework, selectedStudent)
-                    if (selectedStudent != null && selectedStudent != selectedStudentPrev)
+                    pagerAdapter.setHomework(homework, selectedStudent?.id)
+                    if (viewModel.selectionByUser
+                            && selectedStudent != null && selectedStudent != selectedStudentPrev)
                     // callIndex <= 2: Config change with already selected student
                     // callIndex > 2: New selection
                         viewPager.setCurrentItem(2, callIndex > 2)

@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.homework.Homework
-import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
 
 
@@ -30,13 +29,9 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
 
     private var studentId: String? = null
 
-    fun setHomework(homework: Homework, student: User?) {
+    fun setHomework(homework: Homework, studentId: String?) {
         this.homework = homework
-
-        if (student != null)
-            studentId = student.id
-        else if (!homework.isTeacher(UserRepository.userId!!))
-            studentId = UserRepository.userId
+        this.studentId = studentId
         notifyDataSetChanged()
     }
 

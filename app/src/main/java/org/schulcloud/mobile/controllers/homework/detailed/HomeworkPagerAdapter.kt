@@ -83,7 +83,6 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
             }
             position == 1 -> TAB_SUBMISSION
             position == 2 -> TAB_FEEDBACK
-            position == 3 -> TAB_SUBMISSIONS
             else -> TAB_INVALID
         }
     }

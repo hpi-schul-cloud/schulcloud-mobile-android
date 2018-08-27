@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,7 +23,7 @@ import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
 import kotlin.properties.Delegates
 
-abstract class MainFragment : BaseFragment() {
+abstract class MainFragment : BaseFragment(), Refreshable {
     protected val mainActivity: MainActivity get() = activity as MainActivity
     protected val mainViewModel: MainViewModel
         get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
@@ -73,8 +73,9 @@ abstract class MainFragment : BaseFragment() {
 
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
 
-        view?.findViewById<Toolbar>(R.id.toolbar).also {
-            mainActivity.setSupportActionBar(it)
+        mainActivity.setSupportActionBar(view?.findViewById(R.id.toolbar))
+        view?.findViewById<ViewGroup>(R.id.toolbarWrapper)?.also {
+            mainActivity.setToolbarWrapper(it)
         }
     }
 
@@ -110,7 +111,6 @@ abstract class MainFragment : BaseFragment() {
     }
 
 
-    protected abstract suspend fun refresh()
     protected fun performRefresh() {
         isRefreshing = true
         launch {

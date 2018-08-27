@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.fragment_homework.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.utils.combineLatest
 import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
@@ -20,9 +23,12 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 class HomeworkFragment : MainFragment() {
     companion object {
         val TAG: String = HomeworkFragment::class.java.simpleName
+
+        private const val PAGER_OFFSCREEN_LIMIT = 3
     }
 
-    private lateinit var viewModel: HomeworkViewModel
+    internal lateinit var viewModel: HomeworkViewModel
+    private val pagerAdapter by lazy { HomeworkPagerAdapter(context!!, childFragmentManager) }
 
 
     override var url: String? = null
@@ -50,6 +56,28 @@ class HomeworkFragment : MainFragment() {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // all fragments must be loaded, otherwise they won't get updated
+        viewPager.offscreenPageLimit = PAGER_OFFSCREEN_LIMIT
+        viewPager.adapter = pagerAdapter
+        tabLayout.setupWithViewPager(viewPager)
+        mainViewModel.toolbarColors.observe(this, Observer {
+            tabLayout.setTabTextColors(it.textColorSecondary, it.textColor)
+            tabLayout.setSelectedTabIndicatorColor(it.textColor)
+        })
+
+        if (viewModel.selectedStudent.value != null)
+            viewPager.setCurrentItem(2, false)
+        viewModel.homework
+                .combineLatest(viewModel.selectedStudent)
+                .observe(this, Observer { (homework, selectedStudent) ->
+                    if (homework == null)
+                        return@Observer
+
+                    pagerAdapter.setHomework(homework, selectedStudent)
+                })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

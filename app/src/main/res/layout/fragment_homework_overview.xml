@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
+
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="PrivateResource">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <org.schulcloud.mobile.views.CompatTextView
+                android:id="@+id/dueLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@{HomeworkUtilsKt.getDueText(context, viewModel.homework)}"
+                android:textColor="@{HomeworkUtilsKt.getDueColor(context, viewModel.homework)}"
+                android:textSize="@dimen/text_smaller_size"
+                android:visibility="@{HomeworkUtilsKt.dueLabelRequired(viewModel.homework)}"
+                app:drawableStart="@drawable/baseline_outlined_flag_16dp"
+                app:drawableStartVisible="@{HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework)}"
+                tools:drawableStartVisible="@sample/homework.json/data/due/visibility"
+                tools:text="@sample/homework.json/data/due/text"
+                tools:textColor="@sample/homework.json/data/due/color" />
+
+            <org.schulcloud.mobile.views.ContentWebView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:content="@{viewModel.homework.description}"
+                tools:content="@sample/homework.json/data/description"
+                tools:ignore="WebViewLayout" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

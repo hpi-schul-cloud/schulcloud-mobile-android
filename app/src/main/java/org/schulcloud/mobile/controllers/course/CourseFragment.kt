@@ -39,7 +39,7 @@ class CourseFragment : MainFragment() {
 
 
     override var url: String? = null
-        get() = viewModel.course.value?.url
+        get() = "/courses/${viewModel.course.value?.id}"
 
     override fun provideConfig() = viewModel.course.map { course ->
         MainFragmentConfig(

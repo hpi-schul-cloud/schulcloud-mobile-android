@@ -142,8 +142,6 @@ class FileFragment : MainFragment() {
     override fun onResume() {
         super.onResume()
 
-        mainActivity.setToolbarWrapper(toolbarWrapper)
-
         breadcrumbs.setPath(args.path)
         breadcrumbs.onPathSelected = callback@{ path ->
             if (path == args.path) {

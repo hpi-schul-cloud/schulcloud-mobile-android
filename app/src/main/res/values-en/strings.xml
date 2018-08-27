@@ -100,6 +100,16 @@
         <item quantity="one">Due tomorrow</item>
         <item quantity="other">Due in %d days</item>
     </plurals>
+    <string name="homework_overview">Description</string>
+    <string name="homework_overview_error_empty">No description available</string>
+    <string name="homework_submissions">Submissions</string>
+    <string name="homework_submissions_error_courseEmpty">This course does not contain any students</string>
+    <string name="homework_submission">Submission</string>
+    <string name="homework_submission_error_notFound">No submission available</string>
+    <string name="homework_submission_grade">%1$d%%</string>
+    <string name="homework_feedback">Feedback</string>
+    <string name="homework_feedback_grade">You have solved <b>%1$d%%</b> correctly</string>
+    <string name="homework_feedback_error_empty">No review text available</string>
 
     <!-- File -->
     <string name="file_title">Files</string>

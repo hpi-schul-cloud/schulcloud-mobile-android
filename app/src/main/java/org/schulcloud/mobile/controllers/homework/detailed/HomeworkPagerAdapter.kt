@@ -14,9 +14,9 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
     companion object {
         private const val TAB_INVALID = 0
         private const val TAB_DETAILS = 1
-        private const val TAB_SUBMISSION = 2
-        private const val TAB_FEEDBACK = 3
-        private const val TAB_SUBMISSIONS = 4
+        private const val TAB_SUBMISSIONS = 2
+        private const val TAB_SUBMISSION = 3
+        private const val TAB_FEEDBACK = 4
 
         @Retention(AnnotationRetention.SOURCE)
         @MustBeDocumented
@@ -38,9 +38,9 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
     override fun getItem(position: Int): Fragment? {
         return when (getTabType(position)) {
             TAB_DETAILS -> OverviewFragment()
+            TAB_SUBMISSIONS -> SubmissionsFragment()
             TAB_SUBMISSION -> SubmissionFragment()
             TAB_FEEDBACK -> FeedbackFragment()
-            TAB_SUBMISSIONS -> SubmissionsFragment()
 
             TAB_INVALID -> null
             else -> null
@@ -49,10 +49,10 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
 
     override fun getPageTitle(position: Int): CharSequence? {
         val titleId = when (getTabType(position)) {
-            TAB_DETAILS -> R.string.homework_details
+            TAB_DETAILS -> R.string.homework_overview
+            TAB_SUBMISSIONS -> R.string.homework_submissions
             TAB_SUBMISSION -> R.string.homework_submission
             TAB_FEEDBACK -> R.string.homework_feedback
-            TAB_SUBMISSIONS -> R.string.homework_submissions
 
             TAB_INVALID -> return null
             else -> return null

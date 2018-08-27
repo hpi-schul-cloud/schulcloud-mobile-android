@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.homework
+package org.schulcloud.mobile.controllers.homework.detailed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

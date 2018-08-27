@@ -16,7 +16,6 @@
         android:id="@+id/wrapper"
         style="@style/Material.ListItem"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/material_listItem_height"
         android:foreground="?android:attr/selectableItemBackground">
 
         <TextView
@@ -44,7 +43,7 @@
             android:layout_marginRight="@dimen/material_listItem_paddingHorizontal"
             android:width="40sp"
             android:gravity="center"
-            android:text="@{@string/homework_submission_grade(submission.grade)}"
+            android:text='@{submission.grade != null ? @string/homework_submission_grade(submission.grade) : ""}'
             tools:text="90%" />
 
         <ImageView

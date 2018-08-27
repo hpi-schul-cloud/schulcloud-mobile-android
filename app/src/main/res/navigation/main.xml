@@ -85,7 +85,7 @@
         tools:layout="@layout/fragment_homework_list" />
     <fragment
         android:id="@+id/fragment_homework"
-        android:name="org.schulcloud.mobile.controllers.homework.HomeworkFragment"
+        android:name="org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragment"
         tools:layout="@layout/fragment_homework">
         <argument
             android:name="id"

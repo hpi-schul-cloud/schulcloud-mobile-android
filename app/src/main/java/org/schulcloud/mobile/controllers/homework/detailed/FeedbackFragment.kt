@@ -1,18 +1,18 @@
-package org.schulcloud.mobile.controllers.homework
+package org.schulcloud.mobile.controllers.homework.detailed
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionBinding
+import org.schulcloud.mobile.databinding.FragmentHomeworkFeedbackBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
 
 
-class SubmissionFragment : HomeworkTabFragment() {
+class FeedbackFragment : HomeworkTabFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return FragmentHomeworkSubmissionBinding.inflate(layoutInflater).also {
+        return FragmentHomeworkFeedbackBinding.inflate(layoutInflater).also {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }.root

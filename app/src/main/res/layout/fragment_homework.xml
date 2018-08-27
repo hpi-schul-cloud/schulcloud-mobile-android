@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkFragment">
+    tools:context="org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragment">
     <data>
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
 

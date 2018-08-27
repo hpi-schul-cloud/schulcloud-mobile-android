@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragmentArgs
 import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig

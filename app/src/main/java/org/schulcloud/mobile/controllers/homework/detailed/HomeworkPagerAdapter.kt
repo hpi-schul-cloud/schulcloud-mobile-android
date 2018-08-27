@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.homework
+package org.schulcloud.mobile.controllers.homework.detailed
 
 import android.content.Context
 import androidx.annotation.IntDef
@@ -44,7 +44,7 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
         return when (getTabType(position)) {
             TAB_DETAILS -> OverviewFragment()
             TAB_SUBMISSION -> SubmissionFragment()
-            TAB_FEEDBACK -> OverviewFragment()
+            TAB_FEEDBACK -> FeedbackFragment()
             TAB_SUBMISSIONS -> SubmissionsFragment()
 
             TAB_INVALID -> null
@@ -63,11 +63,6 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
             else -> return null
         }
         return context.getString(titleId)
-    }
-
-    override fun getItemPosition(obj: Any): Int {
-        (obj as? StudentDependentFragment)?.update(studentId!!)
-        return POSITION_UNCHANGED
     }
 
     override fun getCount(): Int {

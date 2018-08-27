@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.homework
+package org.schulcloud.mobile.controllers.homework.detailed
 
 import android.graphics.Color
 import android.os.Bundle
@@ -24,8 +24,6 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 class HomeworkFragment : MainFragment() {
     companion object {
         val TAG: String = HomeworkFragment::class.java.simpleName
-
-        private const val PAGER_OFFSCREEN_LIMIT = 3
     }
 
     internal lateinit var viewModel: HomeworkViewModel
@@ -62,8 +60,7 @@ class HomeworkFragment : MainFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // all fragments must be loaded, otherwise they won't get updated
-        viewPager.offscreenPageLimit = PAGER_OFFSCREEN_LIMIT
+        viewPager.offscreenPageLimit = 2
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
         mainViewModel.toolbarColors.observe(this, Observer {

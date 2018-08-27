@@ -9,6 +9,7 @@ import org.schulcloud.mobile.models.file.DirectoryResponse
 import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.models.homework.Homework
+import org.schulcloud.mobile.models.homework.submission.Submission
 import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.user.User
@@ -53,6 +54,11 @@ interface ApiServiceInterface {
     fun listUserHomework(): Call <FeathersResponse<List<Homework>>>
     @GET("homework/{id}?\$populate=courseId&\$sort=dueDate:-1")
     fun getHomework(@Path("id") homeworkId: String): Call<Homework>
+
+    @GET("submissions?\$limit=-1&\$populate=comments")
+    fun listHomeworkSubmissions(@Query("homeworkId") homeworkId: String): Call<FeathersResponse<List<Submission>>>
+    @GET("submissions/{id}")
+    fun getSubmission(@Path("id") submissionId: String): Call<Submission>
 
     // File
     @GET("fileStorage")

@@ -1,10 +1,16 @@
 package org.schulcloud.mobile.network
 
 import com.google.gson.GsonBuilder
+import com.google.gson.TypeAdapter
+import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+import io.realm.RealmList
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.config.Config
+import org.schulcloud.mobile.models.base.RealmString
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.HOST
 import retrofit2.Retrofit
@@ -33,6 +39,30 @@ object ApiService {
                 .build()
 
         val gson = GsonBuilder()
+                .registerTypeAdapter((object : TypeToken<RealmList<RealmString>>() {}).type,
+                        object : TypeAdapter<RealmList<RealmString>>() {
+                            override fun read(reader: JsonReader?): RealmList<RealmString> {
+                                if (reader == null)
+                                    return RealmList()
+
+                                val list = RealmList<RealmString>()
+                                reader.beginArray()
+                                while (reader.hasNext())
+                                    list += RealmString(reader.nextString())
+                                reader.endArray()
+                                return list
+                            }
+
+                            override fun write(out: JsonWriter?, value: RealmList<RealmString>?) {
+                                if (out == null || value == null)
+                                    return
+
+                                out.beginArray()
+                                for (string in value)
+                                    out.value(string.value)
+                                out.endArray()
+                            }
+                        })
                 .create()
 
         val retrofit = Retrofit.Builder()

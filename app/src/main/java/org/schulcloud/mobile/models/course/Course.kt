@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey
 import org.schulcloud.mobile.models.base.HasId
 import org.schulcloud.mobile.models.user.User
 
+
 open class Course : RealmObject(), HasId {
 
     @PrimaryKey
@@ -20,5 +21,9 @@ open class Course : RealmObject(), HasId {
 
     @SerializedName("teacherIds")
     var teachers: RealmList<User>? = null
+    @SerializedName("substitutionIds")
+    var substitutions: RealmList<User>? = null
+    @SerializedName("userIds")
+    var users: RealmList<User>? = null
 
 }

@@ -10,6 +10,7 @@
             name="viewModel"
             type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
     </data>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"

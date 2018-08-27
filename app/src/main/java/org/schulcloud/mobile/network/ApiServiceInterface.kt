@@ -39,9 +39,9 @@ interface ApiServiceInterface {
     fun getNews(@Path("id") newsId: String): Call<News>
 
     // Course
-    @GET("courses?\$populate[0]=teacherIds")
+    @GET("courses?\$populate[0]=teacherIds&\$populate[1]=userIds&\$populate[2]=substitutionIds")
     fun listUserCourses(): Call<FeathersResponse<List<Course>>>
-    @GET("courses/{id}?\$populate[0]=teacherIds")
+    @GET("courses/{id}?\$populate[0]=teacherIds&\$populate[1]=userIds&\$populate[2]=substitutionIds")
     fun getCourse(@Path("id") courseId: String): Call<Course>
 
     @GET("lessons")
@@ -55,7 +55,7 @@ interface ApiServiceInterface {
     @GET("homework/{id}?\$populate=courseId&\$sort=dueDate:-1")
     fun getHomework(@Path("id") homeworkId: String): Call<Homework>
 
-    @GET("submissions?\$limit=-1&\$populate=comments")
+    @GET("submissions?\$populate=comments")
     fun listHomeworkSubmissions(@Query("homeworkId") homeworkId: String): Call<FeathersResponse<List<Submission>>>
     @GET("submissions/{id}")
     fun getSubmission(@Path("id") submissionId: String): Call<Submission>

@@ -42,12 +42,12 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
 
     override fun getItem(position: Int): Fragment? {
         return when (getTabType(position)) {
-            TAB_INVALID -> null
             TAB_DETAILS -> OverviewFragment()
             TAB_SUBMISSION -> OverviewFragment()
             TAB_FEEDBACK -> OverviewFragment()
-            TAB_SUBMISSIONS -> OverviewFragment()
+            TAB_SUBMISSIONS -> SubmissionsFragment()
 
+            TAB_INVALID -> null
             else -> null
         }
     }

@@ -107,6 +107,9 @@
     </plurals>
     <string name="homework_details">Details</string>
     <string name="homework_details_error_empty">Keine Beschreibung vorhanden.</string>
+    <string name="homework_submission_grade">%1$d%%</string>
+    <string name="homework_submissions">Abgaben</string>
+    <string name="homework_submissions_error_courseEmpty">Der Kurs enthält keine Schüler/innen.</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

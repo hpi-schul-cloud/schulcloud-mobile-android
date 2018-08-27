@@ -2,9 +2,9 @@ package org.schulcloud.mobile.models.event
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
-import org.schulcloud.mobile.jobs.ListEventsJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.utils.eventDao
+import org.schulcloud.mobile.utils.toFeatherResponse
 
 object EventRepository {
 
@@ -20,13 +20,8 @@ object EventRepository {
         return realm.eventDao().event(id)
     }
 
-    suspend fun syncEvents() {
-        ListEventsJob(object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
 
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+    suspend fun syncEvents() {
+        RequestJob.Data.with({ listEvents().toFeatherResponse() }).run()
     }
 }

@@ -14,7 +14,8 @@ import org.schulcloud.mobile.models.content.GeogebraMaterial
 import org.schulcloud.mobile.models.content.GeogebraResponse
 import org.schulcloud.mobile.utils.MIME_APPLICATION_JSON
 
-class GetGeogebraMaterialJob(private val materialId: String, callback: RequestJobCallback) : RequestJob(callback) {
+class GetGeogebraMaterialJob(private val materialId: String, callback: RequestJobCallback? = null) :
+        RequestJob(callback) {
     companion object {
         val TAG: String = GetGeogebraMaterialJob::class.java.simpleName
 
@@ -49,14 +50,16 @@ class GetGeogebraMaterialJob(private val materialId: String, callback: RequestJo
                         GEOGEBRA_REQUEST.format(materialId)))
                 .build()).execute()
         if (response.body() == null) {
-            if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching preview url for Geogebra material $materialId")
+            if (BuildConfig.DEBUG)
+                Log.e(TAG, "Error while fetching preview url for Geogebra material $materialId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
             return
         }
 
         val parsed = GSON.fromJson(response.body()?.charStream(), GeogebraResponse::class.java)
         if (parsed?.responses?.response?.item?.previewUrl == null) {
-            if (BuildConfig.DEBUG) Log.e(TAG, "Error while parsing preview url for Geogebra material $materialId")
+            if (BuildConfig.DEBUG)
+                Log.e(TAG, "Error while parsing preview url for Geogebra material $materialId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
             return
         }
@@ -65,8 +68,8 @@ class GetGeogebraMaterialJob(private val materialId: String, callback: RequestJo
             id = materialId
             previewUrl = parsed.responses?.response?.item?.previewUrl
         }
-        if (BuildConfig.DEBUG) Log.i(TAG, "Preview url for Geogebra material $materialId received")
-        Sync.Data.with(GeogebraMaterial::class.java, listOf(material))
-                .run()
+        if (BuildConfig.DEBUG)
+            Log.i(TAG, "Preview url for Geogebra material $materialId received")
+        Sync.SingleData.with(GeogebraMaterial::class.java, material, materialId).run()
     }
 }

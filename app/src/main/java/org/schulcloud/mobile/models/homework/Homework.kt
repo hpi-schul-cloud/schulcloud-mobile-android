@@ -8,13 +8,14 @@ import org.joda.time.Days
 import org.joda.time.Hours
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
+import org.schulcloud.mobile.models.base.HasId
 import org.schulcloud.mobile.utils.HOST
 
-open class Homework : RealmObject() {
+open class Homework : RealmObject(), HasId {
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String = ""
+    override var id: String = ""
 
     @SerializedName("name")
     var title: String? = null

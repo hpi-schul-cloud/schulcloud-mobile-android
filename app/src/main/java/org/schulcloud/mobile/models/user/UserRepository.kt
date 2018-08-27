@@ -7,7 +7,7 @@ import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.jobs.CreateAccessTokenJob
-import org.schulcloud.mobile.jobs.GetUserJob
+import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.CourseRepository
@@ -45,10 +45,10 @@ object UserRepository {
 
             // Sync data in background
             syncCurrentUser()
-            NewsRepository.syncNews()
-            CourseRepository.syncCourses()
             EventRepository.syncEvents()
             HomeworkRepository.syncHomeworkList()
+            CourseRepository.syncCourses()
+            NewsRepository.syncNews()
         }
     }
 
@@ -62,7 +62,7 @@ object UserRepository {
 
     suspend fun syncCurrentUser() {
         UserStorage.userId?.also {
-            GetUserJob(it, RequestJobCallback()).run()
+            RequestJob.SingleData.with(it, { getUser(it) }).run()
         } ?: Log.w(TAG, "Request to sync current user while not signed in")
     }
 }

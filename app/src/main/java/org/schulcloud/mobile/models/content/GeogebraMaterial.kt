@@ -2,13 +2,11 @@ package org.schulcloud.mobile.models.content
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import org.schulcloud.mobile.models.base.HasId
 
-/**
- * Date: 6/18/2018
- */
-open class GeogebraMaterial : RealmObject() {
+open class GeogebraMaterial : RealmObject(), HasId {
     @PrimaryKey
-    lateinit var id: String
+    override var id: String = ""
 
     var previewUrl: String? = null
 }

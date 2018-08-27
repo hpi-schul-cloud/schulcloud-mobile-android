@@ -11,7 +11,7 @@ import ru.gildor.coroutines.retrofit.awaitResponse
 
 class GetUserJob(private val userId: String, callback: RequestJobCallback) : RequestJob(callback) {
     companion object {
-        val TAG: String = GetCourseJob::class.java.simpleName
+        val TAG: String = GetUserJob::class.java.simpleName
     }
 
     override suspend fun onRun() {

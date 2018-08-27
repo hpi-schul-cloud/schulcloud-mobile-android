@@ -24,5 +24,4 @@ class UserStorage : BaseStorage(PREF_USER, Context.MODE_PRIVATE) {
     var email: String?
         get() = getString(USER_EMAIL)
         set(value) = putString(USER_EMAIL,value)
-
 }

@@ -136,7 +136,7 @@ class UserSettingsActivity: BaseActivity(){
                 var account = Account()
                 account.id = mAccount.id
                 account.password = user_edit_new_password.text.toString()
-                account.verification = user_edit_new_password_repeat.text.toString()
+                account.password_verification = user_edit_password.text.toString()
                 async{viewModel.patchAccount(account,callback)}
             }
             3 -> {

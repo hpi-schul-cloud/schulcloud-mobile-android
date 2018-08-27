@@ -106,6 +106,7 @@
         <item quantity="other">In %d Tagen</item>
     </plurals>
     <string name="homework_details">Details</string>
+    <string name="homework_details_error_empty">Keine Beschreibung vorhanden.</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

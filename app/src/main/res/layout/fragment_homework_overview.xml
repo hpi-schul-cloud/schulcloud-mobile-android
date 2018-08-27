@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:content="@{viewModel.homework.description}"
+                    app:contentFallback="@{@string/homework_details_error_empty}"
                     tools:content="@sample/homework.json/data/description"
                     tools:ignore="WebViewLayout" />
 

@@ -10,8 +10,8 @@ object SubmissionRepository {
         return realm.submissionDao().submissionsForHomework(homeworkId)
     }
 
-    fun submission(realm: Realm, id: String): LiveData<Submission?> {
-        return realm.submissionDao().submission(id)
+    fun submission(realm: Realm, homeworkId: String, studentId: String): LiveData<Submission?> {
+        return realm.submissionDao().submission(homeworkId, studentId)
     }
 
 
@@ -20,7 +20,7 @@ object SubmissionRepository {
                 { equalTo("homeworkId", homeworkId) }).run()
     }
 
-    suspend fun syncHomework(id: String) {
+    suspend fun syncSubmission(id: String) {
         RequestJob.SingleData.with(id, { getSubmission(id) }).run()
     }
 }

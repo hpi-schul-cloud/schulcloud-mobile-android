@@ -34,5 +34,14 @@ class HomeworkViewModel(val id: String) : ViewModel() {
                     user to submissions.firstOrNull { it.studentId == user.id }
                 }
             }
+
     val selectedStudent: MutableLiveData<User?> = MutableLiveData<User?>().apply { value = null }
+    val selectedSubmission: LiveData<Submission?> = homework
+            .combineLatest(selectedStudent)
+            .switchMapNullable { (homework, student) ->
+                if (homework == null || student == null)
+                    return@switchMapNullable null
+
+                return@switchMapNullable SubmissionRepository.submission(realm, homework.id, student.id)
+            }
 }

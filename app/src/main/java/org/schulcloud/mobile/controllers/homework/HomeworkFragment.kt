@@ -15,6 +15,7 @@ import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.utils.combineLatest
 import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
@@ -30,6 +31,8 @@ class HomeworkFragment : MainFragment() {
     internal lateinit var viewModel: HomeworkViewModel
     private val pagerAdapter by lazy { HomeworkPagerAdapter(context!!, childFragmentManager) }
 
+    private var callIndex = 0
+    private var selectedStudentPrev: User? = null
 
     override var url: String? = null
         get() = "homework/${viewModel.homework.value?.id}"
@@ -68,15 +71,19 @@ class HomeworkFragment : MainFragment() {
             tabLayout.setSelectedTabIndicatorColor(it.textColor)
         })
 
-        if (viewModel.selectedStudent.value != null)
-            viewPager.setCurrentItem(2, false)
         viewModel.homework
                 .combineLatest(viewModel.selectedStudent)
                 .observe(this, Observer { (homework, selectedStudent) ->
+                    callIndex++
                     if (homework == null)
                         return@Observer
 
                     pagerAdapter.setHomework(homework, selectedStudent)
+                    if (selectedStudent != null && selectedStudent != selectedStudentPrev)
+                    // callIndex <= 2: Config change with already selected student
+                    // callIndex > 2: New selection
+                        viewPager.setCurrentItem(2, callIndex > 2)
+                    selectedStudentPrev = selectedStudent
                 })
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
@@ -13,26 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            style="@style/Material.List"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
 
-            <TextView
-                android:id="@+id/empty"
-                style="@style/Content_Text.Empty"
+            <org.schulcloud.mobile.views.ContentWebView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/homework_submissions_error_courseEmpty" />
+                android:layout_margin="16dp"
+                app:content="@{viewModel.selectedSubmission.comment}"
+                app:contentFallback="@{@string/homework_submission_error_notFound}"
+                tools:content="@sample/homework.json/data/description"
+                tools:ignore="WebViewLayout" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_submission" />
-
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

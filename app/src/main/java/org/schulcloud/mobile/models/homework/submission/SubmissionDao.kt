@@ -13,9 +13,10 @@ class SubmissionDao(private val realm: Realm) {
                 .allAsLiveData()
     }
 
-    fun submission(id: String): LiveData<Submission?> {
+    fun submission(homeworkId: String, studentId: String): LiveData<Submission?> {
         return realm.where(Submission::class.java)
-                .equalTo("id", id)
+                .equalTo("homeworkId", homeworkId)
+                .equalTo("studentId", studentId)
                 .firstAsLiveData()
     }
 }

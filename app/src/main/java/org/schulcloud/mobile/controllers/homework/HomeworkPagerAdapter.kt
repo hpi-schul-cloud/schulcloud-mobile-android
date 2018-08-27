@@ -43,7 +43,7 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
     override fun getItem(position: Int): Fragment? {
         return when (getTabType(position)) {
             TAB_DETAILS -> OverviewFragment()
-            TAB_SUBMISSION -> OverviewFragment()
+            TAB_SUBMISSION -> SubmissionFragment()
             TAB_FEEDBACK -> OverviewFragment()
             TAB_SUBMISSIONS -> SubmissionsFragment()
 
@@ -72,7 +72,6 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
 
     override fun getCount(): Int {
         var count = 0
-
         while (getTabType(count++) != TAB_INVALID);
         return count - 1
     }
@@ -85,16 +84,12 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
         return when {
             position == 0 -> TAB_DETAILS
             homework.publicSubmissions || homework.isTeacher(UserRepository.userId!!) -> {
-                if (position == 1)
-                    return TAB_SUBMISSIONS
-
-                if (studentId != null) {
-                    if (position == 2)
-                        TAB_SUBMISSION
-                    if (position == 3)
-                        TAB_FEEDBACK
+                when {
+                    position == 1 -> TAB_SUBMISSIONS
+                    studentId != null && position == 2 -> TAB_SUBMISSION
+                    studentId != null && position == 3 -> TAB_FEEDBACK
+                    else -> TAB_INVALID
                 }
-                TAB_INVALID
             }
             position == 1 -> TAB_SUBMISSION
             position == 2 -> TAB_FEEDBACK

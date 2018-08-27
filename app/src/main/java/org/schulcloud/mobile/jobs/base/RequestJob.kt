@@ -54,6 +54,7 @@ abstract class RequestJob(
     protected abstract suspend fun onRun()
 
 
+    @Suppress("SpreadOperator")
     class Data<T>(
         private val clazz: Class<T>,
         private val call: ApiServiceInterface.() -> Call<FeathersResponse<List<T>>>,
@@ -92,6 +93,7 @@ abstract class RequestJob(
         }
     }
 
+    @Suppress("SpreadOperator")
     class SingleData<T>(
         private val clazz: Class<T>,
         private val itemId: String,

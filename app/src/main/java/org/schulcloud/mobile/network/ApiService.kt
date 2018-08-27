@@ -1,17 +1,30 @@
 package org.schulcloud.mobile.network
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import info.guardianproject.netcipher.client.TlsOnlySocketFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
+import org.schulcloud.mobile.R
+import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.HOST
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.BufferedInputStream
+import java.io.FileInputStream
+import java.io.InputStream
+import java.security.KeyStore
+import java.security.cert.Certificate
+import java.security.cert.CertificateFactory
+import java.util.*
 import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
+import java.security.cert.X509Certificate
 
 
 object ApiService {
@@ -24,25 +37,34 @@ object ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        // TODO: manage trust certificates correctly
-       /*var trustAllCerts = object : X509TrustManager {
-            override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> {
-                 val myTrustedAnchors:  Array<java.security.cert.X509Certificate> = emptyArray()
-                return myTrustedAnchors;
-            }
+        val cf: CertificateFactory = CertificateFactory.getInstance("X.509")
 
-            override fun checkServerTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) {
-            }
+        val caInput: InputStream = SchulCloudApp.instance.resources.openRawResource(R.raw.globalroot_class_2)
+        val ca: X509Certificate = caInput.use {
+            cf.generateCertificate(it) as X509Certificate
+        }
+        Log.i("CA","ca=" + ca.subjectDN)
 
-            override fun checkClientTrusted(chain: Array<out java.security.cert.X509Certificate>?, authType: String?) {
-            }
+        val keyStoreType = KeyStore.getDefaultType()
+        val keyStore = KeyStore.getInstance(keyStoreType).apply {
+            load(null, null)
+            setCertificateEntry("ca", ca)
         }
 
-        val sslContext = SSLContext.getInstance("TLSv1.2")
-        sslContext.init(null, arrayOf(trustAllCerts), null)*/
+        val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
+            init(keyStore)
+        }
+        val trustManagers = trustManagerFactory.getTrustManagers()
+        if (trustManagers.size != 1 || trustManagers[0] !is X509TrustManager) {
+            throw IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers))
+        }
+        val trustManager = trustManagers[0] as X509TrustManager
+
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
 
         val client = OkHttpClient.Builder()
-              //  .sslSocketFactory(TlsOnlySocketFactory(sslContext.socketFactory), trustAllCerts)
+                .sslSocketFactory(TlsOnlySocketFactory(sslContext.socketFactory), trustManager)
                 .addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()

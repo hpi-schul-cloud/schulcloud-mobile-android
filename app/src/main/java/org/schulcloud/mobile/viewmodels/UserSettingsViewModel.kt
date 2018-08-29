@@ -14,13 +14,14 @@ import org.schulcloud.mobile.storages.UserStorage
 import org.schulcloud.mobile.utils.map
 
 class UserSettingsViewModel: ViewModel(){
-    private val realm by lazy {
+    private val realm: Realm by lazy {
         Realm.getDefaultInstance()
     }
 
     val user: LiveData<User?>
         get() = UserRepository.currentUser(realm)
-    val account = UserRepository.getAccount(realm)
+    val account: LiveData<Account?>
+        get() = UserRepository.getAccount(realm)
     val genderIds = intArrayOf(R.string.gender_not_selected, R.string.gender_male,
             R.string.gender_female, R.string.gender_other)
 

@@ -83,13 +83,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
-    suspend private fun syncRepos(){
+    private suspend fun syncRepos(){
         NewsRepository.syncNews()
         CourseRepository.syncCourses()
         EventRepository.syncEvents()
         HomeworkRepository.syncHomeworkList()
         UserRepository.syncUser(UserStorage().userId!!)
-        UserRepository.getAccountForUser(UserStorage().userId!!)
+        UserRepository.syncAccountForUser(UserStorage().userId!!)
         NotificationRepository.syncDevices()
         CourseRepository.syncCourses()
     }

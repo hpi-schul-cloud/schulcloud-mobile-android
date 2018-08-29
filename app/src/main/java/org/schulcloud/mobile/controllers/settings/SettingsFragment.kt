@@ -67,6 +67,7 @@ class SettingsFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         swipeRefreshLayout = settings_swipeRefresh
+        activity?.title = resources.getString(R.string.settings)
 
         settings_open_source.setOnClickListener({openWebPage(getString(R.string.settings_open_source_address))})
         settings_data_protection.setOnClickListener({openWebPage(getString(R.string.settings_data_protection_address))})
@@ -123,5 +124,6 @@ class SettingsFragment: BaseFragment() {
             user_settings_email.text = user.email
             user_settings_gender.setSelection(genderReferences.indexOf(user.gender))
         })
+        user_settings_gender.isClickable = false
     }
 }

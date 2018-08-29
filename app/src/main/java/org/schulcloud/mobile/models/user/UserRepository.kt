@@ -59,7 +59,7 @@ object UserRepository {
         PatchAccountJob(account,callback).run()
     }
 
-    suspend fun getAccountForUser(userId: String){
+    suspend fun syncAccountForUser(userId: String){
         GetAccountForUserJob(userId, object: RequestJobCallback(){
             override fun onSuccess() {}
             override fun onError(code: RequestJobCallback.ErrorCode) {}
@@ -74,7 +74,10 @@ object UserRepository {
         UserStorage().delete()
 
         val realm = Realm.getDefaultInstance()
-        realm.executeTransaction { it.deleteAll() }
-        realm.close()
+        realm.addChangeListener {
+            realm.refresh()
+            realm.executeTransaction { it.deleteAll() }
+            realm.close()
+        }
     }
 }

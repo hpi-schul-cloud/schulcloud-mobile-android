@@ -152,7 +152,7 @@ class UserSettingsActivity: BaseActivity(){
                     mUser = user!!
                 })
                 viewModel.account.observe(this,Observer { account ->
-                  mAccount = account!!
+                    mAccount = account!!
                 })
                 finish()
             }

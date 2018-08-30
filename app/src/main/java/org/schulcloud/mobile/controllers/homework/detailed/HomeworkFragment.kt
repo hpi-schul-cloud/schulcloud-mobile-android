@@ -66,6 +66,8 @@ class HomeworkFragment : MainFragment() {
         mainViewModel.toolbarColors.observe(this, Observer {
             tabLayout.setTabTextColors(it.textColorSecondary, it.textColor)
             tabLayout.setSelectedTabIndicatorColor(it.textColor)
+
+            selectedStudent.setTextColor(it.textColor)
         })
 
         viewModel.homework

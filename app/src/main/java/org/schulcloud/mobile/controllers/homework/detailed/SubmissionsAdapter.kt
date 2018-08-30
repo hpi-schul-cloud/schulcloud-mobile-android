@@ -56,7 +56,7 @@ class SubmissionsAdapter(private val onSelected: (User) -> Unit) :
             if (selectedIndex >= 0) {
                 val previous = recyclerView
                         ?.findViewHolderForAdapterPosition(selectedIndex) as? SubmissionViewHolder
-                previous?.binding?.wrapper?.setBackground(null)
+                previous?.binding?.wrapper?.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
             }
 
             // mark

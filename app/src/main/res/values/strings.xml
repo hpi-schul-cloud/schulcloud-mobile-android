@@ -110,6 +110,7 @@
     <string name="homework_submissions">Abgaben</string>
     <string name="homework_submissions_error_courseEmpty">Der Kurs enthält keine Schüler/innen</string>
     <string name="homework_submission">Abgabe</string>
+    <string name="homework_submission_hint">Abgabe von %1$s</string>
     <string name="homework_submission_error_notFound">Keine Abgabe vorhanden</string>
     <string name="homework_submission_grade">%1$d%%</string>
     <string name="homework_feedback">Feedback</string>

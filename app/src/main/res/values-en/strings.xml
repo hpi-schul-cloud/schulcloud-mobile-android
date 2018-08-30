@@ -105,6 +105,7 @@
     <string name="homework_submissions">Submissions</string>
     <string name="homework_submissions_error_courseEmpty">This course does not contain any students</string>
     <string name="homework_submission">Submission</string>
+    <string name="homework_submission_hint">Submission of %1$s</string>
     <string name="homework_submission_error_notFound">No submission available</string>
     <string name="homework_submission_grade">%1$d%%</string>
     <string name="homework_feedback">Feedback</string>

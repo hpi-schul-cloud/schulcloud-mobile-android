@@ -14,6 +14,7 @@ import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
+import org.schulcloud.mobile.controllers.main.ParentFragment
 import org.schulcloud.mobile.controllers.main.TabFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
@@ -23,7 +24,7 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.SubmissionViewModel
 
 
-class SubmissionFragment : MainFragment<SubmissionViewModel>() {
+class SubmissionFragment : MainFragment<SubmissionViewModel>(), ParentFragment {
 
     private val pagerAdapter by lazy { SubmissionPagerAdapter(context!!, childFragmentManager) }
 
@@ -84,7 +85,7 @@ class SubmissionFragment : MainFragment<SubmissionViewModel>() {
         refreshWithChild(false)
     }
 
-    suspend fun refreshWithChild(fromChild: Boolean) {
+    override suspend fun refreshWithChild(fromChild: Boolean) {
         if (fromChild) {
             SubmissionRepository.syncSubmission(viewModel.id)
             viewModel.homework.value?.id?.also { HomeworkRepository.syncHomework(it) }

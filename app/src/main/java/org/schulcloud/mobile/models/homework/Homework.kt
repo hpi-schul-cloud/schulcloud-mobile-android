@@ -47,12 +47,12 @@ open class Homework : RealmObject(), HasId {
         }
 
 
-    fun isTeacher(userId: String): Boolean {
+    fun isTeacher(userId: String = UserRepository.userId!!): Boolean {
         return teacherId == userId
                 || course?.substitutionIds?.any { it.value == userId } == true
     }
 
     fun canSeeSubmissions(): Boolean {
-        return publicSubmissions || isTeacher(UserRepository.userId!!)
+        return !restricted && (publicSubmissions || isTeacher())
     }
 }

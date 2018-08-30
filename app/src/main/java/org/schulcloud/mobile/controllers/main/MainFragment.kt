@@ -140,3 +140,8 @@ enum class FragmentType {
     PRIMARY,
     SECONDARY
 }
+
+
+interface ParentFragment {
+    suspend fun refreshWithChild(fromChild: Boolean)
+}

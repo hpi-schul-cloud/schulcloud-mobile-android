@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.schulcloud.mobile.controllers.main.ParentFragment
 import org.schulcloud.mobile.controllers.main.TabFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionOverviewBinding
 import org.schulcloud.mobile.viewmodels.SubmissionViewModel
@@ -18,6 +19,6 @@ class OverviewFragment : TabFragment<SubmissionFragment, SubmissionViewModel>() 
     }
 
     override suspend fun refresh() {
-        (parentFragment as? SubmissionFragment)?.refreshWithChild(true)
+        (parentFragment as? ParentFragment)?.refreshWithChild(true)
     }
 }

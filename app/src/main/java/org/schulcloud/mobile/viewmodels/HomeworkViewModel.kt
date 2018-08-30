@@ -10,6 +10,7 @@ import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.models.homework.submission.Submission
 import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
 import org.schulcloud.mobile.models.user.User
+import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.combineLatest
 import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.utils.switchMapNullable
@@ -33,4 +34,6 @@ class HomeworkViewModel(val id: String) : ViewModel() {
                     user to submissions.firstOrNull { it.studentId == user.id }
                 }
             }
+
+    val mySubmission: LiveData<Submission?> = SubmissionRepository.submission(realm, id, UserRepository.userId!!)
 }

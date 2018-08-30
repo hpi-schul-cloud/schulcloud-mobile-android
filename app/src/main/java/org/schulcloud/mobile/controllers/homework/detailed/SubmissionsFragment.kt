@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_homework_submissions.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.homework.submission.SubmissionFragmentArgs
+import org.schulcloud.mobile.controllers.main.ParentFragment
 import org.schulcloud.mobile.controllers.main.TabFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionsBinding
 import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
 import org.schulcloud.mobile.utils.showGenericNeutral
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.views.DividerItemDecoration
@@ -55,8 +55,7 @@ class SubmissionsFragment : TabFragment<HomeworkFragment, HomeworkViewModel>() {
     }
 
     override suspend fun refresh() {
-        SubmissionRepository.syncSubmissionsForHomework(viewModel.id)
         viewModel.homework.value?.course?.id?.also { CourseRepository.syncCourse(it) }
-        (parentFragment as? HomeworkFragment)?.refreshWithChild(true)
+        (parentFragment as? ParentFragment)?.refreshWithChild(true)
     }
 }

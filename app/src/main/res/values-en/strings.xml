@@ -102,6 +102,7 @@
         <item quantity="other">Due in %d days</item>
     </plurals>
     <string name="homework_overview">Description</string>
+    <string name="homework_overview_submissionMy">My submission</string>
     <string name="homework_overview_error_empty">No description available</string>
     <string name="homework_submissions">Submissions</string>
     <string name="homework_submissions_error_courseEmpty">This course does not contain any students</string>

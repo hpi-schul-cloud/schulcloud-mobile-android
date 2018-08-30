@@ -52,6 +52,15 @@
                     tools:content="@sample/homework.json/data/description"
                     tools:ignore="WebViewLayout" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/gotoMySubmission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/homework_overview_submissionMy"
+                    android:visibility="@{viewModel.mySubmission != null}" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

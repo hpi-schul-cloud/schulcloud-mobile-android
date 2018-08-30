@@ -13,14 +13,17 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
+import org.schulcloud.mobile.controllers.main.ParentFragment
 import org.schulcloud.mobile.controllers.main.TabFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
 import org.schulcloud.mobile.utils.map
+import org.schulcloud.mobile.utils.visibilityBool
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 
-class HomeworkFragment : MainFragment<HomeworkViewModel>() {
+class HomeworkFragment : MainFragment<HomeworkViewModel>(), ParentFragment {
     companion object {
         val TAG: String = HomeworkFragment::class.java.simpleName
     }
@@ -63,6 +66,8 @@ class HomeworkFragment : MainFragment<HomeworkViewModel>() {
 
         viewModel.homework.observe(this, Observer {
             pagerAdapter.homework = it
+            // Hide tabs if only overview is visible
+            tabLayout.visibilityBool = it?.canSeeSubmissions() == true
         })
     }
 
@@ -81,10 +86,11 @@ class HomeworkFragment : MainFragment<HomeworkViewModel>() {
         refreshWithChild(false)
     }
 
-    suspend fun refreshWithChild(fromChild: Boolean) {
-        if (fromChild)
+    override suspend fun refreshWithChild(fromChild: Boolean) {
+        if (fromChild) {
             HomeworkRepository.syncHomework(viewModel.id)
-        else if (viewPager != null)
+            SubmissionRepository.syncSubmissionsForHomework(viewModel.id)
+        } else if (viewPager != null)
             (pagerAdapter.getItem(viewPager.currentItem) as? TabFragment<*, *>)?.performRefresh()
     }
 }

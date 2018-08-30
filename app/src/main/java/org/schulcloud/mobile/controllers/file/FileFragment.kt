@@ -34,7 +34,7 @@ import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 
 
-class FileFragment : MainFragment() {
+class FileFragment : MainFragment<FileViewModel>() {
     companion object {
         val TAG: String = FileFragment::class.java.simpleName
     }
@@ -42,7 +42,6 @@ class FileFragment : MainFragment() {
     private val args: FileFragmentArgs by lazy {
         FileFragmentArgs.fromBundle(arguments)
     }
-    private lateinit var viewModel: FileViewModel
     private val directoryAdapter: DirectoryAdapter by lazy {
         DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,

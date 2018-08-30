@@ -4,13 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragment">
-    <data>
-        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
+    <data />
 
-        <variable
-            name="viewModel"
-            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
-    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,19 +21,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/selectedStudent"
-                style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginLeft="72dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@{@string/homework_submission_hint(viewModel.selectedStudent.name)}"
-                android:visibility="@{viewModel.selectedStudent != null}"
-                tools:text="Submission of Clara Fall" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"

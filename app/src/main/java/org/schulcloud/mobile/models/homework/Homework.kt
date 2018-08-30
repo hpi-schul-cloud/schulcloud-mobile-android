@@ -9,6 +9,7 @@ import org.joda.time.Hours
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.models.base.HasId
+import org.schulcloud.mobile.models.user.UserRepository
 
 open class Homework : RealmObject(), HasId {
 
@@ -49,5 +50,9 @@ open class Homework : RealmObject(), HasId {
     fun isTeacher(userId: String): Boolean {
         return teacherId == userId
                 || course?.substitutionIds?.any { it.value == userId } == true
+    }
+
+    fun canSeeSubmissions(): Boolean {
+        return publicSubmissions || isTeacher(UserRepository.userId!!)
     }
 }

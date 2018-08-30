@@ -94,6 +94,17 @@
     <action
         android:id="@+id/action_global_fragment_homework"
         app:destination="@id/fragment_homework" />
+    <fragment
+        android:id="@+id/fragment_submission"
+        android:name="org.schulcloud.mobile.controllers.homework.submission.SubmissionFragment"
+        tools:layout="@layout/fragment_homework_submission">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_submission"
+        app:destination="@id/fragment_submission" />
 
     <!-- File -->
     <fragment

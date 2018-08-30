@@ -1,26 +1,26 @@
-package org.schulcloud.mobile.controllers.homework.detailed
+package org.schulcloud.mobile.controllers.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModel
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.controllers.main.Refreshable
-import org.schulcloud.mobile.controllers.main.RefreshableImpl
-import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 
 
 @SuppressLint("ValidFragment")
-abstract class HomeworkTabFragment(private val refreshableImpl: RefreshableImpl = RefreshableImpl()) : BaseFragment(),
+abstract class TabFragment<P : MainFragment<VM>, VM : ViewModel>(private val refreshableImpl: RefreshableImpl = RefreshableImpl()) :
+        BaseFragment(),
         Refreshable by refreshableImpl {
-    protected lateinit var viewModel: HomeworkViewModel
+    protected lateinit var viewModel: VM
 
     init {
         refreshableImpl.refresh = { refresh() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = (parentFragment as HomeworkFragment).viewModel
+        @Suppress("UNCHECKED_CAST")
+        viewModel = (parentFragment as P).viewModel
         super.onCreate(savedInstanceState)
     }
 

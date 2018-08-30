@@ -10,6 +10,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
@@ -19,17 +20,21 @@ import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
 
 
-abstract class MainFragment(refreshableImpl: RefreshableImpl = RefreshableImpl()) : BaseFragment(),
+abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = RefreshableImpl()) : BaseFragment(),
         Refreshable by refreshableImpl {
 
     protected val mainActivity: MainActivity get() = activity as MainActivity
     protected val mainViewModel: MainViewModel
         get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+    private var isFirstInit: Boolean = true
 
     protected val navController: NavController
         get() = findNavController(this)
     protected lateinit var config: LiveData<MainFragmentConfig>
         private set
+
+    lateinit var viewModel: VM
+        protected set
 
     protected abstract fun provideConfig(): LiveData<MainFragmentConfig>
 
@@ -50,11 +55,6 @@ abstract class MainFragment(refreshableImpl: RefreshableImpl = RefreshableImpl()
         setHasOptionsMenu(true)
     }
 
-    override fun onStart() {
-        super.onStart()
-        performRefresh()
-    }
-
     override fun onResume() {
         super.onResume()
 
@@ -70,6 +70,11 @@ abstract class MainFragment(refreshableImpl: RefreshableImpl = RefreshableImpl()
         view?.findViewById<ViewGroup>(R.id.toolbarWrapper)?.also {
             mainActivity.setToolbarWrapper(it)
         }
+
+        if (isFirstInit)
+            performRefresh()
+
+        isFirstInit = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

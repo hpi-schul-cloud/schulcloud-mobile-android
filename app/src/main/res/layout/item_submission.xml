@@ -10,13 +10,17 @@
         <variable
             name="submission"
             type="org.schulcloud.mobile.models.homework.submission.Submission" />
+        <variable
+            name="onSelected"
+            type="kotlin.jvm.functions.Function1" />
     </data>
 
     <LinearLayout
         android:id="@+id/wrapper"
         style="@style/Material.ListItem"
         android:layout_width="match_parent"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick='@{() -> onSelected.invoke(submission != null ? submission.id : "")}'>
 
         <TextView
             style="@style/Material.ListItem_TextPrimary"
@@ -28,12 +32,6 @@
             android:gravity="center_vertical"
             android:text="@{student.getName()}"
             tools:text="Fall, Clara" />
-
-        <ImageView
-            style="@style/Material.ListItem_Icon"
-            android:layout_gravity="center_vertical"
-            app:imageDrawable="@{submission == null ? @drawable/ic_brand_submission_pending : @drawable/ic_brand_submission_submitted}"
-            tools:srcCompat="@drawable/ic_brand_submission_pending" />
 
         <TextView
             style="@style/Material.ListItem_TextSecondary"
@@ -47,11 +45,10 @@
             tools:text="90%" />
 
         <ImageView
-            style="@style/Material.Icon"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
+            style="@style/Material.ListItem_Icon"
             android:layout_gravity="center_vertical"
-            app:srcCompat="@drawable/ic_chevron_right_24dp" />
+            app:imageDrawable="@{submission == null ? @drawable/ic_brand_submission_pending : @drawable/ic_brand_submission_submitted}"
+            tools:srcCompat="@drawable/ic_brand_submission_pending" />
 
     </LinearLayout>
 </layout>

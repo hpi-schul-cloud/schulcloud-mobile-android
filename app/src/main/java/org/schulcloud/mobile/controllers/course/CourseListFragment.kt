@@ -17,12 +17,11 @@ import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-class CourseListFragment : MainFragment() {
+class CourseListFragment : MainFragment<CourseListViewModel>() {
     companion object {
         val TAG: String = CourseListFragment::class.java.simpleName
     }
 
-    private lateinit var viewModel: CourseListViewModel
     private val courseAdapter: CourseAdapter by lazy {
         CourseAdapter {
             navController.navigate(R.id.action_global_fragment_course,

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
+            type="org.schulcloud.mobile.viewmodels.SubmissionViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -31,14 +31,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:text="@{@string/homework_feedback_grade(viewModel.selectedSubmission.grade)}"
-                    android:visibility="@{viewModel.selectedSubmission.grade != null}" />
+                    android:text="@{@string/homework_submission_feedback_grade(viewModel.submission.grade)}"
+                    android:visibility="@{viewModel.submission.grade != null}" />
 
                 <org.schulcloud.mobile.views.ContentWebView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:content="@{viewModel.selectedSubmission.gradeComment}"
-                    app:contentFallback="@{@string/homework_feedback_error_empty}"
+                    app:content="@{viewModel.submission.gradeComment}"
+                    app:contentFallback="@{@string/homework_submission_feedback_error_empty}"
                     tools:content="@sample/homework.json/data/description"
                     tools:ignore="WebViewLayout" />
 

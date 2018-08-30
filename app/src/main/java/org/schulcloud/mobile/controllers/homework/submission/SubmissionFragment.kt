@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.homework.detailed
+package org.schulcloud.mobile.controllers.homework.submission
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import kotlinx.android.synthetic.main.fragment_homework.*
+import kotlinx.android.synthetic.main.fragment_homework_submission.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
+import org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.controllers.main.TabFragment
-import org.schulcloud.mobile.databinding.FragmentHomeworkBinding
+import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
 import org.schulcloud.mobile.utils.map
-import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import org.schulcloud.mobile.viewmodels.SubmissionViewModel
 
-class HomeworkFragment : MainFragment<HomeworkViewModel>() {
-    companion object {
-        val TAG: String = HomeworkFragment::class.java.simpleName
-    }
 
-    private val pagerAdapter by lazy { HomeworkPagerAdapter(context!!, childFragmentManager) }
+class SubmissionFragment : MainFragment<SubmissionViewModel>() {
+
+    private val pagerAdapter by lazy { SubmissionPagerAdapter(context!!, childFragmentManager) }
 
     override var url: String? = null
         get() = "homework/${viewModel.homework.value?.id}"
@@ -36,19 +36,20 @@ class HomeworkFragment : MainFragment<HomeworkViewModel>() {
                         title = homework?.title ?: getString(R.string.general_error_notFound),
                         subtitle = homework?.course?.name,
                         toolbarColor = homework?.course?.color?.let { Color.parseColor(it) },
-                        menuBottomRes = R.menu.fragment_homework_bottom
+                        menuBottomRes = R.menu.fragment_homework_submission_bottom
                 )
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val args = HomeworkFragmentArgs.fromBundle(arguments)
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.id))
-                .get(HomeworkViewModel::class.java)
+                .get(SubmissionViewModel::class.java)
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return FragmentHomeworkBinding.inflate(layoutInflater).also {
+        return FragmentHomeworkSubmissionBinding.inflate(layoutInflater).also {
+            it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }.root
     }
@@ -59,16 +60,18 @@ class HomeworkFragment : MainFragment<HomeworkViewModel>() {
         mainViewModel.toolbarColors.observe(this, Observer {
             tabLayout.setTabTextColors(it.textColorSecondary, it.textColor)
             tabLayout.setSelectedTabIndicatorColor(it.textColor)
-        })
 
-        viewModel.homework.observe(this, Observer {
-            pagerAdapter.homework = it
+            selectedStudent.setTextColor(it.textColor)
         })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.homework_action_gotoCourse -> viewModel.homework.value?.course?.id?.also { id ->
+            R.id.submission_action_gotoHomework -> viewModel.homework.value?.id?.also { id ->
+                navController.navigate(R.id.action_global_fragment_homework,
+                        HomeworkFragmentArgs.Builder(id).build().toBundle())
+            }
+            R.id.submission_action_gotoCourse -> viewModel.homework.value?.course?.id?.also { id ->
                 navController.navigate(R.id.action_global_fragment_course,
                         CourseFragmentArgs.Builder(id).build().toBundle())
             }
@@ -82,9 +85,10 @@ class HomeworkFragment : MainFragment<HomeworkViewModel>() {
     }
 
     suspend fun refreshWithChild(fromChild: Boolean) {
-        if (fromChild)
-            HomeworkRepository.syncHomework(viewModel.id)
-        else if (viewPager != null)
+        if (fromChild) {
+            SubmissionRepository.syncSubmission(viewModel.id)
+            viewModel.homework.value?.id?.also { HomeworkRepository.syncHomework(it) }
+        } else if (viewPager != null)
             (pagerAdapter.getItem(viewPager.currentItem) as? TabFragment<*, *>)?.performRefresh()
     }
 }

@@ -14,12 +14,10 @@ import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.NewsViewModel
 
-class NewsFragment : MainFragment() {
+class NewsFragment : MainFragment<NewsViewModel>() {
     companion object {
         val TAG: String = NewsFragment::class.java.simpleName
     }
-
-    private lateinit var viewModel: NewsViewModel
 
 
     override var url: String? = null

@@ -18,12 +18,11 @@ import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
-class HomeworkListFragment : MainFragment() {
+class HomeworkListFragment : MainFragment<HomeworkListViewModel>() {
     companion object {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }
 
-    private lateinit var viewModel: HomeworkListViewModel
     private val homeworkAdapter: HomeworkAdapter by lazy {
         HomeworkAdapter({
             navController.navigate(

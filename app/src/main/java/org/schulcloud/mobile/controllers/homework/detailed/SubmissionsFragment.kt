@@ -5,21 +5,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_homework_submissions.*
+import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.homework.submission.SubmissionFragmentArgs
+import org.schulcloud.mobile.controllers.main.TabFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionsBinding
 import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
-import org.schulcloud.mobile.utils.combineLatest
+import org.schulcloud.mobile.utils.showGenericNeutral
+import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 import org.schulcloud.mobile.views.DividerItemDecoration
 
 
-class SubmissionsFragment : HomeworkTabFragment() {
+class SubmissionsFragment : TabFragment<HomeworkFragment, HomeworkViewModel>() {
     private val submissionsAdapter by lazy {
         SubmissionsAdapter {
-            viewModel.selectionByUser = true
-            viewModel.selectedStudent.value = it
+            if (it.isEmpty())
+                context!!.showGenericNeutral(R.string.homework_submissions_error_selectedEmpty)
+            else
+                findNavController(this).navigate(
+                        R.id.action_global_fragment_submission,
+                        SubmissionFragmentArgs.Builder(it).build().toBundle())
         }
     }
 
@@ -35,14 +43,9 @@ class SubmissionsFragment : HomeworkTabFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         submissionsAdapter.emptyIndicator = empty
-        viewModel.homework
-                .combineLatest(viewModel.submissions, viewModel.selectedStudent)
-                .observe(this, Observer { (homework, submissions, selectedStudent) ->
-                    if (homework == null)
-                        return@Observer
-
-                    submissionsAdapter.update(homework, submissions, selectedStudent?.id)
-                })
+        viewModel.submissions.observe(this, Observer {
+            submissionsAdapter.update(it)
+        })
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -52,8 +55,8 @@ class SubmissionsFragment : HomeworkTabFragment() {
     }
 
     override suspend fun refresh() {
-        HomeworkRepository.syncHomework(viewModel.id)
         SubmissionRepository.syncSubmissionsForHomework(viewModel.id)
         viewModel.homework.value?.course?.id?.also { CourseRepository.syncCourse(it) }
+        (parentFragment as? HomeworkFragment)?.refreshWithChild(true)
     }
 }

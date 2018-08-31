@@ -39,4 +39,18 @@ object FileRepository {
     fun pathCourse(courseId: String, path: String? = null): String {
         return combinePath(CONTEXT_COURSES, courseId, path)
     }
+
+    fun uploadFile(file: File, signedUrl: SignedUrlResponse) {
+
+    }
+
+    fun persistFile(signedUrl: SignedUrlResponse, name: String, fileType: String, fileSize: Long){
+        var file = File()
+        file.name = name
+        file.flatFileName = signedUrl.header?.metaFlatName
+        file.type = fileType
+        file.size = fileSize
+        file.path = signedUrl.header?.metaPath + name
+        file.thumbnail = signedUrl.header?.metaThumbnail
+    }
 }

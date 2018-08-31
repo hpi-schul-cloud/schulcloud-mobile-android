@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.file
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.schulcloud.mobile.controllers.base.BaseAdapter
@@ -22,6 +23,8 @@ class FileOverviewCourseAdapter(private val onSelected: (String) -> Unit)
 
     class CourseViewHolder(binding: ItemDirectoryCourseBinding) : BaseViewHolder<Course, ItemDirectoryCourseBinding>(binding) {
         override fun onItemSet() {
+            if(item.color == null)
+                item.color = "#000000"
             binding.course = item
         }
     }

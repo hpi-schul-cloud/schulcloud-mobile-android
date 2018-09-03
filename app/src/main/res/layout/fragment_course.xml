@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.CourseViewModel" />
+    </data>
+
+    <org.schulcloud.mobile.views.ScrollContentView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@{viewModel.course.description.trim()}"
+                    android:visibility="@{ViewUtilsKt.toVisible(viewModel.course.description.trim())}"
+                    tools:text="Course Description\n\n..." />
+
+                <TextView
+                    style="@style/Content_Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/course_topics" />
+
+                <TextView
+                    android:id="@android:id/empty"
+                    style="@style/Content_Text.Empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/topics_error_empty" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_topic" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </org.schulcloud.mobile.views.ScrollContentView>
+</layout>

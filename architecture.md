@@ -26,11 +26,7 @@
 
 ## Activities and Fragments
 
-Top-level activities and fragments inherit from [`BaseActivity`][BaseActivity] or [`BaseFragment`][BaseFragment], respectively. These base classes e.g. handle refresh and sharing actions.
-
-[`MainActivity`][MainActivity] uses a `NavigationDrawer` to change between fragments. Any further views should rest inside additional activities.
-
-*Please make sure that up and back navigation [work as expected](https://developer.android.com/training/design-navigation/ancestral-temporal)!*
+All main content is displayed in fragments that inherit from [`MainFragment`][MainFragment]. This base class e.g. handles refresh and sharing actions. Configurations (title, menu items, FAB, etc.) are configured via `MainFragment#provideConfig()`.
 
 
 ## Data structure
@@ -103,9 +99,9 @@ Showing an indeterminate progress dialog is as simple as wrapping a `suspend`-fu
 [ktx-synthetic]: https://kotlinlang.org/docs/tutorials/android-plugin.html#importing-synthetic-properties
 
 [BaseActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseActivity.kt
-[BaseFragment]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseFragment.kt
 [BaseAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseAdapter.kt
 [MainActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/main/MainActivity.kt
+[MainFragment]: ./app/src/main/java/org/schulcloud/mobile/controllers/main/MainFragment.kt
 [FileActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/file/FileActivity.kt
 [TopicListAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/course/TopicListAdapter.kt
 [ApiServiceInterface]: ./app/src/main/java/org/schulcloud/mobile/network/ApiServiceInterface.kt

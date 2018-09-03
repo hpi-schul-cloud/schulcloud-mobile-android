@@ -33,7 +33,7 @@
         <item name="android:drawablePadding">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:gravity">start|center_vertical</item>
-        <item name="drawableEnd">@drawable/ic_open_in_new_dark_24dp</item>
+        <item name="drawableEnd">@drawable/ic_open_in_new_24dp</item>
     </style>
     <style name="Content_Subhead" parent="TextAppearance.AppCompat.Title">
         <item name="android:layout_marginTop">8dp</item>
@@ -45,7 +45,7 @@
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
+        <item name="srcCompat">@drawable/ic_open_in_new_24dp</item>
     </style>
 
     <style name="ContentExternal">
@@ -60,10 +60,10 @@
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
     </style>
-    <style name="Dashboard.Widget.Title" parent="TextAppearance.AppCompat.Display1">
+    <style name="Dashboard.Widget.Title" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:layout_margin">16dp</item>
     </style>
-    <style name="Dashboard.Widget.ButtonMore" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <style name="Dashboard.Widget.ButtonMore" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_gravity">end</item>
     </style>

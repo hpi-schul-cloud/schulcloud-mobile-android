@@ -5,12 +5,12 @@ import android.content.Context
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.AttrRes
 import okhttp3.Request
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
@@ -27,43 +27,46 @@ open class ContentWebView @JvmOverloads constructor(
         val TAG: String = ContentWebView::class.java.simpleName
 
         // language=HTML
-        const val CONTENT_TEXT_PREFIX = ("<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "<head>\n"
-                + "    <meta charset=\"utf-8\"/>\n"
-                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-                + "    <style>\n"
-                + "        * {\n"
-                + "            max-width: 100%;\n"
-                + "        }\n"
-                + "        body {\n"
-                + "            margin: 0;\n"
-                + "        }\n"
-                + "        body > :first-child {\n"
-                + "            margin-top: 0;\n"
-                + "        }\n"
-                + "        body > :nth-last-child(2) {\n"
-                + "            margin-bottom: 0;\n"
-                + "        }\n"
-                + "        table {\n"
-                + "            table-layout: fixed;\n"
-                + "            width: 100%;\n"
-                + "        }\n"
-                + "        ul {\n"
-                + "            -webkit-padding-start: 25px;\n"
-                + "        }\n"
-                + "    </style>\n"
-                + "</head>\n"
-                + "<body>")
+        const val CONTENT_TEXT_PREFIX = """
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+        body {
+            margin: 0;
+        }
+        body > :first-child {
+            margin-top: 0;
+        }
+        body > :nth-last-child(2) {
+            margin-bottom: 0;
+        }
+        table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        ul {
+            -webkit-padding-start: 25px;
+        }
+    </style>
+</head>
+<body>"""
         // language=HTML
-        const val CONTENT_TEXT_SUFFIX = ("<script>\n"
-                + "    for (tag of document.body.getElementsByTagName('*')) {\n"
-                + "        tag.style.width = '';\n"
-                + "        tag.style.height = '';\n"
-                + "   }\n"
-                + "</script>\n"
-                + "</body>\n"
-                + "</html>\n")
+        const val CONTENT_TEXT_SUFFIX = """
+    <script>
+    for (tag of document.body.getElementsByTagName('*')) {
+        tag.style.width = '';
+        tag.style.height = '';
+    }
+</script>
+</body>
+</html>"""
     }
 
     init {

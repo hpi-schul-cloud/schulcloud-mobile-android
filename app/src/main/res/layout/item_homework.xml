@@ -6,7 +6,7 @@
 
     <data>
         <import type="android.graphics.Color" />
-        <import type="org.schulcloud.mobile.controllers.main.HomeworkListAdapter.HomeworkViewHolder" />
+        <import type="org.schulcloud.mobile.controllers.homework.HomeworkAdapter.HomeworkViewHolder" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
         <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
 
@@ -44,7 +44,7 @@
             android:visibility="@{ViewUtilsKt.asVisibility(headerRequired)}"
             tools:text="Header" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Due in 5 hours" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 app:layout_constraintTop_toBottomOf="@id/title"
                 tools:text="Description" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 </layout>

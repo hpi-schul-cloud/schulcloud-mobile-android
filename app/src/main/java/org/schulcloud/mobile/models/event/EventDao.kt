@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models.event
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import android.util.Log
 import io.realm.Realm
 import org.schulcloud.mobile.utils.asLiveData

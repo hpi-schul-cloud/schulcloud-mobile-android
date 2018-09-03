@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="org.schulcloud.mobile.controllers.main.NewsListAdapter.NewsViewHolder" />
+        <import type="org.schulcloud.mobile.controllers.news.NewsAdapter" />
 
         <variable
             name="news"
@@ -15,7 +15,7 @@
             type="String" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/news_item_margin_vertical"
@@ -74,6 +74,6 @@
             tools:ignore="WebViewLayout"
             tools:text="Content" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

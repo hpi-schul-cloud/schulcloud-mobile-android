@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<org.schulcloud.mobile.views.ScrollContentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@android:id/empty"
+            style="@style/Content_Text.Empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/courses_error_empty" />
 
-            <TextView
-                android:id="@android:id/empty"
-                style="@style/Content_Text.Empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/courses_error_empty" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/grid_spacing"
+            tools:listitem="@layout/item_course" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:padding="@dimen/grid_spacing"
-                tools:listitem="@layout/item_course" />
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-</FrameLayout>
+</org.schulcloud.mobile.views.ScrollContentView>

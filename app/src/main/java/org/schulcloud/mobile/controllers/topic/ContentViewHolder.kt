@@ -1,8 +1,8 @@
 package org.schulcloud.mobile.controllers.topic
 
-import android.arch.lifecycle.Observer
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.LinearLayoutManager
+import androidx.lifecycle.Observer
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import io.realm.Realm
 import org.schulcloud.mobile.controllers.base.BaseActivity

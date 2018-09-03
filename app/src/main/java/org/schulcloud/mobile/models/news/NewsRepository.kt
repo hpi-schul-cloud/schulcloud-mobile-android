@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models.news
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
 import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.ListUserNewsJob

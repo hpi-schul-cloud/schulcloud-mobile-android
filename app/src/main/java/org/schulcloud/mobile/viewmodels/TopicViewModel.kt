@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.viewmodels
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import io.realm.Realm
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.topic.TopicRepository

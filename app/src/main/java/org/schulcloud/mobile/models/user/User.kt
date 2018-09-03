@@ -16,6 +16,6 @@ open class User : RealmObject() {
     var schoolId: String? = null
     var displayName: String? = null
 
-    val shortName
-        get() = "${firstName?.get(0)}. $lastName"
+    val name get() = "$firstName $lastName"
+    val shortName get() = "${firstName?.get(0)}. $lastName"
 }

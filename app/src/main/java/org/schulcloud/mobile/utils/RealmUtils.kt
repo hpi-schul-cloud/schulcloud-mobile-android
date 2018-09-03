@@ -2,17 +2,18 @@
 
 package org.schulcloud.mobile.utils
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.*
 import org.schulcloud.mobile.models.base.LiveRealmData
 import org.schulcloud.mobile.models.base.RealmObjectLiveData
 import org.schulcloud.mobile.models.content.ContentDao
 import org.schulcloud.mobile.models.course.CourseDao
-import org.schulcloud.mobile.models.homework.HomeworkDao
 import org.schulcloud.mobile.models.event.EventDao
 import org.schulcloud.mobile.models.file.FileDao
+import org.schulcloud.mobile.models.homework.HomeworkDao
 import org.schulcloud.mobile.models.news.NewsDao
 import org.schulcloud.mobile.models.topic.TopicDao
+import org.schulcloud.mobile.models.user.UserDao
 
 // Convenience extension on RealmResults to return as LiveRealmData
 fun <T : RealmModel> RealmResults<T>.asLiveData(): LiveData<List<T>> = LiveRealmData(this)
@@ -25,6 +26,8 @@ fun <T : RealmObject> RealmQuery<T>.firstAsLiveData(): LiveData<T?> {
             .asLiveData()
             .map { it.getOrNull(0) }
 }
+
+fun Realm.userDao(): UserDao = UserDao(this)
 
 fun Realm.eventDao(): EventDao = EventDao(this)
 

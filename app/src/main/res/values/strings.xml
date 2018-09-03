@@ -7,6 +7,7 @@
     <string name="general_date_yesterday">Gestern</string>
     <string name="general_date_today">Heute</string>
     <string name="general_date_tomorrow">Morgen</string>
+    <string name="general_error_notFound">Nicht gefunden</string>
 
     <!-- Share -->
     <string name="share_subject_format">%1$s: %2$s</string>
@@ -74,6 +75,7 @@
     <string name="course_title">Meine Kurse</string>
     <string name="course_topics">Themen</string>
     <string name="courses_error_empty">Es wurden keine Kurse gefunden</string>
+    <string name="course_action_gotoFiles">@string/fileOverview_courses</string>
 
     <!-- Topic -->
     <string name="topics_error_empty">Es wurden keine Themen gefunden</string>

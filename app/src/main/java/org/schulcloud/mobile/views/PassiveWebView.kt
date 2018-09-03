@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.views
 
 import android.content.Context
-import android.support.annotation.AttrRes
+import androidx.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.webkit.WebViewClient

@@ -1,8 +1,8 @@
 @file:Suppress("TooManyFunctions")
 package org.schulcloud.mobile.utils
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,17 +10,14 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.annotation.ArrayRes
-import android.support.annotation.ColorInt
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.text.TextUtilsCompat
-import android.support.v4.view.ViewCompat
+import androidx.annotation.ArrayRes
+import androidx.annotation.ColorInt
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.TextUtilsCompat
+import androidx.core.view.ViewCompat
 import org.schulcloud.mobile.R
 import java.util.*
 
-/**
- * Date: 6/15/2018
- */
 
 fun Map<String, String>.asBundle(): Bundle {
     return Bundle().apply {

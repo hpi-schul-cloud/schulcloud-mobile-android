@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.controllers.base
 
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import org.schulcloud.mobile.utils.asVisibility
 import kotlin.properties.Delegates

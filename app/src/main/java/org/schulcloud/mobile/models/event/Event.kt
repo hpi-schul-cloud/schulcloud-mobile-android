@@ -36,6 +36,7 @@ open class Event : RealmObject() {
             return end - start
         }
 
+    @Suppress("ComplexMethod")
     fun nextStart(includeCurrent: Boolean = false): Calendar? {
         val start = start ?: return null
         val end = end ?: return null

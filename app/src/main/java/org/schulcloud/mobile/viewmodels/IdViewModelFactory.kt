@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.viewmodels
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class IdViewModelFactory(private val id: String) : ViewModelProvider.NewInstanceFactory() {
 

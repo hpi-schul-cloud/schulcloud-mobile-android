@@ -4,22 +4,24 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.widget.LinearLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Similar to [DividerItemDecoration], but no divider is drawn after the last item.
  */
-class MiddleDividerItemDecoration(context: Context,
-                                  @RecyclerView.Orientation val orientation: Int = VERTICAL)
-    : RecyclerView.ItemDecoration() {
+class MiddleDividerItemDecoration(
+    context: Context,
+    @RecyclerView.Orientation val orientation: Int = VERTICAL
+) : RecyclerView.ItemDecoration() {
     companion object {
         private val TAG = MiddleDividerItemDecoration::class.java.simpleName
 
-        const val HORIZONTAL = LinearLayout.HORIZONTAL
-        const val VERTICAL = LinearLayout.VERTICAL
+        @RecyclerView.Orientation
+        const val HORIZONTAL = RecyclerView.HORIZONTAL
+        @RecyclerView.Orientation
+        const val VERTICAL = RecyclerView.VERTICAL
         private val ATTRS = intArrayOf(android.R.attr.listDivider)
     }
 
@@ -30,12 +32,12 @@ class MiddleDividerItemDecoration(context: Context,
         val a = context.obtainStyledAttributes(ATTRS)
         val div = a.getDrawable(0)
         if (div == null)
-            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this " + "MiddleDividerItemDecoration.")
+            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this MiddleDividerItemDecoration.")
         divider = div
         a.recycle()
     }
 
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         if (parent.layoutManager == null)
             return
 
@@ -88,7 +90,7 @@ class MiddleDividerItemDecoration(context: Context,
 
         for (i in 0 until (parent.childCount - 1)) {
             val child = parent.getChildAt(i)
-            parent.layoutManager.getDecoratedBoundsWithMargins(child, mBounds)
+            parent.layoutManager?.getDecoratedBoundsWithMargins(child, mBounds)
             val right = mBounds.right + Math.round(child.translationX)
             val left = right - divider.intrinsicWidth
             divider.setBounds(left, top, right, bottom)

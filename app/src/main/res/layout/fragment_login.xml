@@ -15,11 +15,11 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
         android:paddingTop="36dp"
+        android:paddingRight="24dp"
         android:paddingBottom="36dp">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_logo"
             android:layout_width="match_parent"
             android:layout_height="96dp"
@@ -30,15 +30,15 @@
             app:autoSizeMinTextSize="24sp"
             app:autoSizeTextType="uniform" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:theme="@style/LoginTextInput">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,17 +48,17 @@
                 android:maxLines="1"
                 android:textColor="@color/login_text" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:theme="@style/LoginTextInput">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,15 +68,15 @@
                 android:maxLines="1"
                 android:textColor="@color/login_text" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/textForgotPw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginBottom="16dp"
             android:layout_marginTop="2dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/button_flat_dark"
             android:padding="4dp"
             android:text="@string/login_forgotPassword"
@@ -92,13 +92,13 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
-            style="@style/Material.Button"
-            android:layout_width="fill_parent"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="@string/login_login" />
 
@@ -112,16 +112,16 @@
             android:text="@string/login_demo"
             android:textAlignment="center" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_demo_student"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:text="@string/login_demo_student" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_demo_teacher"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:text="@string/login_demo_teacher" />

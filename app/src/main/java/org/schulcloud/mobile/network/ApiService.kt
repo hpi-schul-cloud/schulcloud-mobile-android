@@ -37,6 +37,51 @@ object ApiService {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
+        val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
+            init(null as KeyStore?)
+        }
+        val trustManagers = trustManagerFactory.getTrustManagers()
+        if (trustManagers.size != 1 || trustManagers[0] !is X509TrustManager) {
+            throw IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers))
+        }
+        val trustManager = trustManagers[0] as X509TrustManager
+
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
+
+        val client = OkHttpClient.Builder()
+                .sslSocketFactory(TlsOnlySocketFactory(sslContext.socketFactory), trustManager)
+                .addInterceptor { chain ->
+                    val request = chain.request()
+                    val builder = request.newBuilder()
+                    if (UserRepository.isAuthorized
+                            && request.url().host().equals(HOST.substringAfterLast('/'), true)) {
+                        builder.header(Config.HEADER_AUTH, Config.HEADER_AUTH_VALUE_PREFIX + UserRepository.token)
+                    }
+                    chain.proceed(builder.build())
+                }
+                .addInterceptor(loggingInterceptor)
+                .build()
+
+        val gson = GsonBuilder()
+                .create()
+
+        val retrofit = Retrofit.Builder()
+                .baseUrl(BuildConfig.API_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+
+        service = retrofit.create(ApiServiceInterface::class.java)
+        return service as ApiServiceInterface
+    }
+
+    @Synchronized
+    fun getFileDownloadInstance(): ApiServiceInterface {
+
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+
         val cf: CertificateFactory = CertificateFactory.getInstance("X.509")
 
         val caInput: InputStream = SchulCloudApp.instance.resources.openRawResource(R.raw.globalroot_class_2)
@@ -48,7 +93,7 @@ object ApiService {
         val keyStoreType = KeyStore.getDefaultType()
         val keyStore = KeyStore.getInstance(keyStoreType).apply {
             load(null, null)
-            setCertificateEntry("ca", ca)
+                setCertificateEntry("ca", ca)
         }
 
         val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {

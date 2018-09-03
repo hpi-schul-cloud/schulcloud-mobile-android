@@ -25,6 +25,8 @@ import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
+import java.security.cert.CertPathValidatorException
+import javax.net.ssl.SSLHandshakeException
 
 
 class FileActivity : BaseActivity() {
@@ -148,7 +150,11 @@ class FileActivity : BaseActivity() {
                     }
 
                     withProgressDialog(R.string.file_fileDownload_progress) {
-                        val result = ApiService.getInstance().downloadFile(response.url!!).await()
+                        val result = try {
+                            ApiService.getInstance().downloadFile(response.url!!).await()
+                        } catch (ex: SSLHandshakeException) {
+                            ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
+                        }
                         if (!result.writeToDisk(file.name.orEmpty())) {
                             showGenericError(R.string.file_fileDownload_error_save)
                             return@withProgressDialog

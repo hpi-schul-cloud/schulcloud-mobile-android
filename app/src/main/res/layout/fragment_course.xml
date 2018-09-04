@@ -11,7 +11,7 @@
             type="org.schulcloud.mobile.viewmodels.CourseViewModel" />
     </data>
 
-    <org.schulcloud.mobile.views.ScrollContentView
+    <org.schulcloud.mobile.views.ContentView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -36,7 +36,7 @@
                     tools:text="Course Description\n\n..." />
 
                 <TextView
-                    style="@style/Content_Subhead"
+                    style="@style/Material.ListHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/course_topics" />
@@ -58,5 +58,5 @@
 
         </androidx.core.widget.NestedScrollView>
 
-    </org.schulcloud.mobile.views.ScrollContentView>
+    </org.schulcloud.mobile.views.ContentView>
 </layout>

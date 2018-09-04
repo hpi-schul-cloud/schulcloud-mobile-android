@@ -8,7 +8,7 @@ import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.topic.TopicRepository
 
-class CourseViewModel(id: String) : ViewModel() {
+class CourseViewModel(val id: String) : ViewModel() {
 
     private val realm: Realm by lazy {
         Realm.getDefaultInstance()

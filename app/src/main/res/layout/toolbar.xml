@@ -4,15 +4,13 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.LightActionBar">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
-            android:theme="@style/AppTheme.LightActionBar" />
+            android:theme="@style/ThemeOverlay.App.Dark.ActionBar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

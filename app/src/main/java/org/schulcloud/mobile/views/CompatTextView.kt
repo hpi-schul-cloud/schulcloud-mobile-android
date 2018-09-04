@@ -3,68 +3,95 @@ package org.schulcloud.mobile.views
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.AttributeSet
 import androidx.annotation.AttrRes
+import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
-import android.util.AttributeSet
+import androidx.core.content.withStyledAttributes
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.isLtr
+import kotlin.properties.Delegates
 
 open class CompatTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes defStyleAttr: Int = 0
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
-
     companion object {
         val TAG: String = CompatTextView::class.java.simpleName
     }
 
-    init {
-        initAttrs(attrs)
+    private var isInitialized = false
+    private fun <T> updateDrawablesObservable(initialValue: T) = Delegates.observable(initialValue) { _, _, _ ->
+        // Avoids many calls when initializing
+        if (isInitialized)
+            updateDrawables()
     }
 
-    @Suppress("ComplexMethod")
-    private fun initAttrs(attrs: AttributeSet?) {
-        if (attrs == null)
-            return
+    var drawableStart by updateDrawablesObservable<Drawable?>(null)
+    var drawableEnd by updateDrawablesObservable<Drawable?>(null)
+    var drawableBottom by updateDrawablesObservable<Drawable?>(null)
+    var drawableTop by updateDrawablesObservable<Drawable?>(null)
 
-        val attributeArray = context.obtainStyledAttributes(attrs, R.styleable.CompatTextView)
+    var drawableStartVisible by updateDrawablesObservable(true)
+    var drawableEndVisible by updateDrawablesObservable(true)
+    var drawableTopVisible by updateDrawablesObservable(true)
+    var drawableBottomVisible by updateDrawablesObservable(true)
 
-        // To use vector drawables on pre-21
-        // https://stackoverflow.com/a/40250753/6220609
-        var drawableStart: Drawable? = null
-        var drawableEnd: Drawable? = null
-        var drawableBottom: Drawable? = null
-        var drawableTop: Drawable? = null
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawableStart = attributeArray.getDrawable(R.styleable.CompatTextView_drawableStart)
-            drawableEnd = attributeArray.getDrawable(R.styleable.CompatTextView_drawableEnd)
-            drawableBottom = attributeArray.getDrawable(R.styleable.CompatTextView_drawableBottom)
-            drawableTop = attributeArray.getDrawable(R.styleable.CompatTextView_drawableTop)
-        } else {
-            val drawableStartId = attributeArray.getResourceId(R.styleable.CompatTextView_drawableStart, -1)
-            val drawableEndId = attributeArray.getResourceId(R.styleable.CompatTextView_drawableEnd, -1)
-            val drawableBottomId = attributeArray.getResourceId(R.styleable.CompatTextView_drawableBottom, -1)
-            val drawableTopId = attributeArray.getResourceId(R.styleable.CompatTextView_drawableTop, -1)
+    init {
+        context.withStyledAttributes(attrs, R.styleable.CompatTextView) {
+            // To use vector drawables on pre-21
+            // https://stackoverflow.com/a/40250753/6220609
+            fun drawable(@StyleableRes attrId: Int): Drawable? {
+                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getDrawable(attrId)
+                } else {
+                    val id = getResourceId(attrId, 0)
+                    if (id != 0)
+                        AppCompatResources.getDrawable(context, id)
+                    else
+                        null
+                }
+            }
 
-            if (drawableStartId != -1)
-                drawableStart = AppCompatResources.getDrawable(context, drawableStartId)
-            if (drawableEndId != -1)
-                drawableEnd = AppCompatResources.getDrawable(context, drawableEndId)
-            if (drawableBottomId != -1)
-                drawableBottom = AppCompatResources.getDrawable(context, drawableBottomId)
-            if (drawableTopId != -1)
-                drawableTop = AppCompatResources.getDrawable(context, drawableTopId)
+            drawableStart = drawable(R.styleable.CompatTextView_drawableStart)
+            drawableEnd = drawable(R.styleable.CompatTextView_drawableEnd)
+            drawableBottom = drawable(R.styleable.CompatTextView_drawableBottom)
+            drawableTop = drawable(R.styleable.CompatTextView_drawableTop)
+
+            drawableStartVisible = getBoolean(R.styleable.CompatTextView_drawableStartVisible, true)
+            drawableEndVisible = getBoolean(R.styleable.CompatTextView_drawableEndVisible, true)
+            drawableTopVisible = getBoolean(R.styleable.CompatTextView_drawableTopVisible, true)
+            drawableBottomVisible = getBoolean(R.styleable.CompatTextView_drawableBottomVisible, true)
+
+            isInitialized = true
+            updateDrawables()
         }
+    }
 
+    private fun updateDrawables() {
+        fun drawableIfVisible(drawable: Drawable?, visible: Boolean) = if (visible) drawable else null
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 ->
-                setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, drawableTop, drawableEnd, drawableBottom)
-            isLtr() -> setCompoundDrawablesWithIntrinsicBounds(drawableStart, drawableTop, drawableEnd, drawableBottom)
-            else -> setCompoundDrawablesWithIntrinsicBounds(drawableEnd, drawableTop, drawableStart, drawableBottom)
-        }
+                setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        drawableIfVisible(drawableStart, drawableStartVisible),
+                        drawableIfVisible(drawableTop, drawableTopVisible),
+                        drawableIfVisible(drawableEnd, drawableEndVisible),
+                        drawableIfVisible(drawableBottom, drawableBottomVisible))
 
-        attributeArray.recycle()
+            isLtr() -> setCompoundDrawablesWithIntrinsicBounds(
+                    drawableIfVisible(drawableStart, drawableStartVisible),
+                    drawableIfVisible(drawableTop, drawableTopVisible),
+                    drawableIfVisible(drawableEnd, drawableEndVisible),
+                    drawableIfVisible(drawableBottom, drawableBottomVisible))
+
+            else -> setCompoundDrawablesWithIntrinsicBounds(
+                    drawableIfVisible(drawableEnd, drawableEndVisible),
+                    drawableIfVisible(drawableTop, drawableTopVisible),
+                    drawableIfVisible(drawableStart, drawableStartVisible),
+                    drawableIfVisible(drawableBottom, drawableBottomVisible))
+
+        }
     }
 }

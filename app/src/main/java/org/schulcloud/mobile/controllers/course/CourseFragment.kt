@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.course
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -7,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_course.*
 import org.schulcloud.mobile.R
@@ -19,8 +19,10 @@ import org.schulcloud.mobile.databinding.FragmentCourseBinding
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
+import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import org.schulcloud.mobile.views.DividerItemDecoration
 
 class CourseFragment : MainFragment() {
     companion object {
@@ -39,10 +41,13 @@ class CourseFragment : MainFragment() {
     override var url: String? = null
         get() = viewModel.course.value?.url
 
-    override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.course.value?.name ?: getString(R.string.general_error_notFound),
-            menuBottomRes = R.menu.fragment_course_bottom
-    )
+    override fun provideConfig() = viewModel.course.map { course ->
+        MainFragmentConfig(
+                title = course?.name ?: getString(R.string.general_error_notFound),
+                toolbarColor = if (course != null) Color.parseColor(course.color) else null,
+                menuBottomRes = R.menu.fragment_course_bottom
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val args = CourseFragmentArgs.fromBundle(arguments)
@@ -61,10 +66,6 @@ class CourseFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.course.observe(this, Observer {
-            notifyConfigChanged()
-        })
-
         topicsAdapter.emptyIndicator = empty
         viewModel.topics.observe(this, Observer {
             topicsAdapter.update(it ?: emptyList())
@@ -73,25 +74,24 @@ class CourseFragment : MainFragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = topicsAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(context))
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.course_action_gotoFiles ->
+            R.id.course_action_gotoFiles -> viewModel.course.value?.id?.also { id ->
                 navController.navigate(R.id.action_global_fragment_file,
-                        FileFragmentArgs.Builder(FileRepository.pathCourse(viewModel.course.value!!.id))
+                        FileFragmentArgs.Builder(FileRepository.pathCourse(id))
                                 .build().toBundle())
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
 
     override suspend fun refresh() {
-        viewModel.course.value?.also {
-            CourseRepository.syncCourse(it.id)
-            TopicRepository.syncTopics(it.id)
-        }
+        CourseRepository.syncCourse(viewModel.id)
+        TopicRepository.syncTopics(viewModel.id)
     }
 }

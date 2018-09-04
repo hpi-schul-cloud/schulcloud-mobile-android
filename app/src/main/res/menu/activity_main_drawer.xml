@@ -6,30 +6,38 @@
 
     <item
         android:id="@+id/fragment_dashboard"
-        android:icon="@drawable/ic_th_large"
-        android:title="@string/main_drawer_dashboard" />
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_dashboard"
+        android:title="@string/main_drawer_dashboard"
+        tools:checked="true" />
     <item
         android:id="@+id/fragment_newsList"
-        android:icon="@drawable/ic_newspaper"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_news"
         android:title="@string/main_drawer_news" />
     <item
         android:id="@+id/fragment_courseList"
-        android:icon="@drawable/ic_graduation_cap"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_course_black"
         android:title="@string/main_drawer_courses" />
     <!--<item
         android:id="@+id/fragment_calendar"
-        android:icon="@drawable/ic_table"
+        android:checkable="true
+        android:icon="@drawable/ic_brand_calendar"
         android:title="@string/main_drawer_calendar" />-->
     <item
         android:id="@+id/fragment_homeworkList"
-        android:icon="@drawable/ic_tasks"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_homework"
         android:title="@string/main_drawer_homework" />
     <item
         android:id="@+id/fragment_fileOverview"
-        android:icon="@drawable/ic_folder_open_dark"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_files_black"
         android:title="@string/main_drawer_files" />
     <!--<item
         android:id="@+id/fragment_learnstore"
+        android:checkable="true
         android:icon="@drawable/ic_search"
         android:title="@string/main_drawer_learnstore" />-->
 

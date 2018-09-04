@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_homework_list.*
@@ -15,6 +14,7 @@ import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
 class HomeworkListFragment : MainFragment() {
@@ -24,12 +24,15 @@ class HomeworkListFragment : MainFragment() {
 
     private lateinit var viewModel: HomeworkListViewModel
     private val homeworkAdapter: HomeworkAdapter by lazy {
-        HomeworkAdapter {
-            findNavController(this).navigate(
+        HomeworkAdapter({
+            navController.navigate(
                     R.id.action_global_fragment_homework,
-                    HomeworkFragmentArgs.Builder(it).build().toBundle()
-            )
-        }
+                    HomeworkFragmentArgs.Builder(it).build().toBundle())
+        }, {
+            navController.navigate(
+                    R.id.action_global_fragment_course,
+                    HomeworkFragmentArgs.Builder(it).build().toBundle())
+        })
     }
 
 
@@ -37,7 +40,7 @@ class HomeworkListFragment : MainFragment() {
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.homework_title)
-    )
+    ).asLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

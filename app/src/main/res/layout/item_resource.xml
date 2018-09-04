@@ -28,22 +28,21 @@
                 style="@style/Content_Header.WithLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@null"
                 android:text="@{resource.title}"
                 android:textColor="@color/brand_primary"
                 tools:text="Resource title" />
 
-            <org.schulcloud.mobile.views.PassiveWebView
+            <org.schulcloud.mobile.views.ContentTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                app:content="@{resource.description}"
-                tools:ignore="WebViewLayout" />
+                android:layout_marginEnd="16dp"
+                android:text="@{resource.description}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,10 +51,10 @@
                 android:background="@drawable/sc_card_footer"
                 android:ellipsize="end"
                 android:lines="1"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:text="@{@string/content_resource_client(resource.client)}"
                 tools:text="via Client" />
 

@@ -10,7 +10,7 @@ import java.text.DecimalFormat
 
 
 private val UNITS = arrayOf("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-private const val BYTES_FACTOR = 1024.0
+private const val BYTES_FACTOR = 1000.0
 
 fun Long.formatFileSize(): String {
     if (this <= 0)

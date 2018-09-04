@@ -73,6 +73,7 @@ open class ContentWebView @JvmOverloads constructor(
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             WebView.setWebContentsDebuggingEnabled(true)
 
+        @Suppress("SetJavaScriptEnabled")
         settings.javaScriptEnabled = true
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {

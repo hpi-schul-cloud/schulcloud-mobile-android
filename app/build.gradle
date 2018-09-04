@@ -24,6 +24,7 @@ android {
         versionName rootProject.versionName
         versionCode rootProject.versionCode
 
+        multiDexEnabled true
         applicationId "org.schulcloud.mobile"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

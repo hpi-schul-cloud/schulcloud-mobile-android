@@ -13,6 +13,7 @@ import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.CourseListViewModel
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
@@ -34,7 +35,7 @@ class CourseListFragment : MainFragment() {
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.course_title)
-    )
+    ).asLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

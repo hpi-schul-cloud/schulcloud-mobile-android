@@ -1,10 +1,12 @@
 package org.schulcloud.mobile.controllers.topic
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -13,25 +15,36 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentTopicBinding
+import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.topic.TopicRepository
-import org.schulcloud.mobile.utils.dpToPx
+import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.TopicViewModel
+import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
 class TopicFragment : MainFragment() {
     companion object {
         val TAG: String = TopicFragment::class.java.simpleName
-        const val SPAN_WIDTH_MIN = 440
+
+        private const val COLUMN_WIDTH_MIN = 440
     }
 
     override var url: String? = null
         get() = viewModel.topic.value?.url
 
-    override fun provideConfig() = MainFragmentConfig(
-            title = viewModel.topic.value?.name ?: getString(R.string.general_error_notFound),
-            menuBottomRes = R.menu.fragment_topic_bottom
-    )
+    override fun provideConfig() = viewModel.topic
+            .combineLatest(viewModel.topic.switchMap {
+                it?.courseId?.let { viewModel.course(it) } ?: null.asLiveData<Course?>()
+            })
+            .map { (topic, course) ->
+                MainFragmentConfig(
+                        title = topic?.name ?: getString(R.string.general_error_notFound),
+                        subtitle = course?.name,
+                        toolbarColor = course?.color?.let { Color.parseColor(it) },
+                        menuBottomRes = R.menu.fragment_topic_bottom
+                )
+            }
 
     private lateinit var viewModel: TopicViewModel
     private val contentsAdapter: ContentListAdapter by lazy {
@@ -56,26 +69,25 @@ class TopicFragment : MainFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.topic.observe(this, Observer {
-            notifyConfigChanged()
             contentsAdapter.update(it)
         })
 
         // calculate amount of columns
         val metrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        val spans = Math.max(1, metrics.widthPixels / SPAN_WIDTH_MIN.dpToPx())
+        val spans = Math.max(1, metrics.widthPixels / COLUMN_WIDTH_MIN.dpToPx())
 
         contentsAdapter.emptyIndicator = empty
         recyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(spans, StaggeredGridLayoutManager.VERTICAL)
             adapter = contentsAdapter
-            addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing))
+            addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing_half))
+            addItemDecoration(DividerItemDecoration.middle(context, LinearLayoutCompat.SHOW_DIVIDER_MIDDLE))
+            addItemDecoration(ItemOffsetDecoration(context, R.dimen.content_spacing_half))
         }
     }
 
     override suspend fun refresh() {
-        viewModel.topic.value?.also {
-            TopicRepository.syncTopic(it.id)
-        }
+        TopicRepository.syncTopic(viewModel.id)
     }
 }

@@ -10,22 +10,19 @@ import org.schulcloud.mobile.network.ApiService
 import ru.gildor.coroutines.retrofit.awaitResponse
 
 class ListUserNewsJob(callback: RequestJobCallback) : RequestJob(callback) {
-
     companion object {
         val TAG: String = ListUserNewsJob::class.java.simpleName
     }
 
     override suspend fun onRun() {
-
         val response = ApiService.getInstance().listUserNews().awaitResponse()
-        if (response.isSuccessful) {
 
+        if (response.isSuccessful) {
             if (BuildConfig.DEBUG)
                 Log.i(TAG, "News received")
 
             // Sync
-            Sync.Data.with(News::class.java, response.body()!!.data!!)
-                    .run()
+            Sync.Data.with(News::class.java, response.body()!!.data!!).run()
         } else {
             if (BuildConfig.DEBUG)
                 Log.e(TAG, "Error while fetching news list")

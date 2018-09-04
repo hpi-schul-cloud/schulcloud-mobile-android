@@ -8,6 +8,7 @@ class IdViewModelFactory(private val id: String) : ViewModelProvider.NewInstance
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
+            NewsViewModel::class.java -> NewsViewModel(id) as T
             CourseViewModel::class.java -> CourseViewModel(id) as T
             TopicViewModel::class.java -> TopicViewModel(id) as T
             HomeworkViewModel::class.java -> HomeworkViewModel(id) as T

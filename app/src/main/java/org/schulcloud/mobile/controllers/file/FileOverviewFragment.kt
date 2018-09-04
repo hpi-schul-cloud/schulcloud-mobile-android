@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_file_overview.*
 import org.schulcloud.mobile.R
@@ -14,6 +15,7 @@ import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
 class FileOverviewFragment : MainFragment() {
@@ -34,7 +36,7 @@ class FileOverviewFragment : MainFragment() {
     override fun provideConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.file_title)
-    )
+    ).asLiveData()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +50,9 @@ class FileOverviewFragment : MainFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        personal_card.setOnClickListener {
-            navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(FileRepository.pathPersonal()).build().toBundle())
-        }
+        personal_card.setOnClickListener(Navigation.createNavigateOnClickListener(
+                R.id.action_global_fragment_file,
+                FileFragmentArgs.Builder(FileRepository.pathPersonal()).build().toBundle()))
 
         coursesAdapter.emptyIndicator = empty
         viewModel.courses.observe(this, Observer { courses ->

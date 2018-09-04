@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
-
         <variable
             name="count"
             type="Integer" />
@@ -42,7 +40,6 @@
                     android:paddingEnd="16sp"
                     android:paddingRight="16sp"
                     android:text="@{Integer.toString(count)}"
-                    android:textColor="@color/warn"
                     android:textSize="70sp"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -78,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{timeToNext}"
-                    android:visibility="@{ViewUtilsKt.asVisibility(count != 0)}"
+                    android:visibility="@{count != 0}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/homeworkCount"
                     app:layout_constraintTop_toBottomOf="@id/weekText"

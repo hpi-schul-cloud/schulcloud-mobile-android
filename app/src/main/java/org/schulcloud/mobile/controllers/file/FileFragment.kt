@@ -2,9 +2,11 @@ package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
@@ -15,9 +17,11 @@ import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
+import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
@@ -39,33 +43,55 @@ class FileFragment : MainFragment() {
         FileFragmentArgs.fromBundle(arguments)
     }
     private lateinit var viewModel: FileViewModel
-    private var courseTitle: String? = null
     private val directoryAdapter: DirectoryAdapter by lazy {
-        org.schulcloud.mobile.controllers.file.DirectoryAdapter {
+        DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,
                     FileFragmentArgs.Builder(combinePath(viewModel.path, it)).build().toBundle())
         }
     }
     private val fileAdapter: FileAdapter by lazy {
-        org.schulcloud.mobile.controllers.file.FileAdapter({ loadFile(it, false) },
+        FileAdapter({ loadFile(it, false) },
                 { loadFile(it, true) })
     }
 
-    override fun provideConfig(): MainFragmentConfig {
-        val parts = args.path.getPathParts()
-        val title = when {
-        // Nested folder
-            parts.size > 2 -> parts.last()
-        // Private folder root
-            args.path.startsWith(FileRepository.CONTEXT_MY_API) -> getString(R.string.file_directory_my)
-        // Course folder root
-            getCourseFromFolder() != null -> courseTitle ?: getString(R.string.file_directory_course_unknown)
-            else -> throw IllegalArgumentException("Path ${args.path} is not supported")
+
+    override var url: String? = null
+        get() {
+            val parts = args.path.getPathParts()
+            val path = if (parts.size <= 2) ""
+            else "?dir=${parts.takeLast(parts.size - 2).combinePath().ensureSlashes()}"
+
+            return when (parts.first()) {
+                FileRepository.CONTEXT_MY_API -> "/files/my/$path"
+                FileRepository.CONTEXT_COURSES -> "/files/courses/${parts[1]}$path"
+                else -> null
+            }
         }
-        return MainFragmentConfig(
-                title = title
-        )
-    }
+
+    override fun provideConfig() = (getCourseFromFolder()?.let {
+        CourseRepository.course(viewModel.realm, it)
+    } ?: null.asLiveData<Course>())
+            .map { course ->
+                breadcrumbs.setPath(args.path, course)
+                val parts = args.path.getPathParts()
+
+                MainFragmentConfig(
+                        title = when {
+                            parts.size > 2 -> parts.last()
+                            parts.first() == FileRepository.CONTEXT_MY_API ->
+                                context?.getString(R.string.file_directory_my)
+                            parts.first() == FileRepository.CONTEXT_COURSES ->
+                                course?.name ?: context?.getString(R.string.file_directory_course_unknown)
+                            else -> context?.getString(R.string.file_directory_unknown)
+                        },
+                        showTitle = false,
+                        toolbarColor = course?.color?.let { Color.parseColor(it) },
+                        menuBottomRes = R.menu.fragment_file_bottom,
+                        menuBottomHiddenIds = listOf(
+                                if (course == null) R.id.file_action_gotoCourse else 0
+                        )
+                )
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.path))
@@ -83,19 +109,13 @@ class FileFragment : MainFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Title
-        getCourseFromFolder()?.also {
-            CourseRepository.course(viewModel.realm, it)
-                    .observe(this, Observer {
-                        courseTitle = it?.name
-                        notifyConfigChanged()
-                    })
-        }
-
-        // Content
         fun updateEmptyMessage() {
-            empty.visibilityBool = (viewModel.directories.value?.isEmpty()
-                    ?: false) && (viewModel.files.value?.isEmpty() ?: false)
+            val directoriesEmpty = viewModel.directories.value?.isEmpty() ?: true
+            val filesEmpty = viewModel.files.value?.isEmpty() ?: true
+
+            empty.visibilityBool = directoriesEmpty && filesEmpty
+            directoriesHeader.visibilityBool = !directoriesEmpty
+            filesHeader.visibilityBool = !filesEmpty
         }
 
         viewModel.directories.observe(this, Observer {
@@ -119,6 +139,37 @@ class FileFragment : MainFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        mainActivity.setToolbarWrapper(toolbarWrapper)
+
+        breadcrumbs.setPath(args.path)
+        breadcrumbs.onPathSelected = callback@{ path ->
+            if (path == args.path) {
+                performRefresh()
+                return@callback
+            }
+
+            navController.navigate(R.id.action_global_fragment_file,
+                    FileFragmentArgs.Builder(path).build().toBundle())
+        }
+        mainViewModel.toolbarColors.observe(this, Observer {
+            breadcrumbs.setTextColor(it.textColor)
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.file_action_gotoCourse -> getCourseFromFolder()?.also { id ->
+                navController.navigate(R.id.action_global_fragment_course,
+                        CourseFragmentArgs.Builder(id).build().toBundle())
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
     override suspend fun refresh() {
         FileRepository.syncDirectory(viewModel.path)
         getCourseFromFolder()?.also {
@@ -128,10 +179,10 @@ class FileFragment : MainFragment() {
 
 
     private fun getCourseFromFolder(): String? {
-        val parts = args.path.getPathParts()
-        if (parts.size > 2 || !args.path.startsWith(FileRepository.CONTEXT_COURSES))
+        if (!args.path.startsWith(FileRepository.CONTEXT_COURSES))
             return null
-        return parts[1]
+
+        return args.path.getPathParts()[1]
     }
 
     @Suppress("ComplexMethod")

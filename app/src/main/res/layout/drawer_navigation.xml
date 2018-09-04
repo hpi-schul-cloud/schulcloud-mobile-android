@@ -25,6 +25,7 @@
             layout="@layout/item_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:minHeight="96dp">
 
             <TextView
@@ -36,8 +37,8 @@
                 android:layout_marginLeft="56dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@{viewModel.user.name}"
                 android:layout_weight="1"
+                android:text="@{viewModel.user.name}"
                 tools:text="Klara Fall" />
 
             <ImageView
@@ -47,22 +48,25 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:onClick="@{() -> onLogout.invoke()}"
                 android:background="?android:attr/selectableItemBackground"
+                android:onClick="@{() -> onLogout.invoke()}"
                 android:padding="16dp"
-                app:srcCompat="@drawable/ic_sign_out_alt" />
+                app:srcCompat="@drawable/ic_brand_signout" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/material_divider" />
+            android:background="@color/material_divider_dark" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:itemBackground="@drawable/bg_drawer_item"
+            app:itemIconTint="@color/text_drawer_item"
+            app:itemTextColor="@color/text_drawer_item"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:menu="@menu/activity_main_drawer" />
 

@@ -12,6 +12,12 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/Dashboard.Widget.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboard_events" />
+
+        <TextView
             android:id="@android:id/empty"
             style="@style/Content_Text.Empty"
             android:layout_width="match_parent"
@@ -24,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
+            android:paddingTop="0dp"
             tools:listitem="@layout/item_event" />
 
         <!-- TODO: show calendar -->

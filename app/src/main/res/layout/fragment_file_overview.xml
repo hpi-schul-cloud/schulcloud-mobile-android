@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.schulcloud.mobile.views.ScrollContentView
+<org.schulcloud.mobile.views.ContentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -46,7 +46,7 @@
                         android:layout_marginLeft="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_user" />
+                        app:srcCompat="@drawable/ic_brand_user" />
 
                     <TextView
                         style="@style/FileOverview.Card_Title"
@@ -103,7 +103,7 @@
                         android:tint="@android:color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_graduation_cap" />
+                        app:srcCompat="@drawable/ic_brand_course_black" />
 
                     <TextView
                         android:id="@+id/fileOverview_courses_tv_title"
@@ -138,7 +138,7 @@
                         android:layout_marginTop="4dp"
                         android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toBottomOf="@id/courses_description"
-                        tools:listitem="@layout/item_file_course" />
+                        tools:listitem="@layout/item_directory_course" />
 
                     <TextView
                         android:id="@android:id/empty"
@@ -161,4 +161,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</org.schulcloud.mobile.views.ScrollContentView>
+</org.schulcloud.mobile.views.ContentView>

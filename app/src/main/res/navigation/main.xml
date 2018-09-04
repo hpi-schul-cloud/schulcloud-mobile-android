@@ -9,7 +9,6 @@
     <fragment
         android:id="@+id/fragment_dashboard"
         android:name="org.schulcloud.mobile.controllers.dashboard.DashboardFragment"
-        android:label="DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_dashboardFragment_to_newsListFragment"
@@ -33,6 +32,17 @@
         android:id="@+id/fragment_newsList"
         android:name="org.schulcloud.mobile.controllers.news.NewsListFragment"
         tools:layout="@layout/fragment_news_list" />
+    <fragment
+        android:id="@+id/fragment_news"
+        android:name="org.schulcloud.mobile.controllers.news.NewsFragment"
+        tools:layout="@layout/fragment_news">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_news"
+        app:destination="@id/fragment_news" />
 
     <!-- Course -->
     <fragment

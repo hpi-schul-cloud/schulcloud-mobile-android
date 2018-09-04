@@ -16,6 +16,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 
+@Suppress("TooManyFunctions")
 interface ApiServiceInterface {
 
     // Login
@@ -33,6 +34,8 @@ interface ApiServiceInterface {
     // News
     @GET("news?\$sort=createdAt:1")
     fun listUserNews(): Call<FeathersResponse<List<News>>>
+    @GET("news/{id}")
+    fun getNews(@Path("id") newsId: String): Call<News>
 
     // Course
     @GET("courses?\$populate[0]=teacherIds")

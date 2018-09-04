@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.android.synthetic.main.widget_news.*
 import org.joda.time.Days
@@ -55,11 +56,10 @@ class HomeworkWidget : Widget() {
                 ""
             else {
                 val days = Days.daysBetween(LocalDateTime.now(), nextTime.toLocalDateTime()).days
-                when (days) {
-                    0 -> context!!.getString(R.string.dashboard_homework_due0)
-                    1 -> context!!.getString(R.string.dashboard_homework_due1)
-                    else -> context!!.getString(R.string.dashboard_homework_dueLater, days)
-                }
+                if (days == 0)
+                    context!!.getString(R.string.dashboard_homework_dueToday)
+                else
+                    context!!.resources.getQuantityString(R.plurals.dashboard_homework_due, days, days)
             }
 
             adapter.update(homework ?: emptyList())
@@ -70,10 +70,8 @@ class HomeworkWidget : Widget() {
             adapter = this@HomeworkWidget.adapter
         }
 
-        more.setOnClickListener {
-            findNavController(this)
-                    .navigate(R.id.action_dashboardFragment_to_homeworkListFragment)
-        }
+        more.setOnClickListener(Navigation.createNavigateOnClickListener(
+                R.id.action_dashboardFragment_to_homeworkListFragment))
     }
 
     override suspend fun refresh() {

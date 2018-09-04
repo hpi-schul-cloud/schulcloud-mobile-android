@@ -7,7 +7,6 @@ import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 
 class HomeworkWidgetViewModel : ViewModel() {
-
     private val realm: Realm by lazy {
         Realm.getDefaultInstance()
     }

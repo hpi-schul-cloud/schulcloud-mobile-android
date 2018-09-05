@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -42,6 +44,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     private val args: FileFragmentArgs by lazy {
         FileFragmentArgs.fromBundle(arguments)
     }
+
     private val directoryAdapter: DirectoryAdapter by lazy {
         DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,
@@ -140,6 +143,8 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     override fun onResume() {
         super.onResume()
+
+        mainActivity.setToolbarWrapper(toolbarWrapper)
 
         breadcrumbs.setPath(args.path)
         breadcrumbs.onPathSelected = callback@{ path ->

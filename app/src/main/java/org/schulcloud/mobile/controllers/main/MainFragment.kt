@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,7 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
     protected val mainActivity: MainActivity get() = activity as MainActivity
     protected val mainViewModel: MainViewModel
         get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+
     private var isFirstInit: Boolean = true
 
     protected val navController: NavController
@@ -75,6 +77,9 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
             performRefresh()
 
         isFirstInit = false
+        view?.findViewById<Toolbar>(R.id.toolbar).also {
+            mainActivity.setSupportActionBar(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

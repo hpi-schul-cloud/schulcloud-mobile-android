@@ -26,7 +26,6 @@ fun Map<String, String>.asBundle(): Bundle {
     }
 }
 
-
 fun Drawable.asBitmap(): Bitmap {
     if (this is BitmapDrawable)
         return bitmap

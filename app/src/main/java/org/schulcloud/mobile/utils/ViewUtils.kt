@@ -80,7 +80,9 @@ val Int.isLightColor: Boolean
 fun Context.getTextColorForBackground(color: Int): Int {
     return ContextCompat.getColor(this, if (color.isLightColor) R.color.material_text_primary_dark
     else R.color.material_text_primary_light)
-}fun Context.getTextColorSecondaryForBackground(color: Int): Int {
+}
+
+fun Context.getTextColorSecondaryForBackground(color: Int): Int {
     return ContextCompat.getColor(this, if (color.isLightColor) R.color.material_text_secondary_dark
     else R.color.material_text_secondary_light)
 }

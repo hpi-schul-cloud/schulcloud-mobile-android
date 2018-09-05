@@ -1,14 +1,12 @@
 package org.schulcloud.mobile.network
 
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.event.Event
-import org.schulcloud.mobile.models.file.DirectoryResponse
-import org.schulcloud.mobile.models.file.File
-import org.schulcloud.mobile.models.file.SignedUrlRequest
-import org.schulcloud.mobile.models.file.SignedUrlResponse
+import org.schulcloud.mobile.models.file.*
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.submission.Submission
 import org.schulcloud.mobile.models.news.News
@@ -70,4 +68,16 @@ interface ApiServiceInterface {
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
     @POST("fileStorage")
     fun persistFile(@Body file: File): Call<ResponseBody>
+    @POST("fileStorage/directories")
+    fun createDirectory(@Body path: String): Call<Directory>
+    @DELETE("fileStorage/{id}")
+    fun deleteFile(@Body path: String): Call<ResponseBody>
+    @POST("files")
+    fun uploadFile(@Url fileUrl: String,
+                   @Header("content-type") contentType: String,
+                   @Header("x-amz-meta-path") metaPath: String,
+                   @Header("x-amz-meta-name") metaName: String,
+                   @Header("x-amz-meta-flatname") flatName: String,
+                   @Header("x-amz-meta-thumbnail") metaThumbnail: String,
+                   @Body file: RequestBody): Call<ResponseBody>
 }

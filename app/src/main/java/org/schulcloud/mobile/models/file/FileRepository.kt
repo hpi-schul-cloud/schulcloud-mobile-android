@@ -2,7 +2,10 @@ package org.schulcloud.mobile.models.file
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
+import org.schulcloud.mobile.jobs.CreateDirectoryJob
 import org.schulcloud.mobile.jobs.ListDirectoryContentsJob
+import org.schulcloud.mobile.jobs.UploadFileJob
+import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
 
@@ -40,8 +43,11 @@ object FileRepository {
         return combinePath(CONTEXT_COURSES, courseId, path)
     }
 
-    fun uploadFile(file: File, signedUrl: SignedUrlResponse) {
-
+    fun uploadFile(file: java.io.File, signedUrl: SignedUrlResponse) {
+        UploadFileJob(file,signedUrl,object: RequestJobCallback(){
+            override fun onSuccess() {}
+            override fun onError(code: ErrorCode) {}
+        })
     }
 
     fun persistFile(signedUrl: SignedUrlResponse, name: String, fileType: String, fileSize: Long){
@@ -52,5 +58,16 @@ object FileRepository {
         file.size = fileSize
         file.path = signedUrl.header?.metaPath + name
         file.thumbnail = signedUrl.header?.metaThumbnail
+    }
+
+    suspend fun createDirectory(path: String){
+        CreateDirectoryJob(path,object : RequestJobCallback(){
+            override fun onSuccess() {}
+            override fun onError(code: ErrorCode) {}
+        }).run()
+    }
+
+    suspend fun deleteFile(fileId: String){
+        UserRepository
     }
 }

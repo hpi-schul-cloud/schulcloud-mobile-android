@@ -35,10 +35,11 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
 
     protected open val isInnerFragment: Boolean = false
     protected open val currentInnerFragment: LiveData<Int?> = liveDataOf()
-    protected open val innerFragments: List<InnerMainFragment<*, F, VM>> = emptyList()
+    protected open val innerFragments: List<InnerMainFragment<*, F, VM>?> = emptyList()
     private var isFirstInit: Boolean = true
 
     val isInitialized: Boolean get() = !isFirstInit
+    // TODO: remove?
     private val onInitializedCallbacks: MutableList<() -> Unit> = mutableListOf()
 
     protected val navController: NavController
@@ -129,10 +130,10 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
             R.id.base_action_openInBrowser -> context?.openUrl(url.asUri())
             else -> {
                 val fragments = innerFragments.toMutableList()
-                // Currently visible fragment takes precedence
+                // Currently visible parent takes precedence
                 currentInnerFragment.value?.also { fragments.move(it, 0) }
                 for (innerFragment in fragments)
-                    if (innerFragment.onOptionsItemSelected(item))
+                    if (innerFragment?.onOptionsItemSelected(item) == true)
                         return true
                 return super.onOptionsItemSelected(item)
             }
@@ -146,7 +147,9 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
         refreshableImpl.isRefreshing = true
         launch {
             withContext(UI) {
-                val innerFragment = currentInnerFragment.value?.let { innerFragments[it] }
+                val innerFragment = currentInnerFragment.value?.let {
+                    innerFragments.getOrNull(it)
+                }
                 if (fromInner || innerFragment == null)
                     refresh()
                 else

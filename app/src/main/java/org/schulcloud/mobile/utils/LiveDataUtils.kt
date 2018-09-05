@@ -7,6 +7,7 @@ import androidx.lifecycle.*
 
 // Construction
 fun <T> T?.asLiveData(): LiveData<T> = liveDataOf(this)
+
 fun <T> liveDataOf(initialValue: T? = null): LiveData<T> {
     return MutableLiveData<T>().apply { value = initialValue }
 }
@@ -62,6 +63,20 @@ fun <T> zipLater(): Pair<LiveData<T>, (LiveData<T>) -> Unit> {
     val result = MediatorLiveData<T>()
     val addFunc: (LiveData<T>) -> Unit = {
         result.addSource(it) { result.value = it }
+    }
+    return result to addFunc
+}
+
+fun <T> switch(): Pair<LiveData<T>, (LiveData<T>) -> Unit> {
+    val result = MediatorLiveData<T>()
+    val sources = mutableListOf<LiveData<T>>()
+    val addFunc: (LiveData<T>) -> Unit = {
+        for (source in sources)
+            result.removeSource(source)
+        sources.clear()
+
+        result.addSource(it) { result.value = it }
+        sources += it
     }
     return result to addFunc
 }
@@ -150,6 +165,15 @@ inline fun <reified T> LiveData<T>.filter(crossinline predicate: (T) -> Boolean)
     val result = MediatorLiveData<T>()
     result.addSource(this) {
         if (predicate(it))
+            result.value = it
+    }
+    return result
+}
+
+inline fun <reified T> LiveData<T?>.filterNotNull(): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) {
+        if (it != null)
             result.value = it
     }
     return result

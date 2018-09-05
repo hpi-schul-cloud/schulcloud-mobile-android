@@ -36,7 +36,7 @@ class TopicFragment : MainFragment<TopicFragment, TopicViewModel>() {
 
     override fun provideConfig() = viewModel.topic
             .combineLatest(viewModel.topic.switchMap {
-                it?.courseId?.let { viewModel.course(it) } ?: null.asLiveData<Course?>()
+                it?.courseId?.let { viewModel.course(it) } ?: liveDataOf<Course?>()
             })
             .map { (topic, course) ->
                 MainFragmentConfig(

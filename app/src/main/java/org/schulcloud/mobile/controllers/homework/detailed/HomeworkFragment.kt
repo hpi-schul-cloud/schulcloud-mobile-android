@@ -33,9 +33,9 @@ class HomeworkFragment : TabbedMainFragment<HomeworkFragment, HomeworkViewModel>
         viewModel.homework
                 .map { homework ->
                     listOfNotNull(
-                            Tab(getString(R.string.homework_overview), OverviewFragment()),
+                            Tab(getString(R.string.homework_overview)) { OverviewFragment() },
                             if (homework?.canSeeSubmissions() == true)
-                                Tab(getString(R.string.homework_submissions), SubmissionsFragment())
+                                Tab(getString(R.string.homework_submissions)) { SubmissionsFragment() }
                             else null
                     )
                 }
@@ -45,7 +45,7 @@ class HomeworkFragment : TabbedMainFragment<HomeworkFragment, HomeworkViewModel>
     override var url: String? = null
         get() = "/homework/${viewModel.homework.value?.id}"
 
-    override fun provideConfig(): LiveData<MainFragmentConfig> {
+    override fun provideConfig(selectedTabConfig: LiveData<MainFragmentConfig?>): LiveData<MainFragmentConfig> {
         return viewModel.homework
                 .map { homework ->
                     MainFragmentConfig(

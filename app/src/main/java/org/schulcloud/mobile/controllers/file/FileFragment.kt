@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -72,7 +70,7 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
 
     override fun provideConfig() = (getCourseFromFolder()?.let {
         CourseRepository.course(viewModel.realm, it)
-    } ?: null.asLiveData<Course>())
+    } ?: liveDataOf<Course>())
             .map { course ->
                 breadcrumbs.setPath(args.path, course)
                 val parts = args.path.getPathParts()

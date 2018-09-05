@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
-import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.liveDataOf
 
 
 @SuppressLint("ValidFragment")
@@ -18,7 +18,7 @@ abstract class InnerMainFragment<F : InnerMainFragment<F, P, VM>, P : MainFragme
     protected val parent: P
         get() = parentFragment as P
 
-    override fun provideConfig() = null.asLiveData<MainFragmentConfig>()
+    override fun provideConfig() = liveDataOf<MainFragmentConfig>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = parent.viewModel

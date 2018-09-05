@@ -125,7 +125,7 @@ class MainActivity : BaseActivity() {
         updateToolbarColors()
     }
 
-    fun setToolbarWrapper(toolbarWrapper: ViewGroup) {
+    fun setToolbarWrapper(toolbarWrapper: ViewGroup?) {
         this.toolbarWrapper = toolbarWrapper
         updateToolbarColors()
     }

@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -69,17 +67,12 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
 
         mainActivity.setSupportActionBar(view?.findViewById(R.id.toolbar))
-        view?.findViewById<ViewGroup>(R.id.toolbarWrapper)?.also {
-            mainActivity.setToolbarWrapper(it)
-        }
+        mainActivity.setToolbarWrapper(view?.findViewById(R.id.toolbarWrapper))
 
         if (isFirstInit)
             performRefresh()
 
         isFirstInit = false
-        view?.findViewById<Toolbar>(R.id.toolbar).also {
-            mainActivity.setSupportActionBar(it)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

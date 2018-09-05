@@ -24,7 +24,7 @@ import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.views.DividerItemDecoration
 
-class CourseFragment : MainFragment<CourseViewModel>() {
+class CourseFragment : MainFragment<CourseFragment, CourseViewModel>() {
     companion object {
         val TAG: String = CourseFragment::class.java.simpleName
     }

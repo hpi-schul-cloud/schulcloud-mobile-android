@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.schulcloud.mobile.controllers.main.ParentFragment
-import org.schulcloud.mobile.controllers.main.TabFragment
+import org.schulcloud.mobile.controllers.main.InnerMainFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionOverviewBinding
 import org.schulcloud.mobile.viewmodels.SubmissionViewModel
 
 
-class OverviewFragment : TabFragment<SubmissionFragment, SubmissionViewModel>() {
+class OverviewFragment : InnerMainFragment<OverviewFragment, SubmissionFragment, SubmissionViewModel>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentHomeworkSubmissionOverviewBinding.inflate(layoutInflater).also {
             it.viewModel = viewModel
@@ -18,7 +17,5 @@ class OverviewFragment : TabFragment<SubmissionFragment, SubmissionViewModel>() 
         }.root
     }
 
-    override suspend fun refresh() {
-        (parentFragment as? ParentFragment)?.refreshWithChild(true)
-    }
+    override suspend fun refresh() {}
 }

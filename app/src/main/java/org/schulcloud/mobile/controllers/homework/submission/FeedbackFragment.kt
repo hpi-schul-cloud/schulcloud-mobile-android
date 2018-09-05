@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.schulcloud.mobile.controllers.main.ParentFragment
-import org.schulcloud.mobile.controllers.main.TabFragment
+import org.schulcloud.mobile.controllers.main.InnerMainFragment
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionFeedbackBinding
 import org.schulcloud.mobile.viewmodels.SubmissionViewModel
 
 
-class FeedbackFragment : TabFragment<SubmissionFragment, SubmissionViewModel>() {
-
+class FeedbackFragment : InnerMainFragment<FeedbackFragment, SubmissionFragment, SubmissionViewModel>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentHomeworkSubmissionFeedbackBinding.inflate(layoutInflater).also {
             it.viewModel = viewModel
@@ -19,7 +17,5 @@ class FeedbackFragment : TabFragment<SubmissionFragment, SubmissionViewModel>() 
         }.root
     }
 
-    override suspend fun refresh() {
-        (parentFragment as? ParentFragment)?.refreshWithChild(true)
-    }
+    override suspend fun refresh() {}
 }

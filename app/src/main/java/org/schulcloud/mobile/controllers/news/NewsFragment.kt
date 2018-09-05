@@ -14,14 +14,15 @@ import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.viewmodels.NewsViewModel
 
-class NewsFragment : MainFragment<NewsViewModel>() {
+
+class NewsFragment : MainFragment<NewsFragment, NewsViewModel>() {
     companion object {
         val TAG: String = NewsFragment::class.java.simpleName
     }
 
 
     override var url: String? = null
-        get() = "news/${viewModel.news.value?.id}"
+        get() = "/news/${viewModel.news.value?.id}"
 
     override fun provideConfig() = viewModel.news
             .map { news ->

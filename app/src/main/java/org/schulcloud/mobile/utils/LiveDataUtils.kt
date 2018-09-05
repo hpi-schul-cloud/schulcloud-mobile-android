@@ -2,23 +2,38 @@
 
 package org.schulcloud.mobile.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 
 
-fun <T> T?.asLiveData(): LiveData<T> = MutableLiveData<T>().also { it.value = this }
+// Construction
+fun <T> T?.asLiveData(): LiveData<T> = liveDataOf(this)
+fun <T> liveDataOf(initialValue: T? = null): LiveData<T> {
+    return MutableLiveData<T>().apply { value = initialValue }
+}
 
+fun <T> mutableLiveDataOf(initialValue: T? = null): MutableLiveData<T> {
+    return MutableLiveData<T>().apply { value = initialValue }
+}
+
+fun <T> LiveData<T>.toMutableLiveData(): MutableLiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) { result.value = it }
+    return result
+}
+
+
+// Mapping
 fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> = Transformations.map(this, func)
 
-fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> = Transformations.switchMap(this, func)
+fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> {
+    return Transformations.switchMap(this, func)
+}
+
 fun <T, R : Any?> LiveData<T>.switchMapNullable(func: (T) -> LiveData<R>?): LiveData<R> {
     val result = MediatorLiveData<R>()
     var source: LiveData<R>? = null
     result.addSource(this) {
-        val newLiveData = func(it)
-                ?: MutableLiveData<R>().apply { value = null }
+        val newLiveData = func(it) ?: liveDataOf()
         if (source == newLiveData)
             return@addSource
 
@@ -29,6 +44,26 @@ fun <T, R : Any?> LiveData<T>.switchMapNullable(func: (T) -> LiveData<R>?): Live
         }
     }
     return result
+}
+
+
+// Combination
+fun <T> LiveData<T>.zip(other: LiveData<T>): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    val observer = Observer<T> {
+        result.value = it
+    }
+    result.addSource(this, observer)
+    result.addSource(other, observer)
+    return result
+}
+
+fun <T> zipLater(): Pair<LiveData<T>, (LiveData<T>) -> Unit> {
+    val result = MediatorLiveData<T>()
+    val addFunc: (LiveData<T>) -> Unit = {
+        result.addSource(it) { result.value = it }
+    }
+    return result to addFunc
 }
 
 inline fun <reified T1, reified T2> LiveData<T1>.combineLatest(other: LiveData<T2>): LiveData<Pair<T1, T2>> {
@@ -97,6 +132,8 @@ inline fun <reified T1, reified T2, reified T3> LiveData<T1>.combineLatest(
     return result
 }
 
+
+// Filtering
 fun <T> LiveData<T>.first(count: Int = 1): LiveData<T> {
     var iteration = 0
     val result = MediatorLiveData<T>()
@@ -115,11 +152,5 @@ inline fun <reified T> LiveData<T>.filter(crossinline predicate: (T) -> Boolean)
         if (predicate(it))
             result.value = it
     }
-    return result
-}
-
-fun <T> LiveData<T>.toMutableLiveData(count: Int = 1): MutableLiveData<T> {
-    val result = MediatorLiveData<T>()
-    result.addSource(this) { result.value = it }
     return result
 }

@@ -53,6 +53,8 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel.config.observe(this, Observer { config ->
+            if (config == null) return@Observer
+
             title = config.title.takeIf { config.showTitle }
             supportActionBar?.subtitle = config.subtitle
             recalculateToolbarColors()

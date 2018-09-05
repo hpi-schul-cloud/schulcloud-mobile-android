@@ -36,7 +36,7 @@ import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 
 
-class FileFragment : MainFragment<FileViewModel>() {
+class FileFragment : MainFragment<FileFragment, FileViewModel>() {
     companion object {
         val TAG: String = FileFragment::class.java.simpleName
     }

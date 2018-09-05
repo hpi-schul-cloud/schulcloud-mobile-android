@@ -18,7 +18,8 @@ import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
-class HomeworkListFragment : MainFragment<HomeworkListViewModel>() {
+
+class HomeworkListFragment : MainFragment<HomeworkListFragment, HomeworkListViewModel>() {
     companion object {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }

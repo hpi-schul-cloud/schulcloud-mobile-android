@@ -23,7 +23,8 @@ import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-class TopicFragment : MainFragment<TopicViewModel>() {
+
+class TopicFragment : MainFragment<TopicFragment, TopicViewModel>() {
     companion object {
         val TAG: String = TopicFragment::class.java.simpleName
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
@@ -13,24 +14,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
 
 
-abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = RefreshableImpl()) : BaseFragment(),
+abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
+    protected val refreshableImpl: RefreshableImpl = RefreshableImpl()
+) :
+        BaseFragment(),
         Refreshable by refreshableImpl {
 
     protected val mainActivity: MainActivity get() = activity as MainActivity
     protected val mainViewModel: MainViewModel
         get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
 
+    protected open val isInnerFragment: Boolean = false
+    protected open val currentInnerFragment: LiveData<Int?> = liveDataOf()
+    protected open val innerFragments: List<InnerMainFragment<*, F, VM>> = emptyList()
     private var isFirstInit: Boolean = true
+
+    val isInitialized: Boolean get() = !isFirstInit
+    private val onInitializedCallbacks: MutableList<() -> Unit> = mutableListOf()
 
     protected val navController: NavController
         get() = findNavController(this)
-    protected lateinit var config: LiveData<MainFragmentConfig>
+    lateinit var config: LiveData<MainFragmentConfig>
         private set
 
     lateinit var viewModel: VM
@@ -44,6 +57,7 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
         refreshableImpl.refresh = { refresh() }
     }
 
+    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,40 +66,52 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
         })
         mainViewModel.onFabClicked.observe(this, Observer { onFabClicked() })
 
+        config = provideConfig()
         setHasOptionsMenu(true)
     }
 
+    @CallSuper
     override fun onResume() {
         super.onResume()
 
-        config = provideConfig()
-        config.observe(this, Observer {
-            activity?.invalidateOptionsMenu()
-            it?.also { mainViewModel.config.value = it }
-        })
-
+        // Config already provided in onCreate
+        if (!isFirstInit)
+            config = provideConfig()
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
 
-        mainActivity.setSupportActionBar(view?.findViewById(R.id.toolbar))
-        mainActivity.setToolbarWrapper(view?.findViewById(R.id.toolbarWrapper))
+        if (!isInnerFragment) {
+            config.observe(this, Observer {
+                activity?.invalidateOptionsMenu()
+                it?.also { mainViewModel.config.value = it }
+            })
 
-        if (isFirstInit)
-            performRefresh()
+            mainActivity.setSupportActionBar(view?.findViewById(R.id.toolbar))
+            mainActivity.setToolbarWrapper(view?.findViewById(R.id.toolbarWrapper))
 
-        isFirstInit = false
+            if (isFirstInit)
+                performRefresh()
+        }
+
+        if (isFirstInit) {
+            isFirstInit = false
+            for (callback in onInitializedCallbacks)
+                callback()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        val menuTopRes = config.value?.menuTopRes
-        if (menuTopRes != null && menuTopRes != 0)
-            inflater?.inflate(menuTopRes, menu)
+        if (!isInnerFragment) {
+            val menuTopRes = config.value?.menuTopRes ?: 0
+            if (menuTopRes != 0)
+                inflater?.inflate(menuTopRes, menu)
 
-        inflater?.inflate(R.menu.fragment_main_top, menu)
-        if (config.value?.supportsRefresh == false)
-            menu?.findItem(R.id.base_action_refresh)?.isVisible = false
-        for (id in config.value?.menuTopHiddenIds.orEmpty())
-            if (id != 0)
-                menu?.findItem(id)?.isVisible = false
+            inflater?.inflate(R.menu.fragment_main_top, menu)
+            if (config.value?.supportsRefresh == false)
+                menu?.findItem(R.id.base_action_refresh)?.isVisible = false
+            for (id in config.value?.menuTopHiddenIds.orEmpty())
+                if (id != 0)
+                    menu?.findItem(id)?.isVisible = false
+        }
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -101,16 +127,45 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
             R.id.base_action_refresh -> performRefresh()
         // TODO: Remove when deep linking is readded
             R.id.base_action_openInBrowser -> context?.openUrl(url.asUri())
-            else -> return super.onOptionsItemSelected(item)
+            else -> {
+                val fragments = innerFragments.toMutableList()
+                // Currently visible fragment takes precedence
+                currentInnerFragment.value?.also { fragments.move(it, 0) }
+                for (innerFragment in fragments)
+                    if (innerFragment.onOptionsItemSelected(item))
+                        return true
+                return super.onOptionsItemSelected(item)
+            }
         }
         return true
     }
 
 
+    override fun performRefresh() = performRefreshWithChild(false)
+    fun performRefreshWithChild(fromInner: Boolean) {
+        refreshableImpl.isRefreshing = true
+        launch {
+            withContext(UI) {
+                val innerFragment = currentInnerFragment.value?.let { innerFragments[it] }
+                if (fromInner || innerFragment == null)
+                    refresh()
+                else
+                    innerFragment.performRefreshWithParent(true)
+            }
+            withContext(UI) { refreshableImpl.isRefreshing = false }
+        }
+    }
+
     abstract suspend fun refresh()
 
     open fun onFabClicked() {}
+
+    fun addOnInitializedCallback(callback: () -> Unit) {
+        if (isInitialized) callback()
+        else onInitializedCallbacks += callback
+    }
 }
+
 
 data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
@@ -137,9 +192,4 @@ data class MainFragmentConfig(
 enum class FragmentType {
     PRIMARY,
     SECONDARY
-}
-
-
-interface ParentFragment {
-    suspend fun refreshWithChild(fromChild: Boolean)
 }

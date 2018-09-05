@@ -18,7 +18,7 @@ import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
-class FileOverviewFragment : MainFragment<FileOverviewViewModel>() {
+class FileOverviewFragment : MainFragment<FileOverviewFragment, FileOverviewViewModel>() {
     companion object {
         val TAG: String = FileOverviewFragment::class.java.simpleName
     }

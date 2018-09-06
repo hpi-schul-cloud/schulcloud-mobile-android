@@ -1,34 +1,27 @@
 package org.schulcloud.mobile.viewmodels
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import android.util.Patterns
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.UserRepository
 
 class LoginViewModel : ViewModel() {
-
     val loginState = MutableLiveData<LoginStatus>()
 
     fun login(email: String, password: String) {
-
         val invalidInputs = mutableListOf<LoginInput>()
-        if (!isEmailValid(email)) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
             invalidInputs.add(LoginInput.EMAIL)
-        }
-        if (password.isEmpty()) {
+        if (password.isEmpty())
             invalidInputs.add(LoginInput.PASSWORD)
-        }
 
-        if (invalidInputs.isEmpty()) {
-            loginState.value = LoginStatus.Pending()
+        loginState.value = if (invalidInputs.isNotEmpty())
+            LoginStatus.InvalidInputs(invalidInputs)
+        else {
             UserRepository.login(email, password, loginCallback())
-        } else {
-            loginState.value = LoginStatus.InvalidInputs(invalidInputs)
+            LoginStatus.Pending()
         }
-    }
-
-    private fun isEmailValid(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     private fun loginCallback(): RequestJobCallback {

@@ -22,32 +22,43 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.4'
     implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
 
+    // html
+    implementation 'org.jsoup:jsoup:1.11.3'
+
     // images
     def glideVersion = '4.6.1'
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
     implementation "com.github.bumptech.glide:okhttp3-integration:${glideVersion}"
     kapt "com.github.bumptech.glide:compiler:${glideVersion}"
 
-    // architecture components
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-    kapt "android.arch.lifecycle:compiler:1.1.1"
+    // date and time
+    implementation 'net.danlew:android.joda:2.9.9.4'
 
-    // support
-    def supportVersion = '27.1.1'
-    implementation "com.android.support:appcompat-v7:${supportVersion}"
-    implementation "com.android.support:design:${supportVersion}"
-    implementation "com.android.support:cardview-v7:${supportVersion}"
-    implementation "com.android.support:recyclerview-v7:${supportVersion}"
-    implementation "com.android.support:customtabs:${supportVersion}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    // onboarding
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+
+    // AndroidX
+    // architecture
+    implementation "androidx.multidex:multidex:2.0.0"
+    implementation "androidx.appcompat:appcompat:1.0.0-rc01"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0-rc01"
+    kapt "androidx.lifecycle:lifecycle-compiler:2.0.0-rc01"
+    implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha05'
+    implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha05'
+    implementation "androidx.browser:browser:1.0.0-rc01"
+    implementation "androidx.annotation:annotation:1.0.0-rc01"
+    // ui
+    implementation "com.google.android.material:material:1.0.0-rc01"
+    implementation "androidx.cardview:cardview:1.0.0-rc01"
+    implementation "androidx.recyclerview:recyclerview:1.0.0-rc01"
+    implementation "androidx.constraintlayout:constraintlayout:1.1.2"
+    // other
+    implementation "androidx.core:core-ktx:1.0.0-rc01"
 
     // unit tests
     testImplementation "junit:junit:4.12"
 
     // instrumented tests
-    androidTestImplementation "com.android.support:support-annotations:${supportVersion}"
-    androidTestImplementation "com.android.support.test:runner:1.0.2"
-
-    // date and time
-    implementation 'net.danlew:android.joda:2.9.9.4'
+    androidTestImplementation "androidx.annotation:annotation:1.0.0-rc01"
+    androidTestImplementation "androidx.test:runner:1.1.0-alpha4"
 }

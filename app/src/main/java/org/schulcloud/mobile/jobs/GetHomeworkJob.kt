@@ -11,18 +11,17 @@ import ru.gildor.coroutines.retrofit.awaitResponse
 
 class GetHomeworkJob(private val homeworkId: String, callback: RequestJobCallback) : RequestJob(callback) {
     companion object {
-        val TAG: String = GetCourseJob::class.java.simpleName
+        val TAG: String = GetHomeworkJob::class.java.simpleName
     }
 
     override suspend fun onRun() {
         val response = ApiService.getInstance().getHomework(homeworkId).awaitResponse()
 
         if (response.isSuccessful) {
-            if (BuildConfig.DEBUG) Log.i(TAG, "Homework ${homeworkId}Id received")
+            if (BuildConfig.DEBUG) Log.i(TAG, "Homework $homeworkId received")
 
             // Sync
             Sync.SingleData.with(Homework::class.java, response.body()!!).run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching homework $homeworkId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

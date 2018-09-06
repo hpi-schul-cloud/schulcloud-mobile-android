@@ -26,11 +26,7 @@
 
 ## Activities and Fragments
 
-Top-level activities and fragments inherit from [`BaseActivity`][BaseActivity] or [`BaseFragment`][BaseFragment], respectively. These base classes e.g. handle refresh and sharing actions.
-
-[`MainActivity`][MainActivity] uses a `NavigationDrawer` to change between fragments. Any further views should rest inside additional activities.
-
-*Please make sure that up and back navigation [work as expected](https://developer.android.com/training/design-navigation/ancestral-temporal)!*
+All main content is displayed in fragments that inherit from [`MainFragment`][MainFragment]. This base class e.g. handles refresh and sharing actions. Configurations (title, menu items, FAB, etc.) are configured via `MainFragment#provideConfig()`.
 
 
 ## Data structure
@@ -57,7 +53,7 @@ Implementing a `RecyclerView.Adapter` is pretty simple, and we've made it even e
 
 ### HTML-Content
 
-For displaying HTML-based formatted content, please use [`ContentWebView`][ContentWebView]. It takes care of loading internal content (using authentication), correct opening of links (external vs internal) and resizes content designed for larger screens.
+For displaying HTML-based formatted content, please use either [`ContentTextView`][ContentTextView] (for unformatted previews up to four lines) or [`ContentWebView`][ContentWebView] (for longer, formatted content). ContentWebView takes care of loading internal content (using authentication), correct opening of links (external vs internal) and resizes content designed for larger screens.
 
 External links are opened using [`openUrl`][WebUtils], which creates a `CustomTab` behind the scenes.
 
@@ -103,9 +99,9 @@ Showing an indeterminate progress dialog is as simple as wrapping a `suspend`-fu
 [ktx-synthetic]: https://kotlinlang.org/docs/tutorials/android-plugin.html#importing-synthetic-properties
 
 [BaseActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseActivity.kt
-[BaseFragment]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseFragment.kt
 [BaseAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/base/BaseAdapter.kt
 [MainActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/main/MainActivity.kt
+[MainFragment]: ./app/src/main/java/org/schulcloud/mobile/controllers/main/MainFragment.kt
 [FileActivity]: ./app/src/main/java/org/schulcloud/mobile/controllers/file/FileActivity.kt
 [TopicListAdapter]: ./app/src/main/java/org/schulcloud/mobile/controllers/course/TopicListAdapter.kt
 [ApiServiceInterface]: ./app/src/main/java/org/schulcloud/mobile/network/ApiServiceInterface.kt
@@ -115,5 +111,6 @@ Showing an indeterminate progress dialog is as simple as wrapping a `suspend`-fu
 [ListUserCoursesJob]: ./app/src/main/java/org/schulcloud/mobile/jobs/ListUserCoursesJob.kt
 [ContentWebView]: ./app/src/main/java/org/schulcloud/mobile/views/ContentWebView.kt
 [PassiveWebView]: ./app/src/main/java/org/schulcloud/mobile/views/PassiveWebView.kt
+[ContentTextView]: ./app/src/main/java/org/schulcloud/mobile/views/ContentTextView.kt
 [DialogUtils]: ./app/src/main/java/org/schulcloud/mobile/utils/DialogUtils.kt
 [WebUtils]: ./app/src/main/java/org/schulcloud/mobile/utils/WebUtils.kt

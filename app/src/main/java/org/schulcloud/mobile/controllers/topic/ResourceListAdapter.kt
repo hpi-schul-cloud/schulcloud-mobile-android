@@ -11,10 +11,8 @@ import org.schulcloud.mobile.models.content.Resource
 import org.schulcloud.mobile.utils.openUrl
 import org.schulcloud.mobile.utils.resolveRedirect
 
-/**
- * Date: 6/10/2018
- */
-class ResourceListAdapter : BaseAdapter<Resource, ResourceListAdapter.ResourceViewHolder, ItemResourceBinding>() {
+class ResourceListAdapter
+    : BaseAdapter<Resource, ResourceListAdapter.ResourceViewHolder, ItemResourceBinding>() {
 
     fun update(resources: List<Resource>) {
         items = resources

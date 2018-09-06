@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:context="org.schulcloud.mobile.controllers.main.MainActivity">
 
-    <include
-        layout="@layout/app_bar_main"
+    <fragment
+        android:id="@+id/navHost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main" />
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:backgroundTint="?colorPrimary"
+        app:fabAlignmentMode="center"
+        app:hideOnScroll="true"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_menu_white_24dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/bottomAppBar" />
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

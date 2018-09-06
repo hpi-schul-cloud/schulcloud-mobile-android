@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.App.MaterialCardStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">@dimen/brand_cornerRadius_medium</item>
+    </style>
+
+    <style name="Widget.App.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+    </style>
+
+</resources>

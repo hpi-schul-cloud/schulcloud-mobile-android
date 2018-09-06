@@ -1,23 +1,17 @@
 package org.schulcloud.mobile.models.homework
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
-import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.jobs.GetHomeworkJob
 import org.schulcloud.mobile.jobs.ListUserHomeworkJob
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.utils.homeworkDao
 
 object HomeworkRepository {
-    init {
-        async {
-            syncHomeworkList()
-        }
-    }
-
     fun homeworkList(realm: Realm): LiveData<List<Homework>> {
         return realm.homeworkDao().homeworkList()
     }
+
     fun openHomeworkForNextWeek(realm: Realm): LiveData<List<Homework>> {
         return realm.homeworkDao().openHomeworkForNextWeek()
     }
@@ -37,12 +31,6 @@ object HomeworkRepository {
     }
 
     suspend fun syncHomework(homeworkId: String) {
-        GetHomeworkJob(homeworkId, object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
-
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+        GetHomeworkJob(homeworkId, RequestJobCallback()).run()
     }
 }

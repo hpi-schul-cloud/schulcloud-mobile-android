@@ -22,7 +22,6 @@ class ListCourseTopicsJob(private val courseId: String, callback: RequestJobCall
 
             // Sync
             Sync.Data.with(Topic::class.java, response.body()!!.data!!).run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching topic list for course $courseId")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

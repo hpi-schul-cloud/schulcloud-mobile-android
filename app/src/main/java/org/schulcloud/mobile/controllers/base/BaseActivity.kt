@@ -1,12 +1,11 @@
 package org.schulcloud.mobile.controllers.base
 
 import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.toolbar.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
@@ -33,33 +32,20 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            android.R.id.home -> return navigateUp()
-
-            R.id.activity_action_share -> shareLink(url!!, supportActionBar?.title)
+            R.id.base_action_share -> shareLink(url!!, supportActionBar?.title)
+            R.id.base_action_refresh -> performRefresh()
         // TODO: Remove when deep linking is readded
-            R.id.activity_action_openInBrowser -> openUrl(url.asUri())
-            R.id.activity_action_refresh -> performRefresh()
+            R.id.base_action_openInBrowser -> openUrl(url.asUri())
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
 
-    override fun onBackPressed() {
-        if (!navigateUp())
-            super.onBackPressed()
-    }
-
-
     protected fun setupActionBar() {
-        if (toolbar != null)
-            setSupportActionBar(toolbar)
-
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
     }
-
-    protected open fun navigateUp(): Boolean = false
 
     protected open suspend fun refresh() {}
     protected fun performRefresh() {
@@ -70,8 +56,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine {cont ->
-        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED){
+    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine { cont ->
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             cont.resume(true)
             return@suspendCoroutine
         }

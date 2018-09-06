@@ -1,35 +1,35 @@
 package org.schulcloud.mobile.controllers.dashboard
 
 import android.os.Bundle
-import android.view.*
-import kotlinx.android.synthetic.main.fragment_dashboard.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.utils.HOST
+import org.schulcloud.mobile.controllers.main.FragmentType
+import org.schulcloud.mobile.controllers.main.MainFragment
+import org.schulcloud.mobile.controllers.main.MainFragmentConfig
+import org.schulcloud.mobile.utils.asLiveData
 
-class DashboardFragment : BaseFragment() {
+class DashboardFragment : MainFragment() {
     companion object {
         val TAG: String = DashboardFragment::class.java.simpleName
     }
 
-    override var url: String? = "$HOST/dashboard"
-
-
     private var widgets: Array<Widget> = emptyArray()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+
+    override var url: String? = "/dashboard"
+    override fun provideConfig() = MainFragmentConfig(
+            fragmentType = FragmentType.PRIMARY,
+            title = getString(R.string.dashboard_title)
+    ).asLiveData()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.dashboard_title)
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout = swipeRefresh
 
         if (childFragmentManager.fragments.isEmpty()) {
             widgets = provideWidgets()
@@ -42,10 +42,6 @@ class DashboardFragment : BaseFragment() {
                     .map { it as Widget }.toTypedArray()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_base, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
     override suspend fun refresh() {
         for (widget in widgets)
@@ -54,8 +50,8 @@ class DashboardFragment : BaseFragment() {
 
     private fun provideWidgets(): Array<Widget> {
         return arrayOf(
-                EventsWidget(),
-                HomeworkWidget(),
+                org.schulcloud.mobile.controllers.dashboard.EventsWidget(),
+                org.schulcloud.mobile.controllers.dashboard.HomeworkWidget(),
                 NewsWidget()
         )
     }

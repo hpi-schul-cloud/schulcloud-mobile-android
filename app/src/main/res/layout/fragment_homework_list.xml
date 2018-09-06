@@ -1,36 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<org.schulcloud.mobile.views.ContentView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/empty"
+            style="@style/Content_Text.Empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/homework_error_empty" />
 
-            <TextView
-                android:id="@+id/empty"
-                style="@style/Content_Text.Empty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/homework_error_empty"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_homework" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_homework"/>
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-</FrameLayout>
+</org.schulcloud.mobile.views.ContentView>

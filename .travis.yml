@@ -5,8 +5,8 @@ android:
   - tools
   - platform-tools
   - tools
-  - build-tools-27.0.3
-  - android-27
+  - build-tools-28.0.2
+  - android-28
   - android-16
   - extra-android-m2repository
   - extra-google-m2repository
@@ -26,6 +26,7 @@ before_install:
 install:
 - chmod a+x .travis/install-git-crypt
 - "./.travis/install-git-crypt"
+- bundle install --without documentation
 before_script:
 - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a --skin 480x800
 - emulator -avd test -no-audio -no-window &
@@ -38,8 +39,10 @@ before_script:
 after_success:
 - "./.travis/upload-apk.sh"
 script:
-- "./gradlew assembleDebug testHpiDebugUnitTest testN21DebugUnitTest"
-#- "./gradlew assembleDebug testDebugUnitTest connectedDebugAndroidTest"
+- ./gradlew --stacktrace :app:check detektCheck
+- bundle exec danger --verbose
+- "./gradlew clean assembleDebug testHpiDebugUnitTest testN21DebugUnitTest"
+#- "./gradlew clean assembleDebug testDebugUnitTest connectedDebugAndroidTest"
 deploy:
   provider: releases
   api_key:

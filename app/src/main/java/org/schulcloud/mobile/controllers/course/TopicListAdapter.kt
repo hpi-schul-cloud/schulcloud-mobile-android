@@ -7,9 +7,6 @@ import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemTopicBinding
 import org.schulcloud.mobile.models.topic.Topic
 
-/**
- * Date: 6/10/2018
- */
 class TopicListAdapter(private val onSelected: (String) -> Unit)
     : BaseAdapter<Topic, TopicListAdapter.TopicViewHolder, ItemTopicBinding>() {
 

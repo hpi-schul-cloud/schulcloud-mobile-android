@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="brand_cornerRadius_medium">8dp</dimen>
+    <dimen name="brand_cornerRadius_big">16dp</dimen>
+
+</resources>

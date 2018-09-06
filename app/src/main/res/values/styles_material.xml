@@ -22,33 +22,33 @@
         <item name="android:color">?android:attr/textColorPrimaryInverse</item>
     </style>
 
-    <!-- Buttons -->
-    <style name="Material.Button">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:minWidth">88dp</item>
-        <item name="android:minHeight">36dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:background">@drawable/button_main</item>
-    </style>
-
     <!-- List -->
     <style name="Material.List">
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
+        <item name="android:showDividers">beginning|middle|end</item>
+        <item name="android:divider">@android:drawable/divider_horizontal_dark</item>
+    </style>
+    <style name="Material.ListHeader" parent="Material.ListItem.Simple">
+        <item name="android:background">@null</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
     </style>
     <style name="Material.ListItem">
+        <item name="android:layout_marginBottom">1dp</item>
         <item name="android:layout_height">@dimen/material_listItem_height</item>
+        <item name="android:background">@android:color/white</item>
     </style>
     <style name="Material.ListItem.TwoLine">
         <item name="android:layout_height">@dimen/material_listItem_height_twoLine</item>
     </style>
-    <style name="Material.ListItem.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
+    <style name="Material.ListItem.Simple" parent="@style/TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:height">@dimen/material_listItem_height</item>
         <item name="android:paddingLeft">@dimen/material_listItem_paddingHorizontal</item>
         <item name="android:paddingRight">@dimen/material_listItem_paddingHorizontal</item>
+        <item name="android:background">@android:color/white</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/material_listItem_textPrimary_textSize</item>
         <item name="android:ellipsize">end</item>

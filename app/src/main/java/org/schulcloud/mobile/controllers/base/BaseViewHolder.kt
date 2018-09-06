@@ -1,20 +1,18 @@
 package org.schulcloud.mobile.controllers.base
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LifecycleRegistry
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-/**
- * Date: 6/11/2018
- */
-abstract class BaseViewHolder<T : Any, out B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
+abstract class BaseViewHolder<T : Any, out B : ViewDataBinding>(val binding: B)
+    : RecyclerView.ViewHolder(binding.root), LifecycleOwner {
     companion object {
         fun <B : ViewDataBinding> createBinding(parent: ViewGroup, @LayoutRes layoutId: Int): B {
             return DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoutId,

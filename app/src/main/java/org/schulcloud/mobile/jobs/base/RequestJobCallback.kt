@@ -1,18 +1,17 @@
 package org.schulcloud.mobile.jobs.base
 
-import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import java.util.*
 
-abstract class RequestJobCallback {
-
+open class RequestJobCallback {
     enum class ErrorCode {
         ERROR, CANCEL, NO_NETWORK, NO_AUTH, MAINTENANCE, API_VERSION_EXPIRED
     }
 
-    protected abstract fun onSuccess()
+    protected open fun onSuccess() {}
 
-    protected abstract fun onError(code: ErrorCode)
+    protected open fun onError(code: ErrorCode) {}
 
     protected open fun onDeprecated(deprecationDate: Date) {}
 
@@ -31,5 +30,4 @@ abstract class RequestJobCallback {
     fun deprecated(deprecationDate: Date) {
         launch(UI) { onDeprecated(deprecationDate) }
     }
-
 }

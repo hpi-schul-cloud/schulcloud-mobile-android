@@ -3,10 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-        <import type="android.graphics.Color" />
-
         <variable
             name="course"
             type="org.schulcloud.mobile.models.homework.HomeworkCourse" />
@@ -34,7 +31,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:src="@drawable/circle_course_color"
-            app:colorFilter="@{Color.parseColor(course.color)}" />
+            app:colorFilter="@{course.color}" />
 
         <TextView
             android:id="@+id/title"
@@ -53,7 +50,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{Integer.toString(homeworkCount)}"
-            android:textColor="@color/warn"
+            android:textColor="@color/brand_primary"
             tools:text="3" />
 
     </LinearLayout>

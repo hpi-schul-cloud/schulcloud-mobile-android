@@ -1,16 +1,14 @@
 package org.schulcloud.mobile.viewmodels
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
-/**
- * Date: 6/9/2018
- */
 class IdViewModelFactory(private val id: String) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when (modelClass) {
+            NewsViewModel::class.java -> NewsViewModel(id) as T
             CourseViewModel::class.java -> CourseViewModel(id) as T
             TopicViewModel::class.java -> TopicViewModel(id) as T
             HomeworkViewModel::class.java -> HomeworkViewModel(id) as T

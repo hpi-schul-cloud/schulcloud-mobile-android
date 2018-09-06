@@ -26,7 +26,6 @@ class ListUserHomeworkJob(callback: RequestJobCallback) : RequestJob(callback) {
             // Sync
             Sync.Data.with(Homework::class.java, response.body()!!.data!!)
                     .run()
-
         } else {
             if (BuildConfig.DEBUG) Log.e(TAG, "Error while fetching homework list")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)

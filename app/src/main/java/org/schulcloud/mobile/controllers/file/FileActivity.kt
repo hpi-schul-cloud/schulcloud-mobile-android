@@ -25,7 +25,6 @@ import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
-import java.security.cert.CertPathValidatorException
 import javax.net.ssl.SSLHandshakeException
 
 

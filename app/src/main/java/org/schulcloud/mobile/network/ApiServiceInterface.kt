@@ -80,4 +80,8 @@ interface ApiServiceInterface {
                    @Header("x-amz-meta-flatname") flatName: String,
                    @Header("x-amz-meta-thumbnail") metaThumbnail: String,
                    @Body file: RequestBody): Call<ResponseBody>
+
+    //User
+    @GET("/users/{id}")
+    fun getUser()
 }

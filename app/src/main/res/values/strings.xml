@@ -139,5 +139,8 @@
     <string name="file_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
+    <string name="file_select">Wähle eine Datei aus</string>
+    <string name="file_create_directory">Erstelle einen Ordner</string>
+    <string name="file_directory_name">Ordner Name</string>
 
 </resources>

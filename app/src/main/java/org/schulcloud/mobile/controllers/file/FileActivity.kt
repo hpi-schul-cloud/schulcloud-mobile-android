@@ -1,12 +1,14 @@
 package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.FileProvider
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_file.*
@@ -41,12 +43,6 @@ class FileActivity : BaseActivity() {
         var supports = arrayListOf<String>("text/plain","application/msword","application/pdf","application/excel",
                 "image/jpeg","image/png","image/gif","image/tiff","application/postscript","audio/mpeg3","audio/flac",
                 "audio/aac","video/mo4","audio/avi","video/quicktime","text/html","application/javscript")
-
-        fun selectFile(){
-            var fileSelect = Intent(Intent.ACTION_GET_CONTENT)
-            fileSelect.setType("*/*")
-            fileSelect.putExtra(supports)
-        }
     }
 
     private lateinit var binding: ActivityFileBinding
@@ -82,7 +78,7 @@ class FileActivity : BaseActivity() {
 
         }
         files_add_directory.setOnClickListener{
-
+            //showDirectoryDialog()
         }
 
         init(intent)
@@ -191,4 +187,29 @@ class FileActivity : BaseActivity() {
             }
         }
     }
+
+    fun showDirectoryDialog() {
+        //TODO: Check for permissions
+        var dialog = CreateDirectoryFragment()
+        dialog.show(fragmentManager, "CreateDirectoryDialog")
+    }
+
+    fun showPermissions(){
+
+    }
+
+    /*fun selectFile(){
+        var fileSelect = Intent(Intent.ACTION_GET_CONTENT)
+        fileSelect.type = "**"
+        fileSelect.addCategory(Intent.CATEGORY_OPENABLE)
+        var intent = Intent.createChooser(fileSelect,resources.getString(R.string.file_select))
+        startActivityForResult(intent,101)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 101 && resultCode == Activity.RESULT_OK){
+            var selectedFile = data.pat
+        }
+    }*/
 }

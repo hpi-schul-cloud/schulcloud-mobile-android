@@ -134,5 +134,8 @@
     <string name="file_fileDownload_success">File \'%1$s\' was successfully saved in downloads!</string>
     <string name="file_fileDownload_error_save">The file could not be saved</string>
     <string name="file_fileDownload_error_savePermissionDenied">The file cannot be saved without permission</string>
+    <string name="file_select">Choose a file</string>
+    <string name="file_create_directory">Create a directory</string>
+    <string name="file_directory_name">Directory name</string>
 
 </resources>

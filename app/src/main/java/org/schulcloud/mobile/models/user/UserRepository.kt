@@ -2,6 +2,7 @@ package org.schulcloud.mobile.models.user
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import android.arch.lifecycle.LiveData
 import io.realm.Realm
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch

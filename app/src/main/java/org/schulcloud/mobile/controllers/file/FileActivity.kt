@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -21,6 +22,7 @@ import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
@@ -78,7 +80,7 @@ class FileActivity : BaseActivity() {
 
         }
         files_add_directory.setOnClickListener{
-            //showDirectoryDialog()
+            showDirectoryDialog()
         }
 
         init(intent)
@@ -191,11 +193,23 @@ class FileActivity : BaseActivity() {
     fun showDirectoryDialog() {
         //TODO: Check for permissions
         var dialog = CreateDirectoryFragment()
-        dialog.show(fragmentManager, "CreateDirectoryDialog")
+        viewModel.user.observe(this, Observer {
+
+            if(it!!.hasPermission(User.PERMISSION_FOLDER_CREATE))
+                runOnUiThread{dialog.show(fragmentManager, "CreateDirectoryDialog")}
+            else
+                permError()
+        })
     }
 
     fun showPermissions(){
 
+    }
+
+    fun permError(){
+        runOnUiThread{
+            Toast.makeText(this,resources.getString(R.string.perm_error),Toast.LENGTH_SHORT).show()
+        }
     }
 
     /*fun selectFile(){

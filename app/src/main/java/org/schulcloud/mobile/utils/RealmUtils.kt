@@ -40,3 +40,5 @@ fun Realm.homeworkDao(): HomeworkDao = HomeworkDao(this)
 fun Realm.submissionDao(): SubmissionDao = SubmissionDao(this)
 
 fun Realm.fileDao(): FileDao = FileDao(this)
+
+fun Realm.userDao(): UserDao = UserDao(this)

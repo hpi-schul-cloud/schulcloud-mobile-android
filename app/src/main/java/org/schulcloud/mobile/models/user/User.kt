@@ -22,7 +22,8 @@ open class User : RealmObject(), HasId {
     var email: String? = null
     var schoolId: String? = null
     var displayName: String? = null
-    var permissions: RealmList<String>? = null
+    var permissions: RealmList<String?>? = null
+    var roles: RealmList<String>? = null
 
     fun hasPermission(permission: String): Boolean{
         if(permission.isNullOrEmpty())

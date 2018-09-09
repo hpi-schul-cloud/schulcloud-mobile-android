@@ -18,5 +18,6 @@ class FileViewModel(path_: String) : ViewModel() {
 
     val directories: LiveData<List<Directory>> = FileRepository.directories(realm, path)
     val files: LiveData<List<File>> = FileRepository.files(realm, path)
-    val user: LiveData<User> = UserRepository.currentUser()
+    val user: LiveData<User?>
+        get() = UserRepository.currentUser(realm)
 }

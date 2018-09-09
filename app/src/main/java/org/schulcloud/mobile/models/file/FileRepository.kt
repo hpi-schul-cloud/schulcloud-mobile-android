@@ -68,6 +68,10 @@ object FileRepository {
     }
 
     suspend fun deleteFile(fileId: String){
-        UserRepository
+
+    }
+
+    suspend fun deleteDirectory(path: String){
+
     }
 }

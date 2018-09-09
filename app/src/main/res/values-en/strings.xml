@@ -137,5 +137,6 @@
     <string name="file_select">Choose a file</string>
     <string name="file_create_directory">Create a directory</string>
     <string name="file_directory_name">Directory name</string>
+    <string name="perm_error">Missing permission: You are not allowed to do that!</string>
 
 </resources>

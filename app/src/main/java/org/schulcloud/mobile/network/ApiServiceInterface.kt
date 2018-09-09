@@ -82,6 +82,6 @@ interface ApiServiceInterface {
                    @Body file: RequestBody): Call<ResponseBody>
 
     //User
-    @GET("/users/{id}")
-    fun getUser()
+    @GET("/roles")
+    fun getPermsForRole(@Query("roleId") role: String): Call<List<String>>
 }

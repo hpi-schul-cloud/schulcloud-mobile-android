@@ -142,5 +142,6 @@
     <string name="file_select">Wähle eine Datei aus</string>
     <string name="file_create_directory">Erstelle einen Ordner</string>
     <string name="file_directory_name">Ordner Name</string>
+    <string name="perm_error">Fehlende Berechtigungen: Das darfst du nicht!</string>
 
 </resources>

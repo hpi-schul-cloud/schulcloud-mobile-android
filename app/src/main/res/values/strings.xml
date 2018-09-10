@@ -106,7 +106,7 @@
         <item quantity="two">Übermorgen</item>
         <item quantity="other">In %d Tagen</item>
     </plurals>
-    <string name="homework_overview">Beschreibung</string>
+    <string name="homework_overview">Aufgabe</string>
     <string name="homework_overview_submissionMy">Meine Abgabe</string>
     <string name="homework_overview_error_empty">Keine Beschreibung vorhanden</string>
     <string name="homework_submissions">Abgaben</string>

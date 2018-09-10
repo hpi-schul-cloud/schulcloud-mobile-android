@@ -155,7 +155,7 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
                     FileFragmentArgs.Builder(path).build().toBundle())
         }
         mainViewModel.toolbarColors.observe(this, Observer {
-            breadcrumbs.setTextColor(it.textColor)
+            breadcrumbs.textColor = it.textColor
         })
     }
 

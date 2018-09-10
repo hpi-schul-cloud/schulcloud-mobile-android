@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -195,24 +194,26 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_FILE_TO_UPLOAD) {
+            // Probably cancelled by user -> don't show error message
             if (resultCode != Activity.RESULT_OK) return
-            val uri = data?.data ?: return
 
-            val (name, size) = uri.let {
-                @Suppress("Recycle")
-                context?.contentResolver?.query(it, null, null, null, null)
-            }?.use { cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-                cursor.moveToFirst()
-                return@use cursor.getString(nameIndex) to cursor.getLong(sizeIndex)
-            } ?: return
+            val uri = data?.data
+            val fileReadInfo = uri?.let { context!!.prepareFileRead(it) }
+            if (fileReadInfo == null) {
+                context!!.showGenericError(R.string.file_fileUpload_error_read)
+                return
+            }
 
             launch(UI) {
-                getContext()!!.withProgressDialog("Uploading file") {
-                    FileRepository.upload(viewModel.path, name, size) {
-                        getContext()!!.contentResolver.openInputStream(uri)!!
+                getContext()!!.withProgressDialog(R.string.file_fileUpload_progress) {
+                    val res = FileRepository.upload(viewModel.path, fileReadInfo.name, fileReadInfo.size) {
+                        fileReadInfo.streamGenerator().also {
+                            if (it == null)
+                                getContext()!!.showGenericError(R.string.file_fileUpload_error_read)
+                        }
                     }
+                    if (!res) getContext()!!.showGenericError(R.string.file_fileUpload_error_upload)
+
                     FileRepository.syncDirectory(viewModel.path)
                 }
             }

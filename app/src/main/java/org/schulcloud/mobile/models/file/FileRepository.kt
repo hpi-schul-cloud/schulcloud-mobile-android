@@ -56,7 +56,7 @@ object FileRepository {
     /**
      * @param path Path on server including the file name; defaults to private folder.
      */
-    suspend fun upload(path: String, name: String, size: Long, streamGenerator: () -> InputStream): Boolean {
+    suspend fun upload(path: String, name: String, size: Long, streamGenerator: () -> InputStream?): Boolean {
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(name.fileExtension)
         val mediaType = mimeType?.let { MediaType.parse(it) }
 
@@ -81,7 +81,9 @@ object FileRepository {
             override fun contentType() = mediaType
             override fun contentLength() = size
             override fun writeTo(sink: BufferedSink?) {
-                sink?.writeAll(Okio.source(streamGenerator()))
+                Okio.source(streamGenerator() ?: return).use {
+                    sink?.writeAll(it)
+                }
             }
         }
         val uploadRes = ApiService.getInstance().uploadFile(uploadUrl,

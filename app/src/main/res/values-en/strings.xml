@@ -6,6 +6,7 @@
     <string name="general_action_refresh">Refresh</string>
     <string name="general_action_gotoCourse">Go to course</string>
     <string name="general_action_gotoHomework">Go to assignment</string>
+    <string name="general_action_addAttachment">Add attachment</string>
     <string name="general_date_yesterday">Yesterday</string>
     <string name="general_date_today">Today</string>
     <string name="general_date_tomorrow">Tomorrow</string>

@@ -22,7 +22,6 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
-import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
@@ -80,11 +79,6 @@ class MainActivity : BaseActivity() {
             }
 
             fab.visibilityBool = config.fabVisible && config.fabIconRes != 0
-            if (lastConfig?.fragmentType != config.fragmentType)
-                bottomAppBar.fabAlignmentMode = when (config.fragmentType) {
-                    FragmentType.PRIMARY -> BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                    FragmentType.SECONDARY -> BottomAppBar.FAB_ALIGNMENT_MODE_END
-                }
             if (lastConfig?.fabIconRes != config.fabIconRes)
                 fab.setImageResource(config.fabIconRes)
             lastConfig = config

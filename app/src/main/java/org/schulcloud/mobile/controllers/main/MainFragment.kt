@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.annotation.MenuRes
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
@@ -235,10 +234,8 @@ data class MainFragmentConfig(
     @ColorInt
     val toolbarColor: Int? = null,
 
-    @MenuRes
     val menuTopRes: Iterable<Int?> = emptyList(),
     val menuTopHiddenIds: Iterable<Int?> = emptyList(),
-    @MenuRes
     val menuBottomRes: Iterable<Int?> = emptyList(),
     val menuBottomHiddenIds: Iterable<Int?> = emptyList(),
     val supportsRefresh: Boolean = true,

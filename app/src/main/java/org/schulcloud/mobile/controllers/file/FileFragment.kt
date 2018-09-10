@@ -1,10 +1,12 @@
 package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -21,22 +23,27 @@ import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
-import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.models.user.Permission
+import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.models.user.hasPermission
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
+import java.io.File as JavaFile
 
 
 class FileFragment : MainFragment<FileFragment, FileViewModel>() {
     companion object {
-        val TAG: String = FileFragment::class.java.simpleName
+        private val TAG: String = FileFragment::class.java.simpleName
+
+        private const val REQUEST_FILE_TO_UPLOAD = 1
     }
 
     private val args: FileFragmentArgs by lazy {
@@ -68,10 +75,9 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
             }
         }
 
-    override fun provideSelfConfig() = (getCourseFromFolder()?.let {
-        CourseRepository.course(viewModel.realm, it)
-    } ?: liveDataOf<Course>())
-            .map { course ->
+    override fun provideSelfConfig() = viewModel.course
+            .combineLatestBothNullable(viewModel.currentUser)
+            .map { (course, user) ->
                 breadcrumbs.setPath(args.path, course)
                 val parts = args.path.getPathParts()
 
@@ -88,8 +94,10 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
                         toolbarColor = course?.color?.let { Color.parseColor(it) },
                         menuBottomRes = listOf(R.menu.fragment_file_bottom),
                         menuBottomHiddenIds = listOf(
-                                R.id.file_action_gotoCourse.takeIf { course != null }
-                        )
+                                R.id.file_action_gotoCourse.takeIf { course == null }
+                        ),
+                        fabIconRes = R.drawable.ic_file_upload_white_24dp,
+                        fabVisible = user.hasPermission(Permission.FILE_CREATE)
                 )
             }
 
@@ -161,7 +169,7 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.file_action_gotoCourse -> getCourseFromFolder()?.also { id ->
+            R.id.file_action_gotoCourse -> viewModel.courseId?.also { id ->
                 navController.navigate(R.id.action_global_fragment_course,
                         CourseFragmentArgs.Builder(id).build().toBundle())
             }
@@ -170,20 +178,56 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
         return true
     }
 
-    override suspend fun refresh() {
-        FileRepository.syncDirectory(viewModel.path)
-        getCourseFromFolder()?.also {
-            CourseRepository.syncCourse(it)
+    override fun onFabClicked() {
+        launch(UI) {
+            if (!requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                getContext()!!.showGenericError(R.string.file_fileUpload_error_readPermissionDenied)
+                return@launch
+            }
+
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "*/*"
+                addCategory(Intent.CATEGORY_OPENABLE)
+            }
+            startActivityForResult(intent, REQUEST_FILE_TO_UPLOAD)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_FILE_TO_UPLOAD) {
+            if (resultCode != Activity.RESULT_OK) return
+            val uri = data?.data ?: return
 
-    private fun getCourseFromFolder(): String? {
-        if (!args.path.startsWith(FileRepository.CONTEXT_COURSES))
-            return null
+            val (name, size) = uri.let {
+                @Suppress("Recycle")
+                context?.contentResolver?.query(it, null, null, null, null)
+            }?.use { cursor ->
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                cursor.moveToFirst()
+                return@use cursor.getString(nameIndex) to cursor.getLong(sizeIndex)
+            } ?: return
 
-        return args.path.getPathParts()[1]
+            launch(UI) {
+                getContext()!!.withProgressDialog("Uploading file") {
+                    FileRepository.upload(viewModel.path, name, size) {
+                        getContext()!!.contentResolver.openInputStream(uri)!!
+                    }
+                    FileRepository.syncDirectory(viewModel.path)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
+
+    override suspend fun refresh() {
+        FileRepository.syncDirectory(viewModel.path)
+        viewModel.courseId?.also {
+            CourseRepository.syncCourse(it)
+        }
+        UserRepository.syncCurrentUser()
+    }
+
 
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(UI) {

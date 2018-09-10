@@ -139,5 +139,6 @@
     <string name="file_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
+    <string name="file_fileUpload_error_readPermissionDenied">Ohne die Berechtigung kann keine Datei zum Upload ausgewählt werden</string>
 
 </resources>

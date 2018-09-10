@@ -18,7 +18,7 @@ import org.schulcloud.mobile.storages.UserStorage
 import org.schulcloud.mobile.utils.userDao
 
 object UserRepository {
-    val TAG: String = UserRepository::class.java.simpleName
+    private val TAG: String = UserRepository::class.java.simpleName
 
     @JvmStatic
     val token: String?

@@ -32,7 +32,7 @@ class NewsListFragment : MainFragment<NewsListFragment, NewsListViewModel>() {
 
 
     override var url: String? = "/news"
-    override fun provideConfig() = MainFragmentConfig(
+    override fun provideSelfConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.news_title)
     ).asLiveData()

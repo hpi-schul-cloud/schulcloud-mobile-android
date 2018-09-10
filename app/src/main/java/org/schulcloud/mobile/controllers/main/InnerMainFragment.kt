@@ -18,7 +18,7 @@ abstract class InnerMainFragment<F : InnerMainFragment<F, P, VM>, P : MainFragme
     protected val parent: P
         get() = parentFragment as P
 
-    override fun provideConfig() = liveDataOf<MainFragmentConfig>()
+    override fun provideSelfConfig() = liveDataOf(MainFragmentConfig())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = parent.viewModel

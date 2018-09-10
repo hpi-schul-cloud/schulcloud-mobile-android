@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.children
 import androidx.core.view.forEach
+import androidx.core.view.iterator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -48,33 +49,45 @@ class MainActivity : BaseActivity() {
     private var toolbarWrapper: ViewGroup? = null
     private var optionsMenu: Menu? = null
 
+    private var lastConfig: MainFragmentConfig? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         viewModel.config.observe(this, Observer { config ->
-            if (config == null) return@Observer
+            if (config == null || config == lastConfig) return@Observer
 
-            title = config.title.takeIf { config.showTitle }
-            supportActionBar?.subtitle = config.subtitle
+            if (lastConfig?.title != config.title)
+                title = config.title.takeIf { config.showTitle }
+            if (lastConfig?.subtitle != config.subtitle)
+                supportActionBar?.subtitle = config.subtitle
             recalculateToolbarColors()
 
             bottomAppBar.apply {
-                menu.clear()
-                if (config.menuBottomRes != 0) {
-                    inflateMenu(config.menuBottomRes)
-                    for (id in config.menuBottomHiddenIds)
-                        if (id != 0)
-                            menu?.findItem(id)?.isVisible = false
+                val menuChanged = lastConfig?.menuBottomRes != config.menuBottomRes
+                if (menuChanged) {
+                    menu.clear()
+                    for (menuRes in config.menuBottomRes.filterNotNull())
+                        inflateMenu(menuRes)
+                }
+
+                if (menuChanged
+                        || lastConfig?.menuBottomHiddenIds != config.menuBottomHiddenIds) {
+                    for (item in menu)
+                        item.isVisible = !config.menuBottomHiddenIds.contains(item.itemId)
                 }
             }
 
             fab.visibilityBool = config.fabVisible && config.fabIconRes != 0
-            bottomAppBar.fabAlignmentMode = when (config.fragmentType) {
-                FragmentType.PRIMARY -> BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
-                FragmentType.SECONDARY -> BottomAppBar.FAB_ALIGNMENT_MODE_END
-            }
-            fab.setImageResource(config.fabIconRes)
+            if (lastConfig?.fragmentType != config.fragmentType)
+                bottomAppBar.fabAlignmentMode = when (config.fragmentType) {
+                    FragmentType.PRIMARY -> BottomAppBar.FAB_ALIGNMENT_MODE_CENTER
+                    FragmentType.SECONDARY -> BottomAppBar.FAB_ALIGNMENT_MODE_END
+                }
+            if (lastConfig?.fabIconRes != config.fabIconRes)
+                fab.setImageResource(config.fabIconRes)
+            lastConfig = config
         })
         viewModel.toolbarColors.observe(this, Observer {
             updateToolbarColors()

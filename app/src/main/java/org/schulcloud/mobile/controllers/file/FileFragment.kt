@@ -68,7 +68,7 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
             }
         }
 
-    override fun provideConfig() = (getCourseFromFolder()?.let {
+    override fun provideSelfConfig() = (getCourseFromFolder()?.let {
         CourseRepository.course(viewModel.realm, it)
     } ?: liveDataOf<Course>())
             .map { course ->
@@ -86,9 +86,9 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
                         },
                         showTitle = false,
                         toolbarColor = course?.color?.let { Color.parseColor(it) },
-                        menuBottomRes = R.menu.fragment_file_bottom,
+                        menuBottomRes = listOf(R.menu.fragment_file_bottom),
                         menuBottomHiddenIds = listOf(
-                                if (course == null) R.id.file_action_gotoCourse else 0
+                                R.id.file_action_gotoCourse.takeIf { course != null }
                         )
                 )
             }

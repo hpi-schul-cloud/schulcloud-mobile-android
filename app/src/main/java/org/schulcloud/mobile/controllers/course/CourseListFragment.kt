@@ -32,7 +32,7 @@ class CourseListFragment : MainFragment<CourseListFragment, CourseListViewModel>
 
 
     override var url: String? = "/courses"
-    override fun provideConfig() = MainFragmentConfig(
+    override fun provideSelfConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.course_title)
     ).asLiveData()

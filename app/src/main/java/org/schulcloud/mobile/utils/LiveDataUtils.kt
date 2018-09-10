@@ -33,15 +33,15 @@ fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> {
 fun <T, R : Any?> LiveData<T>.switchMapNullable(func: (T) -> LiveData<R>?): LiveData<R> {
     val result = MediatorLiveData<R>()
     var source: LiveData<R>? = null
-    result.addSource(this) {
-        val newLiveData = func(it) ?: liveDataOf()
+    result.addSource(this) { value ->
+        val newLiveData = func(value) ?: liveDataOf()
         if (source == newLiveData)
             return@addSource
 
         source?.also { result.removeSource<R>(it) }
         source = newLiveData
-        source?.also {
-            result.addSource(it) { result.value = it }
+        source?.also { source ->
+            result.addSource(source) { result.value = it }
         }
     }
     return result
@@ -61,8 +61,8 @@ fun <T> LiveData<T>.zip(other: LiveData<T>): LiveData<T> {
 
 fun <T> zipLater(): Pair<LiveData<T>, (LiveData<T>) -> Unit> {
     val result = MediatorLiveData<T>()
-    val addFunc: (LiveData<T>) -> Unit = {
-        result.addSource(it) { result.value = it }
+    val addFunc: (LiveData<T>) -> Unit = { source ->
+        result.addSource(source) { result.value = it }
     }
     return result to addFunc
 }
@@ -70,18 +70,18 @@ fun <T> zipLater(): Pair<LiveData<T>, (LiveData<T>) -> Unit> {
 fun <T> switch(): Pair<LiveData<T>, (LiveData<T>) -> Unit> {
     val result = MediatorLiveData<T>()
     val sources = mutableListOf<LiveData<T>>()
-    val addFunc: (LiveData<T>) -> Unit = {
-        for (source in sources)
-            result.removeSource(source)
+    val addFunc: (LiveData<T>) -> Unit = { source ->
+        for (oldSource in sources)
+            result.removeSource(oldSource)
         sources.clear()
 
-        result.addSource(it) { result.value = it }
-        sources += it
+        result.addSource(source) { result.value = it }
+        sources += source
     }
     return result to addFunc
 }
 
-inline fun <reified T1, reified T2> LiveData<T1>.combineLatest(other: LiveData<T2>): LiveData<Pair<T1, T2>> {
+inline fun <reified T1 : Any, reified T2 : Any> LiveData<T1>.combineLatest(other: LiveData<T2>): LiveData<Pair<T1, T2>> {
     val result = object : MediatorLiveData<Pair<T1, T2>>() {
         var v1: T1? = null
         var v1Set = false
@@ -93,6 +93,61 @@ inline fun <reified T1, reified T2> LiveData<T1>.combineLatest(other: LiveData<T
             if (!v1Set || !v2Set)
                 return
             value = v1 as T1 to v2 as T2
+        }
+    }
+
+    result.addSource(this) {
+        result.v1 = it
+        result.v1Set = true
+        result.update()
+    }
+    result.addSource(other) {
+        result.v2 = it
+        result.v2Set = true
+        result.update()
+    }
+    return result
+}
+
+inline fun <reified T1 : Any, reified T2> LiveData<T1>.combineLatestNullable(other: LiveData<T2?>): LiveData<Pair<T1, T2?>> {
+    val result = object : MediatorLiveData<Pair<T1, T2?>>() {
+        var v1: T1? = null
+        var v1Set = false
+        var v2: T2? = null
+        var v2Set = false
+
+        @Suppress("NAME_SHADOWING")
+        fun update() {
+            if (!v1Set || !v2Set)
+                return
+            value = v1 as T1 to v2
+        }
+    }
+
+    result.addSource(this) {
+        result.v1 = it
+        result.v1Set = true
+        result.update()
+    }
+    result.addSource(other) {
+        result.v2 = it
+        result.v2Set = true
+        result.update()
+    }
+    return result
+}
+
+inline fun <reified T1, reified T2> LiveData<T1>.combineLatestBothNullable(other: LiveData<T2?>): LiveData<Pair<T1?, T2?>> {
+    val result = object : MediatorLiveData<Pair<T1?, T2?>>() {
+        var v1: T1? = null
+        var v1Set = false
+        var v2: T2? = null
+        var v2Set = false
+
+        fun update() {
+            if (!v1Set || !v2Set)
+                return
+            value = v1 to v2
         }
     }
 

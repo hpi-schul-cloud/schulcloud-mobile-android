@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.NavHostFragment
 import kotlinx.android.synthetic.main.fragment_homework_overview.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.homework.submission.SubmissionFragmentArgs
 import org.schulcloud.mobile.controllers.main.InnerMainFragment
-import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkOverviewBinding
-import org.schulcloud.mobile.utils.mutableLiveDataOf
 import org.schulcloud.mobile.viewmodels.HomeworkViewModel
 
 
@@ -22,10 +19,6 @@ class OverviewFragment : InnerMainFragment<OverviewFragment, HomeworkFragment, H
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
         }.root
-    }
-
-    override fun provideConfig(): LiveData<MainFragmentConfig> {
-        return mutableLiveDataOf(MainFragmentConfig(title = "Test"))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

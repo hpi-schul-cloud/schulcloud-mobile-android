@@ -8,10 +8,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import kotlinx.coroutines.experimental.android.UI
@@ -35,7 +32,7 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
 
     protected open val isInnerFragment: Boolean = false
     protected open val currentInnerFragment: LiveData<Int?> = liveDataOf()
-    protected open val innerFragments: List<InnerMainFragment<*, F, VM>?> = emptyList()
+    protected open val innerFragments: LiveData<List<InnerMainFragment<*, F, VM>?>> = liveDataOf(emptyList())
     private var isFirstInit: Boolean = true
 
     val isInitialized: Boolean get() = !isFirstInit
@@ -50,7 +47,6 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
     lateinit var viewModel: VM
         protected set
 
-    protected abstract fun provideConfig(): LiveData<MainFragmentConfig>
 
     open var url: String? = null
 
@@ -81,9 +77,9 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
 
         if (!isInnerFragment) {
-            config.observe(this, Observer {
+            config.observe(this, Observer { config ->
                 activity?.invalidateOptionsMenu()
-                it?.also { mainViewModel.config.value = it }
+                config?.also { mainViewModel.config.value = config }
             })
 
             mainActivity.setSupportActionBar(view?.findViewById(R.id.toolbar))
@@ -102,16 +98,19 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         if (!isInnerFragment) {
-            val menuTopRes = config.value?.menuTopRes ?: 0
-            if (menuTopRes != 0)
-                inflater?.inflate(menuTopRes, menu)
+            config.value?.menuTopRes?.also {
+                for (menuRes in it.filterNotNull())
+                    inflater?.inflate(menuRes, menu)
+            }
 
             inflater?.inflate(R.menu.fragment_main_top, menu)
             if (config.value?.supportsRefresh == false)
                 menu?.findItem(R.id.base_action_refresh)?.isVisible = false
-            for (id in config.value?.menuTopHiddenIds.orEmpty())
-                if (id != 0)
+
+            config.value?.menuTopHiddenIds?.also {
+                for (id in it.filterNotNull())
                     menu?.findItem(id)?.isVisible = false
+            }
         }
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -126,10 +125,10 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
                 context?.shareLink(link, mainViewModel.config.value?.title)
             }
             R.id.base_action_refresh -> performRefresh()
-        // TODO: Remove when deep linking is readded
+            // TODO: Remove when deep linking is readded
             R.id.base_action_openInBrowser -> context?.openUrl(url.asUri())
             else -> {
-                val fragments = innerFragments.toMutableList()
+                val fragments = innerFragments.value.orEmpty().toMutableList()
                 // Currently visible parent takes precedence
                 currentInnerFragment.value?.also { fragments.move(it, 0) }
                 for (innerFragment in fragments)
@@ -142,13 +141,76 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
     }
 
 
+    private fun provideConfig(): LiveData<MainFragmentConfig> {
+        var lastFragment: InnerMainFragment<*, F, VM>? = null
+        var pos = 0
+
+        val (result, addFunc) = switch<MainFragmentConfig?>()
+        val observer = object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            fun onResume() {
+                if (currentInnerFragment.value ?: 0 != pos)
+                    return
+
+                @Suppress("UNCHECKED_CAST")
+                addFunc(lastFragment?.config as? LiveData<MainFragmentConfig?> ?: liveDataOf())
+            }
+        }
+
+        return provideConfig(currentInnerFragment
+                .map { it ?: 0 }
+                .combineLatest(innerFragments)
+                .switchMapNullable { (position, fragments) ->
+                    pos = position
+
+                    val innerFragment = fragments.getOrNull(pos)
+                    if (innerFragment != null) {
+                        // Remove observer from old fragment
+                        lastFragment?.let { lifecycle.removeObserver(observer) }
+
+                        // Add to new fragment
+                        lastFragment = innerFragment
+                        // workaround as fragments are not fully initialized when tab is switched
+                        innerFragment.getLifecycle().removeObserver(observer)
+                        innerFragment.getLifecycle().addObserver(observer)
+                        result
+                    } else
+                        null
+                })
+    }
+
+    protected open fun provideConfig(selectedTabConfig: LiveData<MainFragmentConfig?>)
+            : LiveData<MainFragmentConfig> {
+        return provideSelfConfig()
+                .combineLatestNullable(selectedTabConfig)
+                .map { (self, tab) ->
+                    MainFragmentConfig(
+                            self.fragmentType,
+                            tab?.title ?: self.title,
+                            tab?.showTitle ?: self.showTitle,
+                            tab?.subtitle ?: self.subtitle,
+                            tab?.toolbarColor ?: self.toolbarColor,
+                            (tab?.menuTopRes ?: emptyList()).union(self.menuTopRes),
+                            (tab?.menuTopHiddenIds ?: emptyList()).union(self.menuTopHiddenIds),
+                            (tab?.menuBottomRes ?: emptyList()).union(self.menuBottomRes),
+                            (tab?.menuBottomHiddenIds ?: emptyList()).union(self.menuBottomHiddenIds),
+                            tab?.supportsRefresh ?: self.supportsRefresh,
+                            tab?.fabVisible ?: self.fabVisible,
+                            tab?.fabIconRes ?: self.fabIconRes
+                    )
+                }
+    }
+
+    protected abstract fun provideSelfConfig(): LiveData<MainFragmentConfig>
+
+
     override fun performRefresh() = performRefreshWithChild(false)
     fun performRefreshWithChild(fromInner: Boolean) {
         refreshableImpl.isRefreshing = true
         launch {
             withContext(UI) {
                 val innerFragment = currentInnerFragment.value?.let {
-                    innerFragments.getOrNull(it)
+                    innerFragments.value?.getOrNull(it)
                 }
                 if (fromInner || innerFragment == null)
                     refresh()
@@ -162,29 +224,23 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
     abstract suspend fun refresh()
 
     open fun onFabClicked() {}
-
-    fun addOnInitializedCallback(callback: () -> Unit) {
-        if (isInitialized) callback()
-        else onInitializedCallbacks += callback
-    }
 }
-
 
 data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
 
-    val title: String?,
+    val title: String? = null,
     val showTitle: Boolean = true,
     val subtitle: String? = null,
     @ColorInt
     val toolbarColor: Int? = null,
 
     @MenuRes
-    val menuTopRes: Int = 0,
-    val menuTopHiddenIds: List<Int> = emptyList(),
+    val menuTopRes: Iterable<Int?> = emptyList(),
+    val menuTopHiddenIds: Iterable<Int?> = emptyList(),
     @MenuRes
-    val menuBottomRes: Int = 0,
-    val menuBottomHiddenIds: List<Int> = emptyList(),
+    val menuBottomRes: Iterable<Int?> = emptyList(),
+    val menuBottomHiddenIds: Iterable<Int?> = emptyList(),
     val supportsRefresh: Boolean = true,
 
     val fabVisible: Boolean = true,

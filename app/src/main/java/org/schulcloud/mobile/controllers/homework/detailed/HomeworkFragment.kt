@@ -45,14 +45,14 @@ class HomeworkFragment : TabbedMainFragment<HomeworkFragment, HomeworkViewModel>
     override var url: String? = null
         get() = "/homework/${viewModel.homework.value?.id}"
 
-    override fun provideConfig(selectedTabConfig: LiveData<MainFragmentConfig?>): LiveData<MainFragmentConfig> {
+    override fun provideSelfConfig(): LiveData<MainFragmentConfig> {
         return viewModel.homework
                 .map { homework ->
                     MainFragmentConfig(
                             title = homework?.title ?: getString(R.string.general_error_notFound),
                             subtitle = homework?.course?.name,
                             toolbarColor = homework?.course?.color?.let { Color.parseColor(it) },
-                            menuBottomRes = R.menu.fragment_homework_bottom
+                            menuBottomRes = listOf(R.menu.fragment_homework_bottom)
                     )
                 }
     }

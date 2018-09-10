@@ -11,7 +11,7 @@ import org.schulcloud.mobile.models.homework.submission.Submission
 import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
-import org.schulcloud.mobile.utils.combineLatest
+import org.schulcloud.mobile.utils.combineLatestNullable
 import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.utils.switchMapNullable
 
@@ -21,11 +21,11 @@ class HomeworkViewModel(val id: String) : ViewModel() {
     }
 
     val homework: LiveData<Homework?> = HomeworkRepository.homework(realm, id)
-    val course: LiveData<Course?> = homework.switchMapNullable {
-        it?.course?.id?.let { CourseRepository.course(realm, it) }
+    val course: LiveData<Course?> = homework.switchMapNullable { homework ->
+        homework?.course?.id?.let { CourseRepository.course(realm, it) }
     }
     val submissions: LiveData<List<Pair<User, Submission?>>> = SubmissionRepository.submissionsForHomework(realm, id)
-            .combineLatest(course)
+            .combineLatestNullable(course)
             .map { (submissions, course) ->
                 if (course == null)
                     return@map emptyList<Pair<User, Submission>>()

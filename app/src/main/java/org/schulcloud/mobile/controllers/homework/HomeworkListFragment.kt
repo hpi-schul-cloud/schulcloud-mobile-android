@@ -38,7 +38,7 @@ class HomeworkListFragment : MainFragment<HomeworkListFragment, HomeworkListView
 
 
     override var url: String? = "/homework"
-    override fun provideConfig() = MainFragmentConfig(
+    override fun provideSelfConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.homework_title)
     ).asLiveData()

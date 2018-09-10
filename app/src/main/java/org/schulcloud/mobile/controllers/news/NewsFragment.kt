@@ -24,7 +24,7 @@ class NewsFragment : MainFragment<NewsFragment, NewsViewModel>() {
     override var url: String? = null
         get() = "/news/${viewModel.news.value?.id}"
 
-    override fun provideConfig() = viewModel.news
+    override fun provideSelfConfig() = viewModel.news
             .map { news ->
                 MainFragmentConfig(
                         title = news?.title ?: getString(R.string.general_error_notFound)

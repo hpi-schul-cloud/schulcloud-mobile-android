@@ -21,7 +21,7 @@ class DashboardFragment : MainFragment<DashboardFragment, ViewModel>() {
 
 
     override var url: String? = "/dashboard"
-    override fun provideConfig() = MainFragmentConfig(
+    override fun provideSelfConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.dashboard_title)
     ).asLiveData()

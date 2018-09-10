@@ -32,7 +32,7 @@ class FileOverviewFragment : MainFragment<FileOverviewFragment, FileOverviewView
 
 
     override var url: String? = "/files"
-    override fun provideConfig() = MainFragmentConfig(
+    override fun provideSelfConfig() = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
             title = getString(R.string.file_title)
     ).asLiveData()

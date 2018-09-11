@@ -1,7 +1,6 @@
 package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -39,12 +38,6 @@ import java.io.File as JavaFile
 
 
 class FileFragment : MainFragment<FileFragment, FileViewModel>() {
-    companion object {
-        private val TAG: String = FileFragment::class.java.simpleName
-
-        private const val REQUEST_FILE_TO_UPLOAD = 1
-    }
-
     private val args: FileFragmentArgs by lazy {
         FileFragmentArgs.fromBundle(arguments)
     }
@@ -188,20 +181,9 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
                 type = "*/*"
                 addCategory(Intent.CATEGORY_OPENABLE)
             }
-            startActivityForResult(intent, REQUEST_FILE_TO_UPLOAD)
+            val res = startActivityForResult(intent) ?: return@launch
+            getContext()!!.uploadFile(res.data, viewModel.path)
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_FILE_TO_UPLOAD) {
-            // Probably cancelled by user -> don't show error message
-            if (resultCode != Activity.RESULT_OK) return
-
-            launch(UI) {
-                getContext()!!.uploadFile(data?.data, viewModel.path)
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override suspend fun refresh() {

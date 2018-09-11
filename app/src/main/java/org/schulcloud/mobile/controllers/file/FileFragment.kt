@@ -173,16 +173,14 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
     override fun onFabClicked() {
         launch(UI) {
             if (!requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                getContext()!!.showGenericError(R.string.file_fileUpload_error_readPermissionDenied)
+                getContext()!!.showGenericError(R.string.file_pick_error_readPermissionDenied)
                 return@launch
             }
 
-            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "*/*"
-                addCategory(Intent.CATEGORY_OPENABLE)
-            }
-            val res = startActivityForResult(intent) ?: return@launch
-            getContext()!!.uploadFile(res.data, viewModel.path)
+            val res = startActivityForResult(createFilePickerIntent() ?: return@launch)
+            if (!res.success) return@launch
+
+            getContext()!!.uploadFile(res.data?.data, viewModel.path)
         }
     }
 

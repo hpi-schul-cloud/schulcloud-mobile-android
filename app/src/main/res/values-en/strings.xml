@@ -136,8 +136,11 @@
     <string name="file_fileDownload_error_save">The file could not be saved</string>
     <string name="file_fileDownload_error_savePermissionDenied">The file cannot be saved without permission</string>
     <string name="file_fileUpload_progress">Uploading file…</string>
-    <string name="file_fileUpload_error_readPermissionDenied">No file can be selected for upload without permission</string>
-    <string name="file_fileUpload_error_read">Couldn\'t open file</string>
+    <string name="file_fileUpload_success">Upload completed!</string>
     <string name="file_fileUpload_error_upload">The file couldn\'t be uploaded</string>
+    <string name="file_pick_error_readPermissionDenied">No file can be selected for upload without permission</string>
+    <string name="file_pick_error_read">Couldn\'t open file</string>
+    <string name="file_pick_error_createTempFile">Error creating a temporary file</string>
+    <string name="file_pick_error_noCamera">No camera was found</string>
 
 </resources>

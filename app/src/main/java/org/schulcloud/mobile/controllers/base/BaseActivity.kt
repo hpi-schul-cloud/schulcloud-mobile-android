@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.base
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -22,7 +23,10 @@ import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.properties.Delegates
 
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), ContextAware {
+    override val baseActivity: BaseActivity? get() = this
+    override val currentContext: Context get() = this
+
     open var url: String? = null
     var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
@@ -54,7 +58,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine { cont ->
+    override suspend fun requestPermission(permission: String): Boolean = suspendCoroutine { cont ->
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             cont.resume(true)
             return@suspendCoroutine
@@ -72,8 +76,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-    suspend fun startActivityForResult(intent: Intent, options: Bundle? = null): Intent? = suspendCoroutine { cont ->
-        startActivityForResult(intent, viewModel.addActivityRequest(cont), options)
+    override suspend fun startActivityForResult(intent: Intent, options: Bundle?): StartActivityResult {
+        return suspendCoroutine { cont ->
+            startActivityForResult(intent, viewModel.addActivityRequest(cont), options)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

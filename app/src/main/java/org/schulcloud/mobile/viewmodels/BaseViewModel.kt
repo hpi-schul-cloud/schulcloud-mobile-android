@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
+import org.schulcloud.mobile.controllers.base.StartActivityResult
 import java.util.*
 import kotlin.coroutines.experimental.Continuation
 
@@ -11,8 +12,8 @@ class BaseViewModel : ViewModel() {
     private val permissionRequests: MutableList<Continuation<Boolean>>
             by lazy { LinkedList<Continuation<Boolean>>() }
 
-    private val activityRequests: MutableList<Continuation<Intent?>>
-            by lazy { LinkedList<Continuation<Intent?>>() }
+    private val activityRequests: MutableList<Continuation<StartActivityResult>>
+            by lazy { LinkedList<Continuation<StartActivityResult>>() }
 
     fun addPermissionRequest(request: Continuation<Boolean>): Int {
         permissionRequests += request
@@ -30,7 +31,7 @@ class BaseViewModel : ViewModel() {
     }
 
 
-    fun addActivityRequest(request: Continuation<Intent?>): Int {
+    fun addActivityRequest(request: Continuation<StartActivityResult>): Int {
         activityRequests += request
         return activityRequests.size - 1
     }
@@ -38,7 +39,9 @@ class BaseViewModel : ViewModel() {
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode >= activityRequests.size) return false
 
-        activityRequests[requestCode].resume(data.takeIf { resultCode != Activity.RESULT_OK })
+        activityRequests[requestCode].resume(
+                if (resultCode == Activity.RESULT_OK) StartActivityResult.success(data)
+                else StartActivityResult.error())
         return true
     }
 }

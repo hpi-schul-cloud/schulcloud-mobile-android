@@ -141,8 +141,11 @@
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
     <string name="file_fileUpload_progress">Datei wird hochgeladen…</string>
-    <string name="file_fileUpload_error_readPermissionDenied">Ohne die Berechtigung kann keine Datei zum Upload ausgewählt werden</string>
-    <string name="file_fileUpload_error_read">Die Datei konnte nicht geöffnet werden</string>
+    <string name="file_fileUpload_success">Die Datei wurde hochgeladen!</string>
     <string name="file_fileUpload_error_upload">Die Datei konnte nicht hochgeladen werden</string>
+    <string name="file_pick_error_readPermissionDenied">Ohne die Berechtigung kann keine Datei zum Upload ausgewählt werden</string>
+    <string name="file_pick_error_read">Die Datei konnte nicht geöffnet werden</string>
+    <string name="file_pick_error_createTempFile">Es konnte keine temporäre Datei erstellt werden</string>
+    <string name="file_pick_error_noCamera">Es wurde keine Kamera gefunden</string>
 
 </resources>

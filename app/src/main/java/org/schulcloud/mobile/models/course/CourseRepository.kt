@@ -2,10 +2,9 @@ package org.schulcloud.mobile.models.course
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
-import org.schulcloud.mobile.jobs.GetCourseJob
-import org.schulcloud.mobile.jobs.ListUserCoursesJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.utils.courseDao
+
 
 object CourseRepository {
     fun courses(realm: Realm): LiveData<List<Course>> {
@@ -16,11 +15,12 @@ object CourseRepository {
         return realm.courseDao().course(id)
     }
 
+
     suspend fun syncCourses() {
-        ListUserCoursesJob(RequestJobCallback()).run()
+        RequestJob.Data.with({ listUserCourses() }).run()
     }
 
-    suspend fun syncCourse(courseId: String) {
-        GetCourseJob(courseId, RequestJobCallback()).run()
+    suspend fun syncCourse(id: String) {
+        RequestJob.SingleData.with(id, { getCourse(id) }).run()
     }
 }

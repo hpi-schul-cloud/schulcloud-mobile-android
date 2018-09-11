@@ -26,7 +26,6 @@ import javax.net.ssl.X509TrustManager
 
 
 object ApiService {
-
     private var service: ApiServiceInterface? = null
 
     @Synchronized

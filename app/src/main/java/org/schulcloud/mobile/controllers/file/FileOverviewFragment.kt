@@ -18,12 +18,11 @@ import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
-class FileOverviewFragment : MainFragment() {
+class FileOverviewFragment : MainFragment<FileOverviewViewModel>() {
     companion object {
         val TAG: String = FileOverviewFragment::class.java.simpleName
     }
 
-    private lateinit var viewModel: FileOverviewViewModel
     private val coursesAdapter: FileOverviewCourseAdapter by lazy {
         FileOverviewCourseAdapter {
             navController.navigate(R.id.action_global_fragment_file,

@@ -30,6 +30,7 @@ import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.storages.Onboarding
 import org.schulcloud.mobile.utils.getTextColorForBackground
+import org.schulcloud.mobile.utils.getTextColorSecondaryForBackground
 import org.schulcloud.mobile.utils.setTintCompat
 import org.schulcloud.mobile.utils.visibilityBool
 import org.schulcloud.mobile.viewmodels.MainViewModel
@@ -134,7 +135,7 @@ class MainActivity : BaseActivity() {
         updateToolbarColors()
     }
 
-    fun setToolbarWrapper(toolbarWrapper: ViewGroup) {
+    fun setToolbarWrapper(toolbarWrapper: ViewGroup?) {
         this.toolbarWrapper = toolbarWrapper
         updateToolbarColors()
     }
@@ -171,8 +172,10 @@ class MainActivity : BaseActivity() {
     private fun recalculateToolbarColors() {
         val color = viewModel.config.value?.toolbarColor
                 ?: ContextCompat.getColor(this, R.color.toolbar_background_default)
-        val statusBarColor = ColorUtils.blendARGB(color, Color.BLACK, DARKEN_FACTOR)
-        viewModel.toolbarColors.value = ToolbarColors(color, getTextColorForBackground(color), statusBarColor)
+
+        viewModel.toolbarColors.value = ToolbarColors(color,
+                getTextColorForBackground(color), getTextColorSecondaryForBackground(color),
+                ColorUtils.blendARGB(color, Color.BLACK, DARKEN_FACTOR))
     }
 
     private fun updateToolbarColors() {

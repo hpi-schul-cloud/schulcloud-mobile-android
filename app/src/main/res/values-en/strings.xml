@@ -5,6 +5,7 @@
     <string name="general_action_showInBrowser">Show in browser</string>
     <string name="general_action_refresh">Refresh</string>
     <string name="general_action_gotoCourse">Go to course</string>
+    <string name="general_action_gotoHomework">Go to assignment</string>
     <string name="general_date_yesterday">Yesterday</string>
     <string name="general_date_today">Today</string>
     <string name="general_date_tomorrow">Tomorrow</string>
@@ -100,6 +101,19 @@
         <item quantity="one">Due tomorrow</item>
         <item quantity="other">Due in %d days</item>
     </plurals>
+    <string name="homework_overview">Assignment</string>
+    <string name="homework_overview_submissionMy">My submission</string>
+    <string name="homework_overview_error_empty">No description available</string>
+    <string name="homework_submissions">Submissions</string>
+    <string name="homework_submissions_error_courseEmpty">This course does not contain any students</string>
+    <string name="homework_submission_overview">Submission</string>
+    <string name="homework_submission_hint">Submission of %1$s</string>
+    <string name="homework_submissions_error_selectedEmpty">This student has not submitted anything yet</string>
+    <string name="homework_submission_error_notFound">No submission available</string>
+    <string name="homework_submission_grade">%1$d%%</string>
+    <string name="homework_submission_feedback">Feedback</string>
+    <string name="homework_submission_feedback_grade">You solved <b>%1$d%%</b> correctly</string>
+    <string name="homework_submission_feedback_error_empty">No review text available</string>
 
     <!-- File -->
     <string name="file_title">Files</string>

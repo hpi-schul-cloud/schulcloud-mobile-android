@@ -2,16 +2,20 @@ package org.schulcloud.mobile.utils
 
 import android.app.ProgressDialog
 import android.content.Context
-import androidx.annotation.StringRes
 import android.widget.Toast
+import androidx.annotation.StringRes
 import org.schulcloud.mobile.R
 
-/**
- * Date: 7/10/2018
- */
+
 fun Context.showGenericError(@StringRes messageRes: Int): Toast = showGenericError(getString(messageRes))
 fun Context.showGenericError(message: String): Toast {
     return Toast.makeText(this, getString(R.string.dialog_error_format, message), Toast.LENGTH_SHORT)
+            .apply { show() }
+}
+
+fun Context.showGenericNeutral(@StringRes messageRes: Int): Toast = showGenericNeutral(getString(messageRes))
+fun Context.showGenericNeutral(message: String): Toast {
+    return Toast.makeText(this, message, Toast.LENGTH_SHORT)
             .apply { show() }
 }
 

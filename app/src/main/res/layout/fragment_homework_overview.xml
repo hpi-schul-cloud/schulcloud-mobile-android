@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
+
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <org.schulcloud.mobile.views.CompatTextView
+                    android:id="@+id/dueLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{HomeworkUtilsKt.getDueText(context, viewModel.homework)}"
+                    android:textColor="@{HomeworkUtilsKt.getDueColor(context, viewModel.homework)}"
+                    android:textSize="@dimen/text_smaller_size"
+                    android:visibility="@{HomeworkUtilsKt.dueLabelRequired(viewModel.homework)}"
+                    app:drawableStart="@drawable/baseline_outlined_flag_16dp"
+                    app:drawableStartVisible="@{HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework)}"
+                    tools:drawableStartVisible="@sample/homework.json/data/due/visibility"
+                    tools:text="@sample/homework.json/data/due/text"
+                    tools:textColor="@sample/homework.json/data/due/color" />
+
+                <org.schulcloud.mobile.views.ContentWebView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:content="@{viewModel.homework.description}"
+                    app:contentFallback="@{@string/homework_overview_error_empty}"
+                    tools:content="@sample/homework.json/data/description"
+                    tools:ignore="WebViewLayout" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/gotoMySubmission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/homework_overview_submissionMy"
+                    android:visibility="@{viewModel.mySubmission != null}" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

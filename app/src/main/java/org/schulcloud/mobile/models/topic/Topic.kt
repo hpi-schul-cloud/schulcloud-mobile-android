@@ -4,17 +4,15 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import org.schulcloud.mobile.models.base.HasId
 import org.schulcloud.mobile.models.content.ContentWrapper
 import org.schulcloud.mobile.utils.HOST
 
-/**
- * Date: 6/10/2018
- */
-open class Topic : RealmObject() {
+open class Topic : RealmObject(), HasId {
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String = ""
+    override var id: String = ""
 
     var courseId: String? = null
     var name: String? = null

@@ -3,9 +3,6 @@ package org.schulcloud.mobile.models.content
 import io.realm.RealmList
 import io.realm.RealmObject
 
-/**
- * Date: 6/11/2018
- */
 open class Content : RealmObject() {
     // text
     var text: String? = null

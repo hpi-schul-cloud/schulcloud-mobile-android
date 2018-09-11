@@ -3,12 +3,13 @@ package org.schulcloud.mobile.models.user
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import org.schulcloud.mobile.models.base.HasId
 
-open class User : RealmObject() {
+open class User : RealmObject(), HasId {
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String = ""
+    override var id: String = ""
 
     var firstName: String? = null
     var lastName: String? = null

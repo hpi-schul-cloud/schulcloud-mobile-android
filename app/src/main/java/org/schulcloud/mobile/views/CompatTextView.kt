@@ -5,10 +5,13 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.withStyledAttributes
+import androidx.core.graphics.drawable.DrawableCompat
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.isLtr
 import kotlin.properties.Delegates
@@ -39,20 +42,20 @@ open class CompatTextView @JvmOverloads constructor(
     var drawableTopVisible by updateDrawablesObservable(true)
     var drawableBottomVisible by updateDrawablesObservable(true)
 
+    @delegate:ColorInt
+    var drawableTintColor by updateDrawablesObservable<Int?>(null)
+
     init {
         context.withStyledAttributes(attrs, R.styleable.CompatTextView) {
             // To use vector drawables on pre-21
             // https://stackoverflow.com/a/40250753/6220609
             fun drawable(@StyleableRes attrId: Int): Drawable? {
-                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                     getDrawable(attrId)
-                } else {
-                    val id = getResourceId(attrId, 0)
-                    if (id != 0)
-                        AppCompatResources.getDrawable(context, id)
-                    else
-                        null
-                }
+                else
+                    getResourceId(attrId, 0)
+                            .takeIf { it != 0 }
+                            ?.let { AppCompatResources.getDrawable(context, id) }
             }
 
             drawableStart = drawable(R.styleable.CompatTextView_drawableStart)
@@ -65,13 +68,26 @@ open class CompatTextView @JvmOverloads constructor(
             drawableTopVisible = getBoolean(R.styleable.CompatTextView_drawableTopVisible, true)
             drawableBottomVisible = getBoolean(R.styleable.CompatTextView_drawableBottomVisible, true)
 
+            if (hasValue(R.styleable.CompatTextView_drawableTint))
+                drawableTintColor = getColorOrThrow(R.styleable.CompatTextView_drawableTint)
+
             isInitialized = true
             updateDrawables()
         }
     }
 
     private fun updateDrawables() {
-        fun drawableIfVisible(drawable: Drawable?, visible: Boolean) = if (visible) drawable else null
+        fun drawableIfVisible(drawable: Drawable?, visible: Boolean): Drawable? {
+            return if (drawable != null && visible)
+                drawableTintColor?.let {
+                    DrawableCompat.wrap(drawable).apply {
+                        mutate()
+                        DrawableCompat.setTint(this, it)
+                    }
+                } ?: drawable
+            else null
+        }
+
         when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 ->
                 setCompoundDrawablesRelativeWithIntrinsicBounds(
@@ -91,7 +107,6 @@ open class CompatTextView @JvmOverloads constructor(
                     drawableIfVisible(drawableTop, drawableTopVisible),
                     drawableIfVisible(drawableStart, drawableStartVisible),
                     drawableIfVisible(drawableBottom, drawableBottomVisible))
-
         }
     }
 }

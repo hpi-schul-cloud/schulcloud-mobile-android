@@ -197,25 +197,8 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
             // Probably cancelled by user -> don't show error message
             if (resultCode != Activity.RESULT_OK) return
 
-            val uri = data?.data
-            val fileReadInfo = uri?.let { context!!.prepareFileRead(it) }
-            if (fileReadInfo == null) {
-                context!!.showGenericError(R.string.file_fileUpload_error_read)
-                return
-            }
-
             launch(UI) {
-                getContext()!!.withProgressDialog(R.string.file_fileUpload_progress) {
-                    val res = FileRepository.upload(viewModel.path, fileReadInfo.name, fileReadInfo.size) {
-                        fileReadInfo.streamGenerator().also {
-                            if (it == null)
-                                getContext()!!.showGenericError(R.string.file_fileUpload_error_read)
-                        }
-                    }
-                    if (!res) getContext()!!.showGenericError(R.string.file_fileUpload_error_upload)
-
-                    FileRepository.syncDirectory(viewModel.path)
-                }
+                getContext()!!.uploadFile(data?.data, viewModel.path)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

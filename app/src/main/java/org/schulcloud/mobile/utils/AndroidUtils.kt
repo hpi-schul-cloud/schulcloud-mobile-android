@@ -8,9 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import androidx.annotation.ArrayRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
@@ -18,7 +16,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.TextUtilsCompat
 import androidx.core.view.ViewCompat
 import org.schulcloud.mobile.R
-import java.io.InputStream
 import java.util.*
 
 
@@ -67,24 +64,3 @@ fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): I
 fun Drawable.setTintCompat(@ColorInt tint: Int) {
     DrawableCompat.setTint(this, tint)
 }
-
-
-fun Context.prepareFileRead(uri: Uri): FileReadInfo? {
-    val (name, size) = uri.let {
-        @Suppress("Recycle")
-        contentResolver?.query(it, null, null, null, null)
-    }?.use { cursor ->
-        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-        val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-        cursor.moveToFirst()
-        return@use cursor.getString(nameIndex) to cursor.getLong(sizeIndex)
-    } ?: return null
-
-    return FileReadInfo(name, size) { contentResolver.openInputStream(uri) }
-}
-
-data class FileReadInfo(
-    val name: String,
-    val size: Long,
-    val streamGenerator: () -> InputStream?
-)

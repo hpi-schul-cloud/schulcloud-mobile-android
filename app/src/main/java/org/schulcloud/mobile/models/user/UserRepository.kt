@@ -17,6 +17,7 @@ import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.storages.UserStorage
 import org.schulcloud.mobile.utils.userDao
 
+
 object UserRepository {
     val TAG: String = UserRepository::class.java.simpleName
 
@@ -68,9 +69,8 @@ object UserRepository {
 
 
     suspend fun syncCurrentUser() {
-        UserStorage.userId?.also {
-            syncUser(it)
-        } ?: Log.w(TAG, "Request to sync current user while not signed in")
+        UserStorage.userId?.also { syncUser(it) }
+                ?: Log.w(TAG, "Request to sync current user while not signed in")
     }
 
     suspend fun syncUser(id: String) {

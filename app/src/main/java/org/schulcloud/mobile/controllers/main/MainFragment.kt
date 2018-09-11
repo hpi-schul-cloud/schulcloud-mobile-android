@@ -50,7 +50,7 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
     open var url: String? = null
 
     init {
-        refreshableImpl.refresh = { refresh() }
+        refreshableImpl.refresh = { performRefresh() }
     }
 
     @CallSuper

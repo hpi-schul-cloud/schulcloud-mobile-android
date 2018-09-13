@@ -78,9 +78,15 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            fab.visibilityBool = config.fabVisible && config.fabIconRes != 0
+            // Enables animation
+            val fabShouldBeVisible = config.fabVisible && config.fabIconRes != 0
+            if (fab.visibilityBool && !fabShouldBeVisible)
+                fab.hide()
+            else if (!fab.visibilityBool && fabShouldBeVisible)
+                fab.show()
             if (lastConfig?.fabIconRes != config.fabIconRes)
                 fab.setImageResource(config.fabIconRes)
+
             lastConfig = config
         })
         viewModel.toolbarColors.observe(this, Observer {

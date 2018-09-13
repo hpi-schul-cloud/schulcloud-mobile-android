@@ -17,16 +17,15 @@ class BaseViewModel : ViewModel() {
 
     fun addPermissionRequest(request: Continuation<Boolean>): Int {
         permissionRequests += request
-        return activityRequests.size - 1
+        return permissionRequests.size - 1
     }
 
     fun onPermissionResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray): Boolean {
         if (requestCode >= permissionRequests.size) return false
 
-        if (permissions.isEmpty())
-            permissionRequests[requestCode].resume(
-                    if (permissions.isEmpty()) false
-                    else grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        permissionRequests[requestCode].resume(
+                if (permissions.isEmpty()) false
+                else grantResults[0] == PackageManager.PERMISSION_GRANTED)
         return true
     }
 

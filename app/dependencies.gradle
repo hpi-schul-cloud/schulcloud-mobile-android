@@ -12,7 +12,7 @@ dependencies {
     def okhttpVersion = '3.10.0'
     implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
     implementation "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
-    implementation 'info.guardianproject.netcipher:netcipher:2.0.0-alpha1'
+    implementation 'info.guardianproject.netcipher:netcipher:1.2'
 
     // retrofit
     def retrofitVersion = '2.3.0'

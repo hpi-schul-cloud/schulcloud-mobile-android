@@ -38,22 +38,22 @@ abstract class BaseStorage(name: String, mode: Int) {
         override fun afterChange(property: KProperty<*>, oldValue: Int?, newValue: Int?) {
             storage.putInt(key, newValue ?: NULL)
         }
+    }
 
 
-    fun getStringArray(key: String): Array<String?>{
+    fun getStringArray(key: String): Array<String?> {
         var size = getInt(key + "_size")
         var array: Array<String?> = arrayOf()
 
-        for(i in 0..size!!)
-            array.plus(getString(key+"_item"+i))
+        for (i in 0..size!!)
+            array.plus(getString(key + "_item" + i))
 
         return array
     }
 
-    fun putStringArray(key: String, defValue: Array<String?>?){
-        putInt(key+"_size",defValue!!.size)
-        for(i in 0..defValue!!.size)
-            putString(key+"_item"+i,defValue[i])
-    }
+    fun putStringArray(key: String, defValue: Array<String?>?) {
+        putInt(key + "_size", defValue!!.size)
+        for (i in 0 until defValue!!.size)
+            putString(key + "_item" + i, defValue[i])
     }
 }

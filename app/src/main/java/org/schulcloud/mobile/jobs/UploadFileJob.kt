@@ -30,7 +30,7 @@ class UploadFileJob(private val file: java.io.File,private val signedUrl: Signed
             if (BuildConfig.DEBUG) Log.i(CreateDirectoryJob.TAG, "File ${file.name} uploaded!")
             callback?.success()
         } else {
-            if (BuildConfig.DEBUG) Log.e(CreateDirectoryJob.TAG, "Error while uploading fiel ${file.name}")
+            if (BuildConfig.DEBUG) Log.e(CreateDirectoryJob.TAG, "Error while uploading file ${file.name}")
             callback?.error(RequestJobCallback.ErrorCode.ERROR)
         }
     }

@@ -28,6 +28,7 @@ class LoginViewModel : ViewModel() {
         return object : RequestJobCallback() {
             override fun onSuccess() {
                 loginState.value = LoginStatus.LoggedIn()
+                async{UserRepository.syncCurrentUser()}
             }
 
             override fun onError(code: ErrorCode) {

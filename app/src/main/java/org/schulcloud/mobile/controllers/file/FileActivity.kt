@@ -193,6 +193,7 @@ class FileActivity : BaseActivity() {
     fun showDirectoryDialog() {
         //TODO: Check for permissions
         var dialog = CreateDirectoryFragment()
+        CreateDirectoryFragment.path = viewModel.path
         viewModel.user.observe(this, Observer {
 
             if(it!!.hasPermission(User.PERMISSION_FOLDER_CREATE))

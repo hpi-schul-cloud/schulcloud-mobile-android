@@ -27,6 +27,7 @@ object FileRepository {
     fun files(realm: Realm, path: String): LiveData<List<File>> {
         return realm.fileDao().files(path)
     }
+
     fun files(realm: Realm, ids: Array<String>): LiveData<List<File>> {
         return realm.fileDao().files(ids)
     }
@@ -64,7 +65,7 @@ object FileRepository {
     /**
      * @param path Path on server including the file name; defaults to private folder.
      */
-    suspend fun upload(path: String, name: String, size: Long, streamGenerator: () -> InputStream?): Boolean {
+    suspend fun upload(path: String, name: String, size: Long, streamGenerator: () -> InputStream?): File? {
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(name.fileExtension)
         val mediaType = mimeType?.let { MediaType.parse(it) }
 
@@ -81,7 +82,7 @@ object FileRepository {
         if (!signedUrlRes.isSuccessful || body == null || uploadUrl == null || header == null) {
             if (BuildConfig.DEBUG)
                 Log.e(TAG, "upload $path: Error generating signed URL")
-            return false
+            return null
         }
 
         // Actual upload
@@ -100,7 +101,7 @@ object FileRepository {
         if (!uploadRes.isSuccessful) {
             if (BuildConfig.DEBUG)
                 Log.e(TAG, "upload $path: Error uploading file")
-            return false
+            return null
         }
 
         // Notify SC server of new file
@@ -114,11 +115,12 @@ object FileRepository {
             it.thumbnail = header.metaThumbnail
         }
         val persistRes = ApiService.getInstance().persistFile(newFile).awaitResponse()
-        if (!persistRes.isSuccessful) {
+        val file = persistRes.body()
+        if (!persistRes.isSuccessful || file == null) {
             if (BuildConfig.DEBUG)
                 Log.e(TAG, "upload $path: Error persisting file")
-            return false
+            return null
         }
-        return true
+        return file
     }
 }

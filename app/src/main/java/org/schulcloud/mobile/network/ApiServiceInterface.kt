@@ -58,6 +58,8 @@ interface ApiServiceInterface {
     fun listHomeworkSubmissions(@Query("homeworkId") homeworkId: String): Call<FeathersResponse<List<Submission>>>
     @GET("submissions/{id}")
     fun getSubmission(@Path("id") submissionId: String): Call<Submission>
+    @PATCH("submissions/{id}")
+    fun updateSubmission(@Path("id") submissionId: String, @Body submission: Submission): Call<Submission>
 
     // File
     @GET("fileStorage")
@@ -80,6 +82,6 @@ interface ApiServiceInterface {
         @Body file: RequestBody
     ): Call<ResponseBody>
     @POST("files")
-    fun persistFile(@Body file: CreateFileRequest): Call<ResponseBody>
+    fun persistFile(@Body file: CreateFileRequest): Call<File>
 
 }

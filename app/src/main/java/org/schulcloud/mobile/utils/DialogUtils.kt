@@ -25,12 +25,16 @@ fun Context.showGenericSuccess(message: String): Toast {
             .apply { show() }
 }
 
-suspend fun Context.withProgressDialog(@StringRes messageRes: Int, block: suspend () -> Unit) = withProgressDialog(getString(messageRes), block)
-suspend fun Context.withProgressDialog(message: String, block: suspend () -> Unit) {
+suspend fun <T> Context.withProgressDialog(@StringRes messageRes: Int, block: suspend () -> T): T {
+    return withProgressDialog(getString(messageRes), block)
+}
+
+suspend fun <T> Context.withProgressDialog(message: String, block: suspend () -> T): T {
     val dialog = ProgressDialog(this).apply {
         setMessage(message)
         show()
     }
-    block()
+    val res = block()
     dialog.dismiss()
+    return res
 }

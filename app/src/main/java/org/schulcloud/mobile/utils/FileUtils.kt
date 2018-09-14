@@ -161,29 +161,37 @@ fun Context.prepareFileRead(uri: Uri): FileReadInfo? {
     return FileReadInfo(name, size) { contentResolver.openInputStream(uri) }
 }
 
-suspend fun Context.uploadFile(uri: Uri?, path: String = FileRepository.pathPersonal(), name: String? = null) {
+suspend fun Context.uploadFile(
+    uri: Uri?,
+    path: String = FileRepository.pathPersonal(),
+    name: String? = null,
+    addEnding: Boolean = true
+): File? {
     val fileReadInfo = uri?.let { prepareFileRead(it) }
     if (fileReadInfo == null) {
         showGenericError(R.string.file_pick_error_read)
-        return
+        return null
     }
 
-    withProgressDialog(R.string.file_fileUpload_progress) {
+    return withProgressDialog(R.string.file_fileUpload_progress) {
         val fileName = when {
             name == null -> fileReadInfo.name
-            name.fileExtension.isEmpty() -> "$name.${fileReadInfo.name.fileExtension}"
+            addEnding -> "$name.${fileReadInfo.name.fileExtension}"
             else -> name
         }
-        val res = FileRepository.upload(path, fileName, fileReadInfo.size) {
+        val file = FileRepository.upload(path, fileName, fileReadInfo.size) {
             fileReadInfo.streamGenerator().also {
                 if (it == null)
                     showGenericError(R.string.file_pick_error_read)
             }
         }
-        if (!res) showGenericError(R.string.file_fileUpload_error_upload)
-        else showGenericSuccess(R.string.file_fileUpload_success)
+        if (file == null) {
+            showGenericError(R.string.file_fileUpload_error_upload)
+            return@withProgressDialog null
+        } else showGenericSuccess(R.string.file_fileUpload_success)
 
         FileRepository.syncDirectory(path)
+        return@withProgressDialog file
     }
 }
 

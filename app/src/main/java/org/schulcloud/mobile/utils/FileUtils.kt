@@ -14,7 +14,12 @@ import androidx.core.content.FileProvider
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.controllers.base.ContextAware
+import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
+import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.network.ApiService
+import retrofit2.HttpException
+import ru.gildor.coroutines.retrofit.await
 import java.io.IOException
 import java.io.InputStream
 import java.io.File as JavaFile
@@ -22,6 +27,7 @@ import java.io.File as JavaFile
 
 private const val TAG = "FileUtils"
 
+// General utilities
 fun JavaFile.create(): Boolean {
     return try {
         if (!parentFile.exists() && !parentFile.mkdirs())
@@ -47,6 +53,7 @@ fun JavaFile.saveDelete(): Boolean {
 }
 
 
+// File picking
 suspend fun ContextAware.createFilePickerIntent(): Intent? {
     if (!requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
         currentContext.showGenericError(R.string.file_pick_error_readPermissionDenied)
@@ -92,6 +99,54 @@ data class TakePhotoInfo(
 )
 
 
+// Download
+@Suppress("ComplexMethod")
+suspend fun ContextAware.downloadFile(file: File, download: Boolean) {
+    try {
+        val response = ApiService.getInstance().generateSignedUrl(
+                SignedUrlRequest().apply {
+                    action = SignedUrlRequest.ACTION_GET
+                    path = file.key
+                    fileType = file.type
+                }).await()
+
+        if (download) {
+            if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                currentContext.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                return
+            }
+
+            currentContext.withProgressDialog(R.string.file_fileDownload_progress) {
+                val result = ApiService.getInstance().downloadFile(response.url!!).await()
+                if (!result.writeToDisk(file.name.orEmpty())) {
+                    currentContext.showGenericError(R.string.file_fileDownload_error_save)
+                    return@withProgressDialog
+                }
+                currentContext.showGenericSuccess(
+                        currentContext.getString(R.string.file_fileDownload_success, file.name))
+            }
+        } else {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(Uri.parse(response.url), response.header?.contentType)
+            }
+            val packageManager = currentContext.packageManager
+            if (packageManager != null && intent.resolveActivity(packageManager) != null)
+                currentContext.startActivity(intent)
+            else
+                currentContext.showGenericError(
+                        currentContext.getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
+        }
+    } catch (e: HttpException) {
+        @Suppress("MagicNumber")
+        when (e.code()) {
+            404 -> currentContext.showGenericError(R.string.file_fileOpen_error_404)
+            else -> currentContext.showGenericError(R.string.file_fileOpen_error)
+        }
+    }
+}
+
+
+// Upload
 fun Context.prepareFileRead(uri: Uri): FileReadInfo? {
     val (name, size) = uri.let {
         @Suppress("Recycle")

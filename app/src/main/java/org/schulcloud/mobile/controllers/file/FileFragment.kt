@@ -1,9 +1,7 @@
 package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -22,18 +20,13 @@ import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
 import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.user.Permission
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.models.user.hasPermission
-import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
-import retrofit2.HttpException
-import ru.gildor.coroutines.retrofit.await
 import java.io.File as JavaFile
 
 
@@ -49,8 +42,8 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
         }
     }
     private val fileAdapter: FileAdapter by lazy {
-        FileAdapter({ loadFile(it, false) },
-                { loadFile(it, true) })
+        FileAdapter({ launch { downloadFile(it, false) } },
+                { launch { downloadFile(it, true) } })
     }
 
 
@@ -190,50 +183,5 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
             CourseRepository.syncCourse(it)
         }
         UserRepository.syncCurrentUser()
-    }
-
-
-    @Suppress("ComplexMethod")
-    private fun loadFile(file: File, download: Boolean) = launch(UI) {
-        try {
-            val response = ApiService.getInstance().generateSignedUrl(
-                    SignedUrlRequest().apply {
-                        action = SignedUrlRequest.ACTION_GET
-                        path = file.key
-                        fileType = file.type
-                    }).await()
-
-            if (download) {
-                if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
-                    return@launch
-                }
-
-                this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
-                    if (!result.writeToDisk(file.name.orEmpty())) {
-                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                        return@withProgressDialog
-                    }
-                    this@FileFragment.context?.showGenericSuccess(
-                            getString(R.string.file_fileDownload_success, file.name))
-                }
-            } else {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(Uri.parse(response.url), response.header?.contentType)
-                }
-                val packageManager = activity?.packageManager
-                if (packageManager != null && intent.resolveActivity(packageManager) != null)
-                    startActivity(intent)
-                else
-                    this@FileFragment.context?.showGenericError(
-                            getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
-            }
-        } catch (e: HttpException) {
-            @Suppress("MagicNumber")
-            when (e.code()) {
-                404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
-            }
-        }
     }
 }

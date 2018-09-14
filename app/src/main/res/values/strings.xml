@@ -116,6 +116,7 @@
     <string name="homework_submission_overview">Abgabe</string>
     <string name="homework_submission_hint">Abgabe von %1$s</string>
     <string name="homework_submission_error_notFound">Keine Abgabe vorhanden</string>
+    <string name="homework_submission_attachments">Anhänge</string>
     <string name="homework_submission_grade">%1$d%%</string>
     <string name="homework_submission_feedback">Feedback</string>
     <string name="homework_submission_feedback_grade">Du hast <b>%1$d%%</b> richtig gelöst</string>
@@ -134,6 +135,7 @@
     <string name="file_directoryEmpty">Der Ordner ist leer</string>
     <string name="file_directories">Ordner</string>
     <string name="file_files">Dateien</string>
+    <string name="file_fileOpen_error">Die Datei konnte nicht geöffnet werden</string>
     <string name="file_fileOpen_error_404">Die Datei wurde nicht gefunden</string>
     <string name="file_fileOpen_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
     <string name="file_fileDownload_progress">Die Datei wird geladen&#8230;</string>

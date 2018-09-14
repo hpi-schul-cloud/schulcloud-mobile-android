@@ -10,6 +10,7 @@ import okio.BufferedSink
 import okio.Okio
 import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.jobs.ListDirectoryContentsJob
+import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
@@ -26,6 +27,9 @@ object FileRepository {
     fun files(realm: Realm, path: String): LiveData<List<File>> {
         return realm.fileDao().files(path)
     }
+    fun files(realm: Realm, ids: Array<String>): LiveData<List<File>> {
+        return realm.fileDao().files(ids)
+    }
 
     fun directories(realm: Realm, path: String): LiveData<List<Directory>> {
         return realm.fileDao().directories(path)
@@ -34,6 +38,10 @@ object FileRepository {
 
     suspend fun syncDirectory(path: String) {
         ListDirectoryContentsJob(path).run()
+    }
+
+    suspend fun syncFile(id: String) {
+        RequestJob.SingleData.with(id, { getFile(id) }).run()
     }
 
 

@@ -111,6 +111,7 @@
     <string name="homework_submission_hint">Submission of %1$s</string>
     <string name="homework_submissions_error_selectedEmpty">This student has not submitted anything yet</string>
     <string name="homework_submission_error_notFound">No submission available</string>
+    <string name="homework_submission_attachments">Attachments</string>
     <string name="homework_submission_grade">%1$d%%</string>
     <string name="homework_submission_feedback">Feedback</string>
     <string name="homework_submission_feedback_grade">You solved <b>%1$d%%</b> correctly</string>
@@ -129,6 +130,7 @@
     <string name="file_directoryEmpty">This folder is empty</string>
     <string name="file_directories">Directories</string>
     <string name="file_files">Files</string>
+    <string name="file_fileOpen_error">The file couldn\'t be opened</string>
     <string name="file_fileOpen_error_404">The file was not found</string>
     <string name="file_fileOpen_error_cantResolve">No app is available for opening a file of type \'%1$s\'</string>
     <string name="file_fileDownload_progress">File is being downloaded&#8230;</string>

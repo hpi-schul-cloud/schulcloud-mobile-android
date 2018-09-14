@@ -96,7 +96,7 @@ object FileRepository {
         }
 
         // Notify SC server of new file
-        val newFile = File().also {
+        val newFile = CreateFileRequest().also {
             it.key = combinePath(header.metaPath, name)
             it.path = header.metaPath?.ensureTrailingSlash()
             it.name = name

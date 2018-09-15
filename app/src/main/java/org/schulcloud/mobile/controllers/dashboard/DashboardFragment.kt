@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.utils.asLiveData
 
-class DashboardFragment : MainFragment() {
+class DashboardFragment : MainFragment<ViewModel>() {
     companion object {
         val TAG: String = DashboardFragment::class.java.simpleName
     }

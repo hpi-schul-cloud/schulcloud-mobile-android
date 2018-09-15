@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.utils.SingleLiveEvent
 
+
 class MainViewModel : ViewModel() {
     val config: MutableLiveData<MainFragmentConfig> = MutableLiveData()
     val title: MutableLiveData<String> = MutableLiveData()
@@ -18,5 +19,6 @@ class MainViewModel : ViewModel() {
 data class ToolbarColors(
     @ColorInt val color: Int,
     @ColorInt val textColor: Int,
+    @ColorInt val textColorSecondary: Int,
     @ColorInt val statusBarColor: Int
 )

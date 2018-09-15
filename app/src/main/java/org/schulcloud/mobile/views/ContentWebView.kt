@@ -16,6 +16,7 @@ import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.utils.*
 import java.io.IOException
 import java.lang.IllegalArgumentException
+import kotlin.properties.Delegates
 
 open class ContentWebView @JvmOverloads constructor(
     context: Context,
@@ -67,6 +68,13 @@ open class ContentWebView @JvmOverloads constructor(
 </script>
 </body>
 </html>"""
+    }
+
+    var content by Delegates.observable<String?>(null) { _, _, _ ->
+        onContentUpdated()
+    }
+    var contentFallback by Delegates.observable<String?>(null) { _, _, _ ->
+        onContentUpdated()
     }
 
     init {
@@ -163,8 +171,9 @@ open class ContentWebView @JvmOverloads constructor(
         loadUrl(url)
     }
 
-    fun setContent(content: String?) {
-        loadDataWithBaseURL(HOST, CONTENT_TEXT_PREFIX + (content ?: "") + CONTENT_TEXT_SUFFIX,
+    private fun onContentUpdated() {
+        val content = content.takeUnless { content.isNullOrBlank() } ?: contentFallback ?: ""
+        loadDataWithBaseURL(HOST, CONTENT_TEXT_PREFIX + content + CONTENT_TEXT_SUFFIX,
                 MIME_TEXT_HTML, ENCODING_UTF_8, null)
     }
 }

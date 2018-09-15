@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -35,7 +37,7 @@ import ru.gildor.coroutines.retrofit.await
 import javax.net.ssl.SSLHandshakeException
 
 
-class FileFragment : MainFragment() {
+class FileFragment : MainFragment<FileViewModel>() {
     companion object {
         val TAG: String = FileFragment::class.java.simpleName
     }
@@ -43,7 +45,7 @@ class FileFragment : MainFragment() {
     private val args: FileFragmentArgs by lazy {
         FileFragmentArgs.fromBundle(arguments)
     }
-    private lateinit var viewModel: FileViewModel
+
     private val directoryAdapter: DirectoryAdapter by lazy {
         DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,

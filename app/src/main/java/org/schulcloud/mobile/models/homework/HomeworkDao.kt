@@ -2,7 +2,6 @@ package org.schulcloud.mobile.models.homework
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
-import io.realm.Sort
 import org.schulcloud.mobile.utils.WEEK_IN_DAYS
 import org.schulcloud.mobile.utils.allAsLiveData
 import org.schulcloud.mobile.utils.firstAsLiveData
@@ -41,7 +40,6 @@ class HomeworkDao(private val realm: Realm) {
     fun homework(id: String): LiveData<Homework?> {
         return realm.where(Homework::class.java)
                 .equalTo("id", id)
-                .sort("dueDate", Sort.ASCENDING)
                 .firstAsLiveData()
     }
 }

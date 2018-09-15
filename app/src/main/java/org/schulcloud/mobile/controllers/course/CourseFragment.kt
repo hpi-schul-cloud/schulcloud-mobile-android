@@ -24,12 +24,11 @@ import org.schulcloud.mobile.viewmodels.CourseViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.views.DividerItemDecoration
 
-class CourseFragment : MainFragment() {
+class CourseFragment : MainFragment<CourseViewModel>() {
     companion object {
         val TAG: String = CourseFragment::class.java.simpleName
     }
 
-    private lateinit var viewModel: CourseViewModel
     private val topicsAdapter: TopicListAdapter by lazy {
         org.schulcloud.mobile.controllers.course.TopicListAdapter {
             navController.navigate(R.id.action_global_fragment_topic,
@@ -39,7 +38,7 @@ class CourseFragment : MainFragment() {
 
 
     override var url: String? = null
-        get() = viewModel.course.value?.url
+        get() = "/courses/${viewModel.course.value?.id}"
 
     override fun provideConfig() = viewModel.course.map { course ->
         MainFragmentConfig(

@@ -7,44 +7,42 @@ import android.view.MenuItem
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
-import kotlin.properties.Delegates
 
-abstract class MainFragment : BaseFragment() {
+
+abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = RefreshableImpl()) : BaseFragment(),
+        Refreshable by refreshableImpl {
+
     protected val mainActivity: MainActivity get() = activity as MainActivity
     protected val mainViewModel: MainViewModel
         get() = ViewModelProviders.of(activity!!).get(MainViewModel::class.java)
+
+    private var isFirstInit: Boolean = true
 
     protected val navController: NavController
         get() = findNavController(this)
     protected lateinit var config: LiveData<MainFragmentConfig>
         private set
 
+    lateinit var viewModel: VM
+        protected set
+
     protected abstract fun provideConfig(): LiveData<MainFragmentConfig>
 
     open var url: String? = null
-    private var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
-        new?.setup()
-        new?.setOnRefreshListener { performRefresh() }
-        new?.isRefreshing = isRefreshing
+
+    init {
+        refreshableImpl.refresh = { refresh() }
     }
-    protected var isRefreshing: Boolean by Delegates.observable(false) { _, _, new ->
-        swipeRefreshLayout?.isRefreshing = new
-    }
-        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +53,6 @@ abstract class MainFragment : BaseFragment() {
         mainViewModel.onFabClicked.observe(this, Observer { onFabClicked() })
 
         setHasOptionsMenu(true)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        performRefresh()
     }
 
     override fun onResume() {
@@ -73,9 +66,13 @@ abstract class MainFragment : BaseFragment() {
 
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefresh)
 
-        view?.findViewById<Toolbar>(R.id.toolbar).also {
-            mainActivity.setSupportActionBar(it)
-        }
+        mainActivity.setSupportActionBar(view?.findViewById(R.id.toolbar))
+        mainActivity.setToolbarWrapper(view?.findViewById(R.id.toolbarWrapper))
+
+        if (isFirstInit)
+            performRefresh()
+
+        isFirstInit = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -110,14 +107,7 @@ abstract class MainFragment : BaseFragment() {
     }
 
 
-    protected abstract suspend fun refresh()
-    protected fun performRefresh() {
-        isRefreshing = true
-        launch {
-            withContext(UI) { refresh() }
-            withContext(UI) { isRefreshing = false }
-        }
-    }
+    abstract suspend fun refresh()
 
     open fun onFabClicked() {}
 }
@@ -147,4 +137,9 @@ data class MainFragmentConfig(
 enum class FragmentType {
     PRIMARY,
     SECONDARY
+}
+
+
+interface ParentFragment {
+    suspend fun refreshWithChild(fromChild: Boolean)
 }

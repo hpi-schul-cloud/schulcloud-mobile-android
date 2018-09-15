@@ -3,60 +3,42 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.schulcloud.mobile.controllers.homework.HomeworkFragment">
-    <data>
-        <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
+    tools:context="org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragment">
+    <data />
 
-        <variable
-            name="viewModel"
-            type="org.schulcloud.mobile.viewmodels.HomeworkViewModel" />
-    </data>
-
-    <org.schulcloud.mobile.views.ContentView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/toolbarWrapper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:ignore="PrivateResource">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:theme="@style/ThemeOverlay.App.Dark.ActionBar">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/homework_item_margin">
+                android:background="@null"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
 
-                <org.schulcloud.mobile.views.CompatTextView
-                    android:id="@+id/dueLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{HomeworkUtilsKt.getDueText(context, viewModel.homework)}"
-                    android:textColor="@{HomeworkUtilsKt.getDueColor(context, viewModel.homework)}"
-                    android:textSize="@dimen/text_smaller_size"
-                    android:visibility="@{HomeworkUtilsKt.dueLabelRequired(viewModel.homework)}"
-                    app:drawableStart="@drawable/baseline_outlined_flag_16dp"
-                    app:drawableStartVisible="@{HomeworkUtilsKt.dueLabelFlagRequired(viewModel.homework)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:drawableStartVisible="@sample/homework.json/data/due/visibility"
-                    tools:text="@sample/homework.json/data/due/text"
-                    tools:textColor="@sample/homework.json/data/due/color" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-                <org.schulcloud.mobile.views.ContentWebView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:content="@{viewModel.homework.description}"
-                    app:layout_constraintTop_toBottomOf="@+id/dueLabel"
-                    app:layout_goneMarginTop="0dp"
-                    tools:content="@sample/homework.json/data/description"
-                    tools:ignore="WebViewLayout" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarWrapper" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-    </org.schulcloud.mobile.views.ContentView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -33,9 +33,15 @@ object UserRepository {
     val isAuthorized: Boolean
         get() = UserStorage.accessToken != null
 
+
     fun currentUser(realm: Realm): LiveData<User?> {
-        return realm.userDao().user(userId ?: "")
+        return user(realm, userId ?: "")
     }
+
+    fun user(realm: Realm, id: String): LiveData<User?> {
+        return realm.userDao().user(id)
+    }
+
 
     fun login(email: String, password: String, callback: RequestJobCallback) {
         launch {
@@ -61,9 +67,13 @@ object UserRepository {
         realm.close()
     }
 
+
     suspend fun syncCurrentUser() {
-        UserStorage.userId?.also {
-            RequestJob.SingleData.with(it, { getUser(it) }).run()
-        } ?: Log.w(TAG, "Request to sync current user while not signed in")
+        UserStorage.userId?.also { syncUser(it) }
+                ?: Log.w(TAG, "Request to sync current user while not signed in")
+    }
+
+    suspend fun syncUser(id: String) {
+        RequestJob.SingleData.with(id, { getUser(id) }).run()
     }
 }

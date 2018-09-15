@@ -23,7 +23,7 @@ import org.schulcloud.mobile.viewmodels.TopicViewModel
 import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.ItemOffsetDecoration
 
-class TopicFragment : MainFragment() {
+class TopicFragment : MainFragment<TopicViewModel>() {
     companion object {
         val TAG: String = TopicFragment::class.java.simpleName
 
@@ -46,7 +46,6 @@ class TopicFragment : MainFragment() {
                 )
             }
 
-    private lateinit var viewModel: TopicViewModel
     private val contentsAdapter: ContentListAdapter by lazy {
         org.schulcloud.mobile.controllers.topic.ContentListAdapter()
     }

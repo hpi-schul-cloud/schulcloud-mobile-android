@@ -13,4 +13,8 @@
     <color name="material_text_disabled_light">#80FFFFFF</color> <!-- 50% -->
     <color name="material_divider_light">#1FFFFFFF</color> <!-- 12% -->
 
+
+    <color name="material_green_500">#4CAF50</color>
+    <color name="material_red_500">#F44336</color>
+
 </resources>

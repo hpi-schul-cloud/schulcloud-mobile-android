@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_homework_list.*
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragmentArgs
 import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -17,12 +18,11 @@ import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.HomeworkListViewModel
 
-class HomeworkListFragment : MainFragment() {
+class HomeworkListFragment : MainFragment<HomeworkListViewModel>() {
     companion object {
         val TAG: String = HomeworkListFragment::class.java.simpleName
     }
 
-    private lateinit var viewModel: HomeworkListViewModel
     private val homeworkAdapter: HomeworkAdapter by lazy {
         HomeworkAdapter({
             navController.navigate(

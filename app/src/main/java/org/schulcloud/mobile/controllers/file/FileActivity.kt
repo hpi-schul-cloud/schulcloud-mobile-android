@@ -77,7 +77,7 @@ class FileActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(this@FileActivity, DividerItemDecoration.VERTICAL))
         }
         files_add_file.setOnClickListener{
-
+            selectFile()
         }
         files_add_directory.setOnClickListener{
             showDirectoryDialog()
@@ -213,18 +213,7 @@ class FileActivity : BaseActivity() {
         }
     }
 
-    /*fun selectFile(){
-        var fileSelect = Intent(Intent.ACTION_GET_CONTENT)
-        fileSelect.type = "**"
-        fileSelect.addCategory(Intent.CATEGORY_OPENABLE)
-        var intent = Intent.createChooser(fileSelect,resources.getString(R.string.file_select))
-        startActivityForResult(intent,101)
-    }
+    fun selectFile(){
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 101 && resultCode == Activity.RESULT_OK){
-            var selectedFile = data.pat
-        }
-    }*/
+    }
 }

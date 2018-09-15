@@ -60,8 +60,8 @@ object FileRepository {
         file.thumbnail = signedUrl.header?.metaThumbnail
     }
 
-    suspend fun createDirectory(path: String){
-        CreateDirectoryJob(path,object : RequestJobCallback(){
+    suspend fun createDirectory(request: DirectoryRequest){
+        CreateDirectoryJob(request,object : RequestJobCallback(){
             override fun onSuccess() {}
             override fun onError(code: ErrorCode) {}
         }).run()

@@ -2,6 +2,7 @@ package org.schulcloud.mobile.network
 
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
@@ -69,7 +70,7 @@ interface ApiServiceInterface {
     @POST("fileStorage")
     fun persistFile(@Body file: File): Call<ResponseBody>
     @POST("fileStorage/directories")
-    fun createDirectory(@Body path: String): Call<Directory>
+    fun createDirectory(@Body path: DirectoryRequest): Call<JSONObject>
     @DELETE("fileStorage/{id}")
     fun deleteFile(@Body path: String): Call<ResponseBody>
     @POST("files")

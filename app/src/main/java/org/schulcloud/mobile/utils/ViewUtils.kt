@@ -43,7 +43,7 @@ fun String?.toColorStateList() = ColorStateList.valueOf(Color.parseColor(safeCol
 @BindingAdapter("displayDate")
 fun showDate(view: TextView, date: String?) {
     view.text = date?.parseDate()?.let {
-        DateUtils.formatDateTime(view.context, it.timeInMillis, DateUtils.FORMAT_NUMERIC_DATE)
+        DateUtils.formatDateTime(view.context, it.timeInMillis, DateUtils.FORMAT_SHOW_DATE)
     } ?: ""
 }
 

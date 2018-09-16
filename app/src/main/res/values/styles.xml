@@ -1,4 +1,4 @@
-<resources>
+    <resources>
 
     <style name="ThemeOverlay.App.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
     <style name="ThemeOverlay.App.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />

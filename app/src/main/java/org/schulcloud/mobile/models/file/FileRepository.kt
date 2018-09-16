@@ -2,7 +2,9 @@ package org.schulcloud.mobile.models.file
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
+import org.schulcloud.mobile.jobs.CreateDirectoryJob
 import org.schulcloud.mobile.jobs.ListDirectoryContentsJob
+import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
 
@@ -38,5 +40,9 @@ object FileRepository {
 
     fun pathCourse(courseId: String, path: String? = null): String {
         return combinePath(CONTEXT_COURSES, courseId, path)
+    }
+
+    suspend fun createDirectory(path: String){
+        CreateDirectoryJob(path, object: RequestJobCallback(){}).run()
     }
 }

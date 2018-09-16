@@ -1,15 +1,20 @@
 package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -109,7 +114,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState
 
         fun updateEmptyMessage() {
             val directoriesEmpty = viewModel.directories.value?.isEmpty() ?: true
@@ -138,6 +143,10 @@ class FileFragment : MainFragment<FileViewModel>() {
             layoutManager = LinearLayoutManager(context)
             adapter = fileAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
+
+        files_add_folder.setOnClickListener{
+
         }
     }
 
@@ -228,6 +237,28 @@ class FileFragment : MainFragment<FileViewModel>() {
             when (e.code()) {
                 404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
             }
+        }
+    }
+
+    fun openDirectoryDialog(){
+
+    }
+
+    fun openSelectFileDialog(){
+
+    }
+
+    class addDirectoryDialog(): DialogFragment(){
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            var builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+            var inflater: LayoutInflater = activity!!.layoutInflater
+            var view: View = inflater.inflate(R.layout.dialog_add_directory,null)
+
+            builder.setView(view)
+                    .setPositiveButton(android.R.string.ok,object: DialogInterface.OnClickListener{
+
+                    })
+            return builder.create()
         }
     }
 }

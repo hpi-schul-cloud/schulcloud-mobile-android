@@ -11,6 +11,8 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import androidx.core.content.FileProvider
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.controllers.base.ContextAware
@@ -138,9 +140,11 @@ suspend fun ContextAware.downloadFile(file: File, download: Boolean) {
         }
     } catch (e: HttpException) {
         @Suppress("MagicNumber")
-        when (e.code()) {
-            404 -> currentContext.showGenericError(R.string.file_fileOpen_error_404)
-            else -> currentContext.showGenericError(R.string.file_fileOpen_error)
+        launch(UI) {
+            when (e.code()) {
+                404 -> currentContext.showGenericError(R.string.file_fileOpen_error_404)
+                else -> currentContext.showGenericError(R.string.file_fileOpen_error)
+            }
         }
     }
 }

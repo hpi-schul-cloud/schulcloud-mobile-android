@@ -18,6 +18,7 @@ object SubmissionRepository {
         return realm.submissionDao().submission(homeworkId, studentId)
     }
 
+
     suspend fun updateSubmission(realm: Realm, value: Submission) {
         realm.submissionDao().updateSubmission(value)
         RequestJob.UpdateSingleData.with(value, { updateSubmission(value.id, value) }).run()

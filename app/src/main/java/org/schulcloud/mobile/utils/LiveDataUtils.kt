@@ -212,6 +212,8 @@ fun <T> LiveData<T>.first(count: Int = 1): LiveData<T> {
             result.value = it
             iteration++
         }
+        if (iteration == count - 1)
+            result.removeSource(this)
     }
     return result
 }

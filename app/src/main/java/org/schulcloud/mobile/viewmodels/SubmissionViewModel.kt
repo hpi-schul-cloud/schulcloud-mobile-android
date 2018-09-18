@@ -36,4 +36,6 @@ class SubmissionViewModel(val id: String) : ViewModel() {
             .switchMapNullable {
                 it?.homeworkId?.let { HomeworkRepository.homework(realm, it) }
             }
+
+    val currentUser: LiveData<User?> = UserRepository.currentUser(realm)
 }

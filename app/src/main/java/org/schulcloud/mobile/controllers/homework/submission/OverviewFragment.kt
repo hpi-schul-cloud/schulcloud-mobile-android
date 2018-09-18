@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,9 +15,14 @@ import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.file.FileAdapter
 import org.schulcloud.mobile.controllers.homework.attachment.AddAttachmentSheet
 import org.schulcloud.mobile.controllers.main.InnerMainFragment
+import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionOverviewBinding
 import org.schulcloud.mobile.models.file.FileRepository
+import org.schulcloud.mobile.models.user.Permission
+import org.schulcloud.mobile.models.user.hasPermission
+import org.schulcloud.mobile.utils.combineLatestBothNullable
 import org.schulcloud.mobile.utils.downloadFile
+import org.schulcloud.mobile.utils.map
 import org.schulcloud.mobile.utils.visibilityBool
 import org.schulcloud.mobile.viewmodels.SubmissionViewModel
 
@@ -26,6 +32,18 @@ class OverviewFragment : InnerMainFragment<OverviewFragment, SubmissionFragment,
         FileAdapter({ launch { downloadFile(it, false) } },
                 { launch { downloadFile(it, true) } })
     }
+
+    override fun provideSelfConfig(): LiveData<MainFragmentConfig> = viewModel.submission
+            .combineLatestBothNullable(viewModel.currentUser)
+            .map { (submission, user) ->
+                val canEdit = user?.hasPermission(Permission.SUBMISSIONS_EDIT) == true
+                        && submission?.studentId == user.id
+                MainFragmentConfig(
+                        menuBottomHiddenIds = listOf(
+                                R.id.submission_action_addAttachment.takeUnless { canEdit }
+                        )
+                )
+            }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentHomeworkSubmissionOverviewBinding.inflate(layoutInflater).also {

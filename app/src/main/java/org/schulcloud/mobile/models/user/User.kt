@@ -27,7 +27,8 @@ open class User : RealmObject(), HasId {
 
 
 enum class Permission(val string: String) {
-    FILE_CREATE("FILE_CREATE")
+    FILE_CREATE("FILE_CREATE"),
+    SUBMISSIONS_EDIT("SUBMISSIONS_EDIT")
 }
 
 fun User?.hasPermission(permission: Permission): Boolean {

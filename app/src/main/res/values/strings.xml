@@ -6,7 +6,6 @@
     <string name="general_action_refresh">Aktualisieren</string>
     <string name="general_action_gotoCourse">Zum Kurs</string>
     <string name="general_action_gotoHomework">Zur Aufgabe</string>
-    <string name="general_action_addAttachment">Anhang hinzufügen</string>
     <string name="general_date_yesterday">Gestern</string>
     <string name="general_date_today">Heute</string>
     <string name="general_date_tomorrow">Morgen</string>
@@ -114,6 +113,7 @@
     <string name="homework_submissions_error_courseEmpty">Der Kurs enthält keine Schüler/innen</string>
     <string name="homework_submissions_error_selectedEmpty">Es liegt noch keine Abgabe von diesem Schüler vor</string>
     <string name="homework_submission_overview">Abgabe</string>
+    <string name="homework_submission_action_addAttachment">Anhang hinzufügen</string>
     <string name="homework_submission_hint">Abgabe von %1$s</string>
     <string name="homework_submission_error_notFound">Keine Abgabe vorhanden</string>
     <string name="homework_submission_attachments">Anhänge</string>
@@ -121,6 +121,9 @@
     <string name="homework_submission_feedback">Feedback</string>
     <string name="homework_submission_feedback_grade">Du hast <b>%1$d%%</b> richtig gelöst</string>
     <string name="homework_submission_feedback_error_empty">Kein Bewertungstext vorhanden</string>
+    <string name="homework_attach_attach">Anhängen</string>
+    <string name="homework_attach_attach_file">Datei</string>
+    <string name="homework_attach_attach_takePhoto">Foto aufnehmen</string>
 
     <!-- File -->
     <string name="file_title">Dateien</string>

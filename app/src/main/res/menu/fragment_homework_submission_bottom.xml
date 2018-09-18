@@ -6,7 +6,7 @@
     <item
         android:id="@+id/submission_action_addAttachment"
         android:icon="@drawable/ic_attachment_24dp"
-        android:title="@string/general_action_addAttachment"
+        android:title="@string/homework_submission_action_addAttachment"
         app:showAsAction="ifRoom" />
 
     <item

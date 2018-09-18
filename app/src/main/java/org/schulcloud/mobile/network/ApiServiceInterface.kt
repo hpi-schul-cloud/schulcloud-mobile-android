@@ -66,6 +66,8 @@ interface ApiServiceInterface {
     fun listDirectoryContents(@Query("path") path: String): Call<DirectoryResponse>
     @GET("files/{id}")
     fun getFile(@Path("id") fileId: String): Call<File>
+    @PATCH("files/{id}")
+    fun updateFile(@Path("id") fileId: String, @Body file: File): Call<File>
 
     @POST("fileStorage/signedUrl")
     fun generateSignedUrl(@Body signedUrlRequest: SignedUrlRequest): Call<SignedUrlResponse>

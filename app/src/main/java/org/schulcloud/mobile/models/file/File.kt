@@ -23,6 +23,25 @@ open class File : RealmObject(), HasId {
     var thumbnail: String? = null
     var flatFileName: String? = null
     var permissions: RealmList<FilePermissions>? = null
+
+
+    fun addPermissions(userIds: List<String>, additionalPermissions: List<String>) {
+        for (userId in userIds) {
+            val allPermissions = permissions
+                    ?: RealmList<FilePermissions>().also { permissions = it }
+            val userPermissions = allPermissions.firstOrNull { it.userId == userId }
+                    ?: FilePermissions().also {
+                        it.userId = userId
+                        allPermissions.add(it)
+                    }
+            val permissions = userPermissions.permissions
+                    ?: RealmList<RealmString>().also { userPermissions.permissions = it }
+
+            for (newPermission in additionalPermissions)
+                if (!permissions.any { it.value == newPermission })
+                    permissions.add(RealmString(newPermission))
+        }
+    }
 }
 
 open class FilePermissions : RealmObject() {

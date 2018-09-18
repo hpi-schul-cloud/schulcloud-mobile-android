@@ -38,6 +38,12 @@ object FileRepository {
     }
 
 
+    suspend fun updateFile(realm: Realm, value: File) {
+        realm.fileDao().updateFile(value)
+        RequestJob.UpdateSingleData.with(value, { updateFile(value.id, value) }).run()
+    }
+
+
     suspend fun syncDirectory(path: String) {
         ListDirectoryContentsJob(path).run()
     }

@@ -1,12 +1,14 @@
 package org.schulcloud.mobile.controllers.main
 
 import android.os.Bundle
+import android.util.SparseBooleanArray
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import androidx.core.util.set
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
@@ -32,6 +34,7 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
     protected open val isInnerFragment: Boolean = false
     protected open val currentInnerFragment: LiveData<Int?> = liveDataOf()
     protected open val innerFragments: LiveData<List<InnerMainFragment<*, F, VM>?>> = liveDataOf(emptyList())
+    private val innerFragmentsRefreshed = SparseBooleanArray()
     private var isFirstInit: Boolean = true
 
     val isInitialized: Boolean get() = !isFirstInit
@@ -164,6 +167,11 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
 
                     val innerFragment = fragments.getOrNull(pos)
                     if (innerFragment != null) {
+                        if (!innerFragmentsRefreshed[pos]) {
+                            innerFragment.performRefreshWithParent(true)
+                            innerFragmentsRefreshed[pos] = true
+                        }
+
                         // Remove observer from old fragment
                         lastFragment?.let { lifecycle.removeObserver(observer) }
 

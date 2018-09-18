@@ -22,4 +22,11 @@ class FileDao(private val realm: Realm) {
                 .equalTo("path", path)
                 .allAsLiveData()
     }
+
+
+    fun updateFile(value: File) {
+        realm.executeTransaction {
+            it.copyToRealmOrUpdate(value)
+        }
+    }
 }

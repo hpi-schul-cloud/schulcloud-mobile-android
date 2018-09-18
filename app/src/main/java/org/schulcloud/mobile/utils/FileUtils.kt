@@ -108,7 +108,7 @@ suspend fun ContextAware.downloadFile(file: File, download: Boolean) {
         val response = ApiService.getInstance().generateSignedUrl(
                 SignedUrlRequest().apply {
                     action = SignedUrlRequest.ACTION_GET
-                    path = file.key
+                    path = Uri.decode(file.key)
                     fileType = file.type
                 }).await()
 

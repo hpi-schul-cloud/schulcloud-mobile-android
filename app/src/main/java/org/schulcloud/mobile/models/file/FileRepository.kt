@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.models.file
 
+import android.net.Uri
 import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.lifecycle.LiveData
@@ -106,7 +107,7 @@ object FileRepository {
 
         // Notify SC server of new file
         val newFile = CreateFileRequest().also {
-            it.key = combinePath(header.metaPath, name)
+            it.key = combinePath(header.metaPath, Uri.encode(name))
             it.path = header.metaPath?.ensureTrailingSlash()
             it.name = name
             it.type = mimeType

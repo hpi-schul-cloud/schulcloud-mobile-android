@@ -19,6 +19,7 @@ import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentHomeworkSubmissionOverviewBinding
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.user.Permission
+import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.models.user.hasPermission
 import org.schulcloud.mobile.utils.combineLatestBothNullable
 import org.schulcloud.mobile.utils.downloadFile
@@ -78,6 +79,7 @@ class OverviewFragment : InnerMainFragment<OverviewFragment, SubmissionFragment,
     }
 
     override suspend fun refresh() {
+        UserRepository.syncCurrentUser()
         viewModel.submission.value?.fileIds?.let {
             for (id in it)
                 FileRepository.syncFile(id)

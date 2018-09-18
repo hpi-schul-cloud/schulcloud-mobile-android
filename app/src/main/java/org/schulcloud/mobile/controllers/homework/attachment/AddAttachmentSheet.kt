@@ -1,9 +1,6 @@
 package org.schulcloud.mobile.controllers.homework.attachment
 
 import android.os.Bundle
-import android.text.format.DateUtils
-import android.text.format.DateUtils.FORMAT_SHOW_DATE
-import android.text.format.DateUtils.FORMAT_SHOW_TIME
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +15,8 @@ import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.AddAttachmentViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AddAttachmentSheet : BaseSheet() {
@@ -63,8 +62,7 @@ class AddAttachmentSheet : BaseSheet() {
                     val res = startActivityForResult(info.intent)
                     if (!res.success) return@launch
 
-                    val name = DateUtils.formatDateTime(context, System.currentTimeMillis(),
-                            FORMAT_SHOW_DATE or FORMAT_SHOW_TIME)
+                    val name = SimpleDateFormat.getDateTimeInstance().format(Date())
                     val file = context.uploadFile(info.tempFileUri, name = name, addEnding = true)
                     if (file != null)
                         addToSubmission(file)

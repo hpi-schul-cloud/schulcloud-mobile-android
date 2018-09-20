@@ -13,14 +13,21 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.marginLeft
+import androidx.core.view.setMargins
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.dialog_add_directory.view.*
 import kotlinx.android.synthetic.main.fragment_file.*
+import kotlinx.android.synthetic.main.fragment_file.view.*
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.R.id.*
@@ -33,6 +40,7 @@ import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
@@ -114,7 +122,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState
+        super.onViewCreated(view, savedInstanceState)
 
         fun updateEmptyMessage() {
             val directoriesEmpty = viewModel.directories.value?.isEmpty() ?: true
@@ -145,8 +153,12 @@ class FileFragment : MainFragment<FileViewModel>() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
-        files_add_folder.setOnClickListener{
+        files_add_folder.setOnClickListener {
+            openDirectoryDialog()
+        }
 
+        files_upload_file.setOnClickListener{
+            openSelectFileDialog()
         }
     }
 
@@ -241,23 +253,36 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     fun openDirectoryDialog(){
-
+        viewModel.user.observe(this, Observer {
+            if(!it?.hasPermission(User.PERMISSION_FOLDER_CREATE)!!){
+                Toast.makeText(context,resources.getString(R.string.file_directoryCreate_permission_error),Toast.LENGTH_SHORT)
+            }else{
+                addDirectoryDialog().show(activity?.supportFragmentManager,"addDirectoryDialog")
+            }
+        })
     }
 
     fun openSelectFileDialog(){
-
+        
     }
 
     class addDirectoryDialog(): DialogFragment(){
+
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            var builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-            var inflater: LayoutInflater = activity!!.layoutInflater
-            var view: View = inflater.inflate(R.layout.dialog_add_directory,null)
+            val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+            val inflater: LayoutInflater = activity!!.layoutInflater
+            val view: View = inflater.inflate(R.layout.dialog_add_directory,null)
 
             builder.setView(view)
-                    .setPositiveButton(android.R.string.ok,object: DialogInterface.OnClickListener{
-
-                    })
+                    .setPositiveButton(android.R.string.ok) { dialog, which ->
+                        if(!view.directory_name.text.isNullOrBlank()){
+                            async{FileRepository.createDirectory(view.directory_name.text.toString())}
+                            dismiss()
+                        }
+                    }
+                    .setNegativeButton(android.R.string.cancel) { dialog, which ->
+                        dismiss()
+                    }
             return builder.create()
         }
     }

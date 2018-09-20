@@ -10,4 +10,6 @@
 
     <color name="toolbar_background_default">@android:color/white</color>
 
+    <color name="gray_blue">#59667a</color>
+
 </resources>

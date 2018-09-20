@@ -141,5 +141,6 @@
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
     <string name="file_create_directory_hint">Ordnername</string>
     <string name="file_create_directory">Ordner erstellen</string>
+    <string name="file_directoryCreate_permission_error">Dir fehlt die Berechtigung einen Ordner zu erstellen</string>
 
 </resources>

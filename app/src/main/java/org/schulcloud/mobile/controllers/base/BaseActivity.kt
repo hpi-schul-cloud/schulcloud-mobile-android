@@ -3,6 +3,7 @@ package org.schulcloud.mobile.controllers.base
 import android.content.pm.PackageManager
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,6 +22,11 @@ import kotlin.properties.Delegates
 
 
 abstract class BaseActivity : AppCompatActivity() {
+   companion object {
+       init {
+           AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+       }
+   }
     open var url: String? = null
     var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()

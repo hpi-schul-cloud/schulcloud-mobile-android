@@ -18,7 +18,7 @@ import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
 import org.schulcloud.mobile.utils.setup
 import org.schulcloud.mobile.utils.shareLink
-import org.schulcloud.mobile.viewmodels.BaseViewModel
+import org.schulcloud.mobile.viewmodels.BaseActivityViewModel
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.properties.Delegates
 
@@ -33,8 +33,8 @@ abstract class BaseActivity : AppCompatActivity(), ContextAware {
         new?.setOnRefreshListener { performRefresh() }
     }
 
-    private val viewModel: BaseViewModel by lazy {
-        ViewModelProviders.of(this).get(BaseViewModel::class.java)
+    private val viewModel: BaseActivityViewModel by lazy {
+        ViewModelProviders.of(this).get(BaseActivityViewModel::class.java)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

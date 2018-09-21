@@ -1,8 +1,6 @@
 package org.schulcloud.mobile.viewmodels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import io.realm.Realm
 import io.realm.RealmList
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -12,13 +10,10 @@ import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.models.homework.submission.Submission
 import org.schulcloud.mobile.models.homework.submission.SubmissionRepository
+import org.schulcloud.mobile.viewmodels.base.BaseViewModel
 
 
-class AddAttachmentViewModel(id: String) : ViewModel() {
-    private val realm: Realm by lazy {
-        Realm.getDefaultInstance()
-    }
-
+class AddAttachmentViewModel(id: String) : BaseViewModel() {
     val submission: LiveData<Submission?> = SubmissionRepository.submission(realm, id)
 
     suspend fun addFileToSubmission(submission: Submission, file: File) {

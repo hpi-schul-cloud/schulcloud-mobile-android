@@ -3,12 +3,13 @@ package org.schulcloud.mobile.viewmodels
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.lifecycle.ViewModel
 import org.schulcloud.mobile.controllers.base.StartActivityResult
+import org.schulcloud.mobile.viewmodels.base.BaseViewModel
 import java.util.*
 import kotlin.coroutines.experimental.Continuation
 
-class BaseViewModel : ViewModel() {
+
+class BaseActivityViewModel : BaseViewModel() {
     private val permissionRequests: MutableList<Continuation<Boolean>>
             by lazy { LinkedList<Continuation<Boolean>>() }
 

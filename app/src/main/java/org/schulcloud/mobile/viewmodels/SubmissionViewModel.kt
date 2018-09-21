@@ -1,8 +1,6 @@
 package org.schulcloud.mobile.viewmodels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import io.realm.Realm
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.homework.Homework
@@ -14,12 +12,10 @@ import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.liveDataOf
 import org.schulcloud.mobile.utils.switchMap
 import org.schulcloud.mobile.utils.switchMapNullable
+import org.schulcloud.mobile.viewmodels.base.BaseViewModel
 
-class SubmissionViewModel(val id: String) : ViewModel() {
-    private val realm: Realm by lazy {
-        Realm.getDefaultInstance()
-    }
 
+class SubmissionViewModel(val id: String) : BaseViewModel() {
     val submission: LiveData<Submission?> = SubmissionRepository.submission(realm, id)
     val student: LiveData<User?> = submission
             .switchMapNullable {

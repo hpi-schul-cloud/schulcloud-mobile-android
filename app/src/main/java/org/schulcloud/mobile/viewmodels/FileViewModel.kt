@@ -1,8 +1,6 @@
 package org.schulcloud.mobile.viewmodels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import io.realm.Realm
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.Directory
@@ -12,12 +10,10 @@ import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.getPathParts
 import org.schulcloud.mobile.utils.liveDataOf
+import org.schulcloud.mobile.viewmodels.base.BaseViewModel
 
-class FileViewModel(path: String) : ViewModel() {
-    private val realm: Realm by lazy {
-        Realm.getDefaultInstance()
-    }
 
+class FileViewModel(path: String) : BaseViewModel() {
     val path = FileRepository.fixPath(path)
 
     val directories: LiveData<List<Directory>> = FileRepository.directories(realm, this.path)
@@ -31,5 +27,4 @@ class FileViewModel(path: String) : ViewModel() {
     } ?: liveDataOf())
 
     val currentUser: LiveData<User?> = UserRepository.currentUser(realm)
-
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="onUseForSubmission"
+            type="kotlin.jvm.functions.Function0" />
+        <variable
+            name="onUploadToFiles"
+            type="kotlin.jvm.functions.Function0" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Material.ListHeader"
+            android:text="@string/main_fileOpen" />
+
+        <LinearLayout style="@style/Material.IconGrid.WithHeader">
+
+            <org.schulcloud.mobile.views.CompatTextView
+                style="@style/Material.IconGridItem"
+                android:onClick="@{() -> onUseForSubmission.invoke()}"
+                android:text="@string/main_fileOpen_useForSubmission"
+                app:drawableTop="@drawable/ic_brand_homework_black" />
+
+            <org.schulcloud.mobile.views.CompatTextView
+                style="@style/Material.IconGridItem"
+                android:onClick="@{() -> onUploadToFiles.invoke()}"
+                android:text="@string/main_fileOpen_uploadToFiles"
+                app:drawableTop="@drawable/ic_brand_files_black" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

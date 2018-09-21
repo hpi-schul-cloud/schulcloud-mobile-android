@@ -69,10 +69,8 @@ class OverviewFragment : InnerMainFragment<OverviewFragment, SubmissionFragment,
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.submission_action_addAttachment -> {
-                val sheet = AddAttachmentSheet.forSubmission(viewModel.id)
-                sheet.show(fragmentManager, sheet.tag)
-            }
+            R.id.submission_action_addAttachment ->
+                AddAttachmentSheet.forSubmission(viewModel.id).show(fragmentManager)
             else -> return super.onOptionsItemSelected(item)
         }
         return true

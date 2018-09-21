@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -100,6 +101,15 @@ class MainActivity : BaseActivity() {
         }
 
         fab.setOnClickListener { viewModel.onFabClicked.call() }
+
+        handleIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent ?: return
+
+        handleIntent(intent)
     }
 
     override fun onResume() {
@@ -127,8 +137,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showDrawer() {
-        val drawer = NavigationDrawerFragment()
-        drawer.show(supportFragmentManager, drawer.tag)
+        NavigationDrawerFragment().show(supportFragmentManager)
     }
 
     override fun setSupportActionBar(toolbar: Toolbar?) {
@@ -173,6 +182,10 @@ class MainActivity : BaseActivity() {
         return true
     }
 
+
+    private fun handleIntent(intent: Intent) {
+        OpenFileSheet.forIncomingIntent(this, intent)?.show(supportFragmentManager)
+    }
 
     private fun recalculateToolbarColors() {
         val color = viewModel.config.value?.toolbarColor

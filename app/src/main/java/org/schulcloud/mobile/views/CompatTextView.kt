@@ -9,12 +9,15 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StyleableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.DrawableCompat
 import org.schulcloud.mobile.R
+import org.schulcloud.mobile.utils.getColorOrNull
+import org.schulcloud.mobile.utils.getDimensionOrNull
 import org.schulcloud.mobile.utils.isLtr
+import kotlin.math.min
 import kotlin.properties.Delegates
+
 
 open class CompatTextView @JvmOverloads constructor(
     context: Context,
@@ -45,6 +48,10 @@ open class CompatTextView @JvmOverloads constructor(
     @delegate:ColorInt
     var drawableTintColor by updateDrawablesObservable<Int?>(null)
 
+    var drawableWidth by updateDrawablesObservable<Int?>(null)
+    var drawableHeight by updateDrawablesObservable<Int?>(null)
+
+
     init {
         context.withStyledAttributes(attrs, R.styleable.CompatTextView) {
             // To use vector drawables on pre-21
@@ -68,8 +75,10 @@ open class CompatTextView @JvmOverloads constructor(
             drawableTopVisible = getBoolean(R.styleable.CompatTextView_drawableTopVisible, true)
             drawableBottomVisible = getBoolean(R.styleable.CompatTextView_drawableBottomVisible, true)
 
-            if (hasValue(R.styleable.CompatTextView_drawableTint))
-                drawableTintColor = getColorOrThrow(R.styleable.CompatTextView_drawableTint)
+            drawableTintColor = getColorOrNull(R.styleable.CompatTextView_drawableTint)
+
+            drawableWidth = getDimensionOrNull(R.styleable.CompatTextView_drawableWidth)?.toInt()
+            drawableHeight = getDimensionOrNull(R.styleable.CompatTextView_drawableHeight)?.toInt()
 
             isInitialized = true
             updateDrawables()
@@ -78,14 +87,47 @@ open class CompatTextView @JvmOverloads constructor(
 
     private fun updateDrawables() {
         fun drawableIfVisible(drawable: Drawable?, visible: Boolean): Drawable? {
-            return if (drawable != null && visible)
-                drawableTintColor?.let {
+            return if (drawable != null && visible) {
+                // Tint
+                val drawableTintColor = drawableTintColor
+                val result = if (drawableTintColor != null)
                     DrawableCompat.wrap(drawable).apply {
                         mutate()
-                        DrawableCompat.setTint(this, it)
+                        DrawableCompat.setTint(this, drawableTintColor)
                     }
-                } ?: drawable
-            else null
+                else drawable
+
+                // Resize
+                val realBounds = result.bounds
+                val aspectRatio = realBounds.width().toFloat() / realBounds.height()
+                val width = realBounds.width()
+                val height = realBounds.height()
+                val drawableWidth = drawableWidth
+                val drawableHeight = drawableHeight
+
+                val (newWidth, newHeight) =
+                // Too wide, scale down
+                        if (drawableWidth != null && width > drawableWidth)
+                            drawableWidth to (width / aspectRatio).toInt()
+                        // Too high, scale down
+                        else if (drawableHeight != null && height > drawableHeight)
+                            (height * aspectRatio).toInt() to drawableHeight
+                        // Too small, scale up
+                        else if (drawableWidth != null && drawableHeight != null &&
+                                width == 0 && height == 0) {
+                            drawableWidth to drawableHeight
+                        } else if (drawableWidth != null && drawableHeight != null
+                                && width < drawableWidth && height < drawableHeight) {
+                            val scale = min(drawableWidth / width, drawableHeight / height)
+                            width * scale to height * scale
+                        } else width to height
+
+                realBounds.right = realBounds.left + newWidth
+                realBounds.bottom = realBounds.top + newHeight
+                drawable.bounds = realBounds
+
+                result
+            } else null
         }
 
         when {

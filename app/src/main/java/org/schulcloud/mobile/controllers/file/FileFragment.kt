@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
+import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
@@ -263,7 +264,6 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     fun openSelectFileDialog(){
-        
     }
 
     class addDirectoryDialog(): DialogFragment(){
@@ -272,9 +272,13 @@ class FileFragment : MainFragment<FileViewModel>() {
             val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
             val inflater: LayoutInflater = activity!!.layoutInflater
             val view: View = inflater.inflate(R.layout.dialog_add_directory,null)
+            var layoutParamsDialog = ActionBar.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            layoutParamsDialog.rightMargin = 10
 
             builder.setView(view)
                     .setPositiveButton(android.R.string.ok) { dialog, which ->
+                        var alertDialog: AlertDialog = dialog as AlertDialog
+                        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).layoutParams = layoutParamsDialog
                         if(!view.directory_name.text.isNullOrBlank()){
                             async{FileRepository.createDirectory(view.directory_name.text.toString())}
                             dismiss()

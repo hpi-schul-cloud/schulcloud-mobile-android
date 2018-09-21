@@ -60,4 +60,7 @@ dependencies {
     // instrumented tests
     androidTestImplementation "androidx.annotation:annotation:1.0.0-rc01"
     androidTestImplementation "androidx.test:runner:1.1.0-alpha4"
+
+    //Jetpack workmanager
+    implementation "android.arch.work:work-runtime:1.0.0-alpha09"
 }

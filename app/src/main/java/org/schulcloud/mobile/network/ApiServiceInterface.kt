@@ -5,6 +5,7 @@ import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.event.Event
+import org.schulcloud.mobile.models.file.Directory
 import org.schulcloud.mobile.models.file.DirectoryResponse
 import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.file.SignedUrlResponse
@@ -68,5 +69,8 @@ interface ApiServiceInterface {
     @GET
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
     @POST("fileStorage/directoriest")
-    fun createDirectory(path: String): Call<ResponseBody>
+    fun createDirectory(directory: Directory): Call<ResponseBody>
+    @POST("files")
+    fun uploadFile(): Call<ResponseBody>
+
 }

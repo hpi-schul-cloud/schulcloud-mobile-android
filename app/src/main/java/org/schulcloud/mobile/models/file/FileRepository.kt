@@ -45,4 +45,8 @@ object FileRepository {
     suspend fun createDirectory(path: String){
         CreateDirectoryJob(path, object: RequestJobCallback(){}).run()
     }
+
+    suspend fun uploadFile(){
+
+    }
 }

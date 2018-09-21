@@ -39,7 +39,7 @@ android {
 
     productFlavors {
         hpi {
-            buildConfigField "String", "API_URL", '"https://schul-cloud.org:8080"'
+            buildConfigField "String", "API_URL", '"https://api.schul-cloud.org"'
         }
 
         n21 {

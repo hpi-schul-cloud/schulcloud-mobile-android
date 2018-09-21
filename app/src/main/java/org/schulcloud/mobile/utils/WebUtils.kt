@@ -1,12 +1,13 @@
 @file:Suppress("TooManyFunctions")
+
 package org.schulcloud.mobile.utils
 
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import android.util.Log
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
@@ -28,7 +29,7 @@ const val MIME_APPLICATION_JSON = "application/json"
 
 const val ENCODING_UTF_8 = "utf-8"
 
-val HOST = API_URL.substringBeforeLast(":")
+val HOST = API_URL.substringAfter("://").substringBefore(':')
 
 val HTTP_CLIENT: OkHttpClient by lazy {
     OkHttpClient.Builder().addInterceptor { chain ->

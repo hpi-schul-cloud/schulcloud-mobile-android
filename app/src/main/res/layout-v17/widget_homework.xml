@@ -10,7 +10,7 @@
             type="String" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         style="@style/Dashboard.Widget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,5 +19,5 @@
             bind:count="@{count}"
             bind:timeToNext="@{timeToNext}"/>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

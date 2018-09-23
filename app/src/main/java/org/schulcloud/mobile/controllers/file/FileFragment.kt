@@ -38,6 +38,7 @@ import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.file.Directory
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.models.file.SignedUrlRequest
@@ -258,7 +259,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             if(!it?.hasPermission(User.PERMISSION_FOLDER_CREATE)!!){
                 Toast.makeText(context,resources.getString(R.string.file_directoryCreate_permission_error),Toast.LENGTH_SHORT)
             }else{
-                addDirectoryDialog().show(activity?.supportFragmentManager,"addDirectoryDialog")
+                addDirectoryDialog(viewModel.path,Runnable{async{this@FileFragment.refresh()}}).show(activity?.supportFragmentManager,"addDirectoryDialog")
             }
         })
     }
@@ -266,7 +267,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     fun openSelectFileDialog(){
     }
 
-    class addDirectoryDialog(): DialogFragment(){
+    class addDirectoryDialog(private val path: String, val refresh: Runnable): DialogFragment(){
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
@@ -277,10 +278,13 @@ class FileFragment : MainFragment<FileViewModel>() {
 
             builder.setView(view)
                     .setPositiveButton(android.R.string.ok) { dialog, which ->
-                        var alertDialog: AlertDialog = dialog as AlertDialog
-                        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).layoutParams = layoutParamsDialog
                         if(!view.directory_name.text.isNullOrBlank()){
-                            async{FileRepository.createDirectory(view.directory_name.text.toString())}
+                            var request: Directory = Directory()
+                            request.path = combinePath(path,view.directory_name.text.toString())
+                            async{
+                                FileRepository.createDirectory(request)
+                                refresh.run()
+                            }
                             dismiss()
                         }
                     }

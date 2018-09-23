@@ -1,5 +1,7 @@
 package org.schulcloud.mobile.controllers.main
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -95,6 +97,20 @@ class MainActivity : BaseActivity() {
         }
 
         fab.setOnClickListener { viewModel.onFabClicked.call() }
+        createNotificationChannel()
+    }
+
+    fun createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            //TODO: Add name, id and description
+            var CHANNEL_ID = ""
+            var name = getString(R.string.channel_name)
+            var description = getString(R.string.channel_description)
+            var importance = NotificationManager.IMPORTANCE_DEFAULT
+            var channel = NotificationChannel(CHANNEL_ID,name,importance)
+            channel.description = description
+            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        }
     }
 
     override fun onResume() {

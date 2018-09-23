@@ -42,8 +42,8 @@ object FileRepository {
         return combinePath(CONTEXT_COURSES, courseId, path)
     }
 
-    suspend fun createDirectory(path: String){
-        CreateDirectoryJob(path, object: RequestJobCallback(){}).run()
+    suspend fun createDirectory(directory: Directory){
+        CreateDirectoryJob(directory, object: RequestJobCallback(){}).run()
     }
 
     suspend fun uploadFile(){

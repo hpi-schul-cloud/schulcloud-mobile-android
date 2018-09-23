@@ -68,9 +68,8 @@ interface ApiServiceInterface {
     fun generateSignedUrl(@Body signedUrlRequest: SignedUrlRequest): Call<SignedUrlResponse>
     @GET
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
-    @POST("fileStorage/directoriest")
-    fun createDirectory(directory: Directory): Call<ResponseBody>
+    @POST("fileStorage/directories")
+    fun createDirectory(@Body directory: Directory): Call<ResponseBody>
     @POST("files")
     fun uploadFile(): Call<ResponseBody>
-
 }

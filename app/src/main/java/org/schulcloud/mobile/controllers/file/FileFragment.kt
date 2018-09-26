@@ -4,10 +4,13 @@ import android.Manifest
 import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Layout
 import android.view.LayoutInflater
@@ -16,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.marginLeft
 import androidx.core.view.setMargins
@@ -24,12 +28,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.OneTimeWorkRequest
 import kotlinx.android.synthetic.main.dialog_add_directory.view.*
 import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.android.synthetic.main.fragment_file.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
@@ -47,6 +53,7 @@ import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import org.schulcloud.mobile.worker.DownloadFileWorker
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 
@@ -212,29 +219,37 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(UI) {
+        val response = ApiService.getInstance().generateSignedUrl(
+                SignedUrlRequest().apply {
+                    action = SignedUrlRequest.ACTION_GET
+                    path = file.key
+                    fileType = file.type
+                }).await()
         try {
-            val response = ApiService.getInstance().generateSignedUrl(
-                    SignedUrlRequest().apply {
-                        action = SignedUrlRequest.ACTION_GET
-                        path = file.key
-                        fileType = file.type
-                    }).await()
-
             if (download) {
-                if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
-                    return@launch
-                }
+                var connectivityManager = this@FileFragment.context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                var doDownload = true
 
-                this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
-                    if (!result.writeToDisk(file.name.orEmpty())) {
-                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                        return@withProgressDialog
+                if(file.size!! > 500 && !connectivityManager.activeNetworkInfo.isConnected){
+                    var builder: AlertDialog.Builder
+
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                        builder = AlertDialog.Builder(this@FileFragment.context,R.style.Theme_MaterialComponents_Dialog_Alert)
+                    }else{
+                        builder = AlertDialog.Builder(this@FileFragment.context)
                     }
-                    this@FileFragment.context?.showGenericSuccess(
-                            getString(R.string.file_fileDownload_success, file.name))
+                    builder.setTitle(R.string.file_loadFile)
+                            .setMessage(R.string.file_big)
+                            .setPositiveButton(android.R.string.yes,DialogInterface.OnClickListener{ dialog, which ->
+                                dialog.dismiss()
+                            })
+                            .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                                doDownload = false
+                                dialog.dismiss()
+                            })
                 }
+                if(doDownload)
+                    viewModel.workManager.enqueue(OneTimeWorkRequest.from(DownloadFileWorker::class.java))
             } else {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(Uri.parse(response.url), response.header?.contentType)

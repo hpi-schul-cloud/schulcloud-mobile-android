@@ -104,8 +104,8 @@ class MainActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             //TODO: Add name, id and description
             var CHANNEL_ID = ""
-            var name = getString(R.string.channel_name)
-            var description = getString(R.string.channel_description)
+            var name = getString(R.string.notification_cloud)
+            var description = getString(R.string.notification_description)
             var importance = NotificationManager.IMPORTANCE_DEFAULT
             var channel = NotificationChannel(CHANNEL_ID,name,importance)
             channel.description = description

@@ -63,4 +63,8 @@ dependencies {
 
     //Jetpack workmanager
     implementation "android.arch.work:work-runtime:1.0.0-alpha09"
+
+    //notifications
+    implementation "com.android.support:support-compat:28.0.0"
+
 }

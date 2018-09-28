@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.NotificationManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -19,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.marginLeft
@@ -28,7 +31,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
+import androidx.work.Worker
 import kotlinx.android.synthetic.main.dialog_add_directory.view.*
 import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.android.synthetic.main.fragment_file.view.*
@@ -56,6 +61,7 @@ import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import org.schulcloud.mobile.worker.DownloadFileWorker
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
+import java.util.*
 
 
 class FileFragment : MainFragment<FileViewModel>() {
@@ -219,6 +225,13 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(UI) {
+        val notificationManager = getSystemService(this@FileFragment.context!!,NotificationManager::class.java)
+        var notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
+                .setContentTitle(resources.getString(R.string.file_fileDownload_progress))
+                .setProgress(100,0,true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        var notificationId = Random().nextInt(Int.MAX_VALUE)
+
         val response = ApiService.getInstance().generateSignedUrl(
                 SignedUrlRequest().apply {
                     action = SignedUrlRequest.ACTION_GET
@@ -227,11 +240,12 @@ class FileFragment : MainFragment<FileViewModel>() {
                 }).await()
         try {
             if (download) {
-                var connectivityManager = this@FileFragment.context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val connectivityManager = this@FileFragment.context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                 var doDownload = true
+                val notificationId: Int = Random().nextInt()
 
                 if(file.size!! > 500 && !connectivityManager.activeNetworkInfo.isConnected){
-                    var builder: AlertDialog.Builder
+                    val builder: AlertDialog.Builder
 
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                         builder = AlertDialog.Builder(this@FileFragment.context,R.style.Theme_MaterialComponents_Dialog_Alert)
@@ -248,8 +262,26 @@ class FileFragment : MainFragment<FileViewModel>() {
                                 dialog.dismiss()
                             })
                 }
-                if(doDownload)
-                    viewModel.workManager.enqueue(OneTimeWorkRequest.from(DownloadFileWorker::class.java))
+                if(doDownload) {
+                    val inputData = Data.Builder().putString("responseUrl",response.url).putString("fileName",file.name).build()
+                    val worker = OneTimeWorkRequest.Builder(DownloadFileWorker::class.java).setInputData(inputData).build()
+
+                    if(runBlocking{requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)}){
+                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                    }
+
+                    notificationManager!!.notify(notificationId,notification.build())
+                    viewModel.workManager.enqueue(worker)
+                    viewModel.workManager.getStatusById(worker.id).observe(this@FileFragment,Observer{
+                        val result = it.outputData.getInt("result",1)
+                        when (result) {
+                            DownloadFileWorker.SUCCESS -> this@FileFragment.context?.showGenericSuccess(R.string.file_fileDownload_success)
+                            DownloadFileWorker.ERROR_SAVE_TO_DISK -> this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
+                            404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_cantResolve)
+                        }
+                        notificationManager.cancel(notificationId)
+                    })
+                }
             } else {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(Uri.parse(response.url), response.header?.contentType)
@@ -272,7 +304,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     fun openDirectoryDialog(){
         viewModel.user.observe(this, Observer {
             if(!it?.hasPermission(User.PERMISSION_FOLDER_CREATE)!!){
-                Toast.makeText(context,resources.getString(R.string.file_directoryCreate_permission_error),Toast.LENGTH_SHORT)
+                Toast.makeText(context,resources.getString(R.string.file_directoryCreate_permission_error),Toast.LENGTH_SHORT).show()
             }else{
                 addDirectoryDialog(viewModel.path,Runnable{async{this@FileFragment.refresh()}}).show(activity?.supportFragmentManager,"addDirectoryDialog")
             }

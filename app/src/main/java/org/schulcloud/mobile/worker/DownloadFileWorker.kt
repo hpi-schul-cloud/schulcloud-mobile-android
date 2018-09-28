@@ -8,8 +8,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.Data
 import androidx.work.Worker
+import androidx.work.WorkerParameters
 import kotlinx.coroutines.experimental.runBlocking
+import okhttp3.ResponseBody
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.models.file.File
@@ -26,40 +29,33 @@ import retrofit2.Response
 import ru.gildor.coroutines.retrofit.await
 import java.util.*
 
-class DownloadFileWorker(private val file: File,private val response: SignedUrlResponse, val context: Context): Worker() {
-    val mActivity = context as BaseActivity
+class DownloadFileWorker(): Worker() {
+    companion object {
+        val ERROR_SAVE_TO_DISK = 1
+        val SUCCESS = 0
+    }
+
     val channelID = "PLACEHOLDER"
-    var notificationManager = NotificationManagerCompat.from(context)
+    val responseUrl = inputData.getString("responseUrl")
+    val fileName = inputData.getString("fileName")
+    var output = Data.Builder()
 
     override fun doWork(): Result {
-        var notification = NotificationCompat.Builder(context,channelID)
-                .setContentTitle(context.resources.getString(R.string.file_fileDownload_progress))
-                .setProgress(100,0,true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        var notificationId = Random().nextInt(Int.MAX_VALUE)
-
         try{
-
-            if(runBlocking{!mActivity.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)}){
-                context.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+            var outcome: ResponseBody? = null
+            runBlocking{outcome = ApiService.getInstance().downloadFile(responseUrl!!).await()}
+            if(!outcome!!.writeToDisk(fileName!!)){
+                outputData = output.putInt("result",1).build()
                 return Result.FAILURE
             }
-
-            //TODO: have a way to generate notificaiton ids, maybe make other way of making notifications
-            notificationManager.notify(0,notification.build())
-            var outcome = runBlocking{ApiService.getInstance().downloadFile(response.url!!).await()}
-            if(!outcome.writeToDisk(file.name.orEmpty())){
-                context.showGenericError(R.string.file_fileDownload_error_save)
-                return Result.FAILURE
-            }
-            context.showGenericSuccess(R.string.file_fileDownload_success)
-            notificationManager.cancel(notificationId)
         } catch (e: HttpException) {
-            @Suppress("MagicNumber")
+            @Suppress("MagicNumber", "UNREACHABLE_CODE")
             when (e.code()) {
-                404 -> context.showGenericError(R.string.file_fileOpen_error_404)
+                404 -> outputData = output.putInt("result",404).build()
             }
+            return Result.FAILURE
         }
+        outputData = output.putInt("result",0).build()
         return Result.SUCCESS
     }
 }

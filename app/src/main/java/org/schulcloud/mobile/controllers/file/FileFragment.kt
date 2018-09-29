@@ -13,19 +13,16 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.marginLeft
-import androidx.core.view.setMargins
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -33,16 +30,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
-import androidx.work.Worker
+import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.dialog_add_directory.view.*
 import kotlinx.android.synthetic.main.fragment_file.*
-import kotlinx.android.synthetic.main.fragment_file.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -58,7 +53,10 @@ import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
-import org.schulcloud.mobile.worker.DownloadFileWorker
+import org.schulcloud.mobile.worker.Models.DownloadFileWorker
+import org.schulcloud.mobile.worker.WorkerService
+import org.xml.sax.ErrorHandler
+import org.xml.sax.SAXParseException
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 import java.util.*
@@ -230,7 +228,9 @@ class FileFragment : MainFragment<FileViewModel>() {
                 .setContentTitle(resources.getString(R.string.file_fileDownload_progress))
                 .setProgress(100,0,true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSmallIcon(R.mipmap.ic_launcher,0)
         var notificationId = Random().nextInt(Int.MAX_VALUE)
+        notificationManager!!.notify(notificationId, notification.build())
 
         val response = ApiService.getInstance().generateSignedUrl(
                 SignedUrlRequest().apply {
@@ -263,24 +263,34 @@ class FileFragment : MainFragment<FileViewModel>() {
                             })
                 }
                 if(doDownload) {
-                    val inputData = Data.Builder().putString("responseUrl",response.url).putString("fileName",file.name).build()
-                    val worker = OneTimeWorkRequest.Builder(DownloadFileWorker::class.java).setInputData(inputData).build()
+                    val inputData = Data.Builder()
+                            .putString(DownloadFileWorker.KEY_URL,response.url)
+                            .putString(DownloadFileWorker.KEY_FILENAME,file.name)
+                            .putString(DownloadFileWorker.KEY_FILEKEY,file.key)
+                            .build()
 
-                    if(runBlocking{requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)}){
-                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                    var permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    if(permissionGranted == 0){
+                        runBlocking{ActivityCompat.shouldShowRequestPermissionRationale(this@FileFragment.activity!!,Manifest.permission.WRITE_EXTERNAL_STORAGE)}
+                        permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     }
 
-                    notificationManager!!.notify(notificationId,notification.build())
-                    viewModel.workManager.enqueue(worker)
-                    viewModel.workManager.getStatusById(worker.id).observe(this@FileFragment,Observer{
-                        val result = it.outputData.getInt("result",1)
-                        when (result) {
-                            DownloadFileWorker.SUCCESS -> this@FileFragment.context?.showGenericSuccess(R.string.file_fileDownload_success)
-                            DownloadFileWorker.ERROR_SAVE_TO_DISK -> this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                            404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_cantResolve)
+                    if(permissionGranted != 0) {
+                        val id = WorkerService.downloadFile(response.url!!,file.name!!,file.key,inputData)
+                        if(id != null) {
+                            WorkManager.getInstance().getStatusById(id).observe(this@FileFragment, Observer {
+                                val result = it.outputData.getInt("result", 1)
+                                when (result) {
+                                    DownloadFileWorker.SUCCESS -> this@FileFragment.context?.showGenericSuccess(R.string.file_fileDownload_success)
+                                    DownloadFileWorker.ERROR_SAVE_TO_DISK -> this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
+                                }
+
+                            })
                         }
-                        notificationManager.cancel(notificationId)
-                    })
+                    }else{
+                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                    }
+                    notificationManager.cancel(notificationId)
                 }
             } else {
                 val intent = Intent(Intent.ACTION_VIEW).apply {

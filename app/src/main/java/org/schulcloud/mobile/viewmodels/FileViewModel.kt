@@ -13,7 +13,6 @@ import org.schulcloud.mobile.storages.UserStorage
 
 class FileViewModel(path_: String) : ViewModel() {
     val path = FileRepository.fixPath(path_)
-    val workManager = WorkManager.getInstance()
 
     val realm: Realm by lazy {
         Realm.getDefaultInstance()

@@ -10,6 +10,7 @@
     <string name="general_date_today">Heute</string>
     <string name="general_date_tomorrow">Morgen</string>
     <string name="general_error_notFound">Nicht gefunden</string>
+    <string name="oops_something_went_wrong">Ups! Irgendetwas ist schiefgelaufen. Versuche es später noch einmal</string>
 
     <!-- Share -->
     <string name="share_subject_format">%1$s: %2$s</string>

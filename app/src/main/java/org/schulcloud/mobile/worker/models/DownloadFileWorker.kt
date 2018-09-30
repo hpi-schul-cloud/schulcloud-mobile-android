@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.worker.Models
+package org.schulcloud.mobile.worker.models
 
 import android.content.Context
 import androidx.work.Data

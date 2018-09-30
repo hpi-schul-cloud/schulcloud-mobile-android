@@ -13,6 +13,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -29,14 +30,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Data
-import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.dialog_add_directory.view.*
 import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
@@ -53,10 +52,8 @@ import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
-import org.schulcloud.mobile.worker.Models.DownloadFileWorker
+import org.schulcloud.mobile.worker.models.DownloadFileWorker
 import org.schulcloud.mobile.worker.WorkerService
-import org.xml.sax.ErrorHandler
-import org.xml.sax.SAXParseException
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 import java.util.*
@@ -218,96 +215,96 @@ class FileFragment : MainFragment<FileViewModel>() {
         if (!args.path.startsWith(FileRepository.CONTEXT_COURSES))
             return null
 
-        return args.path.getPathParts()[1]
+        return args.    path.getPathParts()[1]
     }
 
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(UI) {
-        val notificationManager = getSystemService(this@FileFragment.context!!,NotificationManager::class.java)
-        var notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
-                .setContentTitle(resources.getString(R.string.file_fileDownload_progress))
-                .setProgress(100,0,true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSmallIcon(R.mipmap.ic_launcher,0)
-        var notificationId = Random().nextInt(Int.MAX_VALUE)
-        notificationManager!!.notify(notificationId, notification.build())
 
-        val response = ApiService.getInstance().generateSignedUrl(
-                SignedUrlRequest().apply {
-                    action = SignedUrlRequest.ACTION_GET
-                    path = file.key
-                    fileType = file.type
-                }).await()
         try {
-            if (download) {
-                val connectivityManager = this@FileFragment.context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                var doDownload = true
-                val notificationId: Int = Random().nextInt()
+            val response = ApiService.getInstance().generateSignedUrl(
+                    SignedUrlRequest().apply {
+                        action = SignedUrlRequest.ACTION_GET
+                        path = file.key
+                        fileType = file.type
+                    }).await()
 
-                if(file.size!! > 500 && !connectivityManager.activeNetworkInfo.isConnected){
-                    val builder: AlertDialog.Builder
+            try {
+                if (download) {
+                    val connectivityManager = this@FileFragment.context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                    var doDownload = true
 
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                        builder = AlertDialog.Builder(this@FileFragment.context,R.style.Theme_MaterialComponents_Dialog_Alert)
-                    }else{
-                        builder = AlertDialog.Builder(this@FileFragment.context)
-                    }
-                    builder.setTitle(R.string.file_loadFile)
-                            .setMessage(R.string.file_big)
-                            .setPositiveButton(android.R.string.yes,DialogInterface.OnClickListener{ dialog, which ->
-                                dialog.dismiss()
-                            })
-                            .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
-                                doDownload = false
-                                dialog.dismiss()
-                            })
-                }
-                if(doDownload) {
-                    val inputData = Data.Builder()
-                            .putString(DownloadFileWorker.KEY_URL,response.url)
-                            .putString(DownloadFileWorker.KEY_FILENAME,file.name)
-                            .putString(DownloadFileWorker.KEY_FILEKEY,file.key)
-                            .build()
+                    if (file.size!! > 500 && !connectivityManager.activeNetworkInfo.isConnected) {
+                        val builder: AlertDialog.Builder
 
-                    var permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    if(permissionGranted == 0){
-                        runBlocking{ActivityCompat.shouldShowRequestPermissionRationale(this@FileFragment.activity!!,Manifest.permission.WRITE_EXTERNAL_STORAGE)}
-                        permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    }
-
-                    if(permissionGranted != 0) {
-                        val id = WorkerService.downloadFile(response.url!!,file.name!!,file.key,inputData)
-                        if(id != null) {
-                            WorkManager.getInstance().getStatusById(id).observe(this@FileFragment, Observer {
-                                val result = it.outputData.getInt("result", 1)
-                                when (result) {
-                                    DownloadFileWorker.SUCCESS -> this@FileFragment.context?.showGenericSuccess(R.string.file_fileDownload_success)
-                                    DownloadFileWorker.ERROR_SAVE_TO_DISK -> this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                                }
-
-                            })
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder = AlertDialog.Builder(this@FileFragment.context, R.style.Theme_MaterialComponents_Dialog_Alert)
+                        } else {
+                            builder = AlertDialog.Builder(this@FileFragment.context)
                         }
-                    }else{
-                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                        builder.setTitle(R.string.file_loadFile)
+                                .setMessage(R.string.file_big)
+                                .setPositiveButton(android.R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+                                    dialog.dismiss()
+                                })
+                                .setNegativeButton(android.R.string.no, DialogInterface.OnClickListener { dialog, which ->
+                                    doDownload = false
+                                    dialog.dismiss()
+                                })
                     }
-                    notificationManager.cancel(notificationId)
+                    if (doDownload) {
+                        val inputData = Data.Builder()
+                                .putString(DownloadFileWorker.KEY_URL, response.url)
+                                .putString(DownloadFileWorker.KEY_FILENAME, file.name)
+                                .putString(DownloadFileWorker.KEY_FILEKEY, file.key)
+                                .build()
+
+                        var permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        if (permissionGranted == 0) {
+                            ActivityCompat.shouldShowRequestPermissionRationale(this@FileFragment.activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        }
+
+                        if (permissionGranted != 0) {
+                            var id: UUID? = null
+                            try {
+                                id = WorkerService.downloadFile(response.url!!, file,this@FileFragment.context!!, inputData)
+                            } catch (e: Exception) {
+                                Log.e(TAG, e.message!!)
+                            }
+                            if (id != null) {
+                                WorkManager.getInstance().getStatusById(id).observe(this@FileFragment, Observer {
+                                    val result = it.outputData.getInt("result", 1)
+                                    when (result) {
+                                        DownloadFileWorker.SUCCESS -> this@FileFragment.context?.showGenericSuccess(R.string.file_fileDownload_success)
+                                        DownloadFileWorker.ERROR_SAVE_TO_DISK -> this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
+                                    }
+                                })
+                            }
+                        } else {
+                            this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                        }
+                    }
+                } else {
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(Uri.parse(response.url), response.header?.contentType)
+                    }
+                    val packageManager = activity?.packageManager
+                    if (packageManager != null && intent.resolveActivity(packageManager) != null)
+                        startActivity(intent)
+                    else
+                        this@FileFragment.context?.showGenericError(
+                                getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
                 }
-            } else {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(Uri.parse(response.url), response.header?.contentType)
+            } catch (e: HttpException) {
+                @Suppress("MagicNumber")
+                when (e.code()) {
+                    404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
                 }
-                val packageManager = activity?.packageManager
-                if (packageManager != null && intent.resolveActivity(packageManager) != null)
-                    startActivity(intent)
-                else
-                    this@FileFragment.context?.showGenericError(
-                            getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
             }
-        } catch (e: HttpException) {
-            @Suppress("MagicNumber")
-            when (e.code()) {
-                404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
-            }
+        }catch (e: Exception){
+            Log.e(TAG,e.message!!)
+            this@FileFragment.context?.showGenericNeutral(R.string.oops_something_went_wrong)
         }
     }
 

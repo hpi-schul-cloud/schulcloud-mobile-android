@@ -7,7 +7,6 @@
         <variable
             name="count"
             type="Integer" />
-
         <variable
             name="timeToNext"
             type="String" />

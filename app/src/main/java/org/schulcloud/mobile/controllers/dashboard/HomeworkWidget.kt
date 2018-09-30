@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import kotlinx.android.synthetic.main.widget_news.*
+import kotlinx.android.synthetic.main.widget_homework_card_content.*
 import org.joda.time.Days
 import org.joda.time.LocalDateTime
 import org.schulcloud.mobile.R

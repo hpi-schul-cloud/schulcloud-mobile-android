@@ -6,7 +6,6 @@
     android:layout_height="wrap_content">
 
     <include
-        layout="@layout/widget_events_card_content"
-        android:id="@+id/card_content"/>
+        layout="@layout/widget_events_card_content" />
 
 </androidx.cardview.widget.CardView>

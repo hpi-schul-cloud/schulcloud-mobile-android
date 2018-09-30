@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import kotlinx.android.synthetic.main.widget_news.*
+import kotlinx.android.synthetic.main.widget_news_card_content.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.news.NewsAdapter
 import org.schulcloud.mobile.controllers.news.NewsFragmentArgs

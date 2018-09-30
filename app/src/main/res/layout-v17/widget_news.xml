@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include
-        layout="@layout/widget_events_card_content" />
+    <include layout="@layout/widget_news_card_content"/>
 
 </com.google.android.material.card.MaterialCardView>

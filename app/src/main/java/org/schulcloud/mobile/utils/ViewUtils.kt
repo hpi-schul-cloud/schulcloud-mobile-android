@@ -7,14 +7,17 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.text.format.DateUtils
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.card.MaterialCardView
 import org.schulcloud.mobile.R
 
 private const val COLOR_BLACK_STRING = "#00000000"
@@ -85,4 +88,9 @@ fun Context.getTextColorForBackground(color: Int): Int {
 fun Context.getTextColorSecondaryForBackground(color: Int): Int {
     return ContextCompat.getColor(this, if (color.isLightColor) R.color.material_text_secondary_dark
     else R.color.material_text_secondary_light)
+}
+
+fun MaterialCardView.setForegroundForJellyBean(context: Context){
+    if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN)
+        foreground = ResourcesCompat.getDrawable(context.resources, R.drawable.fg_material_card_transparent, context.theme)
 }

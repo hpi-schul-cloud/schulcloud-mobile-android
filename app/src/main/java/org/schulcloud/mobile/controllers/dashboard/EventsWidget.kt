@@ -7,10 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.widget_events_card_content.*
+import kotlinx.android.synthetic.main.widget_events.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.models.event.EventRepository
+import org.schulcloud.mobile.utils.setForegroundForJellyBean
 import org.schulcloud.mobile.viewmodels.EventListViewModel
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
 
@@ -49,6 +50,7 @@ class EventsWidget : Widget() {
             adapter = eventAdapter
         }
         eventAdapter.emptyIndicator = empty
+        materialCard.setForegroundForJellyBean(context!!)
     }
 
     override suspend fun refresh() {

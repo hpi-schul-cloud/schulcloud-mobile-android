@@ -9,12 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import kotlinx.android.synthetic.main.widget_news_card_content.*
+import kotlinx.android.synthetic.main.widget_news.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.news.NewsAdapter
 import org.schulcloud.mobile.controllers.news.NewsFragmentArgs
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.utils.limit
+import org.schulcloud.mobile.utils.setForegroundForJellyBean
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
@@ -58,6 +59,8 @@ class NewsWidget : Widget() {
 
         more.setOnClickListener(Navigation.createNavigateOnClickListener(
                 R.id.action_dashboardFragment_to_newsListFragment))
+
+        materialCard.setForegroundForJellyBean(context!!)
     }
 
     override suspend fun refresh() {

@@ -8,12 +8,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import kotlinx.android.synthetic.main.widget_homework_card_content.*
+import kotlinx.android.synthetic.main.widget_news.*
 import org.joda.time.Days
 import org.joda.time.LocalDateTime
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.databinding.WidgetHomeworkBinding
 import org.schulcloud.mobile.models.homework.HomeworkRepository
+import org.schulcloud.mobile.utils.setForegroundForJellyBean
 import org.schulcloud.mobile.viewmodels.HomeworkWidgetViewModel
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
 
@@ -72,6 +73,8 @@ class HomeworkWidget : Widget() {
 
         more.setOnClickListener(Navigation.createNavigateOnClickListener(
                 R.id.action_dashboardFragment_to_homeworkListFragment))
+
+        materialCard.setForegroundForJellyBean(context!!)
     }
 
     override suspend fun refresh() {

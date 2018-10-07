@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="org.schulcloud.mobile.controllers.course.CourseAdapter.CourseViewHolder" />
+
         <variable
             name="course"
             type="org.schulcloud.mobile.models.course.Course" />
@@ -11,15 +13,52 @@
             type="kotlin.jvm.functions.Function1" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(course.id)}">
 
-        <include
-            layout="@layout/item_course_card_content"
-            bind:course="@{course}" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </androidx.cardview.widget.CardView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@{course.color}"
+                tools:background="@color/brand_primary" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="25dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@{course.name}"
+                tools:text="Course Title" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@{CourseViewHolder.teachersToShort(course.teachers)}"
+                tools:text="Course Teacher" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>

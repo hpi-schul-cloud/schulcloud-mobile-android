@@ -8,6 +8,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -23,6 +24,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -231,6 +233,14 @@ class FileFragment : MainFragment<FileViewModel>() {
 
             try {
                 if (download) {
+                    val notificationManager = ContextCompat.getSystemService(this@FileFragment.context!!, NotificationManager::class.java)
+                    var notification = NotificationCompat.Builder(this@FileFragment.context!!, NotificationUtils.channelId)
+                            .setContentTitle(this@FileFragment.resources.getString(R.string.file_fileDownload_progress))
+                            .setProgress(100,0,true)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setSmallIcon(R.mipmap.ic_launcher,0)
+                            .build()
+                    var notificationId = Random().nextInt(Int.MAX_VALUE)
                     val connectivityManager = this@FileFragment.context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                     var doDownload = true
 
@@ -259,15 +269,15 @@ class FileFragment : MainFragment<FileViewModel>() {
                                 .putString(DownloadFileWorker.KEY_FILEKEY, file.key)
                                 .build()
 
-                        var permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        if (permissionGranted == 0) {
-                            ActivityCompat.shouldShowRequestPermissionRationale(this@FileFragment.activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            permissionGranted = ContextCompat.checkSelfPermission(this@FileFragment.context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        var permissionGranted = checkSelfPermission(this@FileFragment.context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        if(permissionGranted != PackageManager.PERMISSION_GRANTED) {
+                            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            permissionGranted = checkSelfPermission(this@FileFragment.context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         }
-
-                        if (permissionGranted != 0) {
+                        if (permissionGranted == PackageManager.PERMISSION_GRANTED) {
                             var id: UUID? = null
                             try {
+                                notificationManager?.notify(notificationId,notification)
                                 id = WorkerService.downloadFile(response.url!!, file,this@FileFragment.context!!, inputData)
                             } catch (e: Exception) {
                                 Log.e(TAG, e.message!!)
@@ -275,6 +285,7 @@ class FileFragment : MainFragment<FileViewModel>() {
                             if (id != null) {
                                 WorkManager.getInstance().getStatusById(id).observe(this@FileFragment, Observer {
                                     val result = it.outputData.getInt("result", 1)
+                                    notificationManager?.cancel(notificationId)
                                     when (result) {
                                         DownloadFileWorker.SUCCESS -> this@FileFragment.context?.showGenericSuccess(R.string.file_fileDownload_success)
                                         DownloadFileWorker.ERROR_SAVE_TO_DISK -> this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)

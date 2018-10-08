@@ -5,8 +5,4 @@
 
     <solid android:color="@android:color/transparent" />
 
-    <corners
-        android:topLeftRadius="@dimen/brand_cornerRadius_big"
-        android:topRightRadius="@dimen/brand_cornerRadius_big" />
-
 </shape>

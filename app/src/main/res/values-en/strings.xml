@@ -135,4 +135,8 @@
     <string name="file_fileDownload_error_save">The file could not be saved</string>
     <string name="file_fileDownload_error_savePermissionDenied">The file cannot be saved without permission</string>
 
+    <!-- Material -->
+    <string name="material_error_empty">No materials were found</string>
+    <string name="material_provider">via %1$s</string>
+
 </resources>

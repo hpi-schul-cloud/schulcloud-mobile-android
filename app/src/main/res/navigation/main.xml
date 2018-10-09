@@ -123,4 +123,10 @@
         android:id="@+id/action_global_fragment_file"
         app:destination="@id/fragment_file" />
 
+    <!-- Material -->
+    <fragment
+        android:id="@+id/fragment_materialList"
+        android:name="org.schulcloud.mobile.controllers.material.MaterialListFragment"
+        tools:layout="@layout/fragment_material_list"/>
+
 </navigation>

@@ -140,4 +140,8 @@
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
 
+    <!-- Material -->
+    <string name="material_error_empty">Es wurden keine Lehrmaterialien gefunden</string>
+    <string name="material_provider">via %1$s</string>
+
 </resources>

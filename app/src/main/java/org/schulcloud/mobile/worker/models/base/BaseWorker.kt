@@ -1,23 +1,26 @@
 package org.schulcloud.mobile.worker.models.base
 
-import android.content.Context
-import androidx.core.util.Pair
-import androidx.work.Data
-import androidx.work.Worker
-import androidx.work.WorkerParameters
-import com.google.common.util.concurrent.ListenableFuture
-import org.schulcloud.mobile.worker.WorkerService
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
 import java.util.*
 
-abstract class BaseWorker(context: Context, params: WorkerParameters): Worker(context,params){
-    private var mUUID: UUID = UUID.randomUUID()
+open class BaseWorker<R,S>(parameter: R,action:(R) -> S, callback:(S) -> Void){
+    val mID = UUID.randomUUID()
+    protected var mAction = action
+    protected var mCallback = callback
+    protected var mActionDeferred: Deferred<Void>? = null
+    open var mParameter: R = parameter
+    var isExecuted: Boolean = false
 
-    override fun onStartWork(): ListenableFuture<Pair<Result, Data>> {
-        WorkerService.addWorker(WorkerService.WorkerInfo(mUUID,inputData))
-        return super.onStartWork()
+    fun execute(){
+        mActionDeferred = async {
+            val output = mAction(mParameter)
+            mCallback(output)
+        }
     }
 
-    override fun onStopped(cancelled: Boolean) {
-        WorkerService.workerFinished(mUUID)
+    open fun cancel(){
+        if(mActionDeferred != null)
+            mActionDeferred?.cancel(Throwable("This worker has benn canceled!"))
     }
 }

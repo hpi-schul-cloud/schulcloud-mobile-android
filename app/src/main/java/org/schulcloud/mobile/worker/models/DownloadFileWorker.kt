@@ -10,7 +10,7 @@ import org.schulcloud.mobile.utils.writeToDisk
 import org.schulcloud.mobile.worker.models.base.BaseWorker
 import ru.gildor.coroutines.retrofit.await
 
-class DownloadFileWorker(context: Context, params: WorkerParameters): BaseWorker(context,params) {
+/*class DownloadFileWorker(context: Context, params: WorkerParameters): BaseWorker(context,params) {
     companion object {
         val ERROR_DOWNLOAD = 2
         val ERROR_SAVE_TO_DISK = 1
@@ -42,4 +42,4 @@ class DownloadFileWorker(context: Context, params: WorkerParameters): BaseWorker
         outputData = output.putInt("result",0).build()
         return Result.SUCCESS
     }
-}
+}*/

@@ -9,14 +9,16 @@ import org.schulcloud.mobile.network.ApiService
 import retrofit2.Call
 import retrofit2.Response
 
-class DownloadFileWorker: FileService.BaseWorker(){
+class DownloadFileWorker(responseUrl: SignedUrlResponse): FileService.BaseWorker(){
+    private var mResponseUrl = responseUrl
+    val responseUrl: SignedUrlResponse
+        get() = mResponseUrl
 
-    override suspend fun execute(hashMap: HashMap<String,Any>): Response<ResponseBody>? {
-        val responseUrl: SignedUrlResponse = hashMap.get("responseUrl") as SignedUrlResponse
+    override suspend fun execute(): Response<ResponseBody>? {
         _status = JOB_WORKING
 
         try {
-            mCall = ApiService.getInstance().downloadFile(responseUrl.url!!)
+            mCall = ApiService.getInstance().downloadFile(mResponseUrl.url!!)
             var file: Response<ResponseBody>? = null
             async { file = mCall?.execute() }.await()
             _status = JOB_SUCCES

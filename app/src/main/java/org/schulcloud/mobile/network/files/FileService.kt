@@ -1,9 +1,7 @@
 package org.schulcloud.mobile.network.files
 
+import kotlinx.coroutines.experimental.Job
 import okhttp3.ResponseBody
-import org.jsoup.select.Evaluator
-import org.schulcloud.mobile.models.file.DirectoryResponse
-import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -12,25 +10,64 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.collections.HashMap
 
 object FileService {
-    private var counter = AtomicInteger()
-    private var workers: MutableList<BaseWorker> = mutableListOf()
+    private var counterDownload = AtomicInteger()
+    private var workersDownload: MutableList<DownloadFileWorker> = mutableListOf()
+    private var counterUpload = AtomicInteger()
+    private var workersUpload: MutableList<UploadFileWorker> = mutableListOf()
     val TAG = FileService::class.java.simpleName
-   // private var workers: MutableList<BaseWorker> = mutableListOf()
+   // private var workersDownload: MutableList<BaseWorker> = mutableListOf()
 
-    suspend fun downloadFile(responseUrl: SignedUrlResponse,callback: ){
-        var worker = DownloadFileWorker()
-        workers.plus(worker)
-        counter.incrementAndGet()
+    suspend fun downloadFile(responseUrl: SignedUrlResponse,callback: (responseBody: ResponseBody?) -> Unit){
+        if(isBeingDownloaded(responseUrl))
+            return
+
+        var worker = DownloadFileWorker(responseUrl)
+        workersDownload.plus(worker)
+        counterDownload.incrementAndGet()
 
         var arguments: HashMap<String, Any> = hashMapOf()
         arguments.plus(Pair<String,Any>("responseUrl",responseUrl))
 
-        var file = worker.execute(arguments)?.body()
-        callback.run()
+        var file = worker.execute()?.body()
+        removeWorker(worker.mUUID)
+        callback(file)
     }
 
     fun uploadFile(){
+        counterUpload.incrementAndGet()
+    }
 
+    fun isBeingDownloaded(responseUrl: SignedUrlResponse): Boolean{
+        workersDownload.forEach {
+            if(it.responseUrl.url == responseUrl.url)
+                return true
+        }
+        return false
+    }
+
+    fun removeWorker(uuid: UUID){
+        getWorkerPosition(uuid)
+
+    }
+
+    fun getWorkerPosition(uuid: UUID): Int?{
+        workersDownload.forEach {
+            if(it.mUUID == uuid)
+                return workersDownload.indexOf(it)
+        }
+        workersUpload.forEach {
+            if(it.mUUID == uuid)
+                return workersUpload.indexOf(it)
+        }
+        return null
+    }
+
+    fun getDownloadWorker(responseUrl: SignedUrlResponse): DownloadFileWorker?{
+        workersDownload.forEach {
+            if(it.responseUrl.url == responseUrl.url)
+                return it
+        }
+        return null
     }
 
     abstract class BaseWorker(){
@@ -50,11 +87,12 @@ object FileService {
         val isExecuting: Boolean
             get() = _executing
 
-        abstract suspend fun execute(hashMap: HashMap<String,Any>): Response<ResponseBody>?
+        abstract suspend fun execute(): Response<ResponseBody>?
 
-        protected fun cancel(){
+        protected open fun cancel(){
             if(mCall != null)
                 mCall?.cancel()
+            removeWorker(mUUID)
         }
     }
 }

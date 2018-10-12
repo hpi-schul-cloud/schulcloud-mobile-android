@@ -4,7 +4,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 
 class UploadFileWorker: FileService.BaseWorker() {
-    override suspend fun execute(hashMap: HashMap<String, Any>): Response<ResponseBody>? {
+    override suspend fun execute(): Response<ResponseBody>? {
         return null
     }
 }

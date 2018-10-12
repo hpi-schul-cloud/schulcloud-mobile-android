@@ -144,7 +144,7 @@
     <string name="file_create_directory">Ordner erstellen</string>
     <string name="file_directoryCreate_permission_error">Dir fehlt die Berechtigung einen Ordner zu erstellen</string>
     <string name="file_loadFile">Datei herunterladen</string>
-    <string name="file_big">Diese Datei ist größer als 500MB, willst du diese wirklich im Mobilfunktnetz runterladen?</string>
+    <string name="file_already_loading">Diese Datei lädst du schon herunter</string>
 
     <!-- Notifications -->
     <string name="notification_cloud">Schul-Cloud</string>

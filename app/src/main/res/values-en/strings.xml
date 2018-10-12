@@ -139,7 +139,7 @@
     <string name="file_create_directory">Create directory</string>
     <string name="file_directoryCreate_permission_error">You are missing permissions to create a directory</string>
     <string name="file_loadFile">Download file</string>
-    <string name="file_big">This file exceeds 500MB, do you really want to download this file on mobile data?</string>
+    <string name="file_already_loading">You are already downloading this file</string>
 
     <!-- Notifications -->
     <string name="notification_cloud">Schul-Cloud</string>

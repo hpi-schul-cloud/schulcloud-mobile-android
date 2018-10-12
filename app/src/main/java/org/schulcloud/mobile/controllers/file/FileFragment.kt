@@ -2,6 +2,7 @@ package org.schulcloud.mobile.controllers.file
 
 import android.Manifest
 import android.app.*
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -227,32 +229,42 @@ class FileFragment : MainFragment<FileViewModel>() {
                     }).await()
 
             if (download) {
+                if(FileService.isBeingDownloaded(response)) {
+                    this@FileFragment.context?.showGenericNeutral(resources.getString(R.string.file_already_loading))
+                    return@launch
+                }
+
                 if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
                     return@launch
                 }
 
                 val notificationId = Random().nextInt()
+
+                val cancelIntent = Intent(this@FileFragment.context,downloadBroadcastReceiver::class.java)
+                        .putExtra("notificationId",notificationId)
+
                 val notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(this@FileFragment.resources.getString(R.string.notification_cloud))
-                        .setContentText(this@FileFragment.resources.getString(R.string.notification_description))
+                        .setContentText(this@FileFragment.resources.getString(R.string.file_fileDownload_progress))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setDeleteIntent(PendingIntent.getBroadcast(this@FileFragment.context,0,cancelIntent,0))
                         .build()
+
+                val callback: (responseBody: ResponseBody?) -> Unit = {
+                    if (!it?.writeToDisk(file.name.orEmpty())!!) {
+                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
+                    }else{
+                        this@FileFragment.context?.showGenericSuccess(
+                                getString(R.string.file_fileDownload_success, file.name))
+                    }
+                    NotificationManagerCompat.from(this@FileFragment.context!!).cancel(notificationId)
+                }
 
                 NotificationManagerCompat.from(this@FileFragment.context!!).notify(notificationId,notification)
 
-               // FileService.downloadFile(response,)
-
-                this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
-                    if (!result.writeToDisk(file.name.orEmpty())) {
-                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                        return@withProgressDialog
-                    }
-                    this@FileFragment.context?.showGenericSuccess(
-                            getString(R.string.file_fileDownload_success, file.name))
-                }
+                FileService.downloadFile(response,callback)
             } else {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
                     setDataAndType(Uri.parse(response.url), response.header?.contentType)
@@ -310,6 +322,12 @@ class FileFragment : MainFragment<FileViewModel>() {
                         dismiss()
                     }
             return builder.create()
+        }
+    }
+
+    class downloadBroadcastReceiver: BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?){
+
         }
     }
 }

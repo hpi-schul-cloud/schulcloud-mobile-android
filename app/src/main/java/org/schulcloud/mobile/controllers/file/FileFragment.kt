@@ -250,6 +250,7 @@ class FileFragment : MainFragment<FileViewModel>() {
                         .setContentText(this@FileFragment.resources.getString(R.string.file_fileDownload_progress))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setDeleteIntent(PendingIntent.getBroadcast(this@FileFragment.context,0,cancelIntent,0))
+                        .setProgress(0,0,true)
                         .build()
 
                 val callback: (responseBody: ResponseBody?) -> Unit = {

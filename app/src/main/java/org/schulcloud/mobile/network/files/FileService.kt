@@ -11,25 +11,24 @@ import kotlin.collections.HashMap
 
 object FileService {
     private var counterDownload = AtomicInteger()
-    private var workersDownload: MutableList<DownloadFileWorker> = mutableListOf()
+    val workersDownload: MutableList<DownloadFileWorker> = mutableListOf()
     private var counterUpload = AtomicInteger()
-    private var workersUpload: MutableList<UploadFileWorker> = mutableListOf()
+    val workersUpload: MutableList<UploadFileWorker> = mutableListOf()
     val TAG = FileService::class.java.simpleName
-   // private var workersDownload: MutableList<BaseWorker> = mutableListOf()
 
     suspend fun downloadFile(responseUrl: SignedUrlResponse,callback: (responseBody: ResponseBody?) -> Unit){
         if(isBeingDownloaded(responseUrl))
             return
 
         var worker = DownloadFileWorker(responseUrl)
-        workersDownload.plus(worker)
+        workersDownload.add(worker)
         counterDownload.incrementAndGet()
 
         var arguments: HashMap<String, Any> = hashMapOf()
         arguments.plus(Pair<String,Any>("responseUrl",responseUrl))
 
         var file = worker.execute()?.body()
-        removeWorker(worker.mUUID)
+        workersDownload.remove(worker)
         callback(file)
     }
 
@@ -39,32 +38,16 @@ object FileService {
 
     fun isBeingDownloaded(responseUrl: SignedUrlResponse): Boolean{
         workersDownload.forEach {
-            if(it.responseUrl.url == responseUrl.url)
+            if(it.responseUrl.header?.metaPath + it.responseUrl.header?.metaName == responseUrl.header?.metaPath + responseUrl.header?.metaName)
                 return true
         }
         return false
     }
 
-    fun removeWorker(uuid: UUID){
-        getWorkerPosition(uuid)
 
-    }
-
-    fun getWorkerPosition(uuid: UUID): Int?{
+    fun getDownloadWorker(uuid: UUID): DownloadFileWorker?{
         workersDownload.forEach {
             if(it.mUUID == uuid)
-                return workersDownload.indexOf(it)
-        }
-        workersUpload.forEach {
-            if(it.mUUID == uuid)
-                return workersUpload.indexOf(it)
-        }
-        return null
-    }
-
-    fun getDownloadWorker(responseUrl: SignedUrlResponse): DownloadFileWorker?{
-        workersDownload.forEach {
-            if(it.responseUrl.url == responseUrl.url)
                 return it
         }
         return null
@@ -82,6 +65,7 @@ object FileService {
         protected var mCall: Call<ResponseBody>? = null
         protected var _status = JOB_NOT_STARTED
         protected var _executing = false
+        open val type = "base"
         val status: Int
             get() = _status
         val isExecuting: Boolean
@@ -92,7 +76,6 @@ object FileService {
         protected open fun cancel(){
             if(mCall != null)
                 mCall?.cancel()
-            removeWorker(mUUID)
         }
     }
 }

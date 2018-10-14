@@ -3,14 +3,13 @@ package org.schulcloud.mobile.network.files
 import android.util.Log
 import kotlinx.coroutines.experimental.async
 import okhttp3.ResponseBody
-import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.network.ApiService
-import retrofit2.Call
 import retrofit2.Response
 
 class DownloadFileWorker(responseUrl: SignedUrlResponse): FileService.BaseWorker(){
     private var mResponseUrl = responseUrl
+    override val type = "download"
     val responseUrl: SignedUrlResponse
         get() = mResponseUrl
 
@@ -28,5 +27,10 @@ class DownloadFileWorker(responseUrl: SignedUrlResponse): FileService.BaseWorker
             Log.i(FileService.TAG,e.message!!)
         }
         return null
+    }
+
+    override fun cancel() {
+        super.cancel()
+        FileService.workersDownload.remove(this)
     }
 }

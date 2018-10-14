@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.network
 
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.schulcloud.mobile.models.AccessToken
 import org.schulcloud.mobile.models.Credentials
@@ -71,5 +72,12 @@ interface ApiServiceInterface {
     @POST("fileStorage/directories")
     fun createDirectory(@Body directory: Directory): Call<ResponseBody>
     @POST("files")
-    fun uploadFile(): Call<ResponseBody>
+    fun uploadFile(@Url fileUrl: String,
+                   @Header("content-type") contentType: String,
+                   @Header("x-amz-meta-path") metaPath: String,
+                   @Header("x-amz-meta-name") metaName: String,
+                   @Header("x-amz-meta-flat-name") metaFlatName: String,
+                   @Header("x-amz-meta-thumbnail") metaThumbnail: String,
+                   @Body file: RequestBody
+                   ):Call<ResponseBody>
 }

@@ -125,8 +125,8 @@
 
     <!-- Material -->
     <fragment
-        android:id="@+id/fragment_materialList"
-        android:name="org.schulcloud.mobile.controllers.material.MaterialListFragment"
-        tools:layout="@layout/fragment_material_list"/>
+        android:id="@+id/fragment_learnstore"
+        android:name="org.schulcloud.mobile.controllers.learnstore.LearnstoreFragment"
+        tools:layout="@layout/fragment_learnstore"/>
 
 </navigation>

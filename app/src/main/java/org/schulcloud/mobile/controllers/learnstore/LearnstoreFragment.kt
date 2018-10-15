@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.material
+package org.schulcloud.mobile.controllers.learnstore
 
 
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_material_list.*
+import kotlinx.android.synthetic.main.fragment_learnstore.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
@@ -20,10 +20,10 @@ import org.schulcloud.mobile.models.material.MaterialRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.MaterialListViewModel
 
-class MaterialListFragment : MainFragment<MaterialListViewModel>() {
+class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
 
     companion object {
-        val TAG: String = MaterialListFragment::class.java.simpleName
+        val TAG: String = LearnstoreFragment::class.java.simpleName
     }
 
     private val materialAdapter: MaterialListAdapter by lazy {
@@ -46,7 +46,7 @@ class MaterialListFragment : MainFragment<MaterialListViewModel>() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_material_list, container, false)
+        return inflater.inflate(R.layout.fragment_learnstore, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

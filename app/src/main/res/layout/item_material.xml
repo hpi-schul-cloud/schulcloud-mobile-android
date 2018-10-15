@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewHolder"
-            type="org.schulcloud.mobile.controllers.material.MaterialListAdapter.MaterialViewHolder" />
+            type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
 
         <variable
             name="material"

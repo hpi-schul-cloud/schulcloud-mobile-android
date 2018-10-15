@@ -19,5 +19,5 @@ open class Material : RealmObject(), HasId {
     var createdAt: String? = null
     var updatedAt: String? = null
 
-    var tags: List<String>? = null
+    //var tags: List<String>? = null
 }

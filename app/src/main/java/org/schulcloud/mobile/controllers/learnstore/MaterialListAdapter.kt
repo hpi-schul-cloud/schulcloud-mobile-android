@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.controllers.material
+package org.schulcloud.mobile.controllers.learnstore
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

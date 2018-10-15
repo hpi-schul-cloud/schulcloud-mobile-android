@@ -1,6 +1,8 @@
 package org.schulcloud.mobile.network.files
 
-import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.async
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import retrofit2.Call
@@ -32,8 +34,25 @@ object FileService {
         callback(file)
     }
 
-    fun uploadFile(){
+    suspend fun uploadFile(file: java.io.File,responseUrl: SignedUrlResponse, callback: (success: Boolean) -> Unit){
+
+        val requestBody: RequestBody = RequestBody.create(MediaType.parse("file/*"),file)
+        val worker = UploadFileWorker(responseUrl,requestBody)
+        var response: Response<ResponseBody>? = null
+
         counterUpload.incrementAndGet()
+        workersUpload.add(worker)
+
+        async { response = worker.execute() }.await()
+
+        counterUpload.decrementAndGet()
+        workersUpload.remove(worker)
+
+        if(response!!.isSuccessful)
+            callback(true)
+        else
+            callback(false)
+
     }
 
     fun isBeingDownloaded(responseUrl: SignedUrlResponse): Boolean{
@@ -57,7 +76,7 @@ object FileService {
         companion object {
             val JOB_NOT_STARTED = 0
             val JOB_WORKING = 1
-            val JOB_SUCCES = 2
+            val JOB_SUCCESS = 2
             val JOB_ERROR = 3
         }
 

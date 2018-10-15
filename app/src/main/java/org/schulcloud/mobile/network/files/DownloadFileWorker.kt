@@ -20,7 +20,7 @@ class DownloadFileWorker(responseUrl: SignedUrlResponse): FileService.BaseWorker
             mCall = ApiService.getInstance().downloadFile(mResponseUrl.url!!)
             var file: Response<ResponseBody>? = null
             async { file = mCall?.execute() }.await()
-            _status = JOB_SUCCES
+            _status = JOB_SUCCESS
             return file
         }catch (e: Exception){
             _status = JOB_ERROR

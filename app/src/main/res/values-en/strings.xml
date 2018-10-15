@@ -10,7 +10,7 @@
     <string name="general_date_today">Today</string>
     <string name="general_date_tomorrow">Tomorrow</string>
     <string name="general_error_notFound">Not found</string>
-    <string name="oops_something_went_wrong">Oops something went wrong! Try again later</string>
+    <string name="oops_something_went_wrong">Something went wrong! Try again later</string>
 
     <!-- Share -->
     <string name="share_subject_format">%1$s: %2$s</string>
@@ -139,7 +139,9 @@
     <string name="file_create_directory">Create directory</string>
     <string name="file_directoryCreate_permission_error">You are missing permissions to create a directory</string>
     <string name="file_loadFile">Download file</string>
-    <string name="file_already_loading">You are already downloading this file</string>
+    <string name="file_already_downloading">You are already downloading this file</string>
+    <string name="file_is_uploading">File is being uploaded</string>
+    <string name="file_already_uploading">You are already uploading this file</string>
 
     <!-- Notifications -->
     <string name="notification_cloud">Schul-Cloud</string>

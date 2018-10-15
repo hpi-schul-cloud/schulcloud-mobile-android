@@ -10,7 +10,7 @@
     <string name="general_date_today">Heute</string>
     <string name="general_date_tomorrow">Morgen</string>
     <string name="general_error_notFound">Nicht gefunden</string>
-    <string name="oops_something_went_wrong">Ups! Irgendetwas ist schiefgelaufen. Versuche es später noch einmal</string>
+    <string name="oops_something_went_wrong">Irgendetwas ist schiefgelaufen. Versuche es später noch einmal</string>
 
     <!-- Share -->
     <string name="share_subject_format">%1$s: %2$s</string>
@@ -144,7 +144,9 @@
     <string name="file_create_directory">Ordner erstellen</string>
     <string name="file_directoryCreate_permission_error">Dir fehlt die Berechtigung einen Ordner zu erstellen</string>
     <string name="file_loadFile">Datei herunterladen</string>
-    <string name="file_already_loading">Diese Datei lädst du schon herunter</string>
+    <string name="file_already_downloading">Diese Datei lädst du schon herunter</string>
+    <string name="file_is_uploading">Datei wird hochgeladen</string>
+    <string name="file_already_uplading">Diese Datei lädst du schon hoch</string>
 
     <!-- Notifications -->
     <string name="notification_cloud">Schul-Cloud</string>

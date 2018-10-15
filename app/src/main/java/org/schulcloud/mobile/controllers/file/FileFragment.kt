@@ -4,33 +4,26 @@ import android.Manifest
 import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
-import android.net.ConnectivityManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Looper
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.work.Data
-import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.dialog_add_directory.view.*
 import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.coroutines.experimental.android.UI
@@ -44,10 +37,7 @@ import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
-import org.schulcloud.mobile.models.file.Directory
-import org.schulcloud.mobile.models.file.File
-import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.models.file.*
 import org.schulcloud.mobile.models.user.User
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.network.files.FileService
@@ -221,6 +211,22 @@ class FileFragment : MainFragment<FileViewModel>() {
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(UI) {
         try {
+            val notificationId = Random().nextInt()
+
+            val cancelIntent = Intent(this@FileFragment.context,downloadBroadcastReceiver::class.java)
+                    .putExtra("notificationId",notificationId)
+
+            val notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle(this@FileFragment.resources.getString(R.string.notification_cloud))
+                    .setContentText(this@FileFragment.resources.getString(R.string.file_fileDownload_progress))
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setDeleteIntent(PendingIntent.getBroadcast(this@FileFragment.context,0,cancelIntent,0))
+                    .setProgress(0,0,true)
+                    .build()
+
+            NotificationManagerCompat.from(this@FileFragment.context!!).notify(notificationId,notification)
+
             val response = ApiService.getInstance().generateSignedUrl(
                     SignedUrlRequest().apply {
                         action = SignedUrlRequest.ACTION_GET
@@ -230,7 +236,7 @@ class FileFragment : MainFragment<FileViewModel>() {
 
             if (download) {
                 if(FileService.isBeingDownloaded(response)) {
-                    this@FileFragment.context?.showGenericNeutral(resources.getString(R.string.file_already_loading))
+                    this@FileFragment.context?.showGenericNeutral(resources.getString(R.string.file_already_downloading))
                     return@launch
                 }
 
@@ -239,19 +245,6 @@ class FileFragment : MainFragment<FileViewModel>() {
                     return@launch
                 }
 
-                val notificationId = Random().nextInt()
-
-                val cancelIntent = Intent(this@FileFragment.context,downloadBroadcastReceiver::class.java)
-                        .putExtra("notificationId",notificationId)
-
-                val notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(this@FileFragment.resources.getString(R.string.notification_cloud))
-                        .setContentText(this@FileFragment.resources.getString(R.string.file_fileDownload_progress))
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setDeleteIntent(PendingIntent.getBroadcast(this@FileFragment.context,0,cancelIntent,0))
-                        .setProgress(0,0,true)
-                        .build()
 
                 val callback: (responseBody: ResponseBody?) -> Unit = {
                     if (!it?.writeToDisk(file.name.orEmpty())!!) {
@@ -262,8 +255,6 @@ class FileFragment : MainFragment<FileViewModel>() {
                     }
                     NotificationManagerCompat.from(this@FileFragment.context!!).cancel(notificationId)
                 }
-
-                NotificationManagerCompat.from(this@FileFragment.context!!).notify(notificationId,notification)
 
                 FileService.downloadFile(response,callback)
             } else {
@@ -282,6 +273,52 @@ class FileFragment : MainFragment<FileViewModel>() {
             when (e.code()) {
                 404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
             }
+        }
+    }
+
+    private fun uploadFile(filepath: String) = launch(UI){
+        if(Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED){
+            this@FileFragment.context?.showGenericError(resources.getString(R.string.oops_something_went_wrong))
+            return@launch
+        }
+
+        val notificationId = Random().nextInt()
+
+        val cancelIntent = Intent(this@FileFragment.context,downloadBroadcastReceiver::class.java)
+                .putExtra("notificationId",notificationId)
+
+        val notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(this@FileFragment.resources.getString(R.string.notification_cloud))
+                .setContentText(this@FileFragment.resources.getString(R.string.file_is_uploading))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setDeleteIntent(PendingIntent.getBroadcast(this@FileFragment.context,0,cancelIntent,0))
+                .setProgress(0,0,true)
+                .build()
+
+        NotificationManagerCompat.from(this@FileFragment.context!!).notify(notificationId,notification)
+
+        var file = java.io.File(filepath)
+        var responseUrl: SignedUrlResponse? = null
+        val callback: (success: Boolean) -> Unit = {
+            if(it) {
+                this@FileFragment.directoryAdapter.notifyDataSetChanged()
+                this@FileFragment.fileAdapter.notifyDataSetChanged()
+            }
+            NotificationManagerCompat.from(this@FileFragment.context!!).cancel(notificationId)
+        }
+
+        try{
+            responseUrl = ApiService.getInstance().generateSignedUrl(SignedUrlRequest().apply {
+                action = SignedUrlRequest.ACTION_GET
+                path = file.path
+                fileType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
+            }).await()
+
+            FileService.uploadFile(file,responseUrl,callback)
+        }catch(e: Exception){
+            Log.i(TAG,e.message)
+            return@launch
         }
     }
 

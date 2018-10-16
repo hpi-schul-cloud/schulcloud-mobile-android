@@ -22,12 +22,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--TODO: display thumbnail image-->
-            <TextView
+            <ImageView
+                android:id="@+id/thumbnailView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{material.thumbnail}"
-                tools:text="thumbnail link"/>
+                app:fromUrl="@{material.thumbnail}"/>
 
             <org.schulcloud.mobile.views.CompatTextView
                 style="@style/Content_Header.WithLink"

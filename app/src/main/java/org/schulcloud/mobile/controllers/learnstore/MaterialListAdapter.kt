@@ -20,9 +20,15 @@ class MaterialListAdapter
     }
 
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {
+        companion object {
+            @JvmStatic
+            fun tagListToString(tagList: List<String>?): String? {
+                return tagList?.joinToString(", ")
+            }
+        }
+
         override fun onItemSet() {
             binding.material = item
-            binding.viewHolder = this
         }
     }
 }

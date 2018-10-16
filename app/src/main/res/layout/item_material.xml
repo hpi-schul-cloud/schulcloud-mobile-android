@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable
-            name="viewHolder"
-            type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
+        <import type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
 
         <variable
             name="material"
@@ -50,6 +48,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:text="@{MaterialViewHolder.tagListToString(material.tags)}"
                 tools:text="Tag1, Tag 2"/>
 
             <org.schulcloud.mobile.views.ContentTextView

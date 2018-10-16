@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.models.material
 
 import com.google.gson.annotations.SerializedName
+import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.schulcloud.mobile.models.base.HasId
@@ -19,5 +20,5 @@ open class Material : RealmObject(), HasId {
     var createdAt: String? = null
     var updatedAt: String? = null
 
-    //var tags: List<String>? = null
+    var tags: RealmList<String>? = null
 }

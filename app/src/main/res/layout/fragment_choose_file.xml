@@ -1,6 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</LinearLayout>
+    <data>
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.ChooseFileViewmodel"/>
+    </data>
+
+    <org.schulcloud.mobile.views.ContentView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+                android:id="@+id/back"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <org.schulcloud.mobile.controllers.file.BreadcrumbsView
+            android:layout_width="match_parent"
+            android:id="@+id/breadcrumbs"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/directoriesHeader"
+                    style="@style/Material.ListHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/file_directories" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/directories_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="vertical"
+                    tools:listitem="@layout/item_directory" />
+
+                <TextView
+                    android:id="@+id/filesHeader"
+                    style="@style/Material.ListHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/file_files" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/files_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/material_button_fab_spacer"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:scrollbars="vertical"
+                    tools:listitem="@layout/item_file" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </org.schulcloud.mobile.views.ContentView>
+
+</layout>

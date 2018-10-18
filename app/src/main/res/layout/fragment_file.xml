@@ -11,7 +11,9 @@
 
     <org.schulcloud.mobile.views.ContentView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/main"
+        app:defaultNavHost="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/toolbarWrapper"
@@ -119,7 +121,7 @@
                     tools:listitem="@layout/item_directory" />
 
                 <TextView
-                    android:id="@+id/filesHeader"
+                        android:id="@+id/filesHeader"
                     style="@style/Material.ListHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -147,6 +147,7 @@
     <string name="file_already_downloading">Diese Datei lädst du schon herunter</string>
     <string name="file_is_uploading">Datei wird hochgeladen</string>
     <string name="file_already_uplading">Diese Datei lädst du schon hoch</string>
+    <string name="upload_file">Datei hochladen</string>
 
     <!-- Notifications -->
     <string name="notification_cloud">Schul-Cloud</string>

@@ -333,6 +333,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     fun openSelectFileDialog(){
+
     }
 
     class addDirectoryDialog(private val path: String, val refresh: Runnable): DialogFragment(){

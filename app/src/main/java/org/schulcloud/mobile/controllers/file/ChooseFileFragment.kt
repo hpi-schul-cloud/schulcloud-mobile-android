@@ -5,23 +5,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_choose_file.*
-import okhttp3.MediaType
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.controllers.base.BaseFragment
+import org.schulcloud.mobile.controllers.main.MainFragment
+import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.file.Directory
 import org.schulcloud.mobile.models.file.File
+import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.ChooseFileViewmodel
 
-class ChooseFileFragment: BaseFragment() {
+class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
+
+    override suspend fun refresh() {}
+
+    override fun provideConfig(): LiveData<MainFragmentConfig> = MainFragmentConfig(
+            title = resources.getString(R.string.upload_file),
+            subtitle = mViewModel.path,
+            toolbarColor = resources.getColor(R.color.brand_hpiRed)
+    ).asLiveData()
+
     private val directoryAdapter by lazy {
-        DirectoryAdapter{}
+        DirectoryAdapter{
+            navController.navigate(R.layout.fragment_choose_file)
+        }
     }
 
     private val fileAdapter by lazy {
-        FileAdapter(,)
+        FileAdapter({returnFilePath(it.path!!)},{select(it.path!!)})
+    }
+
+    private val args: FileFragmentArgs by lazy{
+        FileFragmentArgs.fromBundle(arguments)
     }
 
     private lateinit var mViewModel: ChooseFileViewmodel
@@ -36,13 +52,14 @@ class ChooseFileFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         back.setOnClickListener({l -> returnFilePath("")})
+        val path = savedInstanceState!!.get("path") as String
+        updatePath(path)
         super.onViewCreated(view, savedInstanceState)
     }
 
     fun updatePath(path: String){
         val file = java.io.File(path)
 
-        var contents: Array<String> = arrayOf()
         var files: MutableList<File> = mutableListOf()
         var directories: MutableList<Directory> = mutableListOf()
 
@@ -67,6 +84,7 @@ class ChooseFileFragment: BaseFragment() {
 
         mViewModel.directories = directories
         mViewModel.files = files
+        mViewModel.path = path
         fileAdapter.update(mViewModel.files)
         directoryAdapter.update(mViewModel.directories)
     }

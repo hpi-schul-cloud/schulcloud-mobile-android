@@ -118,6 +118,9 @@
         <argument
             android:name="path"
             app:argType="string" />
+        <action
+            android:id="@+id/action_global_fragment_choose_file"
+            app:destination="@id/fragment_choose_file"/>
     </fragment>
     <action
         android:id="@+id/action_global_fragment_file"

@@ -6,8 +6,12 @@ import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.utils.materialDao
 
 object MaterialRepository {
-    fun materialList(realm: Realm): LiveData<List<Material>> {
-        return realm.materialDao().listMaterials()
+    fun currentMaterialList(realm: Realm): LiveData<List<Material>> {
+        return realm.materialDao().listCurrentMaterials()
+    }
+
+    fun popularMaterialList(realm: Realm): LiveData<List<Material>> {
+        return realm.materialDao().listPopularMaterials()
     }
 
     suspend fun syncMaterials() {

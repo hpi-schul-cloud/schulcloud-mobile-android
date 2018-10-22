@@ -1,29 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <org.schulcloud.mobile.views.ContentView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@android:id/empty"
-            style="@style/Content_Text.Empty"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/material_error_empty" />
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            tools:listitem="@layout/item_material" />
+            <!-- TODO: set better style for this text-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/material_current" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@android:id/empty"
+                style="@style/Content_Text.Empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/material_error_empty" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCurrent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_material" />
+
+            <!-- TODO: set better style for this text-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/material_popular" />
+
+            <!-- TODO: add empty indicator or modify visibility of title-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPopular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_material" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </org.schulcloud.mobile.views.ContentView>

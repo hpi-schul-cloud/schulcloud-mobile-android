@@ -10,15 +10,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_learnstore.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.main.FragmentType
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
-
+import org.schulcloud.mobile.models.material.Material
 import org.schulcloud.mobile.models.material.MaterialRepository
 import org.schulcloud.mobile.utils.asLiveData
 import org.schulcloud.mobile.viewmodels.MaterialListViewModel
+import org.schulcloud.mobile.views.ItemOffsetDecoration
 
 class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
 
@@ -26,7 +28,11 @@ class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
         val TAG: String = LearnstoreFragment::class.java.simpleName
     }
 
-    private val materialAdapter: MaterialListAdapter by lazy {
+    private val currentMaterialAdapter: MaterialListAdapter by lazy {
+        MaterialListAdapter()
+    }
+
+    private val popularMaterialAdapter: MaterialListAdapter by lazy {
         MaterialListAdapter()
     }
 
@@ -52,19 +58,23 @@ class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        materialAdapter.emptyIndicator = empty
-        viewModel.materials.observe(this, Observer {
-            materialAdapter.update(it ?: emptyList())
-        })
-
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = materialAdapter
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        }
+        setUpRecyclerView(recyclerViewCurrent, currentMaterialAdapter, viewModel.currentMaterials)
+        setUpRecyclerView(recyclerViewPopular, popularMaterialAdapter, viewModel.popularMaterials)
     }
 
     override suspend fun refresh() {
         MaterialRepository.syncMaterials()
+    }
+
+    private fun setUpRecyclerView(recyclerView: RecyclerView, adapter: MaterialListAdapter, materials: LiveData<List<Material>>) {
+        adapter.emptyIndicator = empty
+        materials.observe(this, Observer {
+            adapter.update(it ?: emptyList())
+        })
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            this.adapter = adapter
+            addItemDecoration(ItemOffsetDecoration(context, R.dimen.grid_spacing))
+        }
     }
 }

@@ -58,15 +58,15 @@ class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpRecyclerView(recyclerViewCurrent, currentMaterialAdapter, viewModel.currentMaterials)
-        setUpRecyclerView(recyclerViewPopular, popularMaterialAdapter, viewModel.popularMaterials)
+        setUpRecyclerView(recyclerViewCurrent, currentMaterialAdapter, viewModel.currentMaterials, currentEmpty)
+        setUpRecyclerView(recyclerViewPopular, popularMaterialAdapter, viewModel.popularMaterials, popularEmpty)
     }
 
     override suspend fun refresh() {
         MaterialRepository.syncMaterials()
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, adapter: MaterialListAdapter, materials: LiveData<List<Material>>) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, adapter: MaterialListAdapter, materials: LiveData<List<Material>>, empty: View) {
         adapter.emptyIndicator = empty
         materials.observe(this, Observer {
             adapter.update(it ?: emptyList())

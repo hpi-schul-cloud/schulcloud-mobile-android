@@ -16,14 +16,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- TODO: set better style for this text-->
             <TextView
+                style="@style/Learnstore_Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/material_current" />
 
             <TextView
-                android:id="@android:id/empty"
+                android:id="@+id/currentEmpty"
                 style="@style/Content_Text.Empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,13 +37,18 @@
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_material" />
 
-            <!-- TODO: set better style for this text-->
             <TextView
+                style="@style/Learnstore_Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/material_popular" />
 
-            <!-- TODO: add empty indicator or modify visibility of title-->
+            <TextView
+                android:id="@+id/popularEmpty"
+                style="@style/Content_Text.Empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/material_error_empty" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPopular"

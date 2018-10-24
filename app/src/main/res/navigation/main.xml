@@ -120,10 +120,20 @@
             app:argType="string" />
         <action
             android:id="@+id/action_global_fragment_choose_file"
-            app:destination="@id/fragment_choose_file"/>
+            app:destination="@id/fragment_choose_file"
+            app:popUpTo="@id/main"
+            app:popUpToInclusive="true"/>
     </fragment>
     <action
         android:id="@+id/action_global_fragment_file"
         app:destination="@id/fragment_file" />
+    <fragment
+        android:id="@+id/fragment_choose_file"
+        android:name="org.schulcloud.mobile.controllers.file.chooseFile.ChooseFileFragment"
+        tools:layout="@layout/fragment_choose_file">
+        <argument
+            android:name="localPath"
+            app:argType="string"/>
+    </fragment>
 
 </navigation>

@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_add_directory.view.*
@@ -32,6 +34,7 @@ import kotlinx.coroutines.experimental.launch
 import okhttp3.ResponseBody
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
+import org.schulcloud.mobile.controllers.file.chooseFile.ChooseFileFragment
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.databinding.FragmentFileBinding
@@ -333,7 +336,8 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     fun openSelectFileDialog(){
-
+            val directions = FileFragmentDirections.actionGlobalFragmentChooseFile("/storage")
+        navController.navigate(directions)
     }
 
     class addDirectoryDialog(private val path: String, val refresh: Runnable): DialogFragment(){

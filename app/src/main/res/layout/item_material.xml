@@ -42,7 +42,6 @@
                 android:textColor="@color/brand_primary"
                 tools:text="Material title" />
 
-            <!--TODO: display tags as chip-->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,6 +50,14 @@
                 android:layout_marginEnd="16dp"
                 android:text="@{MaterialViewHolder.tagListToString(material.tags)}"
                 tools:text="Tag1, Tag 2"/>
+
+            <!--TODO: dynamic height-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTags"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/item_tag"/>
 
             <!-- TODO: remove this text view-->
             <TextView

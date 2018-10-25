@@ -8,21 +8,27 @@ import org.schulcloud.mobile.utils.map
 
 class MaterialDao(private val realm: Realm) {
 
-    fun listCurrentMaterials(): LiveData<List<Material>>{
+    fun listCurrentMaterials(): LiveData<List<Material>> {
         return realm.where(Material::class.java)
                 .sort("updatedAt", Sort.DESCENDING)
                 .allAsLiveData()
-                .map {
-                    materialList -> materialList.take(3)
+                .map { materialList ->
+                    if (materialList.size > 3)
+                        materialList.take(3)
+                    else
+                        materialList
                 }
     }
 
-    fun listPopularMaterials(): LiveData<List<Material>>{
+    fun listPopularMaterials(): LiveData<List<Material>> {
         return realm.where(Material::class.java)
                 .sort("clickCount", Sort.DESCENDING)
                 .allAsLiveData()
-                .map {
-                    materialList -> materialList.take(3)
+                .map { materialList ->
+                    if (materialList.size > 3)
+                        materialList.take(3)
+                    else
+                        materialList
                 }
     }
 }

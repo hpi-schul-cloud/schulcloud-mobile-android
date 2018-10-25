@@ -8,4 +8,5 @@ class ChooseFileViewmodel: ViewModel() {
     var path: String = "/storage/self/primary/"
     var directories: List<Directory> = listOf()
     var files: List<File> = listOf()
+    val normalLength = path.length
 }

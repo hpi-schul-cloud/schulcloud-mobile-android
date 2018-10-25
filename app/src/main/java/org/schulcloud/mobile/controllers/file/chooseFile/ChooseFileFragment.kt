@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.controllers.file.chooseFile
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,8 +37,8 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
     private val directoryAdapter by lazy {
         DirectoryAdapter {
-            navController.navigate(R.layout.fragment_choose_file)
-        }
+            updatePath(mViewModel.path + it + "/")
+      }
     }
 
     private val fileAdapter by lazy {
@@ -56,8 +57,17 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val dataBindingView = DataBindingUtil.inflate<ViewDataBinding>(inflater,R.layout.fragment_choose_file,container,false)
+        val dataBindingView = DataBindingUtil.inflate<ViewDataBinding>(inflater,R.layout.fragment_choose_file,container?.parent as ViewGroup?,false)
         val view = dataBindingView.root
+        view.setOnKeyListener(object: View.OnKeyListener{
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
+                if(keyCode == KeyEvent.KEYCODE_BACK) {
+                    val prevPathLength = mViewModel.path.substring(0,mViewModel.path.length - mViewModel.path.split("/")[mViewModel.path.split("/").lastIndex - 1].length
+                    return true
+                }
+                return false
+            }
+        })
         return view
     }
 
@@ -73,6 +83,7 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
             adapter = fileAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
         updatePath(mViewModel.path)
     }
 
@@ -88,11 +99,13 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
         file.list().forEach {
             if(it.contains(".") && it.indexOf('.') != 0){
-                val name = it.split(".")[0]
+                val name = it
                 val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.split(".")[1])
                 val scloudFile = File()
+                val file = java.io.File(path + it + "/")
                 scloudFile.name = name
                 scloudFile.type = type
+                scloudFile.size = file.length()
                 files.add(scloudFile)
             }else{
                 if(it.indexOf('.') != 0){
@@ -107,7 +120,7 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
         mViewModel.directories = directories
         mViewModel.files = files
         mViewModel.path = path
-        mainActivity.supportActionBar?.subtitle = mViewModel.path
+        mainActivity.supportActionBar?.subtitle = mViewModel.path.substring(mViewModel.normalLength)
         fileAdapter.update(mViewModel.files)
         directoryAdapter.update(mViewModel.directories)
     }

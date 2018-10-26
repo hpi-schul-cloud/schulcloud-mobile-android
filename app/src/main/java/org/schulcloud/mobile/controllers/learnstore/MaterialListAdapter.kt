@@ -14,9 +14,7 @@ import org.schulcloud.mobile.views.NestableFlexboxLayoutManager
 class MaterialListAdapter
     : BaseAdapter<Material, MaterialListAdapter.MaterialViewHolder, ItemMaterialBinding>() {
 
-    private val tagAdapter: TagAdapter by lazy {
-        TagAdapter()
-    }
+    private val tagAdapter: TagAdapter = TagAdapter()
 
     fun update(materials: List<Material>) {
         items = materials
@@ -24,6 +22,7 @@ class MaterialListAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
         val binding = ItemMaterialBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        tagAdapter.update(binding.material?.tags ?: emptyList())
         binding.recyclerViewTags.apply {
             layoutManager = NestableFlexboxLayoutManager(this.context).apply {
                 flexWrap = FlexWrap.WRAP
@@ -33,10 +32,6 @@ class MaterialListAdapter
             adapter = tagAdapter
         }
         return MaterialViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MaterialViewHolder, position: Int) {
-
     }
 
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {
@@ -52,3 +47,4 @@ class MaterialListAdapter
         }
     }
 }
+

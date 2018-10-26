@@ -13,10 +13,7 @@ class MaterialDao(private val realm: Realm) {
                 .sort("updatedAt", Sort.DESCENDING)
                 .allAsLiveData()
                 .map { materialList ->
-                    if (materialList.size > 3)
-                        materialList.take(3)
-                    else
-                        materialList
+                    materialList.take(3)
                 }
     }
 
@@ -25,10 +22,8 @@ class MaterialDao(private val realm: Realm) {
                 .sort("clickCount", Sort.DESCENDING)
                 .allAsLiveData()
                 .map { materialList ->
-                    if (materialList.size > 3)
-                        materialList.take(3)
-                    else
-                        materialList
+                    materialList.take(3)
                 }
     }
 }
+

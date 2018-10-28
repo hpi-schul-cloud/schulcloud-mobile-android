@@ -22,8 +22,13 @@ class MaterialListAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
         val binding = ItemMaterialBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        tagAdapter.update(binding.material?.tags ?: emptyList())
-        binding.recyclerViewTags.apply {
+        return MaterialViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: MaterialListAdapter.MaterialViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+        tagAdapter.update(holder.item.tags ?: emptyList())
+        holder.binding.recyclerViewTags.apply {
             layoutManager = NestableFlexboxLayoutManager(this.context).apply {
                 flexWrap = FlexWrap.WRAP
                 flexDirection = FlexDirection.ROW
@@ -31,7 +36,6 @@ class MaterialListAdapter
             }
             adapter = tagAdapter
         }
-        return MaterialViewHolder(binding)
     }
 
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {

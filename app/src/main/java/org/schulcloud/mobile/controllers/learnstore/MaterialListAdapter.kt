@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemMaterialBinding
@@ -13,8 +14,6 @@ import org.schulcloud.mobile.views.NestableFlexboxLayoutManager
 
 class MaterialListAdapter
     : BaseAdapter<Material, MaterialListAdapter.MaterialViewHolder, ItemMaterialBinding>() {
-
-    private val tagAdapter: TagAdapter = TagAdapter()
 
     fun update(materials: List<Material>) {
         items = materials
@@ -27,18 +26,21 @@ class MaterialListAdapter
 
     override fun onBindViewHolder(holder: MaterialListAdapter.MaterialViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
-        tagAdapter.update(holder.item.tags ?: emptyList())
+        holder.tagAdapter.update(holder.item.tags ?: emptyList())
         holder.binding.recyclerViewTags.apply {
-            layoutManager = NestableFlexboxLayoutManager(this.context).apply {
+            layoutManager = FlexboxLayoutManager(this.context).apply {
                 flexWrap = FlexWrap.WRAP
                 flexDirection = FlexDirection.ROW
                 alignItems = AlignItems.STRETCH
             }
-            adapter = tagAdapter
+            adapter = holder.tagAdapter
         }
     }
 
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {
+        val tagAdapter: TagAdapter by lazy {
+            TagAdapter()
+        }
         companion object {
             @JvmStatic
             fun tagListToString(tagList: List<String>?): String? {

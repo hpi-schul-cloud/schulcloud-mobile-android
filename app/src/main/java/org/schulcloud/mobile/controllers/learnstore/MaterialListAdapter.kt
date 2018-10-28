@@ -10,7 +10,6 @@ import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemMaterialBinding
 import org.schulcloud.mobile.models.material.Material
-import org.schulcloud.mobile.views.NestableFlexboxLayoutManager
 
 class MaterialListAdapter
     : BaseAdapter<Material, MaterialListAdapter.MaterialViewHolder, ItemMaterialBinding>() {

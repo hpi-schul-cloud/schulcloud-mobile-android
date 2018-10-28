@@ -111,6 +111,11 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
     abstract suspend fun refresh()
 
     open fun onFabClicked() {}
+
+    override fun onDetach() {
+        super.onDetach()
+        mainActivity.onBackAction = null
+    }
 }
 
 data class MainFragmentConfig(

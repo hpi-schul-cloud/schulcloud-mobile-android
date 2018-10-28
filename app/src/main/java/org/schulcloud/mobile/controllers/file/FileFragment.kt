@@ -336,7 +336,9 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     fun openSelectFileDialog(){
-        navController.navigate(R.id.action_global_fragment_choose_file,Bundle())
+        val args = Bundle()
+        args.putString("path","/storage/self/primary/")
+        navController.navigate(R.id.action_global_fragment_choose_file,args)
     }
 
     class addDirectoryDialog(private val path: String, val refresh: Runnable): DialogFragment(){

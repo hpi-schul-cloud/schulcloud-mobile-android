@@ -27,7 +27,9 @@ import org.schulcloud.mobile.viewmodels.ChooseFileViewmodel
 
 class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
-    override suspend fun refresh() {}
+    override suspend fun refresh() {
+        updatePath(mViewModel.path)
+    }
 
     override fun provideConfig(): LiveData<MainFragmentConfig> = MainFragmentConfig(
             title = resources.getString(R.string.upload_file),
@@ -53,26 +55,28 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mViewModel = ViewModelProviders.of(this).get(ChooseFileViewmodel::class.java)
+        val path = savedInstanceState?.getString("path")
+        //mViewModel.path = path!!
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val dataBindingView = DataBindingUtil.inflate<ViewDataBinding>(inflater,R.layout.fragment_choose_file,container?.parent as ViewGroup?,false)
         val view = dataBindingView.root
-        view.setOnKeyListener(object: View.OnKeyListener{
-            override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
-                if(keyCode == KeyEvent.KEYCODE_BACK) {
-                    val prevPathLength = mViewModel.path.substring(0,mViewModel.path.length - mViewModel.path.split("/")[mViewModel.path.split("/").lastIndex - 1].length
-                    return true
-                }
-                return false
-            }
-        })
+        mainActivity.setSupportActionBar(view.findViewById(R.id.toolbar))
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainActivity.onBackAction = {
+            if(mViewModel.path != resources.getString(R.string.base_path_storage)) {
+                val prevPathLength = mViewModel.path.length - mViewModel.path.split("/")[mViewModel.path.split("/").lastIndex - 1].length - 1
+                val prevPath = mViewModel.path.substring(0, prevPathLength)
+
+                updatePath(prevPath)
+            }
+        }
         chooseDirectory_recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = directoryAdapter
@@ -97,24 +101,29 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
             return
         }
 
-        file.list().forEach {
-            if(it.contains(".") && it.indexOf('.') != 0){
-                val name = it
-                val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.split(".")[1])
-                val scloudFile = File()
-                val file = java.io.File(path + it + "/")
-                scloudFile.name = name
-                scloudFile.type = type
-                scloudFile.size = file.length()
-                files.add(scloudFile)
-            }else{
-                if(it.indexOf('.') != 0){
-                    val scloudDirectory = Directory()
-                    scloudDirectory.name = it
-                    scloudDirectory.path = file.path + '/' + it
-                    directories.add(scloudDirectory)
+        if(file.list() != null) {
+            empty_directory.visibility=View.GONE
+            file.list().forEach {
+                if (it.contains(".") && it.indexOf('.') != 0) {
+                    val name = it
+                    val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.split(".")[1])
+                    val scloudFile = File()
+                    val file = java.io.File(path + it + "/")
+                    scloudFile.name = name
+                    scloudFile.type = type
+                    scloudFile.size = file.length()
+                    files.add(scloudFile)
+                } else {
+                    if (it.indexOf('.') != 0) {
+                        val scloudDirectory = Directory()
+                        scloudDirectory.name = it
+                        scloudDirectory.path = file.path + '/' + it
+                        directories.add(scloudDirectory)
+                    }
                 }
             }
+        }else{
+            empty_directory.visibility=View.VISIBLE
         }
 
         mViewModel.directories = directories

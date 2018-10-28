@@ -52,7 +52,7 @@ class MainActivity : BaseActivity() {
     private var toolbar: Toolbar? = null
     private var toolbarWrapper: ViewGroup? = null
     private var optionsMenu: Menu? = null
-
+    var onBackAction: (() -> Unit)? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!UserRepository.isAuthorized) {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -159,8 +159,12 @@ class MainActivity : BaseActivity() {
     override fun onSupportNavigateUp() = navController.navigateUp()
 
     override fun onBackPressed() {
-        if (!navController.popBackStack())
-            super.onBackPressed()
+        if(onBackAction == null) {
+            if (!navController.popBackStack())
+                super.onBackPressed()
+        }else{
+            onBackAction?.invoke()
+        }
     }
 
     override fun openOptionsMenu() {

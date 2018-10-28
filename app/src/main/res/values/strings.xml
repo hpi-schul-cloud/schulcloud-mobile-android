@@ -148,8 +148,9 @@
     <string name="file_is_uploading">Datei wird hochgeladen</string>
     <string name="file_already_uplading">Diese Datei lädst du schon hoch</string>
     <string name="upload_file">Datei hochladen</string>
+    <string name="base_path_storage" translatable="false">/storage/self/primary/</string>
 
     <!-- Notifications -->
     <string name="notification_cloud">Schul-Cloud</string>
-    <string name="notification_description">Benachrichtigungen von der Schul-Cloud apo</string>
+    <string name="notification_description">Benachrichtigungen von der Schul-Cloud app</string>
 </resources>

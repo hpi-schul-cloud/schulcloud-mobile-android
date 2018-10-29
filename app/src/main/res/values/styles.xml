@@ -74,13 +74,16 @@
     <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
     <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
 
-    <style name="Learnstore_Header" parent="TextAppearance.AppCompat.Headline">
+    <style name="Learnstore.Header" parent="TextAppearance.AppCompat.Headline">
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/brand_primary</item>
+    </style>
+    <style name="Learnstore.Tag_Text" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Custom Views -->

@@ -41,7 +41,7 @@ class MaterialListAdapter
             TagAdapter()
         }
         companion object {
-            @JvmStatic
+            @JvmStatic // TODO: remove this function
             fun tagListToString(tagList: List<String>?): String? {
                 return tagList?.joinToString(", ")
             }

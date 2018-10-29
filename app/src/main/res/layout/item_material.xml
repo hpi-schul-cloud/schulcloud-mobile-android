@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <import type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
 
         <variable
@@ -28,53 +30,57 @@
                 android:id="@+id/thumbnailView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:fromUrl="@{material.thumbnail}"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:fromUrl="@{material.thumbnail}" />
 
             <org.schulcloud.mobile.views.CompatTextView
                 style="@style/Content_Header.WithLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:background="@null"
                 android:text="@{material.title}"
                 android:textColor="@color/brand_primary"
                 tools:text="Material title" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="@{MaterialViewHolder.tagListToString(material.tags)}"
-                tools:text="Tag1, Tag 2"/>
+            <!-- TODO: remove this text view-->
+            <!-- <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="16dp"
+               android:layout_marginTop="8dp"
+               android:layout_marginEnd="16dp"
+               android:text="@{MaterialViewHolder.tagListToString(material.tags)}"
+               tools:text="Tag1, Tag 2"/> -->
 
             <!--TODO: dynamic height-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_tag"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                tools:listitem="@layout/item_tag" />
 
             <!-- TODO: remove this text view-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="@{material.updatedAt}"/>
+            <!-- <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginTop="8dp"
+                 android:layout_marginEnd="16dp"
+                 android:text="@{material.updatedAt}"/> -->
             <!-- TODO: remove this text view-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="@{material.clickCount.toString()}"/>
+            <!-- <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="16dp"
+                 android:layout_marginTop="8dp"
+                 android:layout_marginEnd="16dp"
+                 android:text="@{material.clickCount.toString()}"/> -->
 
             <org.schulcloud.mobile.views.ContentTextView
                 android:layout_width="match_parent"
@@ -83,7 +89,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:text="@{material.description}"
-                tools:text="description"/>
+                tools:text="description" />
 
             <TextView
                 android:layout_width="match_parent"

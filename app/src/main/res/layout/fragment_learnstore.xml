@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/Learnstore_Header"
+                style="@style/Learnstore.Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/material_current" />
@@ -38,7 +38,7 @@
                 tools:listitem="@layout/item_material" />
 
             <TextView
-                style="@style/Learnstore_Header"
+                style="@style/Learnstore.Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/material_popular" />

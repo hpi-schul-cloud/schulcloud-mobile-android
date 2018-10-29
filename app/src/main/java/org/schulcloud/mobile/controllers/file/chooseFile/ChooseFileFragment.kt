@@ -1,11 +1,13 @@
 package org.schulcloud.mobile.controllers.file.chooseFile
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_choose_file.*
 import kotlinx.android.synthetic.main.fragment_file.*
+import kotlinx.android.synthetic.main.item_file_upload.view.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.file.DirectoryAdapter
 import org.schulcloud.mobile.controllers.file.FileAdapter
@@ -44,7 +47,8 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
     }
 
     private val fileAdapter by lazy {
-        FileAdapter({ returnFilePath(it.path!!) }, { select(it.path!!) })
+        FileAdapter({ returnFilePath(it.path!!) },
+                { select(it) })
     }
 
     private val args: FileFragmentArgs by lazy{
@@ -63,7 +67,6 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val dataBindingView = DataBindingUtil.inflate<ViewDataBinding>(inflater,R.layout.fragment_choose_file,container?.parent as ViewGroup?,false)
         val view = dataBindingView.root
-        mainActivity.setSupportActionBar(view.findViewById(R.id.toolbar))
         return view
     }
 
@@ -134,8 +137,8 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
         directoryAdapter.update(mViewModel.directories)
     }
 
-    fun select(path: String){
-        val file = java.io.File(path)
+    fun select(file: File){
+        val file = java.io.File(file.path)
 
         if(!file.exists())
             return
@@ -143,7 +146,13 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
         if(file.isDirectory){
             updatePath(file.path)
         }else{
-            //highlight the file?
+            for(i in 0 until fileAdapter.itemCount){
+                if(fileAdapter.viewHolders.get(i).binding.name.text == file.name){
+                    fileAdapter.viewHolders.get(i).binding.root.setBackgroundColor(resources.getColor(R.color.brand_hpiYellow))
+                }else{
+                    fileAdapter.recyclerView?.get(i)?.setBackgroundColor(Color.parseColor("#ffffff"))
+                }
+            }
         }
     }
 

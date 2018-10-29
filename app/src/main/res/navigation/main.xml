@@ -121,7 +121,8 @@
     </fragment>
     <action
         android:id="@+id/action_global_fragment_choose_file"
-        app:destination="@id/fragment_choose_file"/>
+        app:destination="@id/fragment_choose_file"
+        app:launchSingleTop="true"/>
     <action
         android:id="@+id/action_global_fragment_file"
         app:destination="@id/fragment_file" />

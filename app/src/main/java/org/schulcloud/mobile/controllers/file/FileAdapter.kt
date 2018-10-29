@@ -1,5 +1,6 @@
 package org.schulcloud.mobile.controllers.file
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -20,11 +21,15 @@ class FileAdapter(
         items = fileList
     }
 
+    val viewHolders: MutableList<FileViewHolder> = mutableListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileViewHolder {
         val binding = ItemFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.onSelected = onSelected
         binding.onDownload = onDownload
-        return FileViewHolder(binding)
+        val viewHolder = FileViewHolder(binding)
+        viewHolders.add(viewHolder)
+        return viewHolder
     }
 
     class FileViewHolder(binding: ItemFileBinding) : BaseViewHolder<File, ItemFileBinding>(binding) {

@@ -1,12 +1,18 @@
 package org.schulcloud.mobile.controllers.file.chooseFile
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -17,16 +23,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_choose_file.*
 import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.android.synthetic.main.item_file_upload.view.*
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.file.DirectoryAdapter
 import org.schulcloud.mobile.controllers.file.FileAdapter
+import org.schulcloud.mobile.controllers.file.FileFragment
 import org.schulcloud.mobile.controllers.file.FileFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.file.Directory
 import org.schulcloud.mobile.models.file.File
+import org.schulcloud.mobile.models.file.SignedUrlRequest
+import org.schulcloud.mobile.models.file.SignedUrlResponse
+import org.schulcloud.mobile.network.ApiService
+import org.schulcloud.mobile.network.files.FileService
+import org.schulcloud.mobile.utils.NotificationUtils
 import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.showGenericError
 import org.schulcloud.mobile.viewmodels.ChooseFileViewmodel
+import ru.gildor.coroutines.retrofit.await
+import java.util.*
 
 class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
@@ -47,20 +64,18 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
     }
 
     private val fileAdapter by lazy {
-        FileAdapter({ returnFilePath(it.path!!) },
-                { select(it) })
+        FileAdapter({ select(it)}, {returnToFiles(it.path!!,it.name!!)})
     }
 
-    private val args: FileFragmentArgs by lazy{
-        FileFragmentArgs.fromBundle(arguments)
+    private val args: ChooseFileFragmentArgs by lazy{
+        ChooseFileFragmentArgs.fromBundle(arguments)
     }
 
     private lateinit var mViewModel: ChooseFileViewmodel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mViewModel = ViewModelProviders.of(this).get(ChooseFileViewmodel::class.java)
-        val path = savedInstanceState?.getString("path")
-        //mViewModel.path = path!!
+        mViewModel.path = args.localPath
         super.onCreate(savedInstanceState)
     }
 
@@ -72,6 +87,9 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        layout_main.setOnClickListener {
+            colorFile(java.io.File(""))
+        }
         mainActivity.onBackAction = {
             if(mViewModel.path != resources.getString(R.string.base_path_storage)) {
                 val prevPathLength = mViewModel.path.length - mViewModel.path.split("/")[mViewModel.path.split("/").lastIndex - 1].length - 1
@@ -115,6 +133,7 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
                     scloudFile.name = name
                     scloudFile.type = type
                     scloudFile.size = file.length()
+                    scloudFile.path = file.path
                     files.add(scloudFile)
                 } else {
                     if (it.indexOf('.') != 0) {
@@ -137,8 +156,8 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
         directoryAdapter.update(mViewModel.directories)
     }
 
-    fun select(file: File){
-        val file = java.io.File(file.path)
+    fun select(scloudfile: File){
+        val file = java.io.File(scloudfile.path)
 
         if(!file.exists())
             return
@@ -146,18 +165,68 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
         if(file.isDirectory){
             updatePath(file.path)
         }else{
-            for(i in 0 until fileAdapter.itemCount){
-                if(fileAdapter.viewHolders.get(i).binding.name.text == file.name){
-                    fileAdapter.viewHolders.get(i).binding.root.setBackgroundColor(resources.getColor(R.color.brand_hpiYellow))
-                }else{
-                    fileAdapter.recyclerView?.get(i)?.setBackgroundColor(Color.parseColor("#ffffff"))
-                }
+            colorFile(file)
+        }
+    }
+
+    fun colorFile(file: java.io.File){
+        for(i in 0 until fileAdapter.itemCount){
+            if(fileAdapter.viewHolders.get(i).binding.name.text == file.name){
+                fileAdapter.viewHolders.get(i).binding.root.setBackgroundColor(resources.getColor(R.color.brand_hpiYellow))
+            }else{
+                fileAdapter.recyclerView?.get(i)?.setBackgroundColor(Color.parseColor("#ffffff"))
             }
         }
     }
 
-    fun returnFilePath(path: String){
-
+    private fun returnToFiles(filePath: String,fileName: String){
+        uploadFile(filePath,args.path + fileName)
+        navController.popBackStack()
     }
 
+    private fun uploadFile(filepath: String,userPath: String) = launch(UI){
+        if(Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED){
+            this@ChooseFileFragment.context?.showGenericError(resources.getString(R.string.oops_something_went_wrong))
+            return@launch
+        }
+
+        val notificationId = Random().nextInt()
+
+        val cancelIntent = Intent(this@ChooseFileFragment.context, FileFragment.downloadBroadcastReceiver::class.java)
+                .putExtra("notificationId",notificationId)
+
+        val notification = NotificationCompat.Builder(this@ChooseFileFragment.context!!, NotificationUtils.channelId)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(this@ChooseFileFragment.resources.getString(R.string.notification_cloud))
+                .setContentText(this@ChooseFileFragment.resources.getString(R.string.file_is_uploading))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setDeleteIntent(PendingIntent.getBroadcast(this@ChooseFileFragment.context,0,cancelIntent,0))
+                .setProgress(0,0,true)
+                .build()
+
+        NotificationManagerCompat.from(this@ChooseFileFragment.context!!).notify(notificationId,notification)
+
+        var file = java.io.File(filepath)
+        var responseUrl: SignedUrlResponse? = null
+        val callback: (success: Boolean) -> Unit = {
+            if(it) {
+                this@ChooseFileFragment.directoryAdapter.notifyDataSetChanged()
+                this@ChooseFileFragment.fileAdapter.notifyDataSetChanged()
+            }
+            NotificationManagerCompat.from(this@ChooseFileFragment.context!!).cancel(notificationId)
+        }
+
+        try{
+            responseUrl = ApiService.getInstance().generateSignedUrl(SignedUrlRequest().apply {
+                action = SignedUrlRequest.ACTION_PUT
+                path = userPath
+                fileType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
+            }).await()
+
+            FileService.uploadFile(file,responseUrl,callback)
+        }catch(e: Exception){
+            Log.i(FileFragment.TAG,e.message)
+            return@launch
+        }
+    }
 }

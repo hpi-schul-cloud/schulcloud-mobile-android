@@ -132,10 +132,10 @@
         tools:layout="@layout/fragment_choose_file">
         <argument
             android:name="localPath"
+            app:argType="string" />
+        <argument
+            android:name="path"
             app:argType="string"/>
-        <action
-            android:id="@+id/action_back_to_files"
-            app:destination="@id/fragment_file"/>
     </fragment>
 
 </navigation>

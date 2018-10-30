@@ -279,52 +279,6 @@ class FileFragment : MainFragment<FileViewModel>() {
         }
     }
 
-    private fun uploadFile(filepath: String) = launch(UI){
-        if(Environment.getExternalStorageState() != Environment.MEDIA_MOUNTED){
-            this@FileFragment.context?.showGenericError(resources.getString(R.string.oops_something_went_wrong))
-            return@launch
-        }
-
-        val notificationId = Random().nextInt()
-
-        val cancelIntent = Intent(this@FileFragment.context,downloadBroadcastReceiver::class.java)
-                .putExtra("notificationId",notificationId)
-
-        val notification = NotificationCompat.Builder(this@FileFragment.context!!,NotificationUtils.channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(this@FileFragment.resources.getString(R.string.notification_cloud))
-                .setContentText(this@FileFragment.resources.getString(R.string.file_is_uploading))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setDeleteIntent(PendingIntent.getBroadcast(this@FileFragment.context,0,cancelIntent,0))
-                .setProgress(0,0,true)
-                .build()
-
-        NotificationManagerCompat.from(this@FileFragment.context!!).notify(notificationId,notification)
-
-        var file = java.io.File(filepath)
-        var responseUrl: SignedUrlResponse? = null
-        val callback: (success: Boolean) -> Unit = {
-            if(it) {
-                this@FileFragment.directoryAdapter.notifyDataSetChanged()
-                this@FileFragment.fileAdapter.notifyDataSetChanged()
-            }
-            NotificationManagerCompat.from(this@FileFragment.context!!).cancel(notificationId)
-        }
-
-        try{
-            responseUrl = ApiService.getInstance().generateSignedUrl(SignedUrlRequest().apply {
-                action = SignedUrlRequest.ACTION_GET
-                path = file.path
-                fileType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(file.extension)
-            }).await()
-
-            FileService.uploadFile(file,responseUrl,callback)
-        }catch(e: Exception){
-            Log.i(TAG,e.message)
-            return@launch
-        }
-    }
-
     fun openDirectoryDialog(){
         viewModel.user.observe(this, Observer {
             if(!it?.hasPermission(User.PERMISSION_FOLDER_CREATE)!!){
@@ -337,7 +291,8 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     fun openSelectFileDialog(){
         val args = Bundle()
-        args.putString("path","/storage/self/primary/")
+        args.putString("localPath","/storage/self/primary/")
+        args.putString("path",viewModel.path)
         navController.navigate(R.id.action_global_fragment_choose_file,args)
     }
 

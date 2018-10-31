@@ -71,8 +71,8 @@ interface ApiServiceInterface {
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
     @POST("fileStorage/directories")
     fun createDirectory(@Body directory: Directory): Call<ResponseBody>
-    @POST("files")
-    fun uploadFile(@Url fileUrl: String,
+    @POST("fileStorage/files/new")
+    fun uploadFile(@Query("path") path: String,
                    @Header("content-type") contentType: String,
                    @Header("x-amz-meta-path") metaPath: String,
                    @Header("x-amz-meta-name") metaName: String,

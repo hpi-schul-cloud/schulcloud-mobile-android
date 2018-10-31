@@ -43,12 +43,12 @@ object FileService {
         counterUpload.incrementAndGet()
         workersUpload.add(worker)
 
-        async { response = worker.execute() }.await()
+        response = worker.execute()
 
         counterUpload.decrementAndGet()
         workersUpload.remove(worker)
 
-        if(response!!.isSuccessful)
+        if(response != null || response!!.isSuccessful)
             callback(true)
         else
             callback(false)

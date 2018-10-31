@@ -16,7 +16,7 @@ class UploadFileWorker(responseUrl: SignedUrlResponse, requestBody: RequestBody)
     override suspend fun execute(): Response<ResponseBody>? {
         _status = JOB_WORKING
         mCall = ApiService.getInstance().uploadFile(
-                mResponseUrl.url!!,
+                mResponseUrl.header?.metaPath + "/" + mResponseUrl.header?.metaName,
                 mResponseUrl.header?.contentType!!,
                 mResponseUrl.header?.metaPath!!,
                 mResponseUrl.header?.metaName!!,
@@ -24,17 +24,17 @@ class UploadFileWorker(responseUrl: SignedUrlResponse, requestBody: RequestBody)
                 mResponseUrl.header?.metaThumbnail!!,
                 mRequestBody
         )
-        var response: Response<ResponseBody>?
+        var response: Response<ResponseBody>? = null
 
         try {
-            async { response = mCall?.execute() }.await()
+            async {response = mCall?.execute()}.await()
             _status = JOB_SUCCESS
         }catch(e: Exception){
             _status = JOB_ERROR
             Log.i(FileService.TAG,"Error while uploading file")
         }
 
-        return null
+        return response
     }
 
     override fun cancel(){

@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_choose_file.*
 import kotlinx.android.synthetic.main.fragment_file.*
 import kotlinx.android.synthetic.main.item_file_upload.view.*
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.file.DirectoryAdapter
@@ -46,6 +47,10 @@ import ru.gildor.coroutines.retrofit.await
 import java.util.*
 
 class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
+
+    companion object {
+        val TAG = ChooseFileFragment::class.java.simpleName
+    }
 
     override suspend fun refresh() {
         updatePath(mViewModel.path)
@@ -204,7 +209,9 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
                 .setProgress(0,0,true)
                 .build()
 
-        NotificationManagerCompat.from(this@ChooseFileFragment.context!!).notify(notificationId,notification)
+        val notificationManager = NotificationManagerCompat.from(this@ChooseFileFragment.context!!)
+
+        notificationManager.notify(notificationId,notification)
 
         var file = java.io.File(filepath)
         var responseUrl: SignedUrlResponse? = null
@@ -213,7 +220,7 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
                 this@ChooseFileFragment.directoryAdapter.notifyDataSetChanged()
                 this@ChooseFileFragment.fileAdapter.notifyDataSetChanged()
             }
-            NotificationManagerCompat.from(this@ChooseFileFragment.context!!).cancel(notificationId)
+            notificationManager.cancel(notificationId)
         }
 
         try{
@@ -225,7 +232,7 @@ class ChooseFileFragment: MainFragment<ChooseFileViewmodel>() {
 
             FileService.uploadFile(file,responseUrl,callback)
         }catch(e: Exception){
-            Log.i(FileFragment.TAG,e.message)
+            Log.i(TAG,e.message.toString())
             return@launch
         }
     }

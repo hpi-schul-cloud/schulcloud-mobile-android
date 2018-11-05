@@ -2,6 +2,8 @@ package org.schulcloud.mobile.models.material
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.utils.materialDao
 
@@ -15,6 +17,8 @@ object MaterialRepository {
     }
 
     suspend fun syncMaterials() {
-        RequestJob.Data.with({listMaterials()}).run()
+        RequestJob.Data.with({listPopularMaterials()}).run()
+        val currentDate = LocalDate.now().toString(DateTimeFormat.forPattern("yyyy-MM-dd"))
+        RequestJob.Data.with({listCurrentMaterials(currentDate)}, {alwaysFalse()}).run()
     }
 }

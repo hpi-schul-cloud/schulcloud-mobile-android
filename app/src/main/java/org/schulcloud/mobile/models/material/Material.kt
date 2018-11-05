@@ -16,9 +16,9 @@ open class Material : RealmObject(), HasId {
     var title: String? = null
     var description: String? = null
     var thumbnail: String? = null
+    var featuredUntil: String? = null
     var clickCount: Int? = null
     var createdAt: String? = null
-    var updatedAt: String? = null
 
     var tags: RealmList<String>? = null
 }

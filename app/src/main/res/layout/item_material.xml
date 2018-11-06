@@ -4,13 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
+    <data> <!--TODO: remove import-->
         <import type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
 
         <variable
             name="material"
             type="org.schulcloud.mobile.models.material.Material" />
+        <variable
+            name="viewHolder"
+            type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -20,6 +22,7 @@
         android:layout_marginLeft="@dimen/material_card_marginVertical"
         android:layout_marginRight="@dimen/material_card_marginVertical"
         android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> viewHolder.openExternal()}"
         app:cardUseCompatPadding="true">
 
         <LinearLayout

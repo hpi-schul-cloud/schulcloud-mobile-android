@@ -6,10 +6,14 @@ import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemMaterialBinding
 import org.schulcloud.mobile.models.material.Material
+import org.schulcloud.mobile.utils.openUrl
+import org.schulcloud.mobile.utils.resolveRedirect
 
 class MaterialListAdapter
     : BaseAdapter<Material, MaterialListAdapter.MaterialViewHolder, ItemMaterialBinding>() {
@@ -49,6 +53,13 @@ class MaterialListAdapter
 
         override fun onItemSet() {
             binding.material = item
+            binding.viewHolder = this
+        }
+
+        fun openExternal() {
+            async(UI) {
+                resolveRedirect(item.url!!)?.also { this@MaterialViewHolder.context.openUrl(it) }
+            }
         }
     }
 }

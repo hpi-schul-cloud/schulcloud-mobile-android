@@ -17,8 +17,8 @@ object MaterialRepository {
     }
 
     suspend fun syncMaterials() {
-        RequestJob.Data.with({listPopularMaterials()}).run()
         val currentDate = LocalDate.now().toString(DateTimeFormat.forPattern("yyyy-MM-dd"))
-        RequestJob.Data.with({listCurrentMaterials(currentDate)}, {alwaysFalse()}).run()
+        RequestJob.Data.with({listCurrentMaterials(currentDate)}).run()
+        RequestJob.Data.with({listPopularMaterials()}, {alwaysFalse()}).run()
     }
 }

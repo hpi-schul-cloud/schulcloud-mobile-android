@@ -57,8 +57,8 @@ class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setUpRecyclerView(recyclerViewCurrent, currentMaterialAdapter, viewModel.currentMaterials, currentEmpty)
         setUpRecyclerView(recyclerViewPopular, popularMaterialAdapter, viewModel.popularMaterials, popularEmpty)
+        setUpRecyclerView(recyclerViewCurrent, currentMaterialAdapter, viewModel.currentMaterials, currentEmpty)
     }
 
     override suspend fun refresh() {

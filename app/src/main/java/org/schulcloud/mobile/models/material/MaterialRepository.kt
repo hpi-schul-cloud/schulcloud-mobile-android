@@ -17,8 +17,18 @@ object MaterialRepository {
     }
 
     suspend fun syncMaterials() {
-        val currentDate = LocalDate.now().toString(DateTimeFormat.forPattern("yyyy-MM-dd"))
-        RequestJob.Data.with({listCurrentMaterials(currentDate)}).run()
-        RequestJob.Data.with({listPopularMaterials()}, {alwaysFalse()}).run()
+        val currentDate = LocalDate.now()
+        val dateString = currentDate.toString(DateTimeFormat.forPattern("yyyy-MM-dd"))
+        RequestJob.Data.with({ listCurrentMaterials(dateString) }, {
+            greaterThanOrEqualTo("featuredUntil", currentDate.toDate())
+        }).run()
+
+        RequestJob.Data.with({ listPopularMaterials() }, {
+            beginGroup()
+                    .isNull("featuredUntil")
+                    .or()
+                    .lessThan("featuredUntil", currentDate.toDate())
+                    .endGroup()
+        }).run()
     }
 }

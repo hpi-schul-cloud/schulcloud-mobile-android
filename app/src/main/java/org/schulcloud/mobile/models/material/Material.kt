@@ -5,6 +5,7 @@ import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import org.schulcloud.mobile.models.base.HasId
+import java.util.*
 
 open class Material : RealmObject(), HasId {
     @PrimaryKey
@@ -16,7 +17,7 @@ open class Material : RealmObject(), HasId {
     var title: String? = null
     var description: String? = null
     var thumbnail: String? = null
-    var featuredUntil: String? = null
+    var featuredUntil: Date? = null
     var clickCount: Int? = null
     var createdAt: String? = null
 

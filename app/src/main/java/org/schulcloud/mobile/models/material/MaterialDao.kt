@@ -11,14 +11,11 @@ import org.schulcloud.mobile.utils.map
 class MaterialDao(private val realm: Realm) {
 
     fun listCurrentMaterials(): LiveData<List<Material>> {
-        val currentDate = LocalDate.now().toString(DateTimeFormat.forPattern("yyyy-MM-dd"))
+        val currentDate = LocalDate.now().toDate()
         return realm.where(Material::class.java)
+                .greaterThanOrEqualTo("featuredUntil", currentDate)
                 .sort("title", Sort.ASCENDING)
                 .allAsLiveData()
-                .map { materialList ->
-                    materialList.filter { it.featuredUntil?.compareTo(currentDate) ?: -1 >= 0 }
-                            .toList()
-                }
     }
 
     fun listPopularMaterials(): LiveData<List<Material>> {

@@ -30,7 +30,15 @@ abstract class RequestJob(protected val callback: RequestJobCallback?, private v
                 onRun()
             } catch (e: Throwable) {
                 Log.w(TAG, "Error running job", e)
-                callback?.error(RequestJobCallback.ErrorCode.ERROR)
+                var i: String? = e.message
+
+                if(e.message=="connect timed out") {
+
+                    callback?.error(RequestJobCallback.ErrorCode.TIMEOUT)
+                }else{
+                    callback?.error(RequestJobCallback.ErrorCode.ERROR)
+                }
+
             }
         }
     }

@@ -7,7 +7,7 @@ import java.util.*
 abstract class RequestJobCallback {
 
     enum class ErrorCode {
-        ERROR, CANCEL, NO_NETWORK, NO_AUTH, MAINTENANCE, API_VERSION_EXPIRED
+        ERROR, CANCEL, NO_NETWORK, NO_AUTH, MAINTENANCE, API_VERSION_EXPIRED, TIMEOUT
     }
 
     protected abstract fun onSuccess()

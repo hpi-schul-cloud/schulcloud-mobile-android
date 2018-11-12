@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseFragment
 import org.schulcloud.mobile.controllers.main.MainActivity
+import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.viewmodels.LoginViewModel
 
 class LoginFragment: BaseFragment() {
@@ -60,19 +61,32 @@ class LoginFragment: BaseFragment() {
                 is LoginViewModel.LoginStatus.Pending -> {
                     Log.d(TAG, "PENDING LOGIN")
                     login_progress.visibility = View.VISIBLE
+                    error_text.visibility = View.GONE
                 }
                 is LoginViewModel.LoginStatus.LoggedIn -> {
                     Log.d(TAG, "LOGGED IN")
                     startMainActivity()
+                    error_text.visibility = View.GONE
                 }
                 is LoginViewModel.LoginStatus.InvalidInputs -> {
                     Log.d(TAG, "INVALID FIELDS")
                     login_progress.visibility = View.GONE
                     handleInvalidFields(loginState.invalidInputs)
+                    error_text.visibility = View.GONE
                 }
                 is LoginViewModel.LoginStatus.Error -> {
                     Log.d(TAG, "ERROR: " + loginState.error)
                     login_progress.visibility = View.GONE
+                    error_text.visibility = View.VISIBLE
+                    if(loginState.error == RequestJobCallback.ErrorCode.TIMEOUT.toString()){
+                        error_text.text = getString(R.string.login_error_server)
+                    }else if(loginState.error == RequestJobCallback.ErrorCode.ERROR.toString())
+                    {
+                        error_text.text = getString(R.string.login_error_passwordWrong)
+                    }else if(loginState.error == RequestJobCallback.ErrorCode.NO_NETWORK.toString()){
+                        error_text.text = getString(R.string.login_error_noConnection)
+                    }
+
                 }
             }
         })

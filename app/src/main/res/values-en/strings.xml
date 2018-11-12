@@ -23,6 +23,9 @@
     <string name="login_login">Login</string>
     <string name="login_error_emailInvalid">The E-mail address is invalid</string>
     <string name="login_error_passwordEmpty">Please enter your password!</string>
+    <string name="login_error_server">Cannot connect to the server</string>
+    <string name="login_error_passwordWrong">The Password is incorrect</string>
+    <string name="login_error_noConnection">No connection</string>
 
     <string name="login_demo">Don\'t have an account yet? Try it out!</string>
     <string name="login_demo_student">Login as student</string>

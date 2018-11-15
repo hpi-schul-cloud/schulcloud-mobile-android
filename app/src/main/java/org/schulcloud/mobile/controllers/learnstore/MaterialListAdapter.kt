@@ -30,13 +30,6 @@ class MaterialListAdapter
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {
         private val tagAdapter: TagAdapter
 
-        companion object {
-            @JvmStatic // TODO: remove this function
-            fun tagListToString(tagList: List<String>?): String? {
-                return tagList?.joinToString(", ")
-            }
-        }
-
         init {
             tagAdapter = TagAdapter()
             binding.recyclerViewTags.apply {

@@ -5,8 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data> <!--TODO: remove import-->
-        <import type="org.schulcloud.mobile.controllers.learnstore.MaterialListAdapter.MaterialViewHolder" />
-
         <variable
             name="material"
             type="org.schulcloud.mobile.models.material.Material" />

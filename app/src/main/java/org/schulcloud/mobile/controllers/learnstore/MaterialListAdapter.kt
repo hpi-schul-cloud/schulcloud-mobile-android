@@ -27,23 +27,9 @@ class MaterialListAdapter
         return MaterialViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MaterialListAdapter.MaterialViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-        holder.tagAdapter.update(holder.item.tags ?: emptyList())
-        holder.binding.recyclerViewTags.apply {
-            layoutManager = FlexboxLayoutManager(this.context).apply {
-                flexWrap = FlexWrap.WRAP
-                flexDirection = FlexDirection.ROW
-                alignItems = AlignItems.STRETCH
-            }
-            adapter = holder.tagAdapter
-        }
-    }
-
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {
-        val tagAdapter: TagAdapter by lazy {
-            TagAdapter()
-        }
+        private val tagAdapter: TagAdapter
+
         companion object {
             @JvmStatic // TODO: remove this function
             fun tagListToString(tagList: List<String>?): String? {
@@ -51,9 +37,23 @@ class MaterialListAdapter
             }
         }
 
+        init {
+            tagAdapter = TagAdapter()
+            binding.recyclerViewTags.apply {
+                layoutManager = FlexboxLayoutManager(this.context).apply {
+                    flexWrap = FlexWrap.WRAP
+                    flexDirection = FlexDirection.ROW
+                    alignItems = AlignItems.STRETCH
+                }
+                adapter = tagAdapter
+            }
+        }
+
         override fun onItemSet() {
             binding.material = item
             binding.viewHolder = this
+
+            tagAdapter.update(item.tags ?: emptyList())
         }
 
         fun openExternal() {

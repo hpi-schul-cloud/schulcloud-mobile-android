@@ -65,7 +65,10 @@ class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
         MaterialRepository.syncMaterials()
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, adapter: MaterialListAdapter, materials: LiveData<List<Material>>, empty: View) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView,
+                                  adapter: MaterialListAdapter,
+                                  materials: LiveData<List<Material>>,
+                                  empty: View) {
         adapter.emptyIndicator = empty
         materials.observe(this, Observer {
             adapter.update(it ?: emptyList())

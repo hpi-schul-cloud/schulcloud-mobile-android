@@ -11,6 +11,6 @@ class MaterialListViewModel : ViewModel() {
         Realm.getDefaultInstance()
     }
 
-    val currentMaterials: LiveData<List<Material>> = MaterialRepository.currentMaterialList(realm)
-    val popularMaterials: LiveData<List<Material>> = MaterialRepository.popularMaterialList(realm)
+    val currentMaterials: LiveData<List<Material>> = MaterialRepository.currentMaterials(realm)
+    val popularMaterials: LiveData<List<Material>> = MaterialRepository.popularMaterials(realm)
 }

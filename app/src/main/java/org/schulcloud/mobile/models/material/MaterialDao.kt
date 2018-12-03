@@ -10,7 +10,7 @@ import org.schulcloud.mobile.utils.map
 
 class MaterialDao(private val realm: Realm) {
 
-    fun listCurrentMaterials(): LiveData<List<Material>> {
+    fun currentMaterials(): LiveData<List<Material>> {
         val currentDate = LocalDate.now().toDate()
         return realm.where(Material::class.java)
                 .greaterThanOrEqualTo("featuredUntil", currentDate)
@@ -18,7 +18,7 @@ class MaterialDao(private val realm: Realm) {
                 .allAsLiveData()
     }
 
-    fun listPopularMaterials(): LiveData<List<Material>> {
+    fun popularMaterials(): LiveData<List<Material>> {
         return realm.where(Material::class.java)
                 .sort("clickCount", Sort.DESCENDING)
                 .allAsLiveData()

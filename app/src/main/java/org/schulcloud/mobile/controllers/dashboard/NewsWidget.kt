@@ -15,6 +15,7 @@ import org.schulcloud.mobile.controllers.news.NewsAdapter
 import org.schulcloud.mobile.controllers.news.NewsFragmentArgs
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.utils.limit
+import org.schulcloud.mobile.utils.setForegroundForJellyBean
 import org.schulcloud.mobile.viewmodels.NewsListViewModel
 import org.schulcloud.mobile.views.DividerItemDecoration
 import org.schulcloud.mobile.views.NoScrollLinearLayoutManager
@@ -58,6 +59,8 @@ class NewsWidget : Widget() {
 
         more.setOnClickListener(Navigation.createNavigateOnClickListener(
                 R.id.action_dashboardFragment_to_newsListFragment))
+
+        materialCard.setForegroundForJellyBean(context!!)
     }
 
     override suspend fun refresh() {

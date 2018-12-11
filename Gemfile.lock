@@ -20,7 +20,7 @@ GEM
       cork (~> 0.1)
       faraday (~> 0.9)
       faraday-http-cache (~> 1.0)
-      git (~> 1)
+      git (~> 1.5)
       kramdown (~> 1.5)
       no_proxy_fix
       octokit (~> 4.7)

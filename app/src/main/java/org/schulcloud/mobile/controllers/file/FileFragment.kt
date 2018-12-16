@@ -137,7 +137,6 @@ class FileFragment : MainFragment<FileFragment, FileViewModel>() {
 
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
-        breadcrumbs.setPath(args.path)
         breadcrumbs.onPathSelected = callback@{ path ->
             if (path == args.path) {
                 performRefresh()

@@ -73,7 +73,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
 
     private fun addPartView(path: String, title: String) {
         addView(CompatTextView(context).also {
-            it.textSize = textSize
+            it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             it.text = title
             it.setTextColor(textColor)
             it.setOnClickListener { onPathSelected?.invoke(path) }

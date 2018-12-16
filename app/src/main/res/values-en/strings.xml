@@ -43,10 +43,6 @@
     <string name="main_drawer_learnstore">Resources</string>
     <string name="main_drawer_logout">Logout</string>
     <string name="main_navigation_onboarding_1">Tap here for navigation</string>
-    <string name="main_fileOpen">What do you want to do with this file?</string>
-    <string name="main_fileOpen_error_open">This file couldn\'t be opened</string>
-    <string name="main_fileOpen_useForSubmission">Add to submission</string>
-    <string name="main_fileOpen_uploadToFiles">Just upload</string>
 
     <!-- Dashboard -->
     <string name="dashboard_title">Dashboard</string>

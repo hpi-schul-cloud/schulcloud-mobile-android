@@ -47,10 +47,6 @@
     <string name="main_drawer_learnstore">Materialien</string>
     <string name="main_drawer_logout">Abmelden</string>
     <string name="main_navigation_onboarding_1">Tippe hier für die Navigation</string>
-    <string name="main_fileOpen">Was möchtest du mit dieser Datei machen?</string>
-    <string name="main_fileOpen_error_open">Die Datei konnte nicht geöffnet werden</string>
-    <string name="main_fileOpen_useForSubmission">Zu Abgabe hinzufügen</string>
-    <string name="main_fileOpen_uploadToFiles">Nur hochladen</string>
 
     <!-- Dashboard -->
     <string name="dashboard_title">Übersicht</string>

@@ -25,5 +25,4 @@ open class Course : RealmObject(), HasId {
     var substitutions: RealmList<User>? = null
     @SerializedName("userIds")
     var users: RealmList<User>? = null
-
 }

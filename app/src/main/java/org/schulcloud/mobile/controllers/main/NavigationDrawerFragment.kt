@@ -12,7 +12,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.drawer_navigation.*
 import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.controllers.login.LoginActivity
-import org.schulcloud.mobile.controllers.settings.SettingsActivity
 import org.schulcloud.mobile.databinding.DrawerNavigationBinding
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.viewmodels.NavigationDrawerViewModel
@@ -32,10 +31,6 @@ class NavigationDrawerFragment : BottomSheetDialogFragment() {
         val binding = DrawerNavigationBinding.inflate(layoutInflater).also {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
-
-            it.onOpenSettings = {
-                startActivity(Intent(context, SettingsActivity::class.java))
-            }
             it.onLogout = {
                 UserRepository.logout()
                 val intent = Intent(context, LoginActivity::class.java)

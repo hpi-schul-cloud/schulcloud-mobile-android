@@ -21,8 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".controllers.login.LoginActivity" />
-
         <activity
             android:name=".controllers.main.MainActivity"
             android:label="@string/brand_name"
@@ -34,11 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".controllers.settings.SettingsActivity"
-            android:label="@string/settings_title"
-            android:parentActivityName=".controllers.main.MainActivity"
-            android:theme="@style/AppTheme.Main" />
+        <activity android:name=".controllers.login.LoginActivity" />
 
     </application>
 

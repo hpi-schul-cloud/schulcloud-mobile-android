@@ -112,11 +112,12 @@ open class CompatTextView @JvmOverloads constructor(
                         // Too high, scale down
                         else if (drawableHeight != null && height > drawableHeight)
                             (height * aspectRatio).toInt() to drawableHeight
-                        // Too small, scale up
+                        // No intrinsic size, use setting
                         else if (drawableWidth != null && drawableHeight != null &&
-                                width == 0 && height == 0) {
+                                width == 0 && height == 0)
                             drawableWidth to drawableHeight
-                        } else if (drawableWidth != null && drawableHeight != null
+                        // Too small, scale up
+                        else if (drawableWidth != null && drawableHeight != null
                                 && width < drawableWidth && height < drawableHeight) {
                             val scale = min(drawableWidth / width, drawableHeight / height)
                             width * scale to height * scale

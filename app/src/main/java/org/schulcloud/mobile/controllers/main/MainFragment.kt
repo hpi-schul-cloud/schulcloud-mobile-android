@@ -38,8 +38,6 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
     private var isFirstInit: Boolean = true
 
     val isInitialized: Boolean get() = !isFirstInit
-    // TODO: remove?
-    private val onInitializedCallbacks: MutableList<() -> Unit> = mutableListOf()
 
     protected val navController: NavController
         get() = findNavController(this)
@@ -91,11 +89,7 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
                 performRefresh()
         }
 
-        if (isFirstInit) {
-            isFirstInit = false
-            for (callback in onInitializedCallbacks)
-                callback()
-        }
+        isFirstInit = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

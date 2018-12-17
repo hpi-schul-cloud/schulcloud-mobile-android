@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="about"
+        android:title="@string/settings_about">
+
+        <Preference
+            android:icon="@drawable/ic_people_dark_24dp"
+            android:key="about_contributors"
+            android:summary="@string/settings_about_contributors_summary"
+            android:title="@string/settings_about_contributors" />
+
+        <Preference
+            android:icon="@drawable/ic_code_dark_24dp"
+            android:key="about_openSource"
+            android:title="@string/settings_about_openSource">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/schul-cloud/schulcloud-mobile-android" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_email_dark_24dp"
+            android:key="about_contact"
+            android:title="@string/settings_about_contact">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="mailto:hpi-info@hpi.de?subject=Schul-Cloud Anfrage" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_person_dark_24dp"
+            android:key="about_imprint"
+            android:title="@string/settings_about_imprint">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://schul-cloud.org/impressum" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_notes_dark_24dp"
+            android:key="about_privacyPolicy"
+            android:title="@string/settings_about_privacyPolicy">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://schul-cloud.org/impressum#data_security" />
+        </Preference>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

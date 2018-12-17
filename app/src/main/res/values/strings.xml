@@ -140,4 +140,15 @@
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>
     <string name="file_fileDownload_error_savePermissionDenied">Ohne die Berechtigung kann die Datei nicht gespeichert werden</string>
 
+
+    <!-- Settings -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_about">Über</string>
+    <string name="settings_about_contributors">Mitwirkende</string>
+    <string name="settings_about_contributors_summary" translatable="false">Marvin Fischer, Niklas Kiefer, Lars Lange, Elias Lehnert, Andrea Nathansen, Jonas Wanke</string>
+    <string name="settings_about_openSource">Diese App ist Open Source</string>
+    <string name="settings_about_contact">Kontakt</string>
+    <string name="settings_about_imprint">Impressum</string>
+    <string name="settings_about_privacyPolicy">Datenschutzerklärung</string>
+
 </resources>

@@ -8,6 +8,9 @@
             name="viewModel"
             type="org.schulcloud.mobile.viewmodels.NavigationDrawerViewModel" />
         <variable
+            name="onOpenSettings"
+            type="kotlin.jvm.functions.Function0" />
+        <variable
             name="onLogout"
             type="kotlin.jvm.functions.Function0" />
     </data>
@@ -40,6 +43,16 @@
                 android:layout_weight="1"
                 android:text="@{viewModel.user.name}"
                 tools:text="Klara Fall" />
+
+            <ImageView
+                style="@style/Material.ListItem_Icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:onClick="@{() -> onOpenSettings.invoke()}"
+                android:padding="16dp"
+                app:srcCompat="@drawable/ic_settings_dark_24dp" />
 
             <ImageView
                 style="@style/Material.ListItem_Icon"

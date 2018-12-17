@@ -70,8 +70,8 @@ interface ApiServiceInterface {
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
 
     // Material
-    @GET("content/resources?\$sort[clickCount]=-1&\$limit=3")
-    fun listPopularMaterials(): Call<FeathersResponse<List<Material>>>
+    @GET("content/resources?\$sort[clickCount]=-1")
+    fun listPopularMaterials(@Query("\$limit") limitPopular: Int): Call<FeathersResponse<List<Material>>>
     @GET("content/resources")
     fun listCurrentMaterials(@Query("featuredUntil[\$gte]={date}") date: String): Call<FeathersResponse<List<Material>>>
 }

@@ -18,12 +18,12 @@ class MaterialDao(private val realm: Realm) {
                 .allAsLiveData()
     }
 
-    fun popularMaterials(): LiveData<List<Material>> {
+    fun popularMaterials(limitPopular: Int): LiveData<List<Material>> {
         return realm.where(Material::class.java)
                 .sort("clickCount", Sort.DESCENDING)
                 .allAsLiveData()
                 .map { materialList ->
-                    materialList.take(3)
+                    materialList.take(limitPopular)
                 }
     }
 }

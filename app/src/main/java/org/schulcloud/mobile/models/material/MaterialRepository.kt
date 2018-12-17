@@ -8,12 +8,14 @@ import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.utils.materialDao
 
 object MaterialRepository {
+    const val LIMIT_POPULAR = 3
+
     fun currentMaterials(realm: Realm): LiveData<List<Material>> {
         return realm.materialDao().currentMaterials()
     }
 
     fun popularMaterials(realm: Realm): LiveData<List<Material>> {
-        return realm.materialDao().popularMaterials()
+        return realm.materialDao().popularMaterials(LIMIT_POPULAR)
     }
 
     suspend fun syncMaterials() {
@@ -23,7 +25,7 @@ object MaterialRepository {
             greaterThanOrEqualTo("featuredUntil", currentDate.toDate())
         }).run()
 
-        RequestJob.Data.with({ listPopularMaterials() }, {
+        RequestJob.Data.with({ listPopularMaterials(LIMIT_POPULAR) }, {
             beginGroup()
                     .isNull("featuredUntil")
                     .or()

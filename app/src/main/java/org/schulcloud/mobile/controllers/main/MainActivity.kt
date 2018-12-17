@@ -29,10 +29,7 @@ import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.storages.Onboarding
-import org.schulcloud.mobile.utils.getTextColorForBackground
-import org.schulcloud.mobile.utils.getTextColorSecondaryForBackground
-import org.schulcloud.mobile.utils.setTintCompat
-import org.schulcloud.mobile.utils.visibilityBool
+import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
 import org.schulcloud.mobile.viewmodels.ToolbarColors
 
@@ -96,6 +93,9 @@ class MainActivity : BaseActivity() {
                 fab.show()
             if (lastConfig?.fabIconRes != config.fabIconRes)
                 fab.setImageResource(config.fabIconRes)
+
+            if (lastConfig?.innerFragmentIndex != config.innerFragmentIndex)
+                bottomAppBar.slideIntoView()
 
             lastConfig = config
         })

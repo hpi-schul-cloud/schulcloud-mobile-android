@@ -193,6 +193,7 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
                 .map { (self, tab) ->
                     MainFragmentConfig(
                             self.fragmentType,
+                            currentInnerFragment.value,
                             tab?.title ?: self.title,
                             tab?.showTitle ?: self.showTitle,
                             tab?.subtitle ?: self.subtitle,
@@ -235,6 +236,7 @@ abstract class MainFragment<F : MainFragment<F, VM>, VM : ViewModel>(
 
 data class MainFragmentConfig(
     val fragmentType: FragmentType = FragmentType.SECONDARY,
+    val innerFragmentIndex: Int? = null,
 
     val title: String? = null,
     val showTitle: Boolean = true,

@@ -26,13 +26,12 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
         notifyDataSetChanged()
     }
 
-    override fun getItem(position: Int): Fragment? {
+    override fun getItem(position: Int): Fragment {
         return when (getTabType(position)) {
             TAB_DETAILS -> OverviewFragment()
             TAB_SUBMISSIONS -> SubmissionsFragment()
 
-            TAB_INVALID -> null
-            else -> null
+            else -> OverviewFragment()
         }
     }
 

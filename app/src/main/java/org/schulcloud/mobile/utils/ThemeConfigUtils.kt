@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -24,8 +25,8 @@ class ThemeConfigUtils private constructor(val context: Context) {
         private set
     private val themeChangeListeners = mutableListOf<ThemeConfigChangeListener>()
 
-    init {
-        DarkModeUtils.getInstance(context)
+    fun startMonitoring() {
+        DarkModeUtils.getInstance(context).startMonitoring()
     }
 
 
@@ -58,6 +59,10 @@ class DarkModeUtils(val context: Context) {
     }
         private set
 
+    private val onPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        onPreferenceChange(key)
+    }
+
     private var ambientLightCriterion: AmbientLightCriterion? = null
     val supportsAmbientLight
         get() = ambientLightCriterion != null
@@ -65,14 +70,13 @@ class DarkModeUtils(val context: Context) {
 
     init {
         PreferenceManager.getDefaultSharedPreferences(context)
-                .registerOnSharedPreferenceChangeListener { _, key ->
-                    onPreferenceChange(key)
-                }
+                .registerOnSharedPreferenceChangeListener(onPreferenceChangeListener)
 
-        if (AmbientLightCriterion.isSupported(context))
-            ambientLightCriterion = AmbientLightCriterion(context) { updateDarkMode() }
-                    .apply { updateMonitoring() }
+        ambientLightCriterion = AmbientLightCriterion.createIfSupported(context) { updateDarkMode() }
+                ?.apply { updateMonitoring() }
+    }
 
+    fun startMonitoring() {
         updateDarkMode()
     }
 
@@ -103,7 +107,7 @@ class DarkModeUtils(val context: Context) {
     }
 
 
-    abstract class Criterion(val shouldEnableChangeListener: () -> Unit) {
+    abstract class Criterion(val shouldEnableChangeListener: ShouldEnableChangeListener) {
         var shouldEnable by Delegates.changeObservable(false) { _, _, _ ->
             shouldEnableChangeListener()
         }
@@ -126,20 +130,25 @@ class DarkModeUtils(val context: Context) {
         protected abstract fun stopMonitoring()
     }
 
-    class AmbientLightCriterion(context: Context, shouldEnableChangeListener: () -> Unit) :
-            Criterion(shouldEnableChangeListener) {
+    class AmbientLightCriterion private constructor(
+        context: Context,
+        shouldEnableChangeListener: ShouldEnableChangeListener
+    ) : Criterion(shouldEnableChangeListener) {
         companion object {
             const val THRESHOLD = 10f
 
-            fun isSupported(context: Context): Boolean {
-                return context.getSystemService<SensorManager>()
-                        ?.getDefaultSensor(Sensor.TYPE_LIGHT) != null
+            fun createIfSupported(
+                context: Context,
+                shouldEnableChangeListener: ShouldEnableChangeListener
+            ): AmbientLightCriterion? {
+                return if (context.getSystemService<SensorManager>()
+                                ?.getDefaultSensor(Sensor.TYPE_LIGHT) != null)
+                    AmbientLightCriterion(context, shouldEnableChangeListener)
+                else {
+                    Preferences.Theme.darkMode_ambientLight = false
+                    null
+                }
             }
-        }
-
-        init {
-            if (!isSupported(context))
-                throw IllegalStateException("AmbientLightCriterion created w/o ambient light sensor")
         }
 
         private var sensorManager = context.getSystemService<SensorManager>()!!
@@ -166,3 +175,5 @@ class DarkModeUtils(val context: Context) {
         }
     }
 }
+
+typealias ShouldEnableChangeListener = () -> Unit

@@ -22,7 +22,7 @@ class SchulCloudApp : MultiDexApplication() {
         configureRealm()
         JodaTimeAndroid.init(this)
 
-        ThemeConfigUtils.getInstance(this)
+        ThemeConfigUtils.getInstance(this).startMonitoring()
     }
 
     private fun configureRealm() {

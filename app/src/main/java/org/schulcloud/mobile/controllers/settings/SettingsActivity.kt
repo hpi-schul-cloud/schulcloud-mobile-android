@@ -12,8 +12,9 @@ class SettingsActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         setupActionBar()
 
-        supportFragmentManager.beginTransaction()
-                .add(R.id.content, SettingsFragment())
-                .commit()
+        if (supportFragmentManager.findFragmentByTag(SettingsFragment.TAG) == null)
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.content, SettingsFragment(), SettingsFragment.TAG)
+                    .commit()
     }
 }

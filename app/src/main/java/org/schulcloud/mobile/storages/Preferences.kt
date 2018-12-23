@@ -12,5 +12,8 @@ object Preferences : BaseStorage(NAME) {
 
         const val DARK_MODE_AMBIENT_LIGHT = "theme_darkMode_ambientLight"
         var darkMode_ambientLight by BooleanPreference(DARK_MODE_AMBIENT_LIGHT)
+
+        const val DARK_MODE_NIGHT = "theme_darkMode_night"
+        var darkMode_night by BooleanPreference(DARK_MODE_NIGHT)
     }
 }

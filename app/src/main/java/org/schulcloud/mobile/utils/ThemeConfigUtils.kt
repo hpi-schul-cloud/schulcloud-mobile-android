@@ -6,11 +6,14 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.text.format.DateUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import org.schulcloud.mobile.storages.Preferences
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -32,10 +35,12 @@ class ThemeConfigUtils private constructor(val context: Context) {
 
     fun addThemeChangeListener(listener: ThemeConfigChangeListener) {
         themeChangeListeners.add(listener)
+        DarkModeUtils.getInstance(context).onThemeConfigListenerCountChanged(themeChangeListeners.size)
     }
 
     fun removeThemeChangeListener(listener: ThemeConfigChangeListener) {
         themeChangeListeners.remove(listener)
+        DarkModeUtils.getInstance(context).onThemeConfigListenerCountChanged(themeChangeListeners.size)
     }
 
     fun notifyThemeConfigChanged() {
@@ -54,7 +59,7 @@ typealias ThemeConfigChangeListener = (ThemeConfig) -> Unit
 class DarkModeUtils(val context: Context) {
     companion object : SingletonHolder<DarkModeUtils, Context>({ DarkModeUtils(it.applicationContext) })
 
-    var isActive by Delegates.changeObservable(false) { _, _, new ->
+    var isActive by Delegates.changeObservable(false) { _, _, _ ->
         ThemeConfigUtils.getInstance(context).notifyThemeConfigChanged()
     }
         private set
@@ -66,6 +71,8 @@ class DarkModeUtils(val context: Context) {
     private var ambientLightCriterion: AmbientLightCriterion? = null
     val supportsAmbientLight
         get() = ambientLightCriterion != null
+    private var nightCriterion = NightCriterion(context) { updateDarkMode() }
+    private val criteria = mutableListOf<Criterion>(nightCriterion)
 
 
     init {
@@ -73,7 +80,11 @@ class DarkModeUtils(val context: Context) {
                 .registerOnSharedPreferenceChangeListener(onPreferenceChangeListener)
 
         ambientLightCriterion = AmbientLightCriterion.createIfSupported(context) { updateDarkMode() }
-                ?.apply { updateMonitoring() }
+                ?.apply {
+                    updateMonitoring()
+                    criteria.add(this)
+                }
+        nightCriterion.updateMonitoring()
     }
 
     fun startMonitoring() {
@@ -84,19 +95,22 @@ class DarkModeUtils(val context: Context) {
         when (key) {
             Preferences.Theme.DARK_MODE -> {
                 ambientLightCriterion?.updateMonitoring()
-                updateDarkMode()
+                nightCriterion.updateMonitoring()
             }
             Preferences.Theme.DARK_MODE_AMBIENT_LIGHT -> ambientLightCriterion?.updateMonitoring()
+            Preferences.Theme.DARK_MODE_NIGHT -> nightCriterion.updateMonitoring()
         }
+        updateDarkMode()
     }
 
-
-    fun updateDarkMode() {
+    private fun updateDarkMode() {
         val ambientLightActive = Preferences.Theme.darkMode_ambientLight
+        val nightActive = Preferences.Theme.darkMode_night
         val shouldBeActive = when {
             !Preferences.Theme.darkMode -> false
-            ambientLightActive -> {
+            ambientLightActive || nightActive -> {
                 ((ambientLightActive && (ambientLightCriterion?.shouldEnable ?: false))
+                        || (nightActive && nightCriterion.shouldEnable))
             }
             else -> true
         }
@@ -104,6 +118,19 @@ class DarkModeUtils(val context: Context) {
 
         AppCompatDelegate.setDefaultNightMode(if (shouldBeActive) MODE_NIGHT_YES else MODE_NIGHT_NO)
         isActive = shouldBeActive
+    }
+
+
+    fun onThemeConfigListenerCountChanged(count: Int) {
+        if (count == 0) criteria.forEach { it.stopMonitoring() }
+        else criteria.forEach { it.updateMonitoring() }
+    }
+
+    fun onLocationPermissionGranted() {
+        nightCriterion.apply {
+            stopMonitoring()
+            updateMonitoring()
+        }
     }
 
 
@@ -120,14 +147,30 @@ class DarkModeUtils(val context: Context) {
             val shouldMonitor = Preferences.Theme.darkMode && shouldMonitor()
             if (isMonitoring == shouldMonitor) return
 
-            isMonitoring = shouldMonitor
             if (shouldMonitor) startMonitoring()
-            else stopMonitoring()
+            else {
+                stopMonitoring()
+                shouldEnable = false
+            }
         }
 
         protected abstract fun shouldMonitor(): Boolean
-        protected abstract fun startMonitoring()
-        protected abstract fun stopMonitoring()
+        fun startMonitoring() {
+            if (isMonitoring) return
+
+            onStartMonitoring()
+            isMonitoring = true
+        }
+
+        protected abstract fun onStartMonitoring()
+        fun stopMonitoring() {
+            if (!isMonitoring) return
+
+            onStopMonitoring()
+            isMonitoring = false
+        }
+
+        protected abstract fun onStopMonitoring()
     }
 
     class AmbientLightCriterion private constructor(
@@ -166,12 +209,35 @@ class DarkModeUtils(val context: Context) {
 
         override fun shouldMonitor() = Preferences.Theme.darkMode_ambientLight
 
-        override fun startMonitoring() {
+        override fun onStartMonitoring() {
             sensorManager.registerListener(eventListener, sensor, SensorManager.SENSOR_DELAY_UI)
         }
 
-        override fun stopMonitoring() {
+        override fun onStopMonitoring() {
             sensorManager.unregisterListener(eventListener)
+        }
+    }
+
+    class NightCriterion(val context: Context, shouldEnableChangeListener: () -> Unit) :
+            Criterion(shouldEnableChangeListener) {
+        private var timer: Timer? = null
+
+
+        override fun shouldMonitor() = Preferences.Theme.darkMode_night
+
+        override fun onStartMonitoring() {
+            timer = fixedRateTimer("theme-darkMode-night", true, period = DateUtils.MINUTE_IN_MILLIS) {
+                val isNight = TwilightManager.getInstance(context).isNight()
+                if (shouldEnable != isNight)
+                    launch(UI) {
+                        shouldEnable = isNight
+                    }
+            }
+        }
+
+        override fun onStopMonitoring() {
+            timer?.cancel()
+            timer = null
         }
     }
 }

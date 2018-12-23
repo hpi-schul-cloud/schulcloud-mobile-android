@@ -12,6 +12,16 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- Required for automatic dark mode -->
+    <uses-feature
+        android:name="android.hardware.sensor.light"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".SchulCloudApp"
         android:allowBackup="true"

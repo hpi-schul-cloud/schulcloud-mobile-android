@@ -20,6 +20,12 @@
             app:key="theme_darkMode_ambientLight"
             app:title="Activate when ambient light is low" />
 
+        <CheckBoxPreference
+            app:defaultValue="false"
+            app:dependency="theme_darkMode"
+            app:key="theme_darkMode_night"
+            app:title="Activate at night" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

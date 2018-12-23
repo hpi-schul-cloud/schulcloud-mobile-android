@@ -4,6 +4,7 @@ package org.schulcloud.mobile.utils
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.annotation.ArrayRes
 import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.TextUtilsCompat
@@ -51,6 +53,7 @@ fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
     startActivity(Intent.createChooser(intent, getString(R.string.share_title)))
 }
 
+
 fun isLtr() = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_LTR
 
 fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): IntArray {
@@ -63,4 +66,9 @@ fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): I
 
 fun Drawable.setTintCompat(@ColorInt tint: Int) {
     DrawableCompat.setTint(this, tint)
+}
+
+
+fun Context.hasPermission(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 }

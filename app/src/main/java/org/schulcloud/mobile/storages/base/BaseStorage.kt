@@ -13,19 +13,19 @@ abstract class BaseStorage(name: String) {
     fun clear() = preferences.edit { clear() }
 
 
-    fun getString(key: String, defValue: String? = null): String? = preferences.getString(key, defValue)
-    fun putString(key: String, value: String?) = preferences.edit { putString(key, value) }
+    fun getBoolean(key: String, defValue: Boolean = false) = preferences.getBoolean(key, defValue)
+    fun putBoolean(key: String, value: Boolean) = preferences.edit { putBoolean(key, value) }
 
-    class StringPreference(val key: String) : ReadWriteProperty<BaseStorage, String?> {
-        override fun getValue(thisRef: BaseStorage, property: KProperty<*>) = thisRef.getString(key)
+    class BooleanPreference(val key: String) : ReadWriteProperty<BaseStorage, Boolean> {
+        override fun getValue(thisRef: BaseStorage, property: KProperty<*>) = thisRef.getBoolean(key)
 
-        override fun setValue(thisRef: BaseStorage, property: KProperty<*>, value: String?) {
-            thisRef.putString(key, value)
+        override fun setValue(thisRef: BaseStorage, property: KProperty<*>, value: Boolean) {
+            thisRef.putBoolean(key, value)
         }
     }
 
 
-    fun getInt(key: String, defValue: Int = 0): Int = preferences.getInt(key, defValue)
+    fun getInt(key: String, defValue: Int = 0) = preferences.getInt(key, defValue)
     fun putInt(key: String, value: Int) = preferences.edit { putInt(key, value) }
 
     class IntPreference(val key: String) : ReadWriteProperty<BaseStorage, Int?> {
@@ -40,6 +40,18 @@ abstract class BaseStorage(name: String) {
 
         override fun setValue(thisRef: BaseStorage, property: KProperty<*>, value: Int?) {
             thisRef.putInt(key, value ?: NULL)
+        }
+    }
+
+
+    fun getString(key: String, defValue: String? = null): String? = preferences.getString(key, defValue)
+    fun putString(key: String, value: String?) = preferences.edit { putString(key, value) }
+
+    class StringPreference(val key: String) : ReadWriteProperty<BaseStorage, String?> {
+        override fun getValue(thisRef: BaseStorage, property: KProperty<*>) = thisRef.getString(key)
+
+        override fun setValue(thisRef: BaseStorage, property: KProperty<*>, value: String?) {
+            thisRef.putString(key, value)
         }
     }
 }

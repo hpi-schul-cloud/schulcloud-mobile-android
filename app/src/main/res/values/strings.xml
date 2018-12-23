@@ -143,6 +143,8 @@
 
     <!-- Settings -->
     <string name="settings_title">Einstellungen</string>
+    <string name="settings_theme">Design</string>
+    <string name="settings_theme_darkMode">Dunkles Design</string>
     <string name="settings_about">Über</string>
     <string name="settings_about_contributors">Mitwirkende</string>
     <string name="settings_about_contributors_summary" translatable="false">Marvin Fischer, Niklas Kiefer, Lars Lange, Elias Lehnert, Andrea Nathansen, Jonas Wanke</string>

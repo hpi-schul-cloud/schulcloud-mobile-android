@@ -1,48 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/settings_theme">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:icon="@drawable/ic_brightness_low_dark_24dp"
+            app:key="theme_darkMode"
+            app:title="@string/settings_theme_darkMode"
+            app:useSimpleSummaryProvider="true" />
+
+        <!-- TODO: i18n -->
+        <CheckBoxPreference
+            app:defaultValue="false"
+            app:dependency="theme_darkMode"
+            app:isPreferenceVisible="false"
+            app:key="theme_darkMode_ambientLight"
+            app:title="Activate when ambient light is low" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="about"
-        android:title="@string/settings_about">
+        app:key="about"
+        app:title="@string/settings_about">
 
         <Preference
-            android:icon="@drawable/ic_people_dark_24dp"
-            android:key="about_contributors"
-            android:summary="@string/settings_about_contributors_summary"
-            android:title="@string/settings_about_contributors" />
+            app:icon="@drawable/ic_people_dark_24dp"
+            app:key="about_contributors"
+            app:summary="@string/settings_about_contributors_summary"
+            app:title="@string/settings_about_contributors" />
 
         <Preference
-            android:icon="@drawable/ic_code_dark_24dp"
-            android:key="about_openSource"
-            android:title="@string/settings_about_openSource">
+            app:icon="@drawable/ic_code_dark_24dp"
+            app:key="about_openSource"
+            app:title="@string/settings_about_openSource">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/schul-cloud/schulcloud-mobile-android" />
         </Preference>
 
         <Preference
-            android:icon="@drawable/ic_email_dark_24dp"
-            android:key="about_contact"
-            android:title="@string/settings_about_contact">
+            app:icon="@drawable/ic_email_dark_24dp"
+            app:key="about_contact"
+            app:title="@string/settings_about_contact">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="mailto:hpi-info@hpi.de?subject=Schul-Cloud Anfrage" />
         </Preference>
 
         <Preference
-            android:icon="@drawable/ic_person_dark_24dp"
-            android:key="about_imprint"
-            android:title="@string/settings_about_imprint">
+            app:icon="@drawable/ic_person_dark_24dp"
+            app:key="about_imprint"
+            app:title="@string/settings_about_imprint">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://schul-cloud.org/impressum" />
         </Preference>
 
         <Preference
-            android:icon="@drawable/ic_notes_dark_24dp"
-            android:key="about_privacyPolicy"
-            android:title="@string/settings_about_privacyPolicy">
+            app:icon="@drawable/ic_notes_dark_24dp"
+            app:key="about_privacyPolicy"
+            app:title="@string/settings_about_privacyPolicy">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://schul-cloud.org/impressum#data_security" />

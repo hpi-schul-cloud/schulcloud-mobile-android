@@ -10,10 +10,7 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.utils.asUri
-import org.schulcloud.mobile.utils.openUrl
-import org.schulcloud.mobile.utils.setup
-import org.schulcloud.mobile.utils.shareLink
+import org.schulcloud.mobile.utils.*
 import java.util.*
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
@@ -29,6 +26,28 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val permissionRequests: MutableList<Continuation<Boolean>>
             by lazy { LinkedList<Continuation<Boolean>>() }
+
+    private var lastThemeConfig: ThemeConfig? = null
+    private val themeConfigChangeListener: ThemeConfigChangeListener = { _ ->
+        recreate()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val themeConfig = ThemeUtils.themeConfig
+        if (lastThemeConfig != null && lastThemeConfig != themeConfig)
+            recreate()
+        lastThemeConfig = themeConfig
+
+        ThemeUtils.addThemeChangeListener(themeConfigChangeListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        ThemeUtils.removeThemeChangeListener(themeConfigChangeListener)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {

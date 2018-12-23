@@ -46,6 +46,7 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isFirstInit = savedInstanceState == null
 
         mainViewModel.onOptionsItemSelected.observe(this, Observer {
             onOptionsItemSelected(it)

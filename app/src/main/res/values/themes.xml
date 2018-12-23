@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme.Base.DayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
+
+    <style name="AppTheme.Base" parent="AppTheme.Base.DayNight">
         <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorAccent">@color/brand_accent</item>

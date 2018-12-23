@@ -26,6 +26,13 @@
             app:key="theme_darkMode_night"
             app:title="Activate at night" />
 
+        <CheckBoxPreference
+            app:defaultValue="false"
+            app:dependency="theme_darkMode"
+            app:isPreferenceVisible="false"
+            app:key="theme_darkMode_powerSaver"
+            app:title="Activate when power saver is activated" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

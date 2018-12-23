@@ -40,5 +40,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             return@setOnPreferenceChangeListener true
         }
+        // Check support for power saver
+        if (DarkModeUtils.getInstance(context).supportsPowerSaver)
+            findPreference<Preference>(Preferences.Theme.DARK_MODE_POWER_SAVER).isVisible = true
     }
 }

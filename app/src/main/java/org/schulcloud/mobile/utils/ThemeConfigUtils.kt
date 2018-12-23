@@ -1,12 +1,14 @@
 package org.schulcloud.mobile.utils
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.content.*
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
+import android.os.PowerManager
 import android.text.format.DateUtils
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
@@ -72,6 +74,9 @@ class DarkModeUtils(val context: Context) {
     val supportsAmbientLight
         get() = ambientLightCriterion != null
     private var nightCriterion = NightCriterion(context) { updateDarkMode() }
+    private var powerSaverCriterion: PowerSaverCriterion? = null
+    val supportsPowerSaver
+        get() = powerSaverCriterion != null
     private val criteria = mutableListOf<Criterion>(nightCriterion)
 
 
@@ -85,6 +90,11 @@ class DarkModeUtils(val context: Context) {
                     criteria.add(this)
                 }
         nightCriterion.updateMonitoring()
+        powerSaverCriterion = PowerSaverCriterion.createIfSupported(context) { updateDarkMode() }
+                ?.apply {
+                    updateMonitoring()
+                    criteria.add(this)
+                }
     }
 
     fun startMonitoring() {
@@ -96,9 +106,11 @@ class DarkModeUtils(val context: Context) {
             Preferences.Theme.DARK_MODE -> {
                 ambientLightCriterion?.updateMonitoring()
                 nightCriterion.updateMonitoring()
+                powerSaverCriterion?.updateMonitoring()
             }
             Preferences.Theme.DARK_MODE_AMBIENT_LIGHT -> ambientLightCriterion?.updateMonitoring()
             Preferences.Theme.DARK_MODE_NIGHT -> nightCriterion.updateMonitoring()
+            Preferences.Theme.DARK_MODE_POWER_SAVER -> powerSaverCriterion?.updateMonitoring()
         }
         updateDarkMode()
     }
@@ -106,11 +118,13 @@ class DarkModeUtils(val context: Context) {
     private fun updateDarkMode() {
         val ambientLightActive = Preferences.Theme.darkMode_ambientLight
         val nightActive = Preferences.Theme.darkMode_night
+        val powerSaverActive = Preferences.Theme.darkMode_powerSaver
         val shouldBeActive = when {
             !Preferences.Theme.darkMode -> false
-            ambientLightActive || nightActive -> {
+            ambientLightActive || nightActive || powerSaverActive -> {
                 ((ambientLightActive && (ambientLightCriterion?.shouldEnable ?: false))
                         || (nightActive && nightCriterion.shouldEnable))
+                        || (powerSaverActive && (powerSaverCriterion?.shouldEnable ?: false))
             }
             else -> true
         }
@@ -144,7 +158,7 @@ class DarkModeUtils(val context: Context) {
             private set
 
         fun updateMonitoring() {
-            val shouldMonitor = Preferences.Theme.darkMode && shouldMonitor()
+            val shouldMonitor = Preferences.Theme.darkMode && isEnabled()
             if (isMonitoring == shouldMonitor) return
 
             if (shouldMonitor) startMonitoring()
@@ -154,7 +168,7 @@ class DarkModeUtils(val context: Context) {
             }
         }
 
-        protected abstract fun shouldMonitor(): Boolean
+        protected abstract fun isEnabled(): Boolean
         fun startMonitoring() {
             if (isMonitoring) return
 
@@ -207,7 +221,7 @@ class DarkModeUtils(val context: Context) {
         }
 
 
-        override fun shouldMonitor() = Preferences.Theme.darkMode_ambientLight
+        override fun isEnabled() = Preferences.Theme.darkMode_ambientLight
 
         override fun onStartMonitoring() {
             sensorManager.registerListener(eventListener, sensor, SensorManager.SENSOR_DELAY_UI)
@@ -223,7 +237,7 @@ class DarkModeUtils(val context: Context) {
         private var timer: Timer? = null
 
 
-        override fun shouldMonitor() = Preferences.Theme.darkMode_night
+        override fun isEnabled() = Preferences.Theme.darkMode_night
 
         override fun onStartMonitoring() {
             timer = fixedRateTimer("theme-darkMode-night", true, period = DateUtils.MINUTE_IN_MILLIS) {
@@ -238,6 +252,43 @@ class DarkModeUtils(val context: Context) {
         override fun onStopMonitoring() {
             timer?.cancel()
             timer = null
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    class PowerSaverCriterion private constructor(val context: Context, shouldEnableChangeListener: () -> Unit) :
+            Criterion(shouldEnableChangeListener) {
+        companion object {
+            fun createIfSupported(
+                context: Context,
+                shouldEnableChangeListener: ShouldEnableChangeListener
+            ): PowerSaverCriterion? {
+                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    PowerSaverCriterion(context, shouldEnableChangeListener)
+                else {
+                    Preferences.Theme.darkMode_powerSaver = false
+                    null
+                }
+            }
+        }
+
+        private val powerManager = context.getSystemService<PowerManager>()!!
+        private val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                shouldEnable = powerManager.isPowerSaveMode
+            }
+        }
+
+
+        override fun isEnabled() = Preferences.Theme.darkMode_powerSaver
+
+        override fun onStartMonitoring() {
+            context.registerReceiver(receiver, IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED))
+            shouldEnable = powerManager.isPowerSaveMode
+        }
+
+        override fun onStopMonitoring() {
+            context.unregisterReceiver(receiver)
         }
     }
 }

@@ -35,18 +35,18 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val themeConfig = ThemeUtils.themeConfig
+        val themeConfig = ThemeConfigUtils.getInstance(this).themeConfig
         if (lastThemeConfig != null && lastThemeConfig != themeConfig)
             recreate()
         lastThemeConfig = themeConfig
 
-        ThemeUtils.addThemeChangeListener(themeConfigChangeListener)
+        ThemeConfigUtils.getInstance(this).addThemeChangeListener(themeConfigChangeListener)
     }
 
     override fun onPause() {
         super.onPause()
 
-        ThemeUtils.removeThemeChangeListener(themeConfigChangeListener)
+        ThemeConfigUtils.getInstance(this).removeThemeChangeListener(themeConfigChangeListener)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

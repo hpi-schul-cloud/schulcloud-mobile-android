@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="?colorSurface"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(news.id)}"
         android:paddingLeft="@dimen/news_item_padding_horizontal"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{news.title}"
-            android:textColor="@android:color/black"
+            android:textColor="?colorOnSurface"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/date"
             app:layout_constraintHorizontal_chainStyle="spread_inside"

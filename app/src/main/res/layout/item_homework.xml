@@ -48,7 +48,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@drawable/divider_dark" />
+            android:background="@drawable/divider" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

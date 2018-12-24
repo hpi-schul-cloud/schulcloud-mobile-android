@@ -8,14 +8,18 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.PowerManager
 import android.text.format.DateUtils
+import android.view.LayoutInflater
 import androidx.annotation.RequiresApi
+import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.getSystemService
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import org.schulcloud.mobile.R
 import org.schulcloud.mobile.storages.Preferences
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -53,7 +57,7 @@ class ThemeConfigUtils private constructor(val context: Context) {
     }
 }
 
-data class ThemeConfig(val darkMode: Boolean)
+data class ThemeConfig(val darkMode: Boolean, @field:StyleRes val themeOverlay: Int = R.style.AppTheme_Default)
 
 typealias ThemeConfigChangeListener = (ThemeConfig) -> Unit
 
@@ -294,3 +298,9 @@ class DarkModeUtils(val context: Context) {
 }
 
 typealias ShouldEnableChangeListener = () -> Unit
+
+
+fun Context.wrapWithTheme(layoutInflater: LayoutInflater): LayoutInflater {
+    val themeOverlay = ThemeConfigUtils.getInstance(this).themeConfig.themeOverlay
+    return layoutInflater.cloneInContext(ContextThemeWrapper(this, themeOverlay))
+}

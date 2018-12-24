@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.children
 import androidx.core.view.forEach
@@ -24,15 +23,13 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_homework_grouped.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.storages.Onboarding
-import org.schulcloud.mobile.utils.getTextColorForBackground
-import org.schulcloud.mobile.utils.getTextColorSecondaryForBackground
-import org.schulcloud.mobile.utils.setTintCompat
-import org.schulcloud.mobile.utils.visibilityBool
+import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.MainViewModel
 import org.schulcloud.mobile.viewmodels.ToolbarColors
 
@@ -57,7 +54,7 @@ class MainActivity : BaseActivity() {
             finish()
         }
 
-        setTheme(R.style.AppTheme_Main)
+        setTheme(R.style.AppTheme_Base_V21)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -170,8 +167,8 @@ class MainActivity : BaseActivity() {
 
 
     private fun recalculateToolbarColors() {
-        val color = viewModel.config.value?.toolbarColor
-                ?: ContextCompat.getColor(this, R.color.toolbar_background_default)
+        this.course_color
+        val color = viewModel.config.value?.toolbarColor ?: getColorFromAttr(R.attr.colorSurface)
 
         viewModel.toolbarColors.value = ToolbarColors(color,
                 getTextColorForBackground(color), getTextColorSecondaryForBackground(color),

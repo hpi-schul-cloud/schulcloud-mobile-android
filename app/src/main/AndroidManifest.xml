@@ -29,7 +29,7 @@
         android:label="@string/brand_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Base.V21">
 
         <activity android:name=".controllers.login.LoginActivity" />
 
@@ -37,7 +37,7 @@
             android:name=".controllers.main.MainActivity"
             android:label="@string/brand_name"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.Main.Launcher">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -47,8 +47,7 @@
         <activity
             android:name=".controllers.settings.SettingsActivity"
             android:label="@string/settings_title"
-            android:parentActivityName=".controllers.main.MainActivity"
-            android:theme="@style/AppTheme.Main" />
+            android:parentActivityName=".controllers.main.MainActivity" />
 
     </application>
 

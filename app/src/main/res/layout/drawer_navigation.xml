@@ -17,15 +17,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:behavior_hideable="true"
-        app:layout_behavior="@string/bottom_sheet_behavior">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/header"
             style="@style/Material.ListItem"
-            layout="@layout/item_file"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -80,7 +77,6 @@
             app:itemBackground="@drawable/bg_drawer_item"
             app:itemIconTint="@color/text_drawer_item"
             app:itemTextColor="@color/text_drawer_item"
-            app:layout_constraintTop_toBottomOf="@id/header"
             app:menu="@menu/activity_main_drawer" />
 
     </LinearLayout>

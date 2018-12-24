@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.controllers.base
 
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -30,6 +31,11 @@ abstract class BaseActivity : AppCompatActivity() {
     private var lastThemeConfig: ThemeConfig? = null
     private val themeConfigChangeListener: ThemeConfigChangeListener = { _ ->
         recreate()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(ThemeConfigUtils.getInstance(this).themeConfig.themeOverlay)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {

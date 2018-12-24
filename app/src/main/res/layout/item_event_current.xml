@@ -20,10 +20,10 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:minHeight="56dp"
-        android:paddingBottom="8dp"
         android:paddingLeft="16dp"
+        android:paddingTop="8dp"
         android:paddingRight="16dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/title"
@@ -35,7 +35,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{event.title}"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?colorOnSurface"
             app:layout_constraintBottom_toTopOf="@id/summary"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
             android:layout_alignParentRight="true"
             android:gravity="bottom"
             android:text="@{event.location}"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?colorOnSurface"
             app:layout_constraintBottom_toTopOf="@id/time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:text="@{formattedTime}"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="?colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location"
@@ -114,6 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dashboard_events_event_next"
+            android:textColor="?colorOnSurfaceSecondary"
             app:layout_constraintTop_toBottomOf="@id/progress" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

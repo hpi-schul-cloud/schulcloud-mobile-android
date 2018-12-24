@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:layout_marginBottom="36dp"
-            android:background="@drawable/divider_dark"
+            android:background="@drawable/divider"
             android:paddingLeft="@dimen/material_dividerMiddle_inset"
             android:paddingRight="@dimen/material_dividerMiddle_inset" />
 

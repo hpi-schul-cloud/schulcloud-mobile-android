@@ -15,6 +15,7 @@ import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.controllers.settings.SettingsActivity
 import org.schulcloud.mobile.databinding.DrawerNavigationBinding
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.utils.wrapWithTheme
 import org.schulcloud.mobile.viewmodels.NavigationDrawerViewModel
 
 class NavigationDrawerFragment : BottomSheetDialogFragment() {
@@ -29,7 +30,7 @@ class NavigationDrawerFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DrawerNavigationBinding.inflate(layoutInflater).also {
+        val binding = DrawerNavigationBinding.inflate(context!!.wrapWithTheme(layoutInflater)).also {
             it.viewModel = viewModel
             it.setLifecycleOwner(this)
 

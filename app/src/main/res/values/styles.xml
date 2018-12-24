@@ -16,7 +16,7 @@
 
     <style name="Content_Text.Empty" parent="TextAppearance.AppCompat.Subhead">
         <item name="android:padding">16dp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?colorOnBackgroundSecondary</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
@@ -51,9 +51,7 @@
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
     </style>
-    <style name="Dashboard.Widget.Title" parent="Material.ListHeader">
-        <!--<item name="android:layout_margin">16dp</item>-->
-    </style>
+    <style name="Dashboard.Widget.Title" parent="Material.ListHeader" />
     <style name="Dashboard.Widget.ButtonMore" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_gravity">end</item>

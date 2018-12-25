@@ -64,7 +64,7 @@
 
                 <TextView
                     android:id="@+id/directoriesHeader"
-                    style="@style/Material.ListHeader"
+                    style="@style/Widget.Material.ListHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/file_directories" />
@@ -79,7 +79,7 @@
 
                 <TextView
                     android:id="@+id/filesHeader"
-                    style="@style/Material.ListHeader"
+                    style="@style/Widget.Material.ListHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/file_files" />

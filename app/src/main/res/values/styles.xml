@@ -46,25 +46,25 @@
 
 
     <style name="Dashboard" />
-    <style name="Dashboard.Widget" parent="Material.Card.Margin">
+    <style name="Dashboard.Widget" parent="Widget.Material.Card.Margin">
         <item name="contentPadding">0dp</item>
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
     </style>
-    <style name="Dashboard.Widget.Title" parent="Material.ListHeader" />
-    <style name="Dashboard.Widget.ButtonMore" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Dashboard.Widget.Title" parent="Widget.Material.ListHeader" />
+    <style name="Dashboard.Widget.ButtonMore" parent="Widget.Material.Button.OutlinedButton">
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_gravity">end</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
     </style>
 
-    <style name="FileOverview.Card" parent="Material.Card.Margin">
+    <style name="FileOverview.Card" parent="Widget.Material.Card.Margin">
         <item name="contentPadding">0dp</item>
         <item name="contentPaddingBottom">4dp</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
-    <style name="FileOverview.Card_Icon" parent="Material.Icon.Dense.Inverse">
+    <style name="FileOverview.Card_Icon" parent="Widget.Material.Icon.Dense.Inverse">
         <item name="android:width">40dp</item>
     </style>
     <style name="FileOverview.Card_Title" parent="TextAppearance.AppCompat.Title.Inverse" />

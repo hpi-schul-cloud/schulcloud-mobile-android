@@ -13,7 +13,7 @@
     </data>
 
     <LinearLayout
-        style="@style/Material.ListItem"
+        style="@style/Widget.Material.ListItem"
         android:layout_width="match_parent"
         android:background="?android:attr/selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(course.id)}">
@@ -29,7 +29,7 @@
             tools:colorFilter="@{@color/brand_primary}" />
 
         <TextView
-            style="@style/Material.ListItem_TextPrimary"
+            style="@style/Widget.Material.ListItem.TextPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

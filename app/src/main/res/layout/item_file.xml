@@ -21,7 +21,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        style="@style/Material.ListItem.TwoLine"
+        style="@style/Widget.Material.ListItem.TwoLine"
         android:layout_width="match_parent"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(file)}">
@@ -40,7 +40,7 @@
 
         <TextView
             android:id="@+id/name"
-            style="@style/Material.ListItem_TextPrimary"
+            style="@style/Widget.Material.ListItem.TextPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/size"
-            style="@style/Material.ListItem_TextSecondary"
+            style="@style/Widget.Material.ListItem.TextSecondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{FormatUtilsKt.formatFileSize(file.size)}"

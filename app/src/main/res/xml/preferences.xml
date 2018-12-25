@@ -12,26 +12,26 @@
             app:title="@string/settings_theme_darkMode"
             app:useSimpleSummaryProvider="true" />
 
-        <!-- TODO: i18n -->
         <CheckBoxPreference
             app:defaultValue="false"
             app:dependency="theme_darkMode"
             app:isPreferenceVisible="false"
             app:key="theme_darkMode_ambientLight"
-            app:title="Activate when ambient light is low" />
+            app:title="@string/settings_theme_darkMode_ambientLight" />
 
         <CheckBoxPreference
             app:defaultValue="false"
             app:dependency="theme_darkMode"
+            app:isPreferenceVisible="false"
             app:key="theme_darkMode_night"
-            app:title="Activate at night" />
+            app:title="@string/settings_theme_darkMode_night" />
 
         <CheckBoxPreference
             app:defaultValue="false"
             app:dependency="theme_darkMode"
             app:isPreferenceVisible="false"
             app:key="theme_darkMode_powerSaver"
-            app:title="Activate when power saver is activated" />
+            app:title="@string/settings_theme_darkMode_powerSaver" />
 
     </PreferenceCategory>
 

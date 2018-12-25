@@ -120,15 +120,15 @@ class DarkModeUtils(val context: Context) {
     }
 
     private fun updateDarkMode() {
-        val ambientLightActive = Preferences.Theme.darkMode_ambientLight
-        val nightActive = Preferences.Theme.darkMode_night
-        val powerSaverActive = Preferences.Theme.darkMode_powerSaver
+        val ambientLightEnabled = Preferences.Theme.darkMode_ambientLight
+        val nightEnabled = Preferences.Theme.darkMode_night
+        val powerSaverEnabled = Preferences.Theme.darkMode_powerSaver
         val shouldBeActive = when {
             !Preferences.Theme.darkMode -> false
-            ambientLightActive || nightActive || powerSaverActive -> {
-                ((ambientLightActive && (ambientLightCriterion?.shouldEnable ?: false))
-                        || (nightActive && nightCriterion.shouldEnable))
-                        || (powerSaverActive && (powerSaverCriterion?.shouldEnable ?: false))
+            ambientLightEnabled || nightEnabled || powerSaverEnabled -> {
+                ((ambientLightEnabled && (ambientLightCriterion?.shouldEnable ?: false))
+                        || (nightEnabled && nightCriterion.shouldEnable))
+                        || (powerSaverEnabled && (powerSaverCriterion?.shouldEnable ?: false))
             }
             else -> true
         }

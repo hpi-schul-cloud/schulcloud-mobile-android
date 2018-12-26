@@ -2,10 +2,12 @@
 <resources>
 
     <declare-styleable name="AppTheme">
-        <attr name="colorOnPrimarySecondary" format="color" />
+        <attr name="colorPrimaryLight" format="color" />
+        <attr name="colorOnPrimaryMediumEmphasis" format="color" />
         <attr name="colorBackground" format="color" />
-        <attr name="colorOnBackgroundSecondary" format="color" />
-        <attr name="colorOnSurfaceSecondary" format="color" />
+        <attr name="colorOnBackgroundPrimary" format="color" />
+        <attr name="colorOnBackgroundMediumEmphasis" format="color" />
+        <attr name="colorOnSurfaceMediumEmphasis" format="color" />
         <attr name="colorOnSurfaceDivider" format="color" />
 
         <attr name="contentTextViewStyle" format="reference" />

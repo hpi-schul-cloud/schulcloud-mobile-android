@@ -27,7 +27,6 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -35,6 +34,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{event.title}"
+            android:textAppearance="?textAppearanceHeadline5"
             android:textColor="?colorOnSurface"
             app:layout_constraintBottom_toTopOf="@id/summary"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
@@ -102,7 +102,7 @@
 
         <ProgressBar
             android:id="@+id/progress"
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:progress="@{CurrentEventViewHolder.getProgress(event)}"
@@ -114,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dashboard_events_event_next"
-            android:textColor="?colorOnSurfaceSecondary"
+            android:textColor="?colorOnSurfaceMediumEmphasis"
             app:layout_constraintTop_toBottomOf="@id/progress" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -58,6 +58,12 @@ fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
 
 fun isLtr() = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_LTR
 
+@ColorInt
+fun Context.fitColorToTheme(@ColorInt color: Int): Int {
+
+    return 0
+}
+
 fun Context.getColorFromAttr(
     @AttrRes id: Int,
     typedValue: TypedValue = TypedValue(),

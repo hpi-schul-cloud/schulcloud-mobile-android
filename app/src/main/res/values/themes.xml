@@ -26,8 +26,8 @@
         <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorPrimaryVariant">?colorPrimaryDark</item>
-        <item name="colorOnPrimarySecondary">@color/material_text_secondary_light</item>
         <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+        <item name="colorOnPrimaryMediumEmphasis">@color/material_text_secondary_light</item>
         <item name="colorSecondary">@color/brand_secondary</item>
         <item name="colorAccent">?colorSecondary</item>
         <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
@@ -37,11 +37,12 @@
         <item name="android:colorBackground">?colorBackground</item>
         <item name="colorOnBackground">@color/material_text_primary_dark</item>
         <item name="android:textColorPrimary">?colorOnBackground</item>
-        <item name="android:textColorSecondary">?colorOnBackgroundSecondary</item>
-        <item name="colorOnBackgroundSecondary">@color/material_text_secondary_dark</item>
+        <item name="android:textColorSecondary">?colorOnBackgroundMediumEmphasis</item>
+        <item name="colorOnBackgroundPrimary">@color/brand_onBackgroundPrimary</item>
+        <item name="colorOnBackgroundMediumEmphasis">@color/material_text_secondary_dark</item>
         <item name="colorSurface">@color/theme_surface_light</item>
         <item name="colorOnSurface">@color/material_text_primary_dark</item>
-        <item name="colorOnSurfaceSecondary">@color/material_text_secondary_dark</item>
+        <item name="colorOnSurfaceMediumEmphasis">@color/material_text_secondary_dark</item>
         <item name="colorOnSurfaceDivider">@color/material_divider_dark</item>
         <item name="colorError">@color/theme_error</item>
         <item name="colorOnError">@color/material_text_primary_light</item>

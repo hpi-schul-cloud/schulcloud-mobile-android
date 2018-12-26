@@ -24,12 +24,12 @@
 
         <ImageView
             android:id="@+id/course_color"
-            style="@style/Material.ListItem_Icon"
+            style="@style/Widget.Material.ListItem_Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:src="@drawable/circle_course_color"
             app:colorFilter="@{course.color}" />
 
@@ -38,19 +38,19 @@
             style="@style/Widget.Material.ListItem.TextPrimary"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:text="@{course.name}"
             tools:text="Course name" />
 
         <TextView
-            style="@style/Material.ListItem_Icon"
+            style="@style/Widget.Material.ListItem_Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{Integer.toString(homeworkCount)}"
-            android:textColor="@color/brand_primary"
+            android:textColor="?colorOnBackgroundPrimary"
             tools:text="3" />
 
     </LinearLayout>

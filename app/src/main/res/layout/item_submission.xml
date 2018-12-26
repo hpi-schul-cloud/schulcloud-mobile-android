@@ -19,7 +19,7 @@
         android:id="@+id/wrapper"
         style="@style/Widget.Material.ListItem"
         android:layout_width="match_parent"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:foreground="?android:selectableItemBackground"
         android:onClick='@{() -> onSelected.invoke(submission != null ? submission.id : "")}'>
 
         <TextView
@@ -45,7 +45,7 @@
             tools:text="90%" />
 
         <ImageView
-            style="@style/Material.ListItem_Icon"
+            style="@style/Widget.Material.ListItem_Icon"
             android:layout_gravity="center_vertical"
             app:imageDrawable="@{submission == null ? @drawable/ic_brand_submission_pending : @drawable/ic_brand_submission_submitted}"
             tools:srcCompat="@drawable/ic_brand_submission_pending" />

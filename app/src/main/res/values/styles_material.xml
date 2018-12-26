@@ -3,6 +3,10 @@
     <style name="Widget" />
     <style name="Widget.Material" />
 
+    <style name="Widget.Material.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/material_text_btn_text</item>
+    </style>
+
     <!-- Card -->
     <style name="Widget.Material.Card">
         <item name="contentPadding">@dimen/material_card_padding</item>
@@ -22,10 +26,10 @@
         <item name="android:height">48dp</item>
         <item name="android:padding">8dp</item>
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
-        <item name="android:color">?colorOnBackgroundSecondary</item>
+        <item name="android:color">?colorOnBackgroundMediumEmphasis</item>
     </style>
     <style name="Widget.Material.Icon.Inverse">
-        <item name="android:color">?colorOnPrimarySecondary</item>
+        <item name="android:color">?colorOnPrimaryMediumEmphasis</item>
     </style>
     <style name="Widget.Material.Icon.Dense">
         <item name="android:width">40dp</item>
@@ -33,7 +37,7 @@
         <item name="android:textSize" tools:ignore="SpUsage">18dp</item>
     </style>
     <style name="Widget.Material.Icon.Dense.Inverse">
-        <item name="android:color">?colorOnPrimarySecondary</item>
+        <item name="android:color">?colorOnPrimaryMediumEmphasis</item>
     </style>
 
     <!-- List -->
@@ -79,7 +83,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
-    <style name="Material.ListItem_Icon" parent="Widget.Material.Icon">
+    <style name="Widget.Material.ListItem_Icon" parent="Widget.Material.Icon">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
     </style>

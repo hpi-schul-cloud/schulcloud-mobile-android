@@ -15,11 +15,11 @@
     <LinearLayout
         style="@style/Widget.Material.ListItem"
         android:layout_width="match_parent"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(course.id)}">
 
         <ImageView
-            style="@style/Material.ListItem_Icon"
+            style="@style/Widget.Material.ListItem_Icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"

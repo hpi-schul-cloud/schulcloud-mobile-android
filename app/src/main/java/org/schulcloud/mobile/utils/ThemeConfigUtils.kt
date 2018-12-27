@@ -1,6 +1,7 @@
 package org.schulcloud.mobile.utils
 
 import android.content.*
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -9,6 +10,9 @@ import android.os.Build
 import android.os.PowerManager
 import android.text.format.DateUtils
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
@@ -16,6 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.getSystemService
+import androidx.databinding.BindingAdapter
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -298,6 +303,30 @@ class DarkModeUtils(val context: Context) {
 }
 
 typealias ShouldEnableChangeListener = () -> Unit
+
+private const val DARK_MODE_COLOR_DARKEN = 0.6f
+
+@ColorInt
+fun Context.fitColorToTheme(@ColorInt color: Int): Int {
+    return if (!ThemeConfigUtils.getInstance(this).themeConfig.darkMode)
+        color
+    else {
+        val hsv = FloatArray(3)
+        Color.colorToHSV(color, hsv)
+        hsv[2] *= DARK_MODE_COLOR_DARKEN
+        Color.HSVToColor(hsv)
+    }
+}
+
+@BindingAdapter("themeAwareBackground")
+fun View.setThemeAwareBackground(@ColorInt color: Int) {
+    setBackgroundColor(context.fitColorToTheme(color))
+}
+
+@BindingAdapter("themeAwareColorFilter")
+fun ImageView.setThemeAwareColorFilter(@ColorInt color: Int) {
+    setColorFilter(context.fitColorToTheme(color))
+}
 
 
 fun Context.wrapWithTheme(layoutInflater: LayoutInflater): LayoutInflater {

@@ -23,7 +23,6 @@ import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_homework_grouped.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.controllers.login.LoginActivity
@@ -167,8 +166,9 @@ class MainActivity : BaseActivity() {
 
 
     private fun recalculateToolbarColors() {
-        this.course_color
-        val color = viewModel.config.value?.toolbarColor ?: getColorFromAttr(R.attr.colorSurface)
+        val color = viewModel.config.value?.toolbarColor
+                ?.let { fitColorToTheme(it) }
+                ?: getColorFromAttr(R.attr.colorSurface)
 
         viewModel.toolbarColors.value = ToolbarColors(color,
                 getTextColorForBackground(color), getTextColorSecondaryForBackground(color),

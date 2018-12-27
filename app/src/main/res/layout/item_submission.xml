@@ -19,6 +19,7 @@
         android:id="@+id/wrapper"
         style="@style/Widget.Material.ListItem"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:foreground="?android:selectableItemBackground"
         android:onClick='@{() -> onSelected.invoke(submission != null ? submission.id : "")}'>
 

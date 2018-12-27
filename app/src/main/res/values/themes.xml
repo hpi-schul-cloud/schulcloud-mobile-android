@@ -56,6 +56,12 @@
     </style>
 
 
+    <style name="ThemeOverlay.App.Dark.ActionBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="popupTheme">@style/ThemeOverlay.App.PopupOverlay</item>
+    </style>
+    <style name="ThemeOverlay.App.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+
     <style name="AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.App.BottomSheet.Modal</item>
     </style>

@@ -1,11 +1,5 @@
 <resources>
 
-    <style name="ThemeOverlay.App.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
-    <style name="ThemeOverlay.App.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
-    <style name="ThemeOverlay.App.Dark.ActionBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="popupTheme">@style/ThemeOverlay.App.PopupOverlay</item>
-    </style>
-
     <style name="Animation.Activity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>

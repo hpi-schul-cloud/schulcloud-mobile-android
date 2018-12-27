@@ -15,4 +15,7 @@
         <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
     </style>
 
+
+    <style name="ThemeOverlay.App.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Dark" />
+
 </resources>

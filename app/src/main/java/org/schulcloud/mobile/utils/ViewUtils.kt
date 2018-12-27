@@ -78,7 +78,8 @@ val Int.isLightColor: Boolean
                 LIGHTNESS_PART_BLUE * Color.blue(this) > LIGHTNESS_THRESHOLD
     }
 
-fun Context.getTextColorForBackground(color: Int): Int {
+@ColorInt
+fun Context.getTextColorForBackground(@ColorInt color: Int): Int {
     return ContextCompat.getColor(this, if (color.isLightColor) R.color.material_text_primary_dark
     else R.color.material_text_primary_light)
 }

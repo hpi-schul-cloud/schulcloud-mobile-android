@@ -16,14 +16,14 @@
         style="@style/Widget.Material.ListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
+        android:foreground="?android:selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(directory.name)}"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
             style="@style/Widget.Material.ListItem_Icon"
-            android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             app:srcCompat="@drawable/ic_folder" />
 
         <TextView

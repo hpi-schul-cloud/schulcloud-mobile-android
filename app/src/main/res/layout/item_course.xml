@@ -32,7 +32,6 @@
                 tools:background="@color/brand_primary" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -42,10 +41,10 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{course.name}"
+                android:textAppearance="?textAppearanceHeadline6"
                 tools:text="Course Title" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -56,6 +55,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="@{CourseViewHolder.teachersToShort(course.teachers)}"
+                android:textAppearance="?textAppearanceCaption"
                 tools:text="Course Teacher" />
 
         </LinearLayout>

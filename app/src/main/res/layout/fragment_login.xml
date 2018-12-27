@@ -10,7 +10,7 @@
         android:id="@+id/containerLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:drawable/divider_horizontal_dark"
+        android:divider="@drawable/divider"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
@@ -99,14 +99,14 @@
             android:paddingRight="@dimen/material_dividerMiddle_inset" />
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:text="@string/login_demo"
             android:textAlignment="center"
-            android:textColor="?android:textColorSecondary" />
+            android:textAppearance="?textAppearanceSubtitle1"
+            android:textColor="?colorOnBackgroundMediumEmphasis" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/demo_student"

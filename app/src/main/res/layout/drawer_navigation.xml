@@ -29,7 +29,6 @@
             android:minHeight="96dp">
 
             <TextView
-                style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -39,6 +38,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:text="@{viewModel.user.name}"
+                android:textAppearance="?textAppearanceHeadline6"
                 tools:text="Klara Fall" />
 
             <ImageView
@@ -68,7 +68,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/material_divider_dark" />
+            android:background="?colorOnSurfaceDivider" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"

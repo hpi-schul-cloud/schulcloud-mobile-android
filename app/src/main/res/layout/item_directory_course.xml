@@ -16,7 +16,7 @@
         style="@style/Widget.Material.ListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
+        android:background="?android:selectableItemBackground"
         android:onClick="@{() -> onSelected.invoke(course.id)}">
 
         <ImageView

@@ -152,7 +152,7 @@
     <string name="settings_theme_darkMode_summary_ambientLight">es dunkel ist</string>
     <string name="settings_theme_darkMode_summary_night">es Nacht ist</string>
     <string name="settings_theme_darkMode_summary_powerSaver">der Energiesparmodus aktiv ist</string>
-    <string name="settings_theme_darkMode_ambientLight">Bei Dunkelheit aktivieren</string>
+    <string name="settings_theme_darkMode_ambientLight">Bei dunkler Umgebung aktivieren</string>
     <string name="settings_theme_darkMode_night">Bei Nacht aktivieren</string>
     <string name="settings_theme_darkMode_powerSaver">Beim Energiesparmodus aktivieren</string>
     <string name="settings_theme_darkMode_night_summary_noLocationPermission">Ohne die Berechtigung kann der Sonnenauf- und -untergang nur geschätzt werden</string>

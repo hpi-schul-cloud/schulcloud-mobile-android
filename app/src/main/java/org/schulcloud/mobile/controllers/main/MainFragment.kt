@@ -88,6 +88,8 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
             if (id != 0)
                 menu.findItem(id)?.isVisible = false
 
+        mainActivity.updateToolbarColors()
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 

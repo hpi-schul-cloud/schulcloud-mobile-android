@@ -143,11 +143,6 @@ class MainActivity : BaseActivity() {
             super.onBackPressed()
     }
 
-    override fun openOptionsMenu() {
-        super.openOptionsMenu()
-        updateToolbarColors()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         optionsMenu = menu
         updateToolbarColors()
@@ -175,7 +170,7 @@ class MainActivity : BaseActivity() {
                 ColorUtils.blendARGB(color, Color.BLACK, DARKEN_FACTOR))
     }
 
-    private fun updateToolbarColors() {
+    fun updateToolbarColors() {
         val colors = viewModel.toolbarColors.value ?: return
         val toolbar = toolbar
 

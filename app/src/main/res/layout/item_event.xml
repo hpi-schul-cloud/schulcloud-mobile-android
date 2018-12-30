@@ -50,7 +50,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{event.summary}"
-            android:textAppearance="?textAppearanceBody2"
+            android:textAppearance="?textAppearanceBody1"
             android:visibility="@{!event.title.equals(event.summary)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"

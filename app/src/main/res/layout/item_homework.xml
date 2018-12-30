@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@{homework.description}"
-                android:textAppearance="?textAppearanceBody2"
+                android:textAppearance="?textAppearanceBody1"
                 android:visibility="@{ViewUtilsKt.toVisible(homework.description)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

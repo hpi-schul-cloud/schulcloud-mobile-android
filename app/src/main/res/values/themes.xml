@@ -8,6 +8,7 @@
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
 
         <item name="textAppearanceSubtitle2">@style/TextAppearance.App.Subtitle2</item>
+        <item name="textAppearanceBody1">?textAppearanceBody2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>
 
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.App.LargeComponent</item>

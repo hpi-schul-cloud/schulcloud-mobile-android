@@ -11,6 +11,7 @@ import android.os.PowerManager
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
@@ -139,6 +140,9 @@ class DarkModeUtils(val context: Context) {
         }
         if (isActive == shouldBeActive) return
 
+        // uiMode gets reset when a WebView is first instantiated.
+        // Source: https://groups.google.com/forum/#!topic/google-admob-ads-sdk/OZzHq_-wAFY
+        if (shouldBeActive) WebView(context)
         AppCompatDelegate.setDefaultNightMode(if (shouldBeActive) MODE_NIGHT_YES else MODE_NIGHT_NO)
         isActive = shouldBeActive
     }
@@ -157,7 +161,7 @@ class DarkModeUtils(val context: Context) {
     }
 
 
-    abstract class Criterion(val shouldEnableChangeListener: ShouldEnableChangeListener) {
+    private abstract class Criterion(val shouldEnableChangeListener: ShouldEnableChangeListener) {
         var shouldEnable by Delegates.changeObservable(false) { _, _, _ ->
             shouldEnableChangeListener()
         }
@@ -196,7 +200,7 @@ class DarkModeUtils(val context: Context) {
         protected abstract fun onStopMonitoring()
     }
 
-    class AmbientLightCriterion private constructor(
+    private class AmbientLightCriterion private constructor(
         context: Context,
         shouldEnableChangeListener: ShouldEnableChangeListener
     ) : Criterion(shouldEnableChangeListener) {
@@ -241,7 +245,7 @@ class DarkModeUtils(val context: Context) {
         }
     }
 
-    class NightCriterion(val context: Context, shouldEnableChangeListener: () -> Unit) :
+    private class NightCriterion(val context: Context, shouldEnableChangeListener: () -> Unit) :
             Criterion(shouldEnableChangeListener) {
         private var timer: Timer? = null
 
@@ -265,7 +269,10 @@ class DarkModeUtils(val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    class PowerSaverCriterion private constructor(val context: Context, shouldEnableChangeListener: () -> Unit) :
+    private class PowerSaverCriterion private constructor(
+        val context: Context,
+        shouldEnableChangeListener: () -> Unit
+    ) :
             Criterion(shouldEnableChangeListener) {
         companion object {
             fun createIfSupported(

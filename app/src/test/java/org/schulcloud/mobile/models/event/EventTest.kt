@@ -8,20 +8,21 @@ import org.junit.Test
 
 class EventTest {
     private companion object {
-        val ID = "id"
-        val TYPE = "type"
-        val TITLE = "title"
-        val ALLDAY = false
-        val START = 1L
-        val END = 2L
-        val SUMMARY = "summary"
-        val LOCATION = "location"
-        val DESCRIPTION = "description"
+        const val ID = "id"
+        const val TYPE = "type"
+        const val TITLE = "title"
+        const val ALLDAY = false
+        const val START = 1L
+        const val END = 2L
+        const val SUMMARY = "summary"
+        const val LOCATION = "location"
+        const val DESCRIPTION = "description"
         val INCLUDED = RealmList<Included>()
-        val COURSEID = "course"
-        val DURATION = 1L
+        const val COURSEID = "course"
+        const val DURATION = 1L
 
     }
+
     private val newEvent: Event
         get() = Event().apply {
             id = ID

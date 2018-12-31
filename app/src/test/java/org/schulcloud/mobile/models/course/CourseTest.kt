@@ -9,11 +9,11 @@ import org.schulcloud.mobile.models.user.User
 
 class CourseTest {
     private companion object {
-        val ID = "id"
-        val SCHOOLID = "schoolId"
-        val NAME = "name"
-        val DESCRIPTION = "description"
-        val COLOR = "#000000"
+        const val ID = "id"
+        const val SCHOOLID = "schoolId"
+        const val NAME = "name"
+        const val DESCRIPTION = "description"
+        const val COLOR = "#000000"
         val TEACHERS = RealmList<User>()
         val SUBSTITUTIONS = RealmList<User>()
         val USERS = RealmList<User>()
@@ -38,7 +38,7 @@ class CourseTest {
     }
 
     @Test
-    fun testGetProperties(){
+    fun testGetProperties() {
         assertEquals(ID, course.id)
         assertEquals(SCHOOLID, course.schoolId)
         assertEquals(NAME, course.name)

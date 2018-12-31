@@ -16,6 +16,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val TAG = SettingsFragment::class.simpleName!!
     }
 
+    // region Lifecycle
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
+
+        initTheme()
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -29,13 +36,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         super.onPause()
     }
+    // endregion
 
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences, rootKey)
-
-        initTheme()
-    }
 
     @Suppress("LocalVariableName")
     fun initTheme() {

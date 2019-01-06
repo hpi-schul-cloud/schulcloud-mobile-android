@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'de.mannodermaus.android-junit5'
 
 kotlin {
     experimental {
@@ -67,6 +68,16 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    testOptions {
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek2'
+                }
+            }
+        }
     }
 }
 

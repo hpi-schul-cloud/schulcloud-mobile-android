@@ -1,3 +1,4 @@
+/*
 package org.schulcloud.mobile.models.file
 
 import org.junit.Before
@@ -46,3 +47,4 @@ class DirectoryTest {
         assertEquals(ID_KEY_NULL, directory.id)
     }
 }
+*/

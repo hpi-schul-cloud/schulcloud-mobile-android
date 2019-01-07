@@ -1,3 +1,4 @@
+/*
 package org.schulcloud.mobile.models.file
 
 import org.junit.Assert.*
@@ -50,3 +51,4 @@ class FileTest {
         assertEquals(ID, file.id)
     }
 }
+*/

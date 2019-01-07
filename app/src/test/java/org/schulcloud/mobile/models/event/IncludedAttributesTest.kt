@@ -1,3 +1,4 @@
+/*
 package org.schulcloud.mobile.models.event
 
 import org.junit.Before
@@ -46,3 +47,4 @@ class IncludedAttributesTest {
         assertNull(includedAttributes.weekdayNumber)
     }
 }
+*/

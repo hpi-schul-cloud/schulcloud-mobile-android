@@ -54,14 +54,16 @@ dependencies {
     // other
     implementation "androidx.core:core-ktx:1.0.0-rc01"
 
-    // unit tests
-    testImplementation "junit:junit:4.12"
-
     // spek
-    def spekVersion = '2.0.0-alpha.1'
+    def spekVersion = '2.0.0-alpha.2'
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    // assertion
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+
+//    testImplementation "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+//    testImplementation "org.junit.platform:junit-platform-runner:$spekVersion"
 
     // instrumented tests
     androidTestImplementation "androidx.annotation:annotation:1.0.0-rc01"

@@ -1,3 +1,4 @@
+/*
 package org.schulcloud.mobile.models.event
 
 import org.junit.Before
@@ -32,3 +33,4 @@ class IncludedTest {
         assertEquals(ATTRIBUTES, included.attributes)
     }
 }
+*/

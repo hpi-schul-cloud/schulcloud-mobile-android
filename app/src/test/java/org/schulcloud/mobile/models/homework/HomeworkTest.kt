@@ -1,3 +1,4 @@
+/*
 package org.schulcloud.mobile.models.homework
 
 import io.realm.RealmList
@@ -23,10 +24,12 @@ class HomeworkTest {
         val COURSE_SUBSTITUTION_TEACHER = HomeworkCourse().apply {
             substitutionIds = RealmList(RealmString("teacherIdOther"))
         }
-        /*val DUEDATE_DAY_DIFFERENCE = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        */
+/*val DUEDATE_DAY_DIFFERENCE = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .print(LocalDateTime.now().plusDays(2))
         val DUEDATE_HOUR_DIFFERENCE = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                .print(LocalDateTime.now().plusHours(3).plusMinutes(1))*/
+                .print(LocalDateTime.now().plusHours(3).plusMinutes(1))*//*
+
         const val DUETIMESPANDAYS = 2
         const val DUETIMESPANHOURS = 3
     }
@@ -75,13 +78,15 @@ class HomeworkTest {
         assertNotNull(homework.dueDateTime)
     }
 
-   /* @Test
+   */
+/* @Test
     fun testDuetimespanCorrect() {
         homework.dueDate = DUEDATE_DAY_DIFFERENCE
         assertEquals(DUETIMESPANDAYS, homework.dueTimespanDays)
         homework.dueDate = DUEDATE_HOUR_DIFFERENCE
         assertEquals(DUETIMESPANHOURS, homework.dueTimespanHours)
-    }*/
+    }*//*
+
 
     @Test
     fun testIsteacherFalseWhenUserAndCourseSubstitutionsNotTeacherid(){
@@ -98,3 +103,4 @@ class HomeworkTest {
 
     // TODO: add tests for canSeeSubmissions
 }
+*/

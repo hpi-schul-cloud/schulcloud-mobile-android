@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.models.course
+/*package org.schulcloud.mobile.models.course
 
 import io.realm.RealmList
 import org.junit.Before
@@ -48,4 +48,4 @@ class CourseTest {
         assertEquals(SUBSTITUTIONS, course.substitutions)
         assertEquals(USERS, course.users)
     }
-}
+}*/

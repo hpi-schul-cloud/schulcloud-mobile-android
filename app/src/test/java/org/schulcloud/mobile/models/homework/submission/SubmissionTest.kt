@@ -1,3 +1,4 @@
+/*
 package org.schulcloud.mobile.models.homework.submission
 
 import org.junit.Assert.*
@@ -48,3 +49,4 @@ class SubmissionTest {
         assertEquals(COMMENTS, submission.comments)
     }
 }
+*/

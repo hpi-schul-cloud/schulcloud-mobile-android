@@ -5,18 +5,18 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-const val ID = "id"
-const val TYPE = "type"
-const val TITLE = "title"
-const val ALLDAY = false
-const val START = 1L
-const val END = 2L
-const val SUMMARY = "summary"
-const val LOCATION = "location"
-const val DESCRIPTION = "description"
-val INCLUDED = RealmList<Included>()
-const val COURSEID = "course"
-const val DURATION = 1L
+private const val ID = "id"
+private const val TYPE = "type"
+private const val TITLE = "title"
+private const val ALLDAY = false
+private const val START = 1L
+private const val END = 2L
+private const val SUMMARY = "summary"
+private const val LOCATION = "location"
+private const val DESCRIPTION = "description"
+private val INCLUDED = RealmList<Included>()
+private const val COURSEID = "course"
+private const val DURATION = 1L
 
 object EventSpec : Spek({
     describe("An event") {
@@ -36,9 +36,8 @@ object EventSpec : Spek({
             }
         }
 
-
-        describe("Property access") {
-            it("should return the correct value") {
+        describe("property access") {
+            it("should return the assigned value") {
                 assertEquals(event.id, ID)
                 assertEquals(event.type, TYPE)
                 assertEquals(event.title, TITLE)

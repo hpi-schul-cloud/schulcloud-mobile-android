@@ -30,8 +30,8 @@ object CourseSpec : Spek({
             }
         }
 
-        describe("Property access"){
-            it("should return the correct value"){
+        describe("property access"){
+            it("should return the assigned value"){
                 assertEquals(ID, course.id)
                 assertEquals(SCHOOLID, course.schoolId)
                 assertEquals(NAME, course.name)

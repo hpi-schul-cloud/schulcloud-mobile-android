@@ -55,13 +55,17 @@ dependencies {
     implementation "androidx.core:core-ktx:1.0.1"
     androidTestImplementation "androidx.annotation:annotation:1.0.1"
 
-    // spek
+    // unit tests
     def spekVersion = '2.0.0-rc.1'
+    def mockitoVersion = '2.23.4'
+    def mockkVersion = '1.9.kotlin12'
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    // assertion
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "io.mockk:mockk:$mockkVersion"
+
 
 //    testImplementation "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
 //    testImplementation "org.junit.platform:junit-platform-runner:$spekVersion"

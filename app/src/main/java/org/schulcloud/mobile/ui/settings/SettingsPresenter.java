@@ -3,9 +3,6 @@ package org.schulcloud.mobile.ui.settings;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.schulcloud.mobile.R;
 import org.schulcloud.mobile.data.datamanagers.EventDataManager;
@@ -16,7 +13,6 @@ import org.schulcloud.mobile.data.model.Device;
 import org.schulcloud.mobile.data.model.Event;
 import org.schulcloud.mobile.data.model.jsonApi.Included;
 import org.schulcloud.mobile.data.model.jsonApi.IncludedAttributes;
-import org.schulcloud.mobile.data.model.requestBodies.DeviceRequest;
 import org.schulcloud.mobile.injection.ConfigPersistent;
 import org.schulcloud.mobile.ui.base.BasePresenter;
 import org.schulcloud.mobile.util.CalendarContentUtil;
@@ -159,24 +155,6 @@ public class SettingsPresenter extends BasePresenter<SettingsMvpView> {
     }
 
     /* Notifications */
-    public void registerDevice() {
-        if (mNotificationDataManager.getPreferencesHelper().getMessagingToken().equals("null")) {
-            String token = FirebaseInstanceId.getInstance().getToken();
-            Log.d("FirebaseID", "Refreshed token: " + token);
-
-            Log.d("FirebaseID", "sending registration to Server");
-            DeviceRequest deviceRequest = new DeviceRequest("firebase", "mobile",
-                    android.os.Build.MODEL + " (" + android.os.Build.PRODUCT + ")",
-                    mUserDataManager.getCurrentUserId(), token, android.os.Build.VERSION.INCREMENTAL);
-
-            RxUtil.unsubscribe(mEventsSubscription);
-            mEventsSubscription = mNotificationDataManager.createDevice(deviceRequest, token)
-                    .subscribe(
-                            deviceResponse -> {},
-                            throwable -> {},
-                            () -> sendToView(SettingsMvpView::reloadDevices));
-        }
-    }
     public void loadDevices() {
         RxUtil.unsubscribe(mDevicesSubscription);
         mDevicesSubscription = mNotificationDataManager.getDevices()

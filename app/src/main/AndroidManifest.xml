@@ -73,15 +73,6 @@
             android:label="@string/settings_title"
             android:parentActivityName=".ui.main.MainActivity" />
 
-        <service
-            android:name=".util.firebase.MessagingService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <service android:name=".data.sync.CourseSyncService" />
 
         <receiver

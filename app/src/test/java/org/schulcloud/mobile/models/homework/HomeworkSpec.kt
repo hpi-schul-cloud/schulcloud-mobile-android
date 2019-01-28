@@ -1,14 +1,13 @@
 package org.schulcloud.mobile.models.homework
 
 import io.mockk.every
-import io.mockk.mockkObject
+import io.mockk.mockkStatic
 import io.realm.RealmList
 import org.schulcloud.mobile.models.base.RealmString
 import org.schulcloud.mobile.models.user.UserRepository
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.*
-
 
 private const val ID = "id"
 private const val TEACHERID = "teacherId"
@@ -28,9 +27,10 @@ private val COURSE_SUBSTITUTION_TEACHER = HomeworkCourse().apply {
 
 object HomeworkSpec : Spek({
     describe("A homework") {
-        mockkObject(UserRepository)
-        every{UserRepository.userId} answers {USERID}
-
+        beforeGroup {
+            mockkStatic(UserRepository::class)
+            every{UserRepository.userId} returns USERID
+        }
         val homework by memoized {
             Homework().apply {
                 id = ID
@@ -93,7 +93,7 @@ object HomeworkSpec : Spek({
                 assertTrue(homework.isTeacher(TEACHERID))
             }
         }
-        // TODO: mock dependencies
+        // TODO: mock context for jodatime
 
         describe("making homework not restricted") {
             beforeEach {

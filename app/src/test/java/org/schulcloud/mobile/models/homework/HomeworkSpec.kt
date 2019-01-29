@@ -2,7 +2,11 @@ package org.schulcloud.mobile.models.homework
 
 import io.mockk.every
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import io.realm.RealmList
+import org.joda.time.DateTime
+import org.joda.time.DateTimeUtils
+import org.joda.time.DateTimeUtils.getInstantMillis
 import org.schulcloud.mobile.models.base.RealmString
 import org.schulcloud.mobile.models.user.UserRepository
 import org.spekframework.spek2.Spek
@@ -20,6 +24,9 @@ private const val PUBLICSUBMISSIONS = true
 private const val INVALID_DUEDATE = "invDueDate"
 private const val VALID_DUEDATE = "2020-07-12T10:10:10.001Z"
 private const val USERID = "UserId"
+private val FAKE_DATE = DateTime(2020, 7, 10, 9, 10, 10, 1)
+private const val DUETIMESPAN_DAYS = 2
+private const val DUETIMESPAN_HOURS = 49
 private const val USERID_TEACHER_OTHER = "teacherIdOther"
 private val COURSE_SUBSTITUTION_TEACHER = HomeworkCourse().apply {
     substitutionIds = RealmList(RealmString("teacherIdOther"))
@@ -27,10 +34,6 @@ private val COURSE_SUBSTITUTION_TEACHER = HomeworkCourse().apply {
 
 object HomeworkSpec : Spek({
     describe("A homework") {
-        beforeGroup {
-            mockkStatic(UserRepository::class)
-            every{UserRepository.userId} returns USERID
-        }
         val homework by memoized {
             Homework().apply {
                 id = ID
@@ -45,7 +48,6 @@ object HomeworkSpec : Spek({
         }
 
         describe("property access") {
-
             it("should return the assigned value") {
                 assertEquals(ID, homework.id)
                 assertEquals(TEACHERID, homework.teacherId)
@@ -61,15 +63,20 @@ object HomeworkSpec : Spek({
         describe("setting valid dueDate") {
             beforeEach {
                 homework.dueDate = VALID_DUEDATE
+                DateTimeUtils.setCurrentMillisFixed(getInstantMillis(FAKE_DATE))
             }
 
             it("dueDateTime should not be null") {
                 assertNotNull(homework.dueDateTime)
             }
 
-            it("timespans should not be null") {
-                assertNotNull(homework.dueTimespanHours)
-                assertNotNull(homework.dueTimespanDays)
+            it("timespans should be correct") {
+                assertEquals(DUETIMESPAN_HOURS, homework.dueTimespanHours)
+                assertEquals(DUETIMESPAN_DAYS, homework.dueTimespanDays)
+            }
+
+            afterEach {
+                DateTimeUtils.setCurrentMillisSystem()
             }
         }
 
@@ -93,15 +100,15 @@ object HomeworkSpec : Spek({
                 assertTrue(homework.isTeacher(TEACHERID))
             }
         }
-        // TODO: mock context for jodatime
 
-        describe("making homework not restricted") {
+        describe("setting homework not restricted") {
             beforeEach {
+                mockkStatic(UserRepository::class)
+                every { UserRepository.userId } returns USERID
                 homework.restricted = false
-
             }
 
-            describe("making submissions public") {
+            describe("setting submissions public") {
                 beforeEach {
                     homework.publicSubmissions = true
                 }
@@ -110,13 +117,17 @@ object HomeworkSpec : Spek({
                 }
             }
 
-            describe("making submissions not public") {
+            describe("setting submissions not public") {
                 beforeEach {
                     homework.publicSubmissions = false
                 }
                 it("user should not be able to see submissions") {
                     assertFalse(homework.canSeeSubmissions())
                 }
+            }
+
+            afterEach {
+                unmockkStatic(UserRepository::class)
             }
         }
     }

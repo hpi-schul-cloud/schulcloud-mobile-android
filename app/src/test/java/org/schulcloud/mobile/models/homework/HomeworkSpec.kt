@@ -27,6 +27,7 @@ private const val USERID = "UserId"
 private val FAKE_DATE = DateTime(2020, 7, 10, 9, 10, 10, 1)
 private const val DUETIMESPAN_DAYS = 2
 private const val DUETIMESPAN_HOURS = 49
+//TODO: add teacher testing or remove those vals
 private const val USERID_TEACHER_OTHER = "teacherIdOther"
 private val COURSE_SUBSTITUTION_TEACHER = HomeworkCourse().apply {
     substitutionIds = RealmList(RealmString("teacherIdOther"))
@@ -66,6 +67,10 @@ object HomeworkSpec : Spek({
                 DateTimeUtils.setCurrentMillisFixed(getInstantMillis(FAKE_DATE))
             }
 
+            afterEach {
+                DateTimeUtils.setCurrentMillisSystem()
+            }
+
             it("dueDateTime should not be null") {
                 assertNotNull(homework.dueDateTime)
             }
@@ -73,10 +78,6 @@ object HomeworkSpec : Spek({
             it("timespans should be correct") {
                 assertEquals(DUETIMESPAN_HOURS, homework.dueTimespanHours)
                 assertEquals(DUETIMESPAN_DAYS, homework.dueTimespanDays)
-            }
-
-            afterEach {
-                DateTimeUtils.setCurrentMillisSystem()
             }
         }
 
@@ -108,6 +109,10 @@ object HomeworkSpec : Spek({
                 homework.restricted = false
             }
 
+            afterEach {
+                unmockkStatic(UserRepository::class)
+            }
+
             describe("setting submissions public") {
                 beforeEach {
                     homework.publicSubmissions = true
@@ -124,10 +129,6 @@ object HomeworkSpec : Spek({
                 it("user should not be able to see submissions") {
                     assertFalse(homework.canSeeSubmissions())
                 }
-            }
-
-            afterEach {
-                unmockkStatic(UserRepository::class)
             }
         }
     }

@@ -60,6 +60,7 @@ dependencies {
     def spekVersion = '2.0.0-rc.1'
     def mockitoVersion = '2.23.4'
     def mockkVersion = '1.9.kotlin12'
+    testImplementation "android.arch.core:core-testing:1.1.1"
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
@@ -67,6 +68,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "io.mockk:mockk:$mockkVersion"
     testImplementation "joda-time:joda-time:${jodatimeVersion}"
+    //for mocking realm
+    testImplementation "io.reactivex.rxjava2:rxjava:2.2.6"
 
 
 //    testImplementation "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"

@@ -14,9 +14,6 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-@Rule
-@JvmField
-val taskExecutorRule: TestRule = InstantTaskExecutorRule()
 private val courses = courseList(5)
 lateinit var mockRealm: Realm
 object CourseListViewModelSpec : Spek({

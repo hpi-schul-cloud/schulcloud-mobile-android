@@ -1,8 +1,10 @@
 package org.schulcloud.mobile
 
-import androidx.lifecycle.LiveData
 import org.schulcloud.mobile.models.course.Course
-import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.models.event.Event
+import org.schulcloud.mobile.models.homework.Homework
+import org.schulcloud.mobile.models.news.News
+import org.schulcloud.mobile.models.user.User
 
 fun courseList(number: Int): List<Course> {
     val courses = mutableListOf<Course>()
@@ -13,6 +15,51 @@ fun courseList(number: Int): List<Course> {
 
 fun course(uniqueSequence : String): Course {
     return Course().apply {
+        id = uniqueSequence
+    }
+}
+
+fun eventList(number: Int): List<Event> {
+    val events = mutableListOf<Event>()
+    for (i in 1..number)
+        events.add(event(i.toString()))
+    return events
+}
+
+fun event(uniqueSequence : String): Event {
+    return Event().apply {
+        id = uniqueSequence
+    }
+}
+
+fun homeworkList(number: Int): List<Homework> {
+    val homeworkList = mutableListOf<Homework>()
+    for (i in 1..number)
+        homeworkList.add(homework(i.toString()))
+    return homeworkList
+}
+
+fun homework(uniqueSequence : String): Homework {
+    return Homework().apply {
+        id = uniqueSequence
+    }
+}
+
+fun newsList(number: Int): List<News> {
+    val newsList = mutableListOf<News>()
+    for (i in 1..number)
+        newsList.add(news(i.toString()))
+    return newsList
+}
+
+fun news(uniqueSequence : String): News {
+    return News().apply {
+        id = uniqueSequence
+    }
+}
+
+fun user(uniqueSequence : String): User {
+    return User().apply {
         id = uniqueSequence
     }
 }

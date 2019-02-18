@@ -2,9 +2,9 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.courseList
 import org.schulcloud.mobile.mockRealmDefaultInstance
-import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.news.NewsRepository
+import org.schulcloud.mobile.newsList
 import org.schulcloud.mobile.prepareTaskExecutor
 import org.schulcloud.mobile.resetTaskExecutor
 import org.schulcloud.mobile.utils.asLiveData
@@ -12,13 +12,13 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val courses = courseList(5)
+private val newsList = newsList(5)
 private lateinit var mockRealm: Realm
 
-object CourseListViewModelSpec : Spek({
-    describe("A courseListViewModel") {
-        val courseListViewModel by memoized {
-            CourseListViewModel()
+object NewsListViewModelSpec : Spek({
+    describe("A newsListViewModel") {
+        val newsListViewModel by memoized {
+            NewsListViewModel()
         }
 
         beforeEachTest {
@@ -26,19 +26,19 @@ object CourseListViewModelSpec : Spek({
             mockRealm = mockk()
             mockRealmDefaultInstance(mockRealm)
 
-            mockkObject(CourseRepository)
-            every { CourseRepository.courses(mockRealm) } returns courses.asLiveData()
+            mockkObject(NewsRepository)
+            every { NewsRepository.newsList(mockRealm) } returns newsList.asLiveData()
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(CourseRepository)
+            unmockkObject(NewsRepository)
             unmockkStatic(Realm::class)
         }
 
         describe("data access") {
             it("should return the correct data") {
-                assertEquals(courses, courseListViewModel.courses.value)
+                assertEquals(newsList, newsListViewModel.news.value)
             }
         }
     }

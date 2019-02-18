@@ -2,23 +2,23 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.courseList
 import org.schulcloud.mobile.mockRealmDefaultInstance
-import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.prepareTaskExecutor
 import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.user
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val courses = courseList(5)
+private val user = user("id")
 private lateinit var mockRealm: Realm
 
-object CourseListViewModelSpec : Spek({
-    describe("A courseListViewModel") {
-        val courseListViewModel by memoized {
-            CourseListViewModel()
+object NavigationDrawerViewModelSpec : Spek({
+    describe("A navigationDrawerViewModel") {
+        val navigationDrawerViewModel by memoized {
+            NavigationDrawerViewModel()
         }
 
         beforeEachTest {
@@ -26,19 +26,19 @@ object CourseListViewModelSpec : Spek({
             mockRealm = mockk()
             mockRealmDefaultInstance(mockRealm)
 
-            mockkObject(CourseRepository)
-            every { CourseRepository.courses(mockRealm) } returns courses.asLiveData()
+            mockkObject(UserRepository)
+            every { UserRepository.currentUser(mockRealm) } returns user.asLiveData()
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(CourseRepository)
+            unmockkObject(UserRepository)
             unmockkStatic(Realm::class)
         }
 
         describe("data access") {
             it("should return the correct data") {
-                assertEquals(courses, courseListViewModel.courses.value)
+                assertEquals(user, navigationDrawerViewModel.user.value)
             }
         }
     }

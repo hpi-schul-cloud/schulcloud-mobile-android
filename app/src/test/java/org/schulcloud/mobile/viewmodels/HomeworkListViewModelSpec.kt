@@ -2,9 +2,9 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.courseList
+import org.schulcloud.mobile.homeworkList
 import org.schulcloud.mobile.mockRealmDefaultInstance
-import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.prepareTaskExecutor
 import org.schulcloud.mobile.resetTaskExecutor
 import org.schulcloud.mobile.utils.asLiveData
@@ -12,13 +12,13 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val courses = courseList(5)
+private val homeworkList = homeworkList(5)
 private lateinit var mockRealm: Realm
 
-object CourseListViewModelSpec : Spek({
-    describe("A courseListViewModel") {
-        val courseListViewModel by memoized {
-            CourseListViewModel()
+object HomeworkListViewModelSpec : Spek({
+    describe("A homeworkListViewModel") {
+        val homeworkListViewModel by memoized {
+            HomeworkListViewModel()
         }
 
         beforeEachTest {
@@ -26,19 +26,19 @@ object CourseListViewModelSpec : Spek({
             mockRealm = mockk()
             mockRealmDefaultInstance(mockRealm)
 
-            mockkObject(CourseRepository)
-            every { CourseRepository.courses(mockRealm) } returns courses.asLiveData()
+            mockkObject(HomeworkRepository)
+            every { HomeworkRepository.homeworkList(mockRealm) } returns homeworkList.asLiveData()
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(CourseRepository)
+            unmockkObject(HomeworkRepository)
             unmockkStatic(Realm::class)
         }
 
         describe("data access") {
             it("should return the correct data") {
-                assertEquals(courses, courseListViewModel.courses.value)
+                assertEquals(homeworkList, homeworkListViewModel.homework.value)
             }
         }
     }

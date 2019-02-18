@@ -15,10 +15,10 @@ import kotlin.test.assertEquals
 private val courses = courseList(5)
 private lateinit var mockRealm: Realm
 
-object CourseListViewModelSpec : Spek({
-    describe("A courseListViewModel") {
-        val courseListViewModel by memoized {
-            CourseListViewModel()
+object FileOverviewViewModelSpec : Spek({
+    describe("A fileOverviewViewModel") {
+        val fileOverviewViewModel by memoized {
+            FileOverviewViewModel()
         }
 
         beforeEachTest {
@@ -38,7 +38,7 @@ object CourseListViewModelSpec : Spek({
 
         describe("data access") {
             it("should return the correct data") {
-                assertEquals(courses, courseListViewModel.courses.value)
+                assertEquals(courses, fileOverviewViewModel.courses.value)
             }
         }
     }

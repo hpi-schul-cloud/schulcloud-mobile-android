@@ -1,21 +1,22 @@
 package org.schulcloud.mobile.viewmodels
 
-import androidx.arch.core.executor.ArchTaskExecutor
-import androidx.arch.core.executor.TaskExecutor
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import io.mockk.*
 import io.realm.Realm
-import org.junit.Rule
-import org.junit.rules.TestRule
 import org.schulcloud.mobile.courseList
+import org.schulcloud.mobile.mockRealmDefaultInstance
+import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
+import org.schulcloud.mobile.prepareTaskExecutor
+import org.schulcloud.mobile.resetTaskExecutor
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
 private val courses = courseList(5)
-lateinit var mockRealm: Realm
+private lateinit var mockRealm: Realm
+private lateinit var courseLiveData: LiveData<List<Course>>
 object CourseListViewModelSpec : Spek({
 
     describe("A courseListViewModel") {
@@ -24,33 +25,17 @@ object CourseListViewModelSpec : Spek({
         }
 
         beforeEachTest {
-            // In order to test LiveData, the `InstantTaskExecutorRule` rule needs to be applied via JUnit.
-            // As we are running it with Spek, the "rule" will be implemented in this way instead
-            // https://github.com/spekframework/spek/issues/337#issuecomment-396000505
-            ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
-                override fun executeOnDiskIO(runnable: Runnable) {
-                    runnable.run()
-                }
-
-                override fun isMainThread(): Boolean {
-                    return true
-                }
-
-                override fun postToMainThread(runnable: Runnable) {
-                    runnable.run()
-                }
-            })
-
+            prepareTaskExecutor()
             mockRealm = mockk()
-            mockkStatic(Realm::class)
-            every { Realm.getDefaultInstance() } returns mockRealm
+            mockRealmDefaultInstance(mockRealm)
+            courseLiveData = courses.asLiveData()
 
             mockkObject(CourseRepository)
-            every { CourseRepository.courses(mockRealm) } returns courses.asLiveData()
+            every { CourseRepository.courses(mockRealm) } returns courseLiveData
         }
 
         afterEach {
-            ArchTaskExecutor.getInstance().setDelegate(null)
+            resetTaskExecutor()
             unmockkObject(CourseRepository)
             unmockkStatic(Realm::class)
         }

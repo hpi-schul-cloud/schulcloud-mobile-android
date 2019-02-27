@@ -6,29 +6,29 @@ import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
 private const val TEXT = "text"
-private val RESOURCES = RealmList<Resource>()
+private val resources = RealmList<Resource>()
 private const val URL = "url"
 private const val MATERIALID = "materialId"
 private const val TITLE = "title"
 private const val DESCRIPTION = "description"
 
 object ContentSpec : Spek({
-    describe("An ") {
+    describe("A  content") {
         val content by memoized {
-        Content().apply {
-            text = TEXT
-            resources = RESOURCES
-            url = URL
-            materialId = MATERIALID
-            title = TITLE
-            description = DESCRIPTION
+        Content().also {
+            it.text = TEXT
+            it.resources = resources
+            it.url = URL
+            it.materialId = MATERIALID
+            it.title = TITLE
+            it.description = DESCRIPTION
         }
     }
 
         describe("property access") {
             it("should return the assigned value") {
                 assertEquals(TEXT, content.text)
-                assertEquals(RESOURCES, content.resources)
+                assertEquals(resources, content.resources)
                 assertEquals(URL, content.url)
                 assertEquals(MATERIALID, content.materialId)
                 assertEquals(TITLE, content.title)

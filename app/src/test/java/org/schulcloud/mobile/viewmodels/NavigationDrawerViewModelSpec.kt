@@ -32,8 +32,7 @@ object NavigationDrawerViewModelSpec : Spek({
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(UserRepository)
-            unmockkStatic(Realm::class)
+            unmockkAll()
         }
 
         describe("data access") {

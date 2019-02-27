@@ -32,8 +32,7 @@ object EventListViewModelSpec : Spek({
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(EventRepository)
-            unmockkStatic(Realm::class)
+            unmockkAll()
         }
 
         describe("data access") {

@@ -13,20 +13,20 @@ private const val NAME = "name"
 private const val TIME = "time"
 private const val POSITION = 1
 private const val DATE = "date"
-private val CONTENTS = RealmList<ContentWrapper>()
-private val URL = "$HOST/courses/courseId/topics/id"
+private val contents = RealmList<ContentWrapper>()
+private val url = "$HOST/courses/courseId/topics/id"
 
 object TopicSpec : Spek({
     describe("A topic") {
         val topic by memoized {
-            Topic().apply {
-                id = ID
-                courseId = COURSEID
-                name = NAME
-                time = TIME
-                date = DATE
-                position = POSITION
-                contents = CONTENTS
+            Topic().also {
+                it.id = ID
+                it.courseId = COURSEID
+                it.name = NAME
+                it.time = TIME
+                it.date = DATE
+                it.position = POSITION
+                it.contents = org.schulcloud.mobile.models.topic.contents
             }
         }
 
@@ -38,11 +38,11 @@ object TopicSpec : Spek({
                 assertEquals(TIME, topic.time)
                 assertEquals(DATE, topic.date)
                 assertEquals(POSITION, topic.position)
-                assertEquals(CONTENTS, topic.contents)
+                assertEquals(contents, topic.contents)
             }
 
             it("url should include id and courseId"){
-                assertEquals(URL, topic.url)
+                assertEquals(url, topic.url)
             }
         }
     }

@@ -32,8 +32,7 @@ object HomeworkWidgetViewModelSpec : Spek({
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(HomeworkRepository)
-            unmockkStatic(Realm::class)
+            unmockkAll()
         }
 
         describe("data access") {

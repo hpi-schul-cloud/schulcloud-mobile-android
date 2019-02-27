@@ -32,8 +32,7 @@ object HomeworkListViewModelSpec : Spek({
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(HomeworkRepository)
-            unmockkStatic(Realm::class)
+            unmockkAll()
         }
 
         describe("data access") {

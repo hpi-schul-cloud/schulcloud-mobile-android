@@ -32,8 +32,7 @@ object FileOverviewViewModelSpec : Spek({
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(CourseRepository)
-            unmockkStatic(Realm::class)
+            unmockkAll()
         }
 
         describe("data access") {

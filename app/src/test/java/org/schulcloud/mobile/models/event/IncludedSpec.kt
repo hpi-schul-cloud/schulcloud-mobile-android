@@ -6,15 +6,15 @@ import kotlin.test.assertEquals
 
 private const val TYPE = "type"
 private const val ID = "id"
-private val ATTRIBUTES = IncludedAttributes()
+private val attributes = IncludedAttributes()
 
 object IncludedSpec : Spek({
     describe("An included") {
         val included by memoized {
-            Included().apply {
-                type = TYPE
-                id = ID
-                attributes = ATTRIBUTES
+            Included().also {
+                it.type = TYPE
+                it.id = ID
+                it.attributes = attributes
             }
         }
 
@@ -22,7 +22,7 @@ object IncludedSpec : Spek({
             it("should return the assigned value") {
                 assertEquals(TYPE, included.type)
                 assertEquals(ID, included.id)
-                assertEquals(ATTRIBUTES, included.attributes)
+                assertEquals(attributes, included.attributes)
             }
         }
     }

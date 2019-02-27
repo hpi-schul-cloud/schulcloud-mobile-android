@@ -12,20 +12,20 @@ private const val COMMENT = "comment"
 private const val CREATEDAT = "createdAt"
 private const val GRADE = 15
 private const val GRADECOMMENT = "gradeComment"
-private val COMMENTS = RealmList<Comment>()
+private val comments = RealmList<Comment>()
 
 object SubmissionSpec : Spek({
     describe("A submission") {
         val submission by memoized {
-            Submission().apply {
-                id = ID
-                homeworkId = HOMEWORKID
-                studentId = STUDENTID
-                comment = COMMENT
-                createdAt = CREATEDAT
-                grade = GRADE
-                gradeComment = GRADECOMMENT
-                comments = COMMENTS
+            Submission().also {
+                it.id = ID
+                it.homeworkId = HOMEWORKID
+                it.studentId = STUDENTID
+                it.comment = COMMENT
+                it.createdAt = CREATEDAT
+                it.grade = GRADE
+                it.gradeComment = GRADECOMMENT
+                it.comments = comments
             }
         }
 
@@ -38,7 +38,7 @@ object SubmissionSpec : Spek({
                 assertEquals(CREATEDAT, submission.createdAt)
                 assertEquals(GRADE, submission.grade)
                 assertEquals(GRADECOMMENT, submission.gradeComment)
-                assertEquals(COMMENTS, submission.comments)
+                assertEquals(comments, submission.comments)
             }
         }
     }

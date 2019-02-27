@@ -11,22 +11,22 @@ private const val SCHOOLID = "schoolId"
 private const val NAME = "name"
 private const val DESCRIPTION = "description"
 private const val COLOR = "#000000"
-private val TEACHERS = RealmList<User>()
-private val SUBSTITUTIONS = RealmList<User>()
-private val USERS = RealmList<User>()
+private val teachers = RealmList<User>()
+private val substitutions = RealmList<User>()
+private val users = RealmList<User>()
 
 object CourseSpec : Spek({
     describe("A course") {
         val course by memoized {
-            Course().apply {
-                id = ID
-                schoolId = SCHOOLID
-                name = NAME
-                description = DESCRIPTION
-                color = COLOR
-                teachers = TEACHERS
-                substitutions = SUBSTITUTIONS
-                users = USERS
+            Course().also {
+                it.id = ID
+                it.schoolId = SCHOOLID
+                it.name = NAME
+                it.description = DESCRIPTION
+                it.color = COLOR
+                it.teachers = teachers
+                it.substitutions = substitutions
+                it.users = users
             }
         }
 
@@ -37,9 +37,9 @@ object CourseSpec : Spek({
                 assertEquals(NAME, course.name)
                 assertEquals(DESCRIPTION, course.description)
                 assertEquals(COLOR, course.color)
-                assertEquals(TEACHERS, course.teachers)
-                assertEquals(SUBSTITUTIONS, course.substitutions)
-                assertEquals(USERS, course.users)
+                assertEquals(teachers, course.teachers)
+                assertEquals(substitutions, course.substitutions)
+                assertEquals(users, course.users)
             }
         }
     }

@@ -32,8 +32,7 @@ object NewsListViewModelSpec : Spek({
 
         afterEach {
             resetTaskExecutor()
-            unmockkObject(NewsRepository)
-            unmockkStatic(Realm::class)
+            unmockkAll()
         }
 
         describe("data access") {

@@ -7,16 +7,16 @@ import kotlin.test.assertEquals
 private const val COMPONENT = "component"
 private const val TITLE = "title"
 private const val HIDDEN = false
-private val CONTENT = Content()
+private val content = Content()
 
 object ContentWrapperSpec : Spek({
     describe("A contentWrapper") {
         val contentWrapper by memoized {
-            ContentWrapper().apply {
-                component = COMPONENT
-                title = TITLE
-                hidden = HIDDEN
-                content = CONTENT
+            ContentWrapper().also {
+                it.component = COMPONENT
+                it.title = TITLE
+                it.hidden = HIDDEN
+                it.content = content
             }
     }
 
@@ -25,7 +25,7 @@ object ContentWrapperSpec : Spek({
                 assertEquals(COMPONENT, contentWrapper.component)
                 assertEquals(TITLE, contentWrapper.title)
                 assertEquals(HIDDEN, contentWrapper.hidden)
-                assertEquals(CONTENT, contentWrapper.content)
+                assertEquals(content, contentWrapper.content)
             }
         }
     }

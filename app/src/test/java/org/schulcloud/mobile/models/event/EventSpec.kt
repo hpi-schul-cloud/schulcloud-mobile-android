@@ -21,56 +21,56 @@ private const val END = 2L
 private const val SUMMARY = "summary"
 private const val LOCATION = "location"
 private const val DESCRIPTION = "description"
-private val INCLUDED = RealmList<Included>()
+private val included = RealmList<Included>()
 private const val COURSEID = "course"
 private const val DURATION = 1L
 
-private val INCLUDED_WEEKLY_THURSDAY = RealmList<Included>(Included().apply {
+private val includedWeeklyThursday = RealmList<Included>(Included().apply {
     attributes = IncludedAttributes().apply {
         freq = "WEEKLY"
         weekday = "TH"
     }
 })
-private val INCLUDED_WEEKLY_TUESDAY = RealmList<Included>(Included().apply {
+private val includedWeeklyTuesday = RealmList<Included>(Included().apply {
     attributes = IncludedAttributes().apply {
         freq = "WEEKLY"
         weekday = "TU"
     }
 })
-private val INCLUDED_DAILY = RealmList<Included>(Included().apply {
+private val includedDaily = RealmList<Included>(Included().apply {
     attributes = IncludedAttributes().apply {
         freq = "DAILY"
         weekday = "TU"
     }
 })
-private val INCLUDED_UNTIL = RealmList<Included>(Included().apply {
+private val includedUntil = RealmList<Included>(Included().apply {
     attributes = IncludedAttributes().apply {
         until = "2020-02-07'T'10:10:01.001'Z'"
     }
 })
 
-private val START_IN_TWO_DAYS = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 12, 9, 10, 1)
-private val START_SIX_DAYS_AGO = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 9, 10, 1)
-private val END_SIX_DAYS_AGO = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 10, 20, 1)
+private val startInTwoDays = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 12, 9, 10, 1)
+private val startSixDaysAgo = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 9, 10, 1)
+private val endSixDaysAgo = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 10, 20, 1)
 
-private val CALENDAR_IN_TWO_DAYS = GregorianCalendar.getInstance().apply {
+private val calendarInTwoDays = GregorianCalendar.getInstance().apply {
     timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 12, 9, 10, 1)
 }
-private val CALENDAR_IN_SEVEN_DAYS = GregorianCalendar.getInstance().apply {
+private val calendarInSevenDays = GregorianCalendar.getInstance().apply {
     timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 17, 9, 10, 1)
 }
-private val CALENDAR_TOMORROW = GregorianCalendar.getInstance().apply {
+private val calendarTomorrow = GregorianCalendar.getInstance().apply {
     timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 11, 9, 10, 1)
 }
-private val CALENDAR_TODAY = GregorianCalendar.getInstance().apply {
+private val calendarToday = GregorianCalendar.getInstance().apply {
     timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 10, 9, 10, 1)
 }
 
-private val FAKE_USER_CALENDAR: Calendar
+private val userCalendar: Calendar
     get() = GregorianCalendar.getInstance().apply {
         timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 10, 10, 10, 1)
     }
-private val FAKE_CALENDAR: Calendar
+private val calendar: Calendar
     get() = GregorianCalendar.getInstance(TimeZone.getTimeZone("TIMEZONE_UTC")).apply {
         timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 10, 10, 10, 1)
     }
@@ -88,25 +88,25 @@ private fun getMillisecondsFromCalendarWithDatetimeValues(year: Int,
 object EventSpec : Spek({
     describe("An event") {
         val event by memoized {
-            Event().apply {
-                id = ID
-                type = TYPE
-                title = TITLE
-                allDay = ALLDAY
-                start = START
-                end = END
-                summary = SUMMARY
-                location = LOCATION
-                description = DESCRIPTION
-                included = INCLUDED
-                courseId = COURSEID
+            Event().also {
+                it.id = ID
+                it.type = TYPE
+                it.title = TITLE
+                it.allDay = ALLDAY
+                it.start = START
+                it.end = END
+                it.summary = SUMMARY
+                it.location = LOCATION
+                it.description = DESCRIPTION
+                it.included = org.schulcloud.mobile.models.event.included
+                it.courseId = COURSEID
             }
         }
 
         beforeEach {
             mockkStatic("org.schulcloud.mobile.utils.CalendarUtilsKt")
-            every { getCalendar() } returns FAKE_CALENDAR
-            every { getUserCalendar() } returns FAKE_USER_CALENDAR
+            every { getCalendar() } returns calendar
+            every { getUserCalendar() } returns userCalendar
         }
 
         afterEach {
@@ -123,7 +123,7 @@ object EventSpec : Spek({
                 assertEquals(event.end, END)
                 assertEquals(event.summary, SUMMARY)
                 assertEquals(event.location, LOCATION)
-                assertEquals(event.included, INCLUDED)
+                assertEquals(event.included, included)
                 assertEquals(event.courseId, COURSEID)
                 assertEquals(event.duration, DURATION)
             }
@@ -131,7 +131,7 @@ object EventSpec : Spek({
 
         describe("setting start in future") {
             beforeEach {
-                event.start = START_IN_TWO_DAYS
+                event.start = startInTwoDays
             }
 
             describe("setting no frequency") {
@@ -140,39 +140,39 @@ object EventSpec : Spek({
                 }
 
                 it("next start should be on the day of start") {
-                    assertEquals(CALENDAR_IN_TWO_DAYS, event.nextStart())
+                    assertEquals(calendarInTwoDays, event.nextStart())
                 }
             }
 
             describe("setting weekly frequency") {
                 beforeEach {
-                    event.included = INCLUDED_WEEKLY_THURSDAY
+                    event.included = includedWeeklyThursday
                 }
 
                 it("next start should be on the day of start") {
-                    assertEquals(CALENDAR_IN_TWO_DAYS, event.nextStart())
+                    assertEquals(calendarInTwoDays, event.nextStart())
                 }
             }
 
             describe("setting daily frequency") {
                 beforeEach {
-                    event.included = INCLUDED_DAILY
+                    event.included = includedDaily
                 }
 
                 it("next start should be on the day of start") {
-                    assertEquals(CALENDAR_IN_TWO_DAYS, event.nextStart())
+                    assertEquals(calendarInTwoDays, event.nextStart())
                 }
             }
         }
 
         describe("setting start in past") {
             beforeEach {
-                event.start = START_SIX_DAYS_AGO
+                event.start = startSixDaysAgo
             }
 
             describe("setting until in past") {
                 beforeEach {
-                    event.included = INCLUDED_UNTIL
+                    event.included = includedUntil
                 }
 
                 it("there should be no next start") {
@@ -192,34 +192,34 @@ object EventSpec : Spek({
 
             describe("setting weekly frequency") {
                 beforeEach {
-                    event.included = INCLUDED_WEEKLY_THURSDAY
+                    event.included = includedWeeklyThursday
                 }
 
                 it("next start should be on the next relevant weekday") {
-                    assertEquals(CALENDAR_IN_TWO_DAYS, event.nextStart())
+                    assertEquals(calendarInTwoDays, event.nextStart())
                 }
             }
 
             describe("setting daily frequency") {
                 beforeEach {
-                    event.included = INCLUDED_DAILY
+                    event.included = includedDaily
                 }
 
                 it("next start should be tomorrow") {
-                    assertEquals(CALENDAR_TOMORROW, event.nextStart())
+                    assertEquals(calendarTomorrow, event.nextStart())
                 }
             }
         }
 
         describe("setting start and end in past with duration including current time of day"){
             beforeEach {
-                event.start = START_SIX_DAYS_AGO
-                event.end = END_SIX_DAYS_AGO
+                event.start = startSixDaysAgo
+                event.end = endSixDaysAgo
             }
 
             describe("setting until in past") {
                 beforeEach {
-                    event.included = INCLUDED_UNTIL
+                    event.included = includedUntil
                 }
 
                 it("there should be no next start") {
@@ -240,23 +240,23 @@ object EventSpec : Spek({
 
             describe("setting weekly frequency") {
                 beforeEach {
-                    event.included = INCLUDED_WEEKLY_TUESDAY
+                    event.included = includedWeeklyTuesday
                 }
 
                 it("next start should depend on includeCurrent") {
-                    assertEquals(CALENDAR_IN_SEVEN_DAYS, event.nextStart())
-                    assertEquals(CALENDAR_TODAY, event.nextStart(true))
+                    assertEquals(calendarInSevenDays, event.nextStart())
+                    assertEquals(calendarToday, event.nextStart(true))
                 }
             }
 
             describe("setting daily frequency") {
                 beforeEach {
-                    event.included = INCLUDED_DAILY
+                    event.included = includedDaily
                 }
 
                 it("next start should depend on includeCurrent") {
-                    assertEquals(CALENDAR_TOMORROW, event.nextStart())
-                    assertEquals(CALENDAR_TODAY, event.nextStart(true))
+                    assertEquals(calendarTomorrow, event.nextStart())
+                    assertEquals(calendarToday, event.nextStart(true))
                 }
             }
         }

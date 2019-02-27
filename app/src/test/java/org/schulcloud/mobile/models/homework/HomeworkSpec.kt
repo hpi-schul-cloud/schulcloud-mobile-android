@@ -18,33 +18,33 @@ private const val TEACHERID = "teacherId"
 private const val TITLE = "title"
 private const val DESCRIPTION = "description"
 private const val DUEDATE = "dueDate"
-private val COURSE = HomeworkCourse()
+private val course = HomeworkCourse()
 private const val RESTRICTED = true
 private const val PUBLICSUBMISSIONS = true
 private const val INVALID_DUEDATE = "invDueDate"
 private const val VALID_DUEDATE = "2020-07-12T10:10:10.001Z"
 private const val USERID = "UserId"
-private val FAKE_DATE = DateTime(2020, 7, 10, 9, 10, 10, 1)
+private val dateTime = DateTime(2020, 7, 10, 9, 10, 10, 1)
 private const val DUETIMESPAN_DAYS = 2
 private const val DUETIMESPAN_HOURS = 49
 //TODO: add teacher testing or remove those vals
 private const val USERID_TEACHER_OTHER = "teacherIdOther"
-private val COURSE_SUBSTITUTION_TEACHER = HomeworkCourse().apply {
+private val courseSubstitutionTeacher = HomeworkCourse().apply {
     substitutionIds = RealmList(RealmString("teacherIdOther"))
 }
 
 object HomeworkSpec : Spek({
     describe("A homework") {
         val homework by memoized {
-            Homework().apply {
-                id = ID
-                teacherId = TEACHERID
-                title = TITLE
-                description = DESCRIPTION
-                dueDate = DUEDATE
-                course = COURSE
-                restricted = RESTRICTED
-                publicSubmissions = PUBLICSUBMISSIONS
+            Homework().also {
+                it.id = ID
+                it.teacherId = TEACHERID
+                it.title = TITLE
+                it.description = DESCRIPTION
+                it.dueDate = DUEDATE
+                it.course = course
+                it.restricted = RESTRICTED
+                it.publicSubmissions = PUBLICSUBMISSIONS
             }
         }
 
@@ -55,7 +55,7 @@ object HomeworkSpec : Spek({
                 assertEquals(TITLE, homework.title)
                 assertEquals(DESCRIPTION, homework.description)
                 assertEquals(DUEDATE, homework.dueDate)
-                assertEquals(COURSE, homework.course)
+                assertEquals(course, homework.course)
                 assertEquals(RESTRICTED, homework.restricted)
                 assertEquals(PUBLICSUBMISSIONS, homework.publicSubmissions)
             }
@@ -64,7 +64,7 @@ object HomeworkSpec : Spek({
         describe("setting valid dueDate") {
             beforeEach {
                 homework.dueDate = VALID_DUEDATE
-                DateTimeUtils.setCurrentMillisFixed(getInstantMillis(FAKE_DATE))
+                DateTimeUtils.setCurrentMillisFixed(getInstantMillis(dateTime))
             }
 
             afterEach {

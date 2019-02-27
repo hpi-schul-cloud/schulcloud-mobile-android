@@ -4,6 +4,7 @@ import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.news.News
+import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.user.User
 
 fun courseList(number: Int): List<Course> {
@@ -54,6 +55,19 @@ fun newsList(number: Int): List<News> {
 
 fun news(uniqueSequence : String): News {
     return News().apply {
+        id = uniqueSequence
+    }
+}
+
+fun topicList(number: Int): List<Topic> {
+    val topicList = mutableListOf<Topic>()
+    for (i in 1..number)
+        topicList.add(topic(i.toString()))
+    return topicList
+}
+
+fun topic(uniqueSequence: String): Topic {
+    return Topic().apply {
         id = uniqueSequence
     }
 }

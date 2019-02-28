@@ -4,43 +4,42 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private const val KEY = "key"
-private const val NAME = "name"
-private const val PATH = "path"
-private const val SIZE = 100L
-private const val TYPE = "type"
-private const val THUMBNAIL = "thumbnail"
-private const val FLATFILENAME = "flatName"
-private const val ID = "key"
-
 object FileSpec : Spek({
+    val key = "key"
+    val name = "name"
+    val path = "path"
+    val size = 100L
+    val type = "type"
+    val thumbnail = "thumbnail"
+    val flatFileName = "flatName"
+    val idKey = "key"
+
     describe("A file") {
         val file by memoized {
             File().apply {
-                key = KEY
-                name = NAME
-                path = PATH
-                size = SIZE
-                type = TYPE
-                thumbnail = THUMBNAIL
-                flatFileName = FLATFILENAME
-
+                this.key = key
+                this.name = name
+                this.path = path
+                this.size = size
+                this.type = type
+                this.thumbnail = thumbnail
+                this.flatFileName = flatFileName
             }
         }
 
         describe("property access") {
             it("should return the assigned value") {
-                assertEquals(KEY, file.key)
-                assertEquals(NAME, file.name)
-                assertEquals(PATH, file.path)
-                assertEquals(SIZE, file.size)
-                assertEquals(TYPE, file.type)
-                assertEquals(THUMBNAIL, file.thumbnail)
-                assertEquals(FLATFILENAME, file.flatFileName)
+                assertEquals(key, file.key)
+                assertEquals(name, file.name)
+                assertEquals(path, file.path)
+                assertEquals(size, file.size)
+                assertEquals(type, file.type)
+                assertEquals(thumbnail, file.thumbnail)
+                assertEquals(flatFileName, file.flatFileName)
             }
 
             it("id should equal key") {
-                assertEquals(ID, file.id)
+                assertEquals(idKey, file.id)
             }
         }
     }

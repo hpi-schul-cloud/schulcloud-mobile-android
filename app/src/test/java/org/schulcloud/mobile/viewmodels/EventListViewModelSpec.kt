@@ -3,7 +3,6 @@ package org.schulcloud.mobile.viewmodels
 import io.mockk.*
 import io.realm.Realm
 import org.schulcloud.mobile.eventList
-import org.schulcloud.mobile.mockRealmDefaultInstance
 import org.schulcloud.mobile.models.event.EventRepository
 import org.schulcloud.mobile.prepareTaskExecutor
 import org.schulcloud.mobile.resetTaskExecutor
@@ -12,27 +11,26 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val events = eventList(5)
-private lateinit var mockRealm: Realm
-
 object EventListViewModelSpec : Spek({
+    val events = eventList(5)
+
     describe("A eventListViewModel") {
         val eventListViewModel by memoized {
             EventListViewModel()
         }
+        val mockRealm = mockk<Realm>()
+        mockkObject(EventRepository)
+        mockkStatic(Realm::class)
 
         beforeEachTest {
             prepareTaskExecutor()
-            mockRealm = mockk()
-            mockRealmDefaultInstance(mockRealm)
-
-            mockkObject(EventRepository)
             every { EventRepository.eventsForToday(mockRealm) } returns events.asLiveData()
+            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkAll()
+            clearAllMocks()
         }
 
         describe("data access") {

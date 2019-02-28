@@ -4,15 +4,15 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val files = emptyList<File>()
-private val directories = emptyList<Directory>()
-
 object DirectoryResponseSpec : Spek({
+    val files = emptyList<File>()
+    val directories = emptyList<Directory>()
+
     describe("A directoryResponse") {
         val directoryResponse by memoized {
-            DirectoryResponse().also {
-                it.files = files
-                it.directories = directories
+            DirectoryResponse().apply {
+                this.files = files
+                this.directories = directories
             }
         }
 

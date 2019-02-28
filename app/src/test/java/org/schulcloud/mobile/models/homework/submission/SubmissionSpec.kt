@@ -5,39 +5,39 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private const val ID = "id"
-private const val HOMEWORKID = "homeworkId"
-private const val STUDENTID = "studentId"
-private const val COMMENT = "comment"
-private const val CREATEDAT = "createdAt"
-private const val GRADE = 15
-private const val GRADECOMMENT = "gradeComment"
-private val comments = RealmList<Comment>()
-
 object SubmissionSpec : Spek({
+    val id = "id"
+    val homeworkId = "homeworkId"
+    val studentId = "studentId"
+    val comment = "comment"
+    val createdAt = "createdAt"
+    val grade = 15
+    val gradeComment = "gradeComment"
+    val comments = RealmList<Comment>()
+
     describe("A submission") {
         val submission by memoized {
-            Submission().also {
-                it.id = ID
-                it.homeworkId = HOMEWORKID
-                it.studentId = STUDENTID
-                it.comment = COMMENT
-                it.createdAt = CREATEDAT
-                it.grade = GRADE
-                it.gradeComment = GRADECOMMENT
-                it.comments = comments
+            Submission().apply {
+                this.id = id
+                this.homeworkId = homeworkId
+                this.studentId = studentId
+                this.comment = comment
+                this.createdAt = createdAt
+                this.grade = grade
+                this.gradeComment = gradeComment
+                this.comments = comments
             }
         }
 
         describe("property access") {
             it("should return the assigned value") {
-                assertEquals(ID, submission.id)
-                assertEquals(HOMEWORKID, submission.homeworkId)
-                assertEquals(STUDENTID, submission.studentId)
-                assertEquals(COMMENT, submission.comment)
-                assertEquals(CREATEDAT, submission.createdAt)
-                assertEquals(GRADE, submission.grade)
-                assertEquals(GRADECOMMENT, submission.gradeComment)
+                assertEquals(id, submission.id)
+                assertEquals(homeworkId, submission.homeworkId)
+                assertEquals(studentId, submission.studentId)
+                assertEquals(comment, submission.comment)
+                assertEquals(createdAt, submission.createdAt)
+                assertEquals(grade, submission.grade)
+                assertEquals(gradeComment, submission.gradeComment)
                 assertEquals(comments, submission.comments)
             }
         }

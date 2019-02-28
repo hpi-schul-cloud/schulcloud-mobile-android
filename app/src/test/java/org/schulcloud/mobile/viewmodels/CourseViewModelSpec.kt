@@ -2,39 +2,40 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.*
+import org.schulcloud.mobile.course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
+import org.schulcloud.mobile.prepareTaskExecutor
+import org.schulcloud.mobile.resetTaskExecutor
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private const val ID = "id"
-private val course = course(ID)
-private val topicList = org.schulcloud.mobile.topicList(5)
-private lateinit var mockRealm: Realm
-
 object CourseViewModelSpec : Spek({
+    val id = "id"
+    val course = course(id)
+    val topicList = org.schulcloud.mobile.topicList(5)
+
     describe("A courseViewModel") {
         val courseViewModel by memoized {
-            CourseViewModel(ID)
+            CourseViewModel(id)
         }
+        val mockRealm = mockk<Realm>()
+        mockkObject(CourseRepository)
+        mockkObject(TopicRepository)
+        mockkStatic(Realm::class)
 
         beforeEachTest {
             prepareTaskExecutor()
-            mockRealm = mockk()
-            mockRealmDefaultInstance(mockRealm)
-
-            mockkObject(CourseRepository)
-            every { CourseRepository.course(mockRealm, ID) } returns course.asLiveData()
-            mockkObject(TopicRepository)
-            every { TopicRepository.topicsForCourse(mockRealm, ID) } returns topicList.asLiveData()
+            every { CourseRepository.course(mockRealm, id) } returns course.asLiveData()
+            every { TopicRepository.topicsForCourse(mockRealm, id) } returns topicList.asLiveData()
+            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkAll()
+            clearAllMocks()
         }
 
         describe("data access") {

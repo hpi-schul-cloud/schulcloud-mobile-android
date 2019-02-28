@@ -3,7 +3,6 @@ package org.schulcloud.mobile.viewmodels
 import io.mockk.*
 import io.realm.Realm
 import org.schulcloud.mobile.homeworkList
-import org.schulcloud.mobile.mockRealmDefaultInstance
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.prepareTaskExecutor
 import org.schulcloud.mobile.resetTaskExecutor
@@ -12,27 +11,26 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val homeworkList = homeworkList(5)
-private lateinit var mockRealm: Realm
-
 object HomeworkWidgetViewModelSpec : Spek({
+    val homeworkList = homeworkList(5)
+
     describe("A homeworkWidgetViewModel") {
         val homeworkWidgetViewModel by memoized {
             HomeworkWidgetViewModel()
         }
+        val mockRealm = mockk<Realm>()
+        mockkObject(HomeworkRepository)
+        mockkStatic(Realm::class)
 
         beforeEachTest {
             prepareTaskExecutor()
-            mockRealm = mockk()
-            mockRealmDefaultInstance(mockRealm)
-
-            mockkObject(HomeworkRepository)
             every { HomeworkRepository.openHomeworkForNextWeek(mockRealm) } returns homeworkList.asLiveData()
+            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkAll()
+            clearAllMocks()
         }
 
         describe("data access") {

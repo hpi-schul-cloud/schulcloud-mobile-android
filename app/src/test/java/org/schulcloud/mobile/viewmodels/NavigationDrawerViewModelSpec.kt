@@ -2,7 +2,6 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.mockRealmDefaultInstance
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.prepareTaskExecutor
 import org.schulcloud.mobile.resetTaskExecutor
@@ -12,27 +11,26 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val user = user("id")
-private lateinit var mockRealm: Realm
-
 object NavigationDrawerViewModelSpec : Spek({
+    val user = user("id")
+
     describe("A navigationDrawerViewModel") {
         val navigationDrawerViewModel by memoized {
             NavigationDrawerViewModel()
         }
+        val mockRealm = mockk<Realm>()
+        mockkObject(UserRepository)
+        mockkStatic(Realm::class)
 
         beforeEachTest {
             prepareTaskExecutor()
-            mockRealm = mockk()
-            mockRealmDefaultInstance(mockRealm)
-
-            mockkObject(UserRepository)
             every { UserRepository.currentUser(mockRealm) } returns user.asLiveData()
+            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {
             resetTaskExecutor()
-            unmockkAll()
+            clearAllMocks()
         }
 
         describe("data access") {

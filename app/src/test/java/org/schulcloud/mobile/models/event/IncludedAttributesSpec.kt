@@ -6,44 +6,47 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-private const val FREQ = "freq"
-private const val UNTIL = "until"
-private const val WEEKDAY = "weekday"
-private const val INVALID_WEEKDAY = "invWeekday"
-private const val VALID_WEEKDAY = "SU"
-
 object IncludedAttributesSpec : Spek({
+    val freq = "freq"
+    val until = "until"
+    val weekday = "weekday"
+    val invalidWeekday = "invWeekday"
+    val validWeekdays = listOf("SU", "MO", "TU", "WE", "TH", "FR", "SA")
+
     describe("Included attributes") {
         val includedAttributes by memoized {
             IncludedAttributes().apply {
-                freq = FREQ
-                until = UNTIL
-                weekday = WEEKDAY
+                this.freq = freq
+                this.until = until
+                this.weekday = weekday
             }
-
         }
 
         describe("property access") {
             it("should return the assigned value") {
-                assertEquals(FREQ, includedAttributes.freq)
-                assertEquals(UNTIL, includedAttributes.until)
-                assertEquals(WEEKDAY, includedAttributes.weekday)
+                assertEquals(freq, includedAttributes.freq)
+                assertEquals(until, includedAttributes.until)
+                assertEquals(weekday, includedAttributes.weekday)
             }
         }
+
 
         describe("setting valid weekday") {
-            beforeEach {
-                includedAttributes.weekday = VALID_WEEKDAY
-            }
+            validWeekdays.forEach { validWeekday ->
+                beforeEach {
+                    includedAttributes.weekday = validWeekday
+                }
 
-            it("weekdayNumber should not be null") {
-                assertNotNull(includedAttributes.weekdayNumber)
+                it("weekdayNumber should not be null") {
+                    assertNotNull(includedAttributes.weekdayNumber)
+                }
             }
         }
+
 
         describe("setting invalid weekday") {
             beforeEach {
-                includedAttributes.weekday = INVALID_WEEKDAY
+                includedAttributes.weekday = invalidWeekday
             }
 
             it("weekdayNumber should be null") {

@@ -4,28 +4,28 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private const val URL = "url"
-private const val CLIENT = "client"
-private const val TITLE = "title"
-private const val DESCRIPTION = "description"
-
 object ResourceSpec : Spek({
+    val url = "url"
+    val client = "client"
+    val title = "title"
+    val description = "description"
+
     describe("A resource") {
         val resource by memoized {
             Resource().apply {
-                url = URL
-                client = CLIENT
-                title = TITLE
-                description = DESCRIPTION
+                this.url = url
+                this.client = client
+                this.title = title
+                this.description = description
             }
         }
 
         describe("property access") {
             it("should return the assigned value") {
-                assertEquals(URL, resource.url)
-                assertEquals(CLIENT, resource.client)
-                assertEquals(TITLE, resource.title)
-                assertEquals(DESCRIPTION, resource.description)
+                assertEquals(url, resource.url)
+                assertEquals(client, resource.client)
+                assertEquals(title, resource.title)
+                assertEquals(description, resource.description)
             }
         }
     }

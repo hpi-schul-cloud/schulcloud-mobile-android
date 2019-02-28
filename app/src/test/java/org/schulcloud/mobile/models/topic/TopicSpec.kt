@@ -7,37 +7,37 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private const val ID = "id"
-private const val COURSEID = "courseId"
-private const val NAME = "name"
-private const val TIME = "time"
-private const val POSITION = 1
-private const val DATE = "date"
-private val contents = RealmList<ContentWrapper>()
-private val url = "$HOST/courses/courseId/topics/id"
-
 object TopicSpec : Spek({
+    val id = "id"
+    val courseId = "courseId"
+    val name = "name"
+    val time = "time"
+    val position = 1
+    val date = "date"
+    val contents = RealmList<ContentWrapper>()
+    val url = "$HOST/courses/courseId/topics/id"
+
     describe("A topic") {
         val topic by memoized {
-            Topic().also {
-                it.id = ID
-                it.courseId = COURSEID
-                it.name = NAME
-                it.time = TIME
-                it.date = DATE
-                it.position = POSITION
-                it.contents = org.schulcloud.mobile.models.topic.contents
+            Topic().apply {
+                this.id = id
+                this.courseId = courseId
+                this.name = name
+                this.time = time
+                this.date = date
+                this.position = position
+                this.contents = contents
             }
         }
 
         describe("property access") {
             it("should return the assigned value") {
-                assertEquals(ID, topic.id)
-                assertEquals(COURSEID, topic.courseId)
-                assertEquals(NAME, topic.name)
-                assertEquals(TIME, topic.time)
-                assertEquals(DATE, topic.date)
-                assertEquals(POSITION, topic.position)
+                assertEquals(id, topic.id)
+                assertEquals(courseId, topic.courseId)
+                assertEquals(name, topic.name)
+                assertEquals(time, topic.time)
+                assertEquals(date, topic.date)
+                assertEquals(position, topic.position)
                 assertEquals(contents, topic.contents)
             }
 

@@ -4,19 +4,19 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private val responses = GeogebraResponse.Responses()
-private val response = GeogebraResponse.Responses.Response()
-private val item = GeogebraResponse.Responses.Response.Item()
-private const val PREVIEW_URL = "previewUrl"
-
 object GeogebraResponseSpec : Spek({
+    val responses = GeogebraResponse.Responses()
+    val response = GeogebraResponse.Responses.Response()
+    val item = GeogebraResponse.Responses.Response.Item()
+    val previewUrl = "previewUrl"
+
     describe("A geogebraResponse") {
         val geogebraResponse by memoized {
-            GeogebraResponse().also {
-                it.responses = responses.also {
-                    it.response = response.also {
-                        it.item = item.also {
-                            it.previewUrl = PREVIEW_URL
+            GeogebraResponse().apply {
+                this.responses = responses.apply {
+                    this.response = response.apply {
+                        this.item = item.apply{
+                            this.previewUrl = previewUrl
                         }
                     }
                 }
@@ -28,7 +28,7 @@ object GeogebraResponseSpec : Spek({
                 assertEquals(responses, geogebraResponse.responses)
                 assertEquals(response, geogebraResponse.responses?.response)
                 assertEquals(item, geogebraResponse.responses?.response?.item)
-                assertEquals(PREVIEW_URL, geogebraResponse.responses?.response?.item?.previewUrl)
+                assertEquals(previewUrl, geogebraResponse.responses?.response?.item?.previewUrl)
             }
         }
     }

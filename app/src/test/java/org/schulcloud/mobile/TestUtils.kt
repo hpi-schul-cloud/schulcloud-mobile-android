@@ -28,8 +28,3 @@ fun prepareTaskExecutor() {
 fun resetTaskExecutor() {
     ArchTaskExecutor.getInstance().setDelegate(null)
 }
-
-fun mockRealmDefaultInstance(mockRealm: Realm){
-    mockkStatic(Realm::class)
-    every { Realm.getDefaultInstance() } returns mockRealm
-}

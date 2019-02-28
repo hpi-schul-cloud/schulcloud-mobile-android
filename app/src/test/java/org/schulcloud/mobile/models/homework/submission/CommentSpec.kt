@@ -4,31 +4,31 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 
-private const val ID = "id"
-private const val SUBMISSIONID = "submissionId"
-private const val AUTHOR = "author"
-private const val COMMENT = "comment"
-private const val CREATEDAT = "createdAt"
-
 object CommentSpec : Spek({
+    val id = "id"
+    val submissionId = "submissionId"
+    val author = "author"
+    val commentText = "comment"
+    val createdAt = "createdAt"
+    
     describe("A comment") {
         val comment by memoized {
             Comment().apply {
-                id = ID
-                submissionId = SUBMISSIONID
-                author = AUTHOR
-                comment = COMMENT
-                createdAt = CREATEDAT
+                this.id = id
+                this.submissionId = submissionId
+                this.author = author
+                comment = commentText
+                this.createdAt = createdAt
             }
         }
 
         describe("property access") {
             it("should return the assigned value") {
-                assertEquals(ID, comment.id)
-                assertEquals(SUBMISSIONID, comment.submissionId)
-                assertEquals(AUTHOR, comment.author)
-                assertEquals(COMMENT, comment.comment)
-                assertEquals(CREATEDAT, comment.createdAt)
+                assertEquals(id, comment.id)
+                assertEquals(submissionId, comment.submissionId)
+                assertEquals(author, comment.author)
+                assertEquals(commentText, comment.comment)
+                assertEquals(createdAt, comment.createdAt)
             }
         }
     }

@@ -2,7 +2,10 @@ package org.schulcloud.mobile
 
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.event.Event
+import org.schulcloud.mobile.models.file.Directory
+import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.homework.Homework
+import org.schulcloud.mobile.models.homework.submission.Submission
 import org.schulcloud.mobile.models.news.News
 import org.schulcloud.mobile.models.topic.Topic
 import org.schulcloud.mobile.models.user.User
@@ -14,7 +17,7 @@ fun courseList(number: Int): List<Course> {
     return courses
 }
 
-fun course(uniqueSequence : String): Course {
+fun course(uniqueSequence: String): Course {
     return Course().apply {
         id = uniqueSequence
     }
@@ -27,7 +30,7 @@ fun eventList(number: Int): List<Event> {
     return events
 }
 
-fun event(uniqueSequence : String): Event {
+fun event(uniqueSequence: String): Event {
     return Event().apply {
         id = uniqueSequence
     }
@@ -40,7 +43,7 @@ fun homeworkList(number: Int): List<Homework> {
     return homeworkList
 }
 
-fun homework(uniqueSequence : String): Homework {
+fun homework(uniqueSequence: String): Homework {
     return Homework().apply {
         id = uniqueSequence
     }
@@ -53,7 +56,7 @@ fun newsList(number: Int): List<News> {
     return newsList
 }
 
-fun news(uniqueSequence : String): News {
+fun news(uniqueSequence: String): News {
     return News().apply {
         id = uniqueSequence
     }
@@ -72,8 +75,60 @@ fun topic(uniqueSequence: String): Topic {
     }
 }
 
-fun user(uniqueSequence : String): User {
+fun user(uniqueSequence: String): User {
     return User().apply {
         id = uniqueSequence
     }
+}
+
+fun userList(number: Int): List<User> {
+    val userList = mutableListOf<User>()
+    for (i in 1..number)
+        userList.add(user(i.toString()))
+    return userList
+}
+
+fun file(uniqueSequence: String): File {
+    return File().apply {
+        key = uniqueSequence
+    }
+}
+
+fun fileList(number: Int): List<File> {
+    val fileList = mutableListOf<File>()
+    for (i in 1..number)
+        fileList.add(file(i.toString()))
+    return fileList
+}
+
+fun directory(uniqueSequence: String): Directory {
+    return Directory().apply {
+        key = uniqueSequence
+    }
+}
+
+fun directoryList(number: Int): List<Directory> {
+    val directoryList = mutableListOf<Directory>()
+    for (i in 1..number)
+        directoryList.add(directory(i.toString()))
+    return directoryList
+}
+
+fun submission(uniqueSequence: String):Submission {
+    return Submission().apply {
+        id = uniqueSequence
+    }
+}
+
+fun submissionWithStudent(submissionId: String, studentId: String):Submission {
+    return submission(submissionId).apply {
+        this.studentId = studentId
+    }
+}
+
+fun submissionListWithStudents(number:Int) : List<Submission> {
+    val submissionList = mutableListOf<Submission>()
+    for (i in 1..number)
+        submissionList.add(submissionWithStudent(i.toString(), i.toString()))
+    return submissionList
 }

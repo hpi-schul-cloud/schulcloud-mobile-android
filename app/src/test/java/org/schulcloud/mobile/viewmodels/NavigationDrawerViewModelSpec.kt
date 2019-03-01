@@ -22,7 +22,7 @@ object NavigationDrawerViewModelSpec : Spek({
         mockkObject(UserRepository)
         mockkStatic(Realm::class)
 
-        beforeEachTest {
+        beforeEach {
             prepareTaskExecutor()
             every { UserRepository.currentUser(mockRealm) } returns user.asLiveData()
             every { Realm.getDefaultInstance() } returns mockRealm

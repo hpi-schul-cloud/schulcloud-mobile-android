@@ -23,7 +23,7 @@ object NewsListViewModelSpec : Spek({
         mockkObject(NewsRepository)
         mockkStatic(Realm::class)
 
-        beforeEachTest {
+        beforeEach {
             prepareTaskExecutor()
             every { NewsRepository.newsList(mockRealm) } returns newsList.asLiveData()
             every { Realm.getDefaultInstance() } returns mockRealm

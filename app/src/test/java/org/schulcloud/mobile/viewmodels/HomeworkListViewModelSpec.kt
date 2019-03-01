@@ -22,7 +22,7 @@ object HomeworkListViewModelSpec : Spek({
         mockkObject(HomeworkRepository)
         mockkStatic(Realm::class)
 
-        beforeEachTest {
+        beforeEach {
             prepareTaskExecutor()
             every { HomeworkRepository.homeworkList(mockRealm) } returns homeworkList.asLiveData()
             every { Realm.getDefaultInstance() } returns mockRealm

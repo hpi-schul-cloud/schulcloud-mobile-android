@@ -22,7 +22,7 @@ object EventListViewModelSpec : Spek({
         mockkObject(EventRepository)
         mockkStatic(Realm::class)
 
-        beforeEachTest {
+        beforeEach {
             prepareTaskExecutor()
             every { EventRepository.eventsForToday(mockRealm) } returns events.asLiveData()
             every { Realm.getDefaultInstance() } returns mockRealm

@@ -22,7 +22,7 @@ object FileOverviewViewModelSpec : Spek({
         mockkObject(CourseRepository)
         mockkStatic(Realm::class)
 
-        beforeEachTest {
+        beforeEach {
             prepareTaskExecutor()
             every { CourseRepository.courses(mockRealm) } returns courses.asLiveData()
             every { Realm.getDefaultInstance() } returns mockRealm

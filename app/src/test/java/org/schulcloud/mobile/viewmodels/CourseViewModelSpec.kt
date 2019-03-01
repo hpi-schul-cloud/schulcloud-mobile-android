@@ -26,7 +26,7 @@ object CourseViewModelSpec : Spek({
         mockkObject(TopicRepository)
         mockkStatic(Realm::class)
 
-        beforeEachTest {
+        beforeEach {
             prepareTaskExecutor()
             every { CourseRepository.course(mockRealm, id) } returns course.asLiveData()
             every { TopicRepository.topicsForCourse(mockRealm, id) } returns topicList.asLiveData()

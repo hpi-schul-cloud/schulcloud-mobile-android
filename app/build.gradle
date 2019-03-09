@@ -78,6 +78,10 @@ android {
                 }
             }
         }
+
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 

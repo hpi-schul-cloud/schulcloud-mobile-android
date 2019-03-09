@@ -70,8 +70,11 @@ object HomeworkViewModelSpec : Spek({
         }
 
         describe("data access") {
-            it("should return the correct data") {
+            beforeEach {
                 homeworkViewModel.submissions.observeForever(observer)
+            }
+
+            it("should return the correct data") {
                 assertEquals(homework, homeworkViewModel.homework.value)
                 assertEquals(course, homeworkViewModel.course.value)
                 assertEquals(expectedSubmissions, homeworkViewModel.submissions.value)

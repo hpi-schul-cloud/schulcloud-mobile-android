@@ -57,17 +57,22 @@ dependencies {
     androidTestImplementation "androidx.annotation:annotation:1.0.1"
 
     // unit tests
-    def spekVersion = '2.0.0-rc.1'
-    def mockitoVersion = '2.23.4'
+    def spekVersion = '2.0.1'
     def mockkVersion = '1.9.kotlin12'
-    testImplementation "android.arch.core:core-testing:1.1.1"
+    def junitVersion = '5.4.0'
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
+    testImplementation 'androidx.test:core:1.1.0'
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "io.mockk:mockk:$mockkVersion"
-    testImplementation "joda-time:joda-time:${jodatimeVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
+    testImplementation "org.junit.vintage:junit-vintage-engine:$junitVersion"
+    testImplementation "junit:junit:4.12"
+    testImplementation 'org.robolectric:robolectric:4.2'
+    testImplementation "org.robolectric:shadows-multidex:4.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}"
     //for mocking realm
     testImplementation "io.reactivex.rxjava2:rxjava:2.2.6"
 

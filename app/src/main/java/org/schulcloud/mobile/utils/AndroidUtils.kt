@@ -9,6 +9,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Patterns
 import androidx.annotation.ArrayRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
@@ -63,4 +64,8 @@ fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): I
 
 fun Drawable.setTintCompat(@ColorInt tint: Int) {
     DrawableCompat.setTint(this, tint)
+}
+
+fun emailIsValid(email: String): Boolean {
+    return Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }

@@ -1,5 +1,7 @@
 package org.schulcloud.mobile
 
+import io.realm.RealmModel
+import io.realm.RealmObject
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.models.file.Directory
@@ -131,4 +133,11 @@ fun submissionListWithStudents(number:Int) : List<Submission> {
     for (i in 1..number)
         submissionList.add(submissionWithStudent(i.toString(), i.toString()))
     return submissionList
+}
+
+fun realmModelList(number:Int) : List<RealmModel> {
+    val realmModelList = mutableListOf<RealmModel>()
+    for (i in 1..number)
+        realmModelList.add(object : RealmObject(){})
+    return realmModelList
 }

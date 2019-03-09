@@ -2,8 +2,7 @@ package org.schulcloud.mobile
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
-import io.mockk.every
-import io.mockk.mockkStatic
+import io.mockk.*
 import io.realm.Realm
 
 fun prepareTaskExecutor() {

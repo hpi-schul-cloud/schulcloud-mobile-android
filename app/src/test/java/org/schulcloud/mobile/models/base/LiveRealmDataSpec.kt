@@ -15,7 +15,6 @@ import org.spekframework.spek2.style.specification.describe
 object LiveRealmDataSpec : Spek({
     val mockRealmResults = mockk<RealmResults<RealmModel>>()
 
-
     describe("A liveRealmData") {
         val liveRealmData by memoized {
             LiveRealmData(mockRealmResults)

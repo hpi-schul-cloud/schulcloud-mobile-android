@@ -70,6 +70,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
     testImplementation "org.junit.vintage:junit-vintage-engine:$junitVersion"
     testImplementation "junit:junit:4.12"
+    testImplementation 'org.mockito:mockito-inline:2.21.0'
     testImplementation 'org.robolectric:robolectric:4.2'
     testImplementation "org.robolectric:shadows-multidex:4.2"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}"

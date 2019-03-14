@@ -116,28 +116,41 @@ fun directoryList(number: Int): List<Directory> {
     return directoryList
 }
 
-fun submission(uniqueSequence: String):Submission {
+fun submission(uniqueSequence: String): Submission {
     return Submission().apply {
         id = uniqueSequence
     }
 }
 
-fun submissionWithStudent(submissionId: String, studentId: String):Submission {
+fun submissionWithStudent(submissionId: String, studentId: String): Submission {
     return submission(submissionId).apply {
         this.studentId = studentId
     }
 }
 
-fun submissionListWithStudents(number:Int) : List<Submission> {
+fun submissionListWithStudents(number: Int): List<Submission> {
     val submissionList = mutableListOf<Submission>()
     for (i in 1..number)
         submissionList.add(submissionWithStudent(i.toString(), i.toString()))
     return submissionList
 }
 
-fun realmModelList(number:Int) : List<RealmModel> {
+fun realmModelList(number: Int): List<RealmModel> {
     val realmModelList = mutableListOf<RealmModel>()
     for (i in 1..number)
         realmModelList.add(object : RealmObject(){})
     return realmModelList
+}
+
+fun testIdRealmObjectList(number: Int): MutableList<TestIdRealmObject> {
+    val testIdRealmObjectList = mutableListOf<TestIdRealmObject>()
+    for (i in 1..number)
+        testIdRealmObjectList.add(testIdRealmObject(i.toString()))
+    return testIdRealmObjectList
+}
+
+fun testIdRealmObject(uniqueSequence: String): TestIdRealmObject {
+    return TestIdRealmObject().apply {
+        id = uniqueSequence
+    }
 }

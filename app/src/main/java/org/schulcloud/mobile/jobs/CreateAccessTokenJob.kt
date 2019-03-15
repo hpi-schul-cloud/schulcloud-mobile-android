@@ -17,13 +17,13 @@ class CreateAccessTokenJob(private val credentials: Credentials, callback: Reque
 
     override suspend fun onRun() {
         val response = ApiService.getInstance().createToken(credentials).awaitResponse()
-        val token = response.body()
+        val token = response.body()?.accessToken
 
         if (response.isSuccessful && token != null) {
             if (BuildConfig.DEBUG) Log.i(TAG, "AccessToken created")
 
-            UserStorage.accessToken = token.accessToken!!
-            UserStorage.userId = JwtUtil.decodeToCurrentUser(token.accessToken!!)!!
+            UserStorage.accessToken = token
+            UserStorage.userId = JwtUtil.decodeToCurrentUser(token)!!
 
             callback?.success()
         } else {

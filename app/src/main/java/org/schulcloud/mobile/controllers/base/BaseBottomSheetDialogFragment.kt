@@ -1,15 +1,13 @@
 package org.schulcloud.mobile.controllers.base
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseFragment : Fragment(), CoroutineScope {
-    val baseActivity: BaseActivity? get() = activity as? BaseActivity
-
+abstract class BaseBottomSheetDialogFragment : BottomSheetDialogFragment(), CoroutineScope {
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
@@ -25,6 +23,4 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
         job.cancel()
     }
     // endregion
-
-    suspend fun requestPermission(permission: String): Boolean = baseActivity?.requestPermission(permission) ?: false
 }

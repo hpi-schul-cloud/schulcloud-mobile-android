@@ -1,5 +1,6 @@
 package org.schulcloud.mobile
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -14,6 +15,7 @@ class SchulCloudApp : MultiDexApplication() {
 
     init {
         instance = this
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
     override fun onCreate() {

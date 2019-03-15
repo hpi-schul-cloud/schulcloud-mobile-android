@@ -9,16 +9,14 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_file.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -162,8 +160,8 @@ class FileFragment : MainFragment<FileViewModel>() {
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.file_action_gotoCourse -> getCourseFromFolder()?.also { id ->
                 navController.navigate(R.id.action_global_fragment_course,
                         CourseFragmentArgs.Builder(id).build().toBundle())
@@ -189,7 +187,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     @Suppress("ComplexMethod")
-    private fun loadFile(file: File, download: Boolean) = launch(UI) {
+    private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
             val response = ApiService.getInstance().generateSignedUrl(
                     SignedUrlRequest().apply {

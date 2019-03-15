@@ -71,16 +71,14 @@ object ApiService {
 
     private fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
 
         return OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()
-                    if (UserRepository.isAuthorized
-                            && request.url().host().equals(HOST.substringAfterLast('/'), true)) {
+                    if (UserRepository.isAuthorized && request.url().host().equals(HOST, true))
                         builder.header(Config.HEADER_AUTH, Config.HEADER_AUTH_VALUE_PREFIX + UserRepository.token)
-                    }
                     chain.proceed(builder.build())
                 }
                 .addInterceptor(loggingInterceptor)

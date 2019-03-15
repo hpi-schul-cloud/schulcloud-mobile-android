@@ -15,7 +15,6 @@ class LoginViewModel : ViewModel() {
             invalidInputs.add(LoginInput.EMAIL)
         if (password.isEmpty())
             invalidInputs.add(LoginInput.PASSWORD)
-
         loginState.value = if (invalidInputs.isNotEmpty())
             LoginStatus.InvalidInputs(invalidInputs)
         else {

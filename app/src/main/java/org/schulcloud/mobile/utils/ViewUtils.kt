@@ -8,17 +8,14 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.text.format.DateUtils
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.bottomappbar.BottomAppBar
 import org.schulcloud.mobile.R
 
@@ -88,6 +85,7 @@ fun Context.getTextColorSecondaryForBackground(@ColorInt color: Int): Int {
     return ContextCompat.getColor(this, if (color.isLightColor) R.color.material_text_secondary_dark
     else R.color.material_text_secondary_light)
 }
+
 
 @Suppress("SpreadOperator")
 fun SwipeRefreshLayout.setup() {

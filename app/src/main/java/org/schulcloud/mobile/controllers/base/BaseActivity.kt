@@ -20,6 +20,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.properties.Delegates
 
+
 abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
     open var url: String? = null
     var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->

@@ -1,15 +1,11 @@
 <resources>
 
-    <style name="LoginTextInput" parent="Widget.Design.TextInputLayout">
-        <!-- Hint color and label color in FALSE state -->
-        <item name="android:textColor">@color/text_main</item>
-        <item name="android:textColorHint">@color/text_main</item>
-        <item name="android:textSize">20sp</item>
-        <!--<item name="android:textSize">20sp</item>-->
-        <item name="colorAccent">@color/brand_primary</item>
-        <item name="colorControlNormal">@color/text_main</item>
-        <item name="colorControlActivated">@color/brand_primary</item>
+    <style name="ThemeOverlay.App.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
+    <style name="ThemeOverlay.App.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="ThemeOverlay.App.Dark.ActionBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="popupTheme">@style/ThemeOverlay.App.PopupOverlay</item>
     </style>
+
     <style name="Animation.Activity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
@@ -33,19 +29,14 @@
         <item name="android:drawablePadding">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:gravity">start|center_vertical</item>
-        <item name="drawableEnd">@drawable/ic_open_in_new_dark_24dp</item>
-    </style>
-    <style name="Content_Subhead" parent="TextAppearance.AppCompat.Title">
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="drawableEnd">@drawable/ic_open_in_new_24dp</item>
     </style>
     <style name="Content_LinkExternal">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
+        <item name="srcCompat">@drawable/ic_open_in_new_24dp</item>
     </style>
 
     <style name="ContentExternal">
@@ -60,12 +51,14 @@
         <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
         <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
     </style>
-    <style name="Dashboard.Widget.Title" parent="TextAppearance.AppCompat.Display1">
-        <item name="android:layout_margin">16dp</item>
+    <style name="Dashboard.Widget.Title" parent="Material.ListHeader">
+        <!--<item name="android:layout_margin">16dp</item>-->
     </style>
-    <style name="Dashboard.Widget.ButtonMore" parent="Widget.AppCompat.Button.Borderless.Colored">
+    <style name="Dashboard.Widget.ButtonMore" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_margin">8dp</item>
         <item name="android:layout_gravity">end</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
 
     <style name="FileOverview.Card" parent="Material.Card.Margin">
@@ -80,5 +73,17 @@
     <style name="FileOverview.Card_FileCount" parent="TextAppearance.AppCompat.Subhead.Inverse" />
     <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
     <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
+
+    <!-- Custom Views -->
+    <style name="Widget.App.ContentTextView" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:maxLines">4</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="Widget.App.BreadcrumbsView" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Widget.App.CourseChip" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="iconStartPadding">8dp</item>
+    </style>
 
 </resources>

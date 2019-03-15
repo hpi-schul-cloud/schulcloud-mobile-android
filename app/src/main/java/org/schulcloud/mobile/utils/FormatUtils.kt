@@ -8,18 +8,16 @@ import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.R
 import java.text.DecimalFormat
 
-/**
- * Date: 7/12/2018
- */
 
 private val UNITS = arrayOf("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+private const val BYTES_FACTOR = 1000.0
 
 fun Long.formatFileSize(): String {
     if (this <= 0)
         return "0"
-    val digitGroups = (Math.log10(toDouble()) / Math.log10(1024.0)).toInt()
+    val digitGroups = (Math.log10(toDouble()) / Math.log10(BYTES_FACTOR)).toInt()
 
-    return "${DecimalFormat("#,##0.#").format(this / Math.pow(1024.0, digitGroups.toDouble()))} ${UNITS[digitGroups]}"
+    return "${DecimalFormat("#,##0.#").format(this / Math.pow(BYTES_FACTOR, digitGroups.toDouble()))} ${UNITS[digitGroups]}"
 }
 
 fun DateTime?.formatDaysLeft(context: Context): String {

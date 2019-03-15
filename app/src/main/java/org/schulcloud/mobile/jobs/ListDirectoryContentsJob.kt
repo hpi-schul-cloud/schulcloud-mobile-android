@@ -10,7 +10,7 @@ import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.network.ApiService
 import ru.gildor.coroutines.retrofit.awaitResponse
 
-class ListDirectoryContentsJob(private val path: String, callback: RequestJobCallback) : RequestJob(callback) {
+class ListDirectoryContentsJob(private val path: String, callback: RequestJobCallback? = null) : RequestJob(callback) {
     companion object {
         val TAG: String = ListDirectoryContentsJob::class.java.simpleName
     }

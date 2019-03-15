@@ -1,7 +1,7 @@
+@file:Suppress("TooManyFunctions")
+
 package org.schulcloud.mobile.utils
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -9,17 +9,15 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.annotation.ArrayRes
-import android.support.annotation.ColorInt
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.text.TextUtilsCompat
-import android.support.v4.view.ViewCompat
+import androidx.annotation.ArrayRes
+import androidx.annotation.ColorInt
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.text.TextUtilsCompat
+import androidx.core.view.ViewCompat
 import org.schulcloud.mobile.R
 import java.util.*
 
-/**
- * Date: 6/15/2018
- */
 
 fun Map<String, String>.asBundle(): Bundle {
     return Bundle().apply {
@@ -27,9 +25,6 @@ fun Map<String, String>.asBundle(): Bundle {
             putString(entry.key, entry.value)
     }
 }
-
-fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> = Transformations.map(this, func)
-fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> = Transformations.switchMap(this, func)
 
 fun Drawable.asBitmap(): Bitmap {
     if (this is BitmapDrawable)
@@ -64,4 +59,8 @@ fun Context.getColorArray(@ArrayRes id: Int, @ColorInt fallback: Int? = null): I
     val colors = IntArray(ta.length()) { i -> ta.getColor(i, fallbackColor) }
     ta.recycle()
     return colors
+}
+
+fun Drawable.setTintCompat(@ColorInt tint: Int) {
+    DrawableCompat.setTint(this, tint)
 }

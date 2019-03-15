@@ -1,30 +1,26 @@
 package org.schulcloud.mobile.models.news
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
-import kotlinx.coroutines.experimental.async
-import org.schulcloud.mobile.jobs.ListUserNewsJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.utils.newsDao
 
-object NewsRepository {
-    init {
-        async {
-            syncNews()
-        }
-    }
 
-    fun news(realm: Realm): LiveData<List<News>> {
+object NewsRepository {
+    fun newsList(realm: Realm): LiveData<List<News>> {
         return realm.newsDao().listNews()
     }
 
-    suspend fun syncNews() {
-        ListUserNewsJob(object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
+    fun news(realm: Realm, id: String): LiveData<News?> {
+        return realm.newsDao().news(id)
+    }
 
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+
+    suspend fun syncNews() {
+        RequestJob.Data.with({ listUserNews() }).run()
+    }
+
+    suspend fun syncNews(id: String) {
+        RequestJob.SingleData.with(id, { getNews(id) }).run()
     }
 }

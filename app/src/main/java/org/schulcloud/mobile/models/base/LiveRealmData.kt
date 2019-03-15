@@ -1,11 +1,10 @@
 package org.schulcloud.mobile.models.base
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmModel
 import io.realm.RealmResults
-
 
 class LiveRealmData<T : RealmModel>(private val results: RealmResults<T>) : LiveData<List<T>>() {
     companion object {

@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorAccent">@color/brand_accent</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/background</item>
 
         <item name="android:windowAnimationStyle">@style/Animation.Activity</item>
+
+        <item name="contentTextViewStyle">@style/Widget.App.ContentTextView</item>
+        <item name="breadcrumbsViewStyle">@style/Widget.App.BreadcrumbsView</item>
+        <item name="courseChipStyle">@style/Widget.App.CourseChip</item>
+        <item name="materialCardViewStyle">@style/Widget.App.MaterialCardStyle</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.TranslucentStatus" />
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.Main" parent="AppTheme.TranslucentStatus" />
+    <style name="AppTheme.Main.Launcher">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.LightActionBar">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
+
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.App.BottomSheetStyle</item>
+    </style>
 
 </resources>

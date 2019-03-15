@@ -1,13 +1,13 @@
 package org.schulcloud.mobile.models.file
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
 import org.schulcloud.mobile.jobs.ListDirectoryContentsJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.models.base.Repository
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
 
-object FileRepository {
+object FileRepository : Repository() {
     const val CONTEXT_MY = "my"
     const val CONTEXT_MY_API = "users"
     const val CONTEXT_COURSES = "courses"
@@ -22,13 +22,7 @@ object FileRepository {
 
 
     suspend fun syncDirectory(path: String) {
-        ListDirectoryContentsJob(path, object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
-
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+        ListDirectoryContentsJob(path).run()
     }
 
 

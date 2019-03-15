@@ -3,12 +3,13 @@ package org.schulcloud.mobile.models.news
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import org.schulcloud.mobile.models.base.HasId
 
-open class News : RealmObject(){
+open class News : RealmObject(), HasId {
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String = ""
+    override var id: String = ""
 
     var schoolId: String? = null
     var title: String? = null

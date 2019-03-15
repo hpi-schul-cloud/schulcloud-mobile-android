@@ -1,77 +1,81 @@
 package org.schulcloud.mobile.controllers.base
 
 import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.coroutines.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
 import org.schulcloud.mobile.utils.setup
 import org.schulcloud.mobile.utils.shareLink
 import java.util.*
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.properties.Delegates
 
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
     open var url: String? = null
     var swipeRefreshLayout by Delegates.observable<SwipeRefreshLayout?>(null) { _, _, new ->
         new?.setup()
         new?.setOnRefreshListener { performRefresh() }
     }
 
-    private val permissionRequests: MutableList<Continuation<Boolean>>
-            by lazy { LinkedList<Continuation<Boolean>>() }
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> return navigateUp()
+    // region Lifecycle
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        job = Job()
+    }
 
-            R.id.activity_action_share -> shareLink(url!!, supportActionBar?.title)
-        // TODO: Remove when deep linking is readded
-            R.id.activity_action_openInBrowser -> openUrl(url.asUri())
-            R.id.activity_action_refresh -> performRefresh()
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
+    // endregion
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.base_action_share -> shareLink(url!!, supportActionBar?.title)
+            R.id.base_action_refresh -> performRefresh()
+            // TODO: Remove when deep linking is readded
+            R.id.base_action_openInBrowser -> openUrl(url.asUri())
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
 
-    override fun onBackPressed() {
-        if (!navigateUp())
-            super.onBackPressed()
-    }
-
-
     protected fun setupActionBar() {
-        if (toolbar != null)
-            setSupportActionBar(toolbar)
-
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
         }
     }
 
-    protected open fun navigateUp(): Boolean = false
-
     protected open suspend fun refresh() {}
     protected fun performRefresh() {
         swipeRefreshLayout?.isRefreshing = true
         launch {
-            withContext(UI) { refresh() }
-            withContext(UI) { swipeRefreshLayout?.isRefreshing = false }
+            withContext(Dispatchers.Main) { refresh() }
+            withContext(Dispatchers.Main) { swipeRefreshLayout?.isRefreshing = false }
         }
     }
 
-    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine {cont ->
-        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED){
+    // region Permission Requests
+    private val permissionRequests: MutableList<Continuation<Boolean>>
+            by lazy { LinkedList<Continuation<Boolean>>() }
+
+    suspend fun requestPermission(permission: String): Boolean = suspendCoroutine { cont ->
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             cont.resume(true)
             return@suspendCoroutine
         }
@@ -95,4 +99,5 @@ abstract class BaseActivity : AppCompatActivity() {
 
         permissionRequests[requestCode].resume(grantResults[0] == PackageManager.PERMISSION_GRANTED)
     }
+    // endregion
 }

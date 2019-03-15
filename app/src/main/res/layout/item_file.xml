@@ -20,7 +20,7 @@
             type="kotlin.jvm.functions.Function1" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/Material.ListItem.TwoLine"
         android:layout_width="match_parent"
         android:foreground="?android:attr/selectableItemBackground"
@@ -87,5 +87,5 @@
             tools:visibility="visible" />
             -->
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

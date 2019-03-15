@@ -3,30 +3,29 @@ package org.schulcloud.mobile.models.homework
 import com.google.gson.annotations.SerializedName
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import org.joda.time.DateTime
-import org.joda.time.Days
-import org.joda.time.Hours
-import org.joda.time.LocalDateTime
+import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
-import org.schulcloud.mobile.utils.HOST
+import org.schulcloud.mobile.models.base.HasId
+import org.schulcloud.mobile.models.user.UserRepository
 
-open class Homework : RealmObject() {
+
+open class Homework : RealmObject(), HasId {
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String = ""
+    override var id: String = ""
 
+    var teacherId: String? = null
     @SerializedName("name")
     var title: String? = null
     var description: String? = null
     var dueDate: String? = null
-    @SerializedName("private")
-    var restricted: Boolean = false
     @SerializedName("courseId")
     var course: HomeworkCourse? = null
 
-    val url: String
-        get() = "$HOST/homework/$id"
+    @SerializedName("private")
+    var restricted: Boolean = false
+    var publicSubmissions: Boolean = false
 
     val dueDateTime: DateTime?
         get() = try {
@@ -37,11 +36,21 @@ open class Homework : RealmObject() {
 
     val dueTimespanDays: Int?
         get() = dueDateTime?.let {
-            Days.daysBetween(LocalDateTime.now(), it.toLocalDateTime()).days
+            Days.daysBetween(LocalDate.now(), it.toLocalDate()).days
         }
 
     val dueTimespanHours: Int?
         get() = dueDateTime?.let {
             Hours.hoursBetween(LocalDateTime.now(), it.toLocalDateTime()).hours
         }
+
+
+    fun isTeacher(userId: String = UserRepository.userId!!): Boolean {
+        return teacherId == userId
+                || course?.substitutionIds?.any { it.value == userId } == true
+    }
+
+    fun canSeeSubmissions(): Boolean {
+        return !restricted && (publicSubmissions || isTeacher())
+    }
 }

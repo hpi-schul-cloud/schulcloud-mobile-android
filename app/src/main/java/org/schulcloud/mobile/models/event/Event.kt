@@ -4,17 +4,18 @@ import com.google.gson.annotations.SerializedName
 import io.realm.RealmList
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
+import org.schulcloud.mobile.models.base.HasId
 import org.schulcloud.mobile.utils.*
 import java.util.*
 
-open class Event : RealmObject() {
+open class Event : RealmObject(), HasId {
     companion object {
         const val TYPE_TEMPLATE = "template"
     }
 
     @PrimaryKey
     @SerializedName("_id")
-    var id: String? = null
+    override var id: String = ""
     var type: String? = null
     var title: String? = null
     var allDay: Boolean? = null
@@ -36,6 +37,7 @@ open class Event : RealmObject() {
             return end - start
         }
 
+    @Suppress("ComplexMethod")
     fun nextStart(includeCurrent: Boolean = false): Calendar? {
         val start = start ?: return null
         val end = end ?: return null

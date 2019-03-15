@@ -21,59 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--  -->
         <activity
-            android:name=".controllers.main.SplashActivity"
-            android:label="@string/brand_name">
+            android:name=".controllers.main.MainActivity"
+            android:label="@string/brand_name"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Main.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!--  -->
-        <activity
-            android:name=".controllers.main.MainActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.TranslucentStatus" />
-
         <activity android:name=".controllers.login.LoginActivity" />
-
-        <activity
-            android:name=".controllers.course.CourseActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".controllers.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.main.MainActivity" />
-        </activity>
-        <activity
-            android:name=".controllers.topic.TopicActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".controllers.course.CourseActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.course.CourseActivity" />
-        </activity>
-
-        <activity
-            android:name=".controllers.homework.HomeworkActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".controllers.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.main.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".controllers.file.FileActivity"
-            android:launchMode="singleTop"
-            android:parentActivityName=".controllers.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.main.MainActivity" />
-        </activity>
 
     </application>
 

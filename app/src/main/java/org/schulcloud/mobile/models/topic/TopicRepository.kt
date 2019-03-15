@@ -1,16 +1,12 @@
 package org.schulcloud.mobile.models.topic
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
-import org.schulcloud.mobile.jobs.GetTopicJob
-import org.schulcloud.mobile.jobs.ListCourseTopicsJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.jobs.base.RequestJob
+import org.schulcloud.mobile.models.base.Repository
 import org.schulcloud.mobile.utils.topicDao
 
-/**
- * Date: 6/10/2018
- */
-object TopicRepository {
+object TopicRepository : Repository() {
 
     fun topicsForCourse(realm: Realm, courseId: String): LiveData<List<Topic>> {
         return realm.topicDao().topicsForCourse(courseId)
@@ -20,23 +16,13 @@ object TopicRepository {
         return realm.topicDao().topic(id)
     }
 
-    suspend fun syncTopics(courseId: String) {
-        ListCourseTopicsJob(courseId, object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
 
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+    suspend fun syncTopics(courseId: String) {
+        RequestJob.Data.with({ listCourseTopics(courseId) },
+                { equalTo("courseId", courseId) }).run()
     }
 
-    suspend fun syncTopic(topicId: String) {
-        GetTopicJob(topicId, object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
-
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+    suspend fun syncTopic(id: String) {
+        RequestJob.SingleData.with(id, { getTopic(id) }).run()
     }
 }

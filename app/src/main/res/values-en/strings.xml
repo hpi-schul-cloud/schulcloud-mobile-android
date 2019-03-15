@@ -4,9 +4,12 @@
     <string name="general_action_share">Share</string>
     <string name="general_action_showInBrowser">Show in browser</string>
     <string name="general_action_refresh">Refresh</string>
+    <string name="general_action_gotoCourse">Go to course</string>
+    <string name="general_action_gotoHomework">Go to assignment</string>
     <string name="general_date_yesterday">Yesterday</string>
     <string name="general_date_today">Today</string>
     <string name="general_date_tomorrow">Tomorrow</string>
+    <string name="general_error_notFound">Not found</string>
 
     <!-- Share -->
     <string name="share_subject_format">%1$s: %2$s</string>
@@ -28,8 +31,8 @@
     <string name="login_error_noConnection">No connection</string>
 
     <string name="login_demo">Don\'t have an account yet? Try it out!</string>
-    <string name="login_demo_student">Login as student</string>
-    <string name="login_demo_teacher">Login as teacher</string>
+    <string name="login_demo_student">Demo as a student</string>
+    <string name="login_demo_teacher">Demo as a teacher</string>
 
     <!-- Main -->
     <string name="main_drawer_open">Open navigation drawer</string>
@@ -38,28 +41,33 @@
     <string name="main_drawer_news">News</string>
     <string name="main_drawer_courses">Courses</string>
     <string name="main_drawer_calendar">Calendar</string>
-    <string name="main_drawer_homework">Tasks</string>
+    <string name="main_drawer_homework">Assignments</string>
     <string name="main_drawer_files">Files</string>
     <string name="main_drawer_learnstore">Resources</string>
     <string name="main_drawer_logout">Logout</string>
+    <string name="main_navigation_onboarding_1">Tap here for navigation</string>
 
     <!-- Dashboard -->
     <string name="dashboard_title">Dashboard</string>
     <!-- Events -->
+    <string name="dashboard_events">Schedule</string>
     <string name="dashboard_events_none">No events for the rest of the day!</string>
     <string name="dashboard_events_event_next">afterwards:</string>
     <string name="dashboard_events_more">All events</string>
     <!-- Homework -->
     <string name="dashboard_homework">@string/homework_title</string>
-    <string name="dashboard_homework_due0">Next due today</string>
-    <string name="dashboard_homework_due1">Next due tomorrow</string>
-    <string name="dashboard_homework_dueLater">Next due in %d days</string>
+    <string name="dashboard_homework_dueToday">Next due today</string>
+    <plurals name="dashboard_homework_due">
+        <item quantity="one">Next due tomorrow</item>
+        <item quantity="other">Next due in %d days</item>
+    </plurals>
     <plurals name="dashboard_homework_openLabel">
         <item quantity="one">open assignment</item>
         <item quantity="other">open assignments</item>
     </plurals>
     <string name="dashboard_homework_weekLabel">in the next week</string>
     <string name="dashboard_homework_more">All assignments</string>
+    <string name="dashboard_homework_noCourse">no course</string>
     <!-- News -->
     <string name="dashboard_news">@string/news_title</string>
     <string name="dashboard_news_none">There are no news at the moment</string>
@@ -73,6 +81,7 @@
     <string name="course_title">My courses</string>
     <string name="course_topics">Topics</string>
     <string name="courses_error_empty">No courses were found</string>
+    <string name="course_action_gotoFiles">Go to course files</string>
 
     <!-- Topic -->
     <string name="topics_error_empty">No topics were found</string>
@@ -88,11 +97,27 @@
     <string name="homework_error_empty">No assignments were found</string>
     <string name="homework_error_invalidDueDate">Date invalid</string>
     <string name="homework_due_outdated">Overdue</string>
-    <string name="homework_due_hours">Due in %d hours</string>
+    <plurals name="homework_due_hours">
+        <item quantity="one">Due in %d hour</item>
+        <item quantity="other">Due in %d hours</item>
+    </plurals>
     <plurals name="homework_due_days">
         <item quantity="one">Due tomorrow</item>
         <item quantity="other">Due in %d days</item>
     </plurals>
+    <string name="homework_overview">Assignment</string>
+    <string name="homework_overview_submissionMy">My submission</string>
+    <string name="homework_overview_error_empty">No description available</string>
+    <string name="homework_submissions">Submissions</string>
+    <string name="homework_submissions_error_courseEmpty">This course does not contain any students</string>
+    <string name="homework_submission_overview">Submission</string>
+    <string name="homework_submission_hint">Submission of %1$s</string>
+    <string name="homework_submissions_error_selectedEmpty">This student has not submitted anything yet</string>
+    <string name="homework_submission_error_notFound">No submission available</string>
+    <string name="homework_submission_grade">%1$d%%</string>
+    <string name="homework_submission_feedback">Feedback</string>
+    <string name="homework_submission_feedback_grade">You solved <b>%1$d%%</b> correctly</string>
+    <string name="homework_submission_feedback_error_empty">No review text available</string>
 
     <!-- File -->
     <string name="file_title">Files</string>
@@ -103,7 +128,10 @@
     <string name="fileOverview_courses_error">No courses were found</string>
     <string name="file_directory_my">My files</string>
     <string name="file_directory_course_unknown">Unknown course</string>
+    <string name="file_directory_unknown">Unknown folder</string>
     <string name="file_directoryEmpty">This folder is empty</string>
+    <string name="file_directories">Directories</string>
+    <string name="file_files">Files</string>
     <string name="file_fileOpen_error_404">The file was not found</string>
     <string name="file_fileOpen_error_cantResolve">No app is available for opening a file of type \'%1$s\'</string>
     <string name="file_fileDownload_progress">File is being downloaded&#8230;</string>

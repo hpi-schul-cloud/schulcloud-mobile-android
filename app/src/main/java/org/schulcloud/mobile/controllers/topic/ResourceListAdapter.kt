@@ -2,8 +2,8 @@ package org.schulcloud.mobile.controllers.topic
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemResourceBinding
@@ -11,10 +11,8 @@ import org.schulcloud.mobile.models.content.Resource
 import org.schulcloud.mobile.utils.openUrl
 import org.schulcloud.mobile.utils.resolveRedirect
 
-/**
- * Date: 6/10/2018
- */
-class ResourceListAdapter : BaseAdapter<Resource, ResourceListAdapter.ResourceViewHolder, ItemResourceBinding>() {
+class ResourceListAdapter
+    : BaseAdapter<Resource, ResourceListAdapter.ResourceViewHolder, ItemResourceBinding>() {
 
     fun update(resources: List<Resource>) {
         items = resources
@@ -32,7 +30,7 @@ class ResourceListAdapter : BaseAdapter<Resource, ResourceListAdapter.ResourceVi
         }
 
         fun openExternal() {
-            async(UI) {
+            launch(Dispatchers.Main) {
                 resolveRedirect(item.url!!)?.also { this@ResourceViewHolder.context.openUrl(it) }
             }
         }

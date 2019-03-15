@@ -1,7 +1,7 @@
 package org.schulcloud.mobile.controllers.dashboard
 
-import android.databinding.ViewDataBinding
 import android.text.format.DateUtils
+import androidx.databinding.ViewDataBinding
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemEventBinding
 import org.schulcloud.mobile.databinding.ItemEventCurrentBinding
@@ -21,8 +21,8 @@ sealed class EventViewHolder<out B : ViewDataBinding>(binding: B) : BaseViewHold
         } ?: ""
 }
 
-class GeneralEventViewHolder(binding: ItemEventBinding, private val onCourseEventSelected: (String) -> Unit)
-    : EventViewHolder<ItemEventBinding>(binding) {
+class GeneralEventViewHolder(binding: ItemEventBinding, private val onCourseEventSelected: (String) -> Unit) :
+        EventViewHolder<ItemEventBinding>(binding) {
     override fun onItemSet() {
         binding.event = item
         binding.formattedTime = formattedTime
@@ -35,10 +35,11 @@ class GeneralEventViewHolder(binding: ItemEventBinding, private val onCourseEven
     }
 }
 
-class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val onCourseEventSelected: (String) -> Unit)
-    : EventViewHolder<ItemEventCurrentBinding>(binding) {
+class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val onCourseEventSelected: (String) -> Unit) :
+        EventViewHolder<ItemEventCurrentBinding>(binding) {
     companion object {
         @JvmStatic
+        @Suppress("MagicNumber")
         fun getProgress(event: Event): Int {
             val cal = getUserCalendar()
             val now = cal.timeOfDay

@@ -1,20 +1,13 @@
 package org.schulcloud.mobile.models.course
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
-import kotlinx.coroutines.experimental.async
-import org.schulcloud.mobile.jobs.GetCourseJob
-import org.schulcloud.mobile.jobs.ListUserCoursesJob
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
+import org.schulcloud.mobile.jobs.base.RequestJob
+import org.schulcloud.mobile.models.base.Repository
 import org.schulcloud.mobile.utils.courseDao
 
-object CourseRepository {
-    init {
-        async {
-            syncCourses()
-        }
-    }
 
+object CourseRepository : Repository() {
     fun courses(realm: Realm): LiveData<List<Course>> {
         return realm.courseDao().courses()
     }
@@ -23,23 +16,12 @@ object CourseRepository {
         return realm.courseDao().course(id)
     }
 
-    suspend fun syncCourses() {
-        ListUserCoursesJob(object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
 
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+    suspend fun syncCourses() {
+        RequestJob.Data.with({ listUserCourses() }).run()
     }
 
-    suspend fun syncCourse(courseId: String) {
-        GetCourseJob(courseId, object : RequestJobCallback() {
-            override fun onSuccess() {
-            }
-
-            override fun onError(code: ErrorCode) {
-            }
-        }).run()
+    suspend fun syncCourse(id: String) {
+        RequestJob.SingleData.with(id, { getCourse(id) }).run()
     }
 }

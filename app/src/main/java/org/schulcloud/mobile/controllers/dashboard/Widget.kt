@@ -1,14 +1,14 @@
 package org.schulcloud.mobile.controllers.dashboard
 
-import android.support.v4.app.Fragment
-import org.schulcloud.mobile.controllers.base.BaseFragment
-import org.schulcloud.mobile.controllers.main.MainActivity
+import androidx.fragment.app.Fragment
+import org.schulcloud.mobile.controllers.main.Refreshable
+import org.schulcloud.mobile.controllers.main.RefreshableImpl
 
-open class Widget : Fragment() {
-    fun showFragment(fragment: BaseFragment, tag: String) {
-        // TODO: doesn't update NavDrawer
-        (activity as MainActivity).replaceFragment(fragment, tag)
+abstract class Widget(refreshableImpl: RefreshableImpl = RefreshableImpl()) : Fragment(),
+        Refreshable by refreshableImpl {
+    init {
+        refreshableImpl.refresh = { refresh() }
     }
 
-    open suspend fun refresh() {}
+    abstract suspend fun refresh()
 }

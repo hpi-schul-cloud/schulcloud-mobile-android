@@ -3,12 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     buildToolsVersion rootProject.buildToolsVersion
@@ -23,8 +18,9 @@ android {
         versionName rootProject.versionName
         versionCode rootProject.versionCode
 
+        multiDexEnabled true
         applicationId "org.schulcloud.mobile"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -37,12 +33,12 @@ android {
 
     productFlavors {
         hpi {
-            buildConfigField "String", "API_URL", '"https://schul-cloud.org:8080"'
+            buildConfigField "String", "API_URL", '"https://api.schul-cloud.org"'
         }
 
         n21 {
             applicationId "cloud.niedersachsen.mobile"
-            buildConfigField "String", "API_URL", '"https://niedersachsen.cloud:8080"'
+            buildConfigField "String", "API_URL", '"https://api.niedersachsen.cloud"'
         }
     }
 
@@ -61,6 +57,20 @@ android {
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
         }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+detekt {
+    version = "1.0.0.RC8"
+    profile("main") {
+        input = "$projectDir"
+        config = "$rootDir/detekt.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        output = "$projectDir/build/reports/detekt"
     }
 }
 

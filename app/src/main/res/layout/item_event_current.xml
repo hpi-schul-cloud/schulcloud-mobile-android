@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
         <import type="org.schulcloud.mobile.controllers.dashboard.CurrentEventViewHolder" />
 
         <variable
@@ -15,7 +14,7 @@
             type="String" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,14 +52,14 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{event.summary}"
-            android:visibility="@{ViewUtilsKt.asVisibility(!event.title.equals(event.summary))}"
+            android:visibility="@{!event.title.equals(event.summary)}"
             app:layout_constraintBottom_toTopOf="@id/barrierBottom"
             app:layout_constraintEnd_toStartOf="@id/barrierEnd"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             tools:text="Summary" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierEnd"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -94,7 +93,7 @@
             app:layout_constraintTop_toBottomOf="@id/location"
             tools:text="10:00 - 11:30" />
 
-        <android.support.constraint.Barrier
+        <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,5 +116,5 @@
             android:text="@string/dashboard_events_event_next"
             app:layout_constraintTop_toBottomOf="@id/progress" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

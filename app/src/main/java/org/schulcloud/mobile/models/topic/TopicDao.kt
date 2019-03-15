@@ -1,26 +1,22 @@
 package org.schulcloud.mobile.models.topic
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import io.realm.Realm
-import org.schulcloud.mobile.utils.asLiveData
+import org.schulcloud.mobile.utils.allAsLiveData
+import org.schulcloud.mobile.utils.firstAsLiveData
 
-/**
- * Date: 6/10/2018
- */
 class TopicDao(private val realm: Realm) {
 
     fun topicsForCourse(courseId: String): LiveData<List<Topic>> {
         return realm.where(Topic::class.java)
                 .equalTo("courseId", courseId)
                 .sort("position")
-                .findAllAsync()
-                .asLiveData()
+                .allAsLiveData()
     }
 
     fun topic(id: String): LiveData<Topic?> {
         return realm.where(Topic::class.java)
                 .equalTo("id", id)
-                .findFirstAsync()
-                .asLiveData()
+                .firstAsLiveData()
     }
 }

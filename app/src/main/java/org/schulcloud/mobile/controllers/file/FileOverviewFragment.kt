@@ -16,7 +16,6 @@ import org.schulcloud.mobile.controllers.main.MainFragmentConfig
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.utils.asLiveData
-import org.schulcloud.mobile.utils.setForegroundForJellyBean
 import org.schulcloud.mobile.viewmodels.FileOverviewViewModel
 
 class FileOverviewFragment : MainFragment<FileOverviewViewModel>() {
@@ -63,9 +62,6 @@ class FileOverviewFragment : MainFragment<FileOverviewViewModel>() {
             layoutManager = LinearLayoutManager(context)
             adapter = coursesAdapter
         }
-
-        personal_card.setForegroundForJellyBean(context!!)
-        courses_card.setForegroundForJellyBean(context!!)
     }
 
     override suspend fun refresh() {

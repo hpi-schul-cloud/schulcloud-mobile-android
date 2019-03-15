@@ -78,7 +78,6 @@
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/courses_card"
                 style="@style/FileOverview.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

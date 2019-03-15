@@ -10,7 +10,6 @@ import org.schulcloud.mobile.databinding.ItemResourceBinding
 import org.schulcloud.mobile.models.content.Resource
 import org.schulcloud.mobile.utils.openUrl
 import org.schulcloud.mobile.utils.resolveRedirect
-import org.schulcloud.mobile.utils.setForegroundForJellyBean
 
 class ResourceListAdapter
     : BaseAdapter<Resource, ResourceListAdapter.ResourceViewHolder, ItemResourceBinding>() {
@@ -21,7 +20,6 @@ class ResourceListAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResourceViewHolder {
         val binding = ItemResourceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.materialCard.setForegroundForJellyBean(binding.materialCard.context)
         return ResourceListAdapter.ResourceViewHolder(binding)
     }
 

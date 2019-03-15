@@ -89,10 +89,6 @@ fun Context.getTextColorSecondaryForBackground(@ColorInt color: Int): Int {
     else R.color.material_text_secondary_light)
 }
 
-fun MaterialCardView.setForegroundForJellyBean(context: Context){
-    if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN)
-        foreground = ResourcesCompat.getDrawable(context.resources, R.drawable.fg_material_card_transparent, context.theme)
-
 @Suppress("SpreadOperator")
 fun SwipeRefreshLayout.setup() {
     setColorSchemeColors(*context.getColorArray(R.array.brand_swipeRefreshColors))

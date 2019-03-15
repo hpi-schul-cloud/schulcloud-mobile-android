@@ -7,7 +7,7 @@ import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.storages.UserStorage
-import org.schulcloud.mobile.utils.JWTUtil
+import org.schulcloud.mobile.utils.JwtUtil
 import ru.gildor.coroutines.retrofit.awaitResponse
 
 class CreateAccessTokenJob(private val credentials: Credentials, callback: RequestJobCallback) : RequestJob(callback) {
@@ -23,7 +23,7 @@ class CreateAccessTokenJob(private val credentials: Credentials, callback: Reque
             if (BuildConfig.DEBUG) Log.i(TAG, "AccessToken created")
 
             UserStorage.accessToken = token
-            UserStorage.userId = JWTUtil().decodeToCurrentUser(token)!!
+            UserStorage.userId = JwtUtil.decodeToCurrentUser(token)!!
 
             callback?.success()
         } else {

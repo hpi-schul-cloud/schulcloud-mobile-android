@@ -68,6 +68,7 @@
     </plurals>
     <string name="dashboard_homework_weekLabel">in der nächsten Woche</string>
     <string name="dashboard_homework_more">Alle Hausaufgaben</string>
+    <string name="dashboard_homework_noCourse">ohne Kurs</string>
     <!-- News -->
     <string name="dashboard_news">@string/news_title</string>
     <string name="dashboard_news_none">Es gibt aktuell keine Neuigkeiten</string>

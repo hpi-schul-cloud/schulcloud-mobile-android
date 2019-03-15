@@ -64,6 +64,7 @@
     </plurals>
     <string name="dashboard_homework_weekLabel">in the next week</string>
     <string name="dashboard_homework_more">All assignments</string>
+    <string name="dashboard_homework_noCourse">no course</string>
     <!-- News -->
     <string name="dashboard_news">@string/news_title</string>
     <string name="dashboard_news_none">There are no news at the moment</string>

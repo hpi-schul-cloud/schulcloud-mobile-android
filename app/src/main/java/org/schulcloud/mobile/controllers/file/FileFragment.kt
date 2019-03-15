@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_file.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
@@ -32,6 +32,7 @@ import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
+import javax.net.ssl.SSLHandshakeException
 
 
 class FileFragment : MainFragment<FileViewModel>() {
@@ -186,7 +187,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     @Suppress("ComplexMethod")
-    private fun loadFile(file: File, download: Boolean) = launch(UI) {
+    private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
             val response = ApiService.getInstance().generateSignedUrl(
                     SignedUrlRequest().apply {
@@ -202,7 +203,11 @@ class FileFragment : MainFragment<FileViewModel>() {
                 }
 
                 this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
+                    val result = try {
+                        ApiService.getInstance().downloadFile(response.url!!).await()
+                    } catch (ex: SSLHandshakeException) {
+                        ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
+                    }
                     if (!result.writeToDisk(file.name.orEmpty())) {
                         this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
                         return@withProgressDialog

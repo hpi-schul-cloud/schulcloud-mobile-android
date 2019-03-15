@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.drawer_navigation.*
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
+import org.schulcloud.mobile.controllers.base.BaseBottomSheetDialogFragment
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.controllers.settings.SettingsActivity
 import org.schulcloud.mobile.databinding.DrawerNavigationBinding
@@ -18,7 +18,7 @@ import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.wrapWithTheme
 import org.schulcloud.mobile.viewmodels.NavigationDrawerViewModel
 
-class NavigationDrawerFragment : BottomSheetDialogFragment() {
+class NavigationDrawerFragment : BaseBottomSheetDialogFragment() {
     private lateinit var viewModel: NavigationDrawerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

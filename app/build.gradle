@@ -5,12 +5,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'androidx.navigation.safeargs'
 
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
-
 android {
     buildToolsVersion rootProject.buildToolsVersion
     compileSdkVersion rootProject.compileSdkVersion
@@ -39,12 +33,12 @@ android {
 
     productFlavors {
         hpi {
-            buildConfigField "String", "API_URL", '"https://schul-cloud.org:8080"'
+            buildConfigField "String", "API_URL", '"https://api.schul-cloud.org"'
         }
 
         n21 {
             applicationId "cloud.niedersachsen.mobile"
-            buildConfigField "String", "API_URL", '"https://niedersachsen.cloud:8080"'
+            buildConfigField "String", "API_URL", '"https://api.niedersachsen.cloud"'
         }
     }
 

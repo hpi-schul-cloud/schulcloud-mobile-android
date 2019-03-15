@@ -25,6 +25,7 @@ class SubmissionPagerAdapter(private val context: Context, fm: FragmentManager) 
             TAB_OVERVIEW -> OverviewFragment()
             TAB_FEEDBACK -> FeedbackFragment()
 
+            // Shouldn't occur but we have to return something
             else -> OverviewFragment()
         }
     }

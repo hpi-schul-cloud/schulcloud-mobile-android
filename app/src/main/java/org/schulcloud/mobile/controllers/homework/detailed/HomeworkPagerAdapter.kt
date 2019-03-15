@@ -31,6 +31,7 @@ class HomeworkPagerAdapter(private val context: Context, fm: FragmentManager) : 
             TAB_DETAILS -> OverviewFragment()
             TAB_SUBMISSIONS -> SubmissionsFragment()
 
+            // Shouldn't occur but we have to return something
             else -> OverviewFragment()
         }
     }

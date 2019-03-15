@@ -8,18 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.utils.*
 import java.util.*
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.properties.Delegates
 
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
     companion object {
         const val KEY_RECREATE_FLAG_UI_MODE_CHANGE = "KEY_RECREATE_FLAG_UI_MODE_CHANGE"
     }
@@ -30,19 +30,21 @@ abstract class BaseActivity : AppCompatActivity() {
         new?.setOnRefreshListener { performRefresh() }
     }
 
-    private val permissionRequests: MutableList<Continuation<Boolean>>
-            by lazy { LinkedList<Continuation<Boolean>>() }
-
     private var lastThemeConfig: ThemeConfig? = null
     private var recreateFlagUiModeChange = false
     private val themeConfigChangeListener: ThemeConfigChangeListener = { _ ->
         recreateIfNecessary()
     }
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     // region Lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(ThemeConfigUtils.getInstance(this).themeConfig.themeOverlay)
         super.onCreate(savedInstanceState)
+        job = Job()
 
         if (savedInstanceState?.getBoolean(KEY_RECREATE_FLAG_UI_MODE_CHANGE) == true)
             flushResourceCache()
@@ -66,14 +68,19 @@ abstract class BaseActivity : AppCompatActivity() {
 
         outState.putBoolean(KEY_RECREATE_FLAG_UI_MODE_CHANGE, recreateFlagUiModeChange)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
     // endregion
 
     // region Activity
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.base_action_share -> shareLink(url!!, supportActionBar?.title)
             R.id.base_action_refresh -> performRefresh()
-        // TODO: Remove when deep linking is readded
+            // TODO: Remove when deep linking is readded
             R.id.base_action_openInBrowser -> openUrl(url.asUri())
             else -> return super.onOptionsItemSelected(item)
         }
@@ -107,10 +114,14 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun performRefresh() {
         swipeRefreshLayout?.isRefreshing = true
         launch {
-            withContext(UI) { refresh() }
-            withContext(UI) { swipeRefreshLayout?.isRefreshing = false }
+            withContext(Dispatchers.Main) { refresh() }
+            withContext(Dispatchers.Main) { swipeRefreshLayout?.isRefreshing = false }
         }
     }
+
+    // region Permission Requests
+    private val permissionRequests: MutableList<Continuation<Boolean>>
+            by lazy { LinkedList<Continuation<Boolean>>() }
 
     suspend fun requestPermission(permission: String): Boolean = suspendCoroutine { cont ->
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {

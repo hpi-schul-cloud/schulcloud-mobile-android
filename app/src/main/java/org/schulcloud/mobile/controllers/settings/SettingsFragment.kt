@@ -4,19 +4,33 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.*
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.storages.Preferences
 import org.schulcloud.mobile.utils.DarkModeUtils
 import org.schulcloud.mobile.utils.hasPermission
+import kotlin.coroutines.CoroutineContext
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener,
+        CoroutineScope {
     companion object {
         val TAG = SettingsFragment::class.simpleName!!
     }
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
     // region Lifecycle
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        job = Job()
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
@@ -36,6 +50,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         super.onPause()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
     // endregion
 
 
@@ -54,7 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
         darkMode_night.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue == true && !context.hasPermission(ACCESS_COARSE_LOCATION))
-                launch {
+                launch(Dispatchers.Main) {
                     if ((activity as BaseActivity).requestPermission(ACCESS_COARSE_LOCATION))
                         DarkModeUtils.getInstance(context).onLocationPermissionGranted()
                 }

@@ -23,8 +23,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.getSystemService
 import androidx.databinding.BindingAdapter
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.storages.Preferences
 import java.util.*
@@ -256,7 +257,7 @@ class DarkModeUtils(val context: Context) {
             timer = fixedRateTimer("theme-darkMode-night", true, period = DateUtils.MINUTE_IN_MILLIS) {
                 val isNight = TwilightManager.getInstance(context).isNight()
                 if (shouldEnable != isNight)
-                    launch(UI) {
+                    GlobalScope.launch(Dispatchers.Main) {
                         shouldEnable = isNight
                     }
             }

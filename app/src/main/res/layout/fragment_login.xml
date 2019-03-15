@@ -60,6 +60,16 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceSubtitle1"
+            android:textColor="?colorError"
+            android:visibility="gone"
+            tools:text="@string/login_error_noConnection"
+            tools:visibility="visible" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,16 +99,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/error_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="error"
-            android:textColor="@color/brand_hpiRed"
-            android:visibility="gone" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,13 +109,13 @@
             android:paddingRight="@dimen/material_dividerMiddle_inset" />
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:text="@string/login_demo"
             android:textAlignment="center"
+            android:textAppearance="?textAppearanceHeadline6"
             android:textColor="?android:textColorSecondary" />
 
         <com.google.android.material.button.MaterialButton
@@ -134,7 +134,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:text="@string/login_demo_teacher" />
-
 
     </LinearLayout>
 

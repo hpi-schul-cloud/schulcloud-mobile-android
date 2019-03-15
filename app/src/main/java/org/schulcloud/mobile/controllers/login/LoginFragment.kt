@@ -70,42 +70,39 @@ class LoginFragment : BaseFragment() {
             when (loginState) {
                 is LoginViewModel.LoginStatus.Pending -> {
                     Log.d(TAG, "PENDING LOGIN")
+                    errorText.visibility = View.GONE
                     progress.visibility = View.VISIBLE
-                    error_text.visibility = View.GONE
                     loginBtn.isEnabled = false
                 }
                 is LoginViewModel.LoginStatus.LoggedIn -> {
                     Log.d(TAG, "LOGGED IN")
                     startMainActivity()
-                    error_text.visibility = View.GONE
+                    errorText.visibility = View.GONE
                 }
                 is LoginViewModel.LoginStatus.InvalidInputs -> {
                     Log.d(TAG, "INVALID FIELDS")
+                    errorText.visibility = View.GONE
                     progress.visibility = View.GONE
                     loginBtn.isEnabled = true
                     handleInvalidFields(loginState.invalidInputs)
-                    error_text.visibility = View.GONE
                 }
                 is LoginViewModel.LoginStatus.Error -> {
                     Log.d(TAG, "ERROR: " + loginState.error)
+                    errorText.visibility = View.VISIBLE
+                    errorText.text = getString(when (loginState.error) {
+                        RequestJobCallback.ErrorCode.TIMEOUT -> R.string.login_error_server
+                        RequestJobCallback.ErrorCode.ERROR -> R.string.login_error_passwordWrong
+                        RequestJobCallback.ErrorCode.NO_NETWORK -> R.string.login_error_noConnection
+                        else -> R.string.login_error
+                    })
                     progress.visibility = View.GONE
-                    error_text.visibility = View.VISIBLE
-                    if(loginState.error == RequestJobCallback.ErrorCode.TIMEOUT.toString()){
-                        error_text.text = getString(R.string.login_error_server)
-                    }else if(loginState.error == RequestJobCallback.ErrorCode.ERROR.toString())
-                    {
-                        error_text.text = getString(R.string.login_error_passwordWrong)
-                    }else if(loginState.error == RequestJobCallback.ErrorCode.NO_NETWORK.toString()){
-                        error_text.text = getString(R.string.login_error_noConnection)
-                    }
-
                     loginBtn.isEnabled = true
                 }
             }
         })
     }
 
-    private fun handleInvalidFields(invalidInputs: MutableList<LoginViewModel.LoginInput>) {
+    private fun handleInvalidFields(invalidInputs: List<LoginViewModel.LoginInput>) {
         invalidInputs.forEach { input ->
             when (input) {
                 LoginViewModel.LoginInput.EMAIL ->

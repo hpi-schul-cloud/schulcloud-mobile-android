@@ -24,10 +24,11 @@
     <string name="login_password_hint">Passwort</string>
     <string name="login_forgotPassword">Passwort vergessen?</string>
     <string name="login_login">Anmelden</string>
+    <string name="login_error">Es gab einen Fehler beim Anmelden</string>
     <string name="login_error_emailInvalid">Die E-Mail-Adresse ist ungültig</string>
     <string name="login_error_passwordEmpty">Bitte gib dein Passwort ein!</string>
-    <string name="login_error_server">Es konnte keine Verbindung zum Server aufgebaut werden</string>
     <string name="login_error_passwordWrong">Das Passwort ist falsch</string>
+    <string name="login_error_server">Es konnte keine Verbindung zum Server aufgebaut werden</string>
     <string name="login_error_noConnection">Keine Internetverbindung</string>
 
     <string name="login_demo">Du hast noch keinen Account? Jetzt testen!</string>

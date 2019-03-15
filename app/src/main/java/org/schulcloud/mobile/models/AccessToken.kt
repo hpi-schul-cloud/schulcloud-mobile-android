@@ -1,6 +1,6 @@
 package org.schulcloud.mobile.models
 
-class AccessToken {
 
+class AccessToken {
     var accessToken: String? = null
 }

@@ -164,7 +164,7 @@ class MainActivity : BaseActivity() {
         updateToolbarColors()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         viewModel.onOptionsItemSelected.value = item
         return true
     }

@@ -93,7 +93,7 @@ class MainActivity : BaseActivity() {
 
         fab.setOnClickListener { viewModel.onFabClicked.call() }
 
-        navController.addOnNavigatedListener { _, _ ->
+        navController.addOnDestinationChangedListener { _, _, _ ->
             bottomAppBar.slideIntoView()
         }
     }

@@ -44,7 +44,7 @@ android {
 
         n21 {
             applicationId "cloud.niedersachsen.mobile"
-            buildConfigField "String", "API_URL", '"https://niedersachsen.cloud:8080"'
+            buildConfigField "String", "API_URL", '"https://api.niedersachsen.cloud"'
         }
     }
 

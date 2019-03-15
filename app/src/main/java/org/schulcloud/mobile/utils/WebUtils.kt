@@ -8,12 +8,10 @@ import android.net.Uri
 import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import org.schulcloud.mobile.BuildConfig.API_URL
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.user.UserRepository
@@ -64,17 +62,14 @@ fun Context.openUrl(url: Uri) {
     prepareCustomTab().launchUrl(this, url)
 }
 
-suspend fun resolveRedirect(url: String): Uri? {
+suspend fun resolveRedirect(url: String): Uri? = withContext(Dispatchers.IO) {
     if (url[0] != '/')
-        return url.asUri()
+        return@withContext url.asUri()
 
-    return try {
-        val response: Deferred<Response>
-        response = async(CommonPool) {
-            val request = Request.Builder().url(combinePath(API_URL, url)).build()
-            HTTP_CLIENT.newCall(request).execute()
-        }
-        response.await().request().url().toString().asUri()
+    return@withContext try {
+        val request = Request.Builder().url(combinePath(API_URL, url)).build()
+        HTTP_CLIENT.newCall(request).execute()
+                .request().url().toString().asUri()
     } catch (e: IOException) {
         Log.w(TAG, "Error resolving internal redirect", e)
         null

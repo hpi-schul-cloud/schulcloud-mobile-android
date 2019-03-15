@@ -77,8 +77,8 @@ class CourseFragment : MainFragment<CourseViewModel>() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.course_action_gotoFiles -> viewModel.course.value?.id?.also { id ->
                 navController.navigate(R.id.action_global_fragment_file,
                         FileFragmentArgs.Builder(FileRepository.pathCourse(id))

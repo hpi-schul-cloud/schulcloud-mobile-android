@@ -2,6 +2,7 @@
 <resources>
 
     <color name="brand_primary">@color/brand_hpiRed</color>
+    <color name="brand_primary12">#1FB10438</color>
     <color name="brand_primaryDark">#690221</color>
     <color name="brand_onBackgroundPrimary">@color/brand_primary</color>
     <color name="brand_secondary">@color/brand_primary</color>

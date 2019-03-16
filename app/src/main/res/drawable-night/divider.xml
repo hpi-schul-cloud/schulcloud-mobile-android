@@ -6,6 +6,6 @@
         android:width="@dimen/material_divider_size"
         android:height="@dimen/material_divider_size" />
 
-    <solid android:color="@color/material_divider_dark" />
+    <solid android:color="@color/material_divider_light" />
 
 </shape>

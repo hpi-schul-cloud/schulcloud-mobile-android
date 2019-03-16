@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.PowerManager
 import android.text.format.DateUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebView
@@ -206,7 +207,9 @@ class DarkModeUtils(val context: Context) {
         shouldEnableChangeListener: ShouldEnableChangeListener
     ) : Criterion(shouldEnableChangeListener) {
         companion object {
-            const val THRESHOLD = 10f
+            const val THRESHOLD = 7f
+            // in [0, 1]; higher value means quicker reaction times
+            const val ALPHA = 0.2f
 
             fun createIfSupported(
                 context: Context,
@@ -225,10 +228,17 @@ class DarkModeUtils(val context: Context) {
         private var sensorManager = context.getSystemService<SensorManager>()!!
         private var sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)!!
         private val eventListener = object : SensorEventListener {
+            private var filtered: Float? = null
+
             override fun onSensorChanged(event: SensorEvent?) {
                 val value = event?.values?.firstOrNull() ?: return
-                // TODO: Throttle
-                shouldEnable = value <= THRESHOLD
+
+                // simple low-pass filter
+                filtered = filtered?.let {
+                    (1 - ALPHA) * it + ALPHA * value
+                } ?: value
+                shouldEnable = filtered!! <= THRESHOLD
+                Log.d("AmbientLightCriterion", "$value, $filtered")
             }
 
             override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
@@ -238,7 +248,7 @@ class DarkModeUtils(val context: Context) {
         override fun isEnabled() = Preferences.Theme.darkMode_ambientLight
 
         override fun onStartMonitoring() {
-            sensorManager.registerListener(eventListener, sensor, SensorManager.SENSOR_DELAY_UI)
+            sensorManager.registerListener(eventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL)
         }
 
         override fun onStopMonitoring() {

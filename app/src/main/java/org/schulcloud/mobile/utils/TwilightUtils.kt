@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber", "TooGenericExceptionCaught")
+
 package org.schulcloud.mobile.utils
 
 import android.Manifest

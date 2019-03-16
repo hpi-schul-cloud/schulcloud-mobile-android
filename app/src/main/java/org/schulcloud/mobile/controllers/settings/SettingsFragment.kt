@@ -58,7 +58,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     // endregion
 
 
-    @Suppress("LocalVariableName")
+    @Suppress("LocalVariableName", "VariableNaming")
     fun initTheme() {
         val context = context ?: return
 

@@ -24,7 +24,7 @@
     <style name="AppTheme.Base.V21" />
 
 
-    <style name="AppTheme.Base.Default" parent="">
+    <style name="AppTheme.Base.Default" parent="AppTheme.Base.V21">
         <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/brand_primaryDark</item>
         <item name="colorPrimaryVariant">?colorPrimaryDark</item>

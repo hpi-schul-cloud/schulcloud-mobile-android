@@ -53,7 +53,7 @@ class MainActivity : BaseActivity() {
             finish()
         }
 
-        setTheme(R.style.AppTheme_Base_V21)
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)

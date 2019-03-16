@@ -41,6 +41,7 @@ open class ContentWebView @JvmOverloads constructor(
         }
         body {
             margin: 0;
+            font-family: 'Roboto', sans-serif;
             color: %2${"$"}s;
         }
         body a {

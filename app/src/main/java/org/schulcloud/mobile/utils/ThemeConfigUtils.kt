@@ -325,6 +325,7 @@ typealias ShouldEnableChangeListener = () -> Unit
 private const val DARK_MODE_COLOR_DARKEN = 0.6f
 
 @ColorInt
+@Suppress("MagicNumber")
 fun Context.fitColorToTheme(@ColorInt color: Int): Int {
     return if (!ThemeConfigUtils.getInstance(this).themeConfig.darkMode)
         color

@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="org.schulcloud.mobile.controllers.homework.HomeworkAdapter.HomeworkViewHolder" />
-        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
         <import type="org.schulcloud.mobile.utils.HomeworkUtilsKt" />
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
 
         <variable
             name="homework"
@@ -70,6 +70,7 @@
                 app:layout_constraintEnd_toStartOf="@id/dueLabel"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/homework.json/data/title" />
 
             <org.schulcloud.mobile.views.CompatTextView
@@ -83,6 +84,7 @@
                 app:drawableStartVisible="@{HomeworkUtilsKt.dueLabelFlagRequired(homework)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/title"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:drawableStartVisible="@sample/homework.json/data/due/visibility"
                 tools:text="@sample/homework.json/data/due/text"
                 tools:textColor="@sample/homework.json/data/due/color" />
@@ -105,8 +107,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:onClick="@{() -> onCourseSelected.invoke(homework.course.id)}"
+                android:paddingTop="0dp"
                 android:visibility="@{ViewUtilsKt.toVisible(homework.course.name)}"
                 app:homeworkCourse="@{homework.course}"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description"
                 tools:course="@sample/homework.json/data/course" />
 

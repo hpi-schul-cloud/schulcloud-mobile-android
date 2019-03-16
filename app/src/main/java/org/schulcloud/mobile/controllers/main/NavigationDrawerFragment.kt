@@ -51,13 +51,6 @@ class NavigationDrawerFragment : BaseBottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val navController = findNavController(this)
-        NavigationUI.setupWithNavController(navigationView, navController)
-        var firstNavigation = true
-        navController.addOnNavigatedListener { _, _ ->
-            if (!firstNavigation)
-                dismiss()
-            firstNavigation = !firstNavigation
-        }
+        NavigationUI.setupWithNavController(navigationView, findNavController(this))
     }
 }

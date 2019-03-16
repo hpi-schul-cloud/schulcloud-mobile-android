@@ -48,7 +48,9 @@ abstract class RequestJob(
                 onRun()
             } catch (e: Throwable) {
                 Log.w(TAG, "Error running job", e)
-                callback?.error(RequestJobCallback.ErrorCode.ERROR)
+                callback?.error(
+                        if (e.message == "connect timed out") RequestJobCallback.ErrorCode.TIMEOUT
+                        else RequestJobCallback.ErrorCode.ERROR)
             }
         }
     }

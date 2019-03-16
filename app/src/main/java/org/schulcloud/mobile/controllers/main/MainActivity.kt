@@ -91,6 +91,10 @@ class MainActivity : BaseActivity() {
         }
 
         fab.setOnClickListener { viewModel.onFabClicked.call() }
+
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            bottomAppBar.slideIntoView()
+        }
     }
 
     override fun onResume() {

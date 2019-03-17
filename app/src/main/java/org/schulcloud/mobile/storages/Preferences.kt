@@ -19,4 +19,9 @@ object Preferences : BaseStorage(NAME) {
         const val DARK_MODE_POWER_SAVER = "theme_darkMode_powerSaver"
         var darkMode_powerSaver by BooleanPreference(DARK_MODE_POWER_SAVER)
     }
+
+    object Privacy : BaseStorage(NAME) {
+        const val CRASHLYTICS = "privacy_crashlytics"
+        var crashlytics by BooleanPreference(CRASHLYTICS, true)
+    }
 }

@@ -1,17 +1,18 @@
 dependencies {
 
     // kotlin
-    def kotlinCoroutinesVersion = '0.22.3'
+    def kotlinCoroutinesVersion = '1.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinCoroutinesVersion}"
-    implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.10.0'
+    implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:1.1.0'
 
     // networking
     def okhttpVersion = '3.10.0'
     implementation "com.squareup.okhttp3:okhttp:${okhttpVersion}"
     implementation "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
+    implementation 'info.guardianproject.netcipher:netcipher:1.2'
 
     // retrofit
     def retrofitVersion = '2.3.0'
@@ -48,7 +49,7 @@ dependencies {
     implementation "androidx.browser:browser:1.0.0"
     implementation "androidx.annotation:annotation:1.0.1"
     // ui
-    implementation "com.google.android.material:material:1.0.0"
+    implementation "com.google.android.material:material:1.1.0-alpha04"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.constraintlayout:constraintlayout:1.1.3"

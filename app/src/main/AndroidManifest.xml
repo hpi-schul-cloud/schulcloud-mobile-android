@@ -33,6 +33,10 @@
         </activity>
 
         <activity android:name=".controllers.login.LoginActivity" />
+        <!-- Link autofill with website -->
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/login_asset_statements" />
 
     </application>
 

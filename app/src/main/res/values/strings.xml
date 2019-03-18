@@ -30,6 +30,11 @@
     <string name="login_error_passwordWrong">Das Passwort ist falsch</string>
     <string name="login_error_server">Es konnte keine Verbindung zum Server aufgebaut werden</string>
     <string name="login_error_noConnection">Keine Internetverbindung</string>
+    <string name="login_asset_statements" translatable="false">
+      [{
+        \"include\": \"https://schul-cloud.org/.well-known/assetlinks.json\"
+      }]
+    </string>
 
     <string name="login_demo">Du hast noch keinen Account? Jetzt testen!</string>
     <string name="login_demo_student">Demo als Schüler</string>
@@ -139,7 +144,8 @@
     <string name="file_directories">Ordner</string>
     <string name="file_files">Dateien</string>
     <string name="file_fileOpen_error_404">Die Datei wurde nicht gefunden</string>
-    <string name="file_fileOpen_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
+    <string
+        name="file_fileOpen_error_cantResolve">Es ist keine App installiert, die den Dateityp \'%1$s\' öffnen kann</string>
     <string name="file_fileDownload_progress">Die Datei wird geladen&#8230;</string>
     <string name="file_fileDownload_success">Datei \'%1$s\' wurde erfolgreich in Downloads gespeichert!</string>
     <string name="file_fileDownload_error_save">Die Datei konnte nicht gespeichert werden</string>

@@ -30,11 +30,11 @@
         android:checkable="true"
         android:icon="@drawable/ic_brand_homework"
         android:title="@string/main_drawer_homework" />
-    <item
+    <!--<item
         android:id="@+id/fragment_fileOverview"
         android:checkable="true"
         android:icon="@drawable/ic_brand_files_black"
-        android:title="@string/main_drawer_files" />
+        android:title="@string/main_drawer_files" />-->
     <!--<item
         android:id="@+id/fragment_learnstore"
         android:checkable="true

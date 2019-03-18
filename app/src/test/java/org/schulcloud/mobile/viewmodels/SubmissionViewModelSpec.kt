@@ -3,7 +3,7 @@ package org.schulcloud.mobile.viewmodels
 import androidx.lifecycle.Observer
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.*
+import org.schulcloud.mobile.commonTest.*
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.models.homework.submission.SubmissionRepository

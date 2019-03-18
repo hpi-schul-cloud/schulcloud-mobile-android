@@ -2,11 +2,12 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.course
+import org.schulcloud.mobile.commonTest.course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.topicList
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -15,7 +16,7 @@ import kotlin.test.assertEquals
 object CourseViewModelSpec : Spek({
     val id = "id"
     val course = course(id)
-    val topicList = org.schulcloud.mobile.topicList(5)
+    val topicList = topicList(5)
 
     describe("A courseViewModel") {
         val courseViewModel by memoized {

@@ -6,7 +6,6 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RobolectricTestRunner
@@ -14,8 +13,8 @@ import org.robolectric.annotation.Config
 import org.schulcloud.mobile.SchulCloudTestApp
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.UserRepository
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.schulcloud.mobile.utils.emailIsValid
 
 //@RunWith(RobolectricTestRunner::class)
@@ -55,7 +54,8 @@ open class LoginViewModelTest {
                     arrayOf(RequestJobCallback.ErrorCode.NO_NETWORK),
                     arrayOf(RequestJobCallback.ErrorCode.NO_AUTH),
                     arrayOf(RequestJobCallback.ErrorCode.MAINTENANCE),
-                    arrayOf(RequestJobCallback.ErrorCode.API_VERSION_EXPIRED)
+                    arrayOf(RequestJobCallback.ErrorCode.API_VERSION_EXPIRED),
+                    arrayOf(RequestJobCallback.ErrorCode.TIMEOUT)
             )
         }
 
@@ -71,7 +71,7 @@ open class LoginViewModelTest {
             val errorLoginStates = loginStates.filter { loginState -> loginState is LoginViewModel.LoginStatus.Error }
             assertTrue(errorLoginStates.isNotEmpty())
             errorLoginStates.forEach { errorLoginState ->
-                assertEquals(errorCode.toString(), (errorLoginState as LoginViewModel.LoginStatus.Error).error)
+                assertEquals(errorCode, (errorLoginState as LoginViewModel.LoginStatus.Error).error)
             }
         }
 

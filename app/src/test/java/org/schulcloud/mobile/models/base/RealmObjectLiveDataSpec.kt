@@ -5,8 +5,8 @@ import io.mockk.*
 import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmObject
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

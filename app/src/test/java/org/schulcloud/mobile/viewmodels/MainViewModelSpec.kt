@@ -7,8 +7,8 @@ import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

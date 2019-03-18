@@ -3,9 +3,9 @@ package org.schulcloud.mobile.viewmodels
 import io.mockk.*
 import io.realm.Realm
 import org.schulcloud.mobile.models.user.UserRepository
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.resetTaskExecutor
-import org.schulcloud.mobile.user
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.user
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe

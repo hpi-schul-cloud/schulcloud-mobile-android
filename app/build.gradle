@@ -60,6 +60,17 @@ android {
         }
     }
 
+    sourceSets {
+        def sharedTestDir = 'src/commonTest/java'
+
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
+    }
+
     lintOptions {
         abortOnError false
     }

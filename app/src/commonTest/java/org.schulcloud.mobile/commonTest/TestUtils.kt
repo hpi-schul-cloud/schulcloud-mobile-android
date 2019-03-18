@@ -1,9 +1,7 @@
-package org.schulcloud.mobile
+package org.schulcloud.mobile.commonTest
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
-import io.mockk.*
-import io.realm.Realm
 
 fun prepareTaskExecutor() {
     // In order to test LiveData, the `InstantTaskExecutorRule` rule needs to be applied via JUnit.

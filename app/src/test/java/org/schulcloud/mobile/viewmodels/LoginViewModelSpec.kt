@@ -1,10 +1,9 @@
 package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
-import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.models.user.UserRepository
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.schulcloud.mobile.utils.emailIsValid
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -15,7 +14,6 @@ object LoginViewModelSpec : Spek({
     val invalidEmail = "email"
     val validPassword = "password"
     val invalidPassword = ""
-    val callbackSlot = slot<RequestJobCallback>()
     val loginInputCases =
             mapOf(invalidEmail to Pair(false,
                                         mapOf(invalidPassword to Triple(false,
@@ -37,7 +35,7 @@ object LoginViewModelSpec : Spek({
                                                                                     LoginViewModel.LoginInput.PASSWORD))),
                                                 validPassword to Triple(true,
                                                                         "pending",
-                                                                        LoginViewModel.LoginStatus.Pending()))))
+                                                                        LoginViewModel.LoginStatus.Pending))))
 
     describe("A loginViewModel") {
         val loginViewModel by memoized {
@@ -84,36 +82,6 @@ object LoginViewModelSpec : Spek({
                             }
                         }
                     }
-                }
-            }
-        }
-
-        describe("login with valid inputs"){
-            describe("positive response from repository"){
-                beforeEach {
-                    every { UserRepository.login(validEmail,validPassword, callback = capture(callbackSlot)) } answers{
-                        callbackSlot.captured.success()
-                    }
-                    loginViewModel.login(validEmail, validPassword)
-                }
-
-                it("loginState should be logged in"){
-                    assert(loginViewModel.loginState.value is LoginViewModel.LoginStatus.LoggedIn)
-                }
-            }
-
-            describe("negative response from repository"){
-                beforeEach {
-                    every { UserRepository.login(validEmail,validPassword, callback = capture(callbackSlot)) } answers{
-                        callbackSlot.captured.error(RequestJobCallback.ErrorCode.ERROR)
-                    }
-                    loginViewModel.login(validEmail, validPassword)
-                }
-
-                it("loginState should be error"){
-                    assert(loginViewModel.loginState.value is LoginViewModel.LoginStatus.Error)
-                    val loginState = loginViewModel.loginState.value as LoginViewModel.LoginStatus.Error
-                    assertEquals(RequestJobCallback.ErrorCode.ERROR.toString(), loginState.error)
                 }
             }
         }

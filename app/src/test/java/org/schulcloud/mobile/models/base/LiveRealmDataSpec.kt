@@ -6,9 +6,9 @@ import io.realm.Realm
 import io.realm.RealmChangeListener
 import io.realm.RealmModel
 import io.realm.RealmResults
-import org.schulcloud.mobile.prepareTaskExecutor
-import org.schulcloud.mobile.realmModelList
-import org.schulcloud.mobile.resetTaskExecutor
+import org.schulcloud.mobile.commonTest.prepareTaskExecutor
+import org.schulcloud.mobile.commonTest.realmModelList
+import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 

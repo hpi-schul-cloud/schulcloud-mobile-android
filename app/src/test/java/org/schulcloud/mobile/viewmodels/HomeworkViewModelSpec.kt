@@ -4,7 +4,7 @@ import androidx.lifecycle.Observer
 import io.mockk.*
 import io.realm.Realm
 import io.realm.RealmList
-import org.schulcloud.mobile.*
+import org.schulcloud.mobile.commonTest.*
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.homework.HomeworkCourse
 import org.schulcloud.mobile.models.homework.HomeworkRepository

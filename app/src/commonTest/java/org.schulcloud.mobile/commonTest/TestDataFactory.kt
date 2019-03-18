@@ -1,4 +1,4 @@
-package org.schulcloud.mobile
+package org.schulcloud.mobile.commonTest
 
 import io.realm.RealmModel
 import io.realm.RealmObject
@@ -138,7 +138,7 @@ fun submissionListWithStudents(number: Int): List<Submission> {
 fun realmModelList(number: Int): List<RealmModel> {
     val realmModelList = mutableListOf<RealmModel>()
     for (i in 1..number)
-        realmModelList.add(object : RealmObject(){})
+        realmModelList.add(testIdRealmObject(i.toString()))
     return realmModelList
 }
 

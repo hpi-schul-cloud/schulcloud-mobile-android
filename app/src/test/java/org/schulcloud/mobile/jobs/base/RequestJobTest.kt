@@ -1,32 +1,34 @@
 package org.schulcloud.mobile.jobs.base
 
+import android.util.Log
 import io.mockk.*
 import io.realm.RealmQuery
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import retrofit2.Call
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import org.schulcloud.mobile.SchulCloudTestApp
-import org.schulcloud.mobile.courseList
+import org.schulcloud.mobile.commonTest.courseList
 import org.schulcloud.mobile.models.Sync
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.network.ApiServiceInterface
 import org.schulcloud.mobile.network.FeathersResponse
+import org.schulcloud.mobile.commonTest.course
 import org.schulcloud.mobile.utils.NetworkUtil
 import retrofit2.Response
 
-@RunWith(RobolectricTestRunner::class)
-@Config(application = SchulCloudTestApp::class)
+//@RunWith(RobolectricTestRunner::class)
+//@Config(application = SchulCloudTestApp::class)
 class RequestJobTest {
     val mockApiService = mockk<ApiServiceInterface>()
     val courses = courseList(3)
-    val course = org.schulcloud.mobile.course("id")
+    val course = course("id")
     val toDelete: (RealmQuery<Course>.() -> RealmQuery<Course>) = { this }
     val callback = spyk<RequestJobCallback>()
     val mockSyncData = mockk<Sync.Data<Course>>()
@@ -36,24 +38,35 @@ class RequestJobTest {
     }
     val mockResponse = mockk<Response<FeathersResponse<List<Course>>>>()
     val feathersResponseWithoutData = FeathersResponse<List<Course>>()
+    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(mainThreadSurrogate)
         mockkObject(ApiService, NetworkUtil, Sync.Data)
         mockkStatic(UserRepository::class)
+        mockkStatic(android.util.Log::class)
+        every { Log.w(ofType<String>(), ofType<String>()) } returns 0
+        every { Log.w(ofType<String>(), ofType<String>(), any()) } returns 0
+        every { Log.i(ofType<String>(), ofType<String>()) } returns 0
 
         every { ApiService.getInstance() } returns mockApiService
         every { NetworkUtil.isOnline() } returns true
         every { UserRepository.isAuthorized } returns true
         every { Sync.Data.with(Course::class.java, courses, toDelete) } returns mockSyncData
         every { mockSyncData.run() } just runs
-        every { call(mockApiService).execute()} returns mockResponse
+        every { call(mockApiService)} returns mockk{
+            every { execute() } returns mockResponse
+            //coEvery { awaitResponse() } returns  mockResponse
+        }
         every { mockResponse.body() } returns feathersResponse
         every { mockResponse.isSuccessful } returns true
     }
 
     @After
     fun tearDown() {
+        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+        mainThreadSurrogate.close()
         clearAllMocks()
     }
 
@@ -101,7 +114,7 @@ class RequestJobTest {
         verify { callback.error(RequestJobCallback.ErrorCode.NO_NETWORK) }
     }
 
-    //TODO: fix this test
+    //TODO: fix those tests
     @Test
     fun shouldCallSyncWhenApiServiceCallSuccessfulAndDataNotNull(){
         every { mockResponse.body() } returns feathersResponse
@@ -109,8 +122,8 @@ class RequestJobTest {
         runBlocking {
             RequestJob.Data.with(call, toDelete, callback).run()
         }
-        verify { callback.error(RequestJobCallback.ErrorCode.ERROR) }
-      //  verify { Sync.Data.with(Course::class.java, courses, toDelete) }
+        //verify { callback.error(RequestJobCallback.ErrorCode.ERROR) }
+       verify { Sync.Data.with(Course::class.java, courses, toDelete) }
     }
 
     @Test

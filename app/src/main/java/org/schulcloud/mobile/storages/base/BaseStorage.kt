@@ -16,8 +16,8 @@ abstract class BaseStorage(name: String) {
     fun getBoolean(key: String, defValue: Boolean = false) = preferences.getBoolean(key, defValue)
     fun putBoolean(key: String, value: Boolean) = preferences.edit { putBoolean(key, value) }
 
-    class BooleanPreference(val key: String) : ReadWriteProperty<BaseStorage, Boolean> {
-        override fun getValue(thisRef: BaseStorage, property: KProperty<*>) = thisRef.getBoolean(key)
+    class BooleanPreference(val key: String, val default: Boolean = false) : ReadWriteProperty<BaseStorage, Boolean> {
+        override fun getValue(thisRef: BaseStorage, property: KProperty<*>) = thisRef.getBoolean(key, default)
 
         override fun setValue(thisRef: BaseStorage, property: KProperty<*>, value: Boolean) {
             thisRef.putBoolean(key, value)

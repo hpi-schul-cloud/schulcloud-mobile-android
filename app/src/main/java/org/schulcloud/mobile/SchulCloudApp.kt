@@ -2,10 +2,13 @@ package org.schulcloud.mobile
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.danlew.android.joda.JodaTimeAndroid
 import org.schulcloud.mobile.config.Config
+import org.schulcloud.mobile.storages.Preferences
 import org.schulcloud.mobile.utils.ThemeConfigUtils
 
 class SchulCloudApp : MultiDexApplication() {
@@ -20,7 +23,10 @@ class SchulCloudApp : MultiDexApplication() {
     }
 
     override fun onCreate() {
+        if (Preferences.Privacy.crashlytics)
+            Fabric.with(this, Crashlytics())
         super.onCreate()
+
         configureRealm()
         JodaTimeAndroid.init(this)
 

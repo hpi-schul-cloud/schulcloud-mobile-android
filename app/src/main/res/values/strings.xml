@@ -149,6 +149,7 @@
 
     <!-- Settings -->
     <string name="settings_title">Einstellungen</string>
+    <string name="settings_restartRequired">Die App muss neugestartet werden, damit die Einstellungen wirksam werden</string>
     <string name="settings_theme">Design</string>
     <string name="settings_theme_darkMode">Dunkles Design</string>
     <string name="settings_theme_darkMode_summary_always">Immer aktiv</string>
@@ -161,6 +162,9 @@
     <string name="settings_theme_darkMode_night">Bei Nacht aktivieren</string>
     <string name="settings_theme_darkMode_powerSaver">Beim Energiesparmodus aktivieren</string>
     <string name="settings_theme_darkMode_night_summary_noLocationPermission">Ohne die Berechtigung kann der Sonnenauf- und -untergang nur geschätzt werden</string>
+    <string name="settings_privacy">Datenschutz</string>
+    <string name="settings_privacy_crashlytics">Absturzberichte senden</string>
+    <string name="settings_privacy_crashlytics_summary">Nach jedem Absturz wird ein anonymer Bericht hochgeladen, um die Benutzererfahrung zu verbessern</string>
     <string name="settings_about">Über</string>
     <string name="settings_about_contributors">Mitwirkende</string>
     <string name="settings_about_contributors_summary" translatable="false">Marvin Fischer, Niklas Kiefer, Lars Lange, Elias Lehnert, Andrea Nathansen, Jonas Wanke</string>

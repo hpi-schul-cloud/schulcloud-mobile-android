@@ -4,6 +4,8 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.*
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,6 +15,7 @@ import org.schulcloud.mobile.controllers.base.BaseActivity
 import org.schulcloud.mobile.storages.Preferences
 import org.schulcloud.mobile.utils.DarkModeUtils
 import org.schulcloud.mobile.utils.hasPermission
+import org.schulcloud.mobile.utils.showGenericNeutral
 import kotlin.coroutines.CoroutineContext
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener,
@@ -35,6 +38,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
         initTheme()
+        initPrivacy()
     }
 
     override fun onResume() {
@@ -119,6 +123,20 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         // Check support for power saver
         findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_POWER_SAVER)
                 .isVisible = active && DarkModeUtils.getInstance(context).supportsPowerSaver
+    }
+
+    private fun initPrivacy() {
+        findPreference<SwitchPreferenceCompat>(Preferences.Privacy.CRASHLYTICS)
+                .onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue == true)
+                Fabric.with(context, Crashlytics())
+            else restartRequired()
+            true
+        }
+    }
+
+    private fun restartRequired() {
+        context!!.showGenericNeutral(R.string.settings_restartRequired)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {

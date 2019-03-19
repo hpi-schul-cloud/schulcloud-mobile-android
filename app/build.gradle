@@ -2,8 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
 apply plugin: 'realm-android'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'io.fabric'
+
 
 android {
     buildToolsVersion rootProject.buildToolsVersion
@@ -75,3 +78,5 @@ detekt {
 }
 
 apply from: 'dependencies.gradle'
+
+apply plugin: 'com.google.gms.google-services'

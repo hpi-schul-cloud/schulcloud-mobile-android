@@ -83,9 +83,7 @@ open class LoginViewModelTest {
             loginViewModel.loginState.observeForever(observer)
             loginViewModel.login(validEmail, validPassword)
 
-            verify { observer.onChanged(capture(loginStates)) }
-            val successfulLoginStates = loginStates.filter { loginState -> loginState is LoginViewModel.LoginStatus.LoggedIn }
-            assertTrue(successfulLoginStates.isEmpty())
+            verify(inverse = true) { observer.onChanged(ofType(LoginViewModel.LoginStatus.LoggedIn::class)) }
         }
     }
 
@@ -112,9 +110,7 @@ open class LoginViewModelTest {
             loginViewModel.loginState.observeForever(observer)
             loginViewModel.login(validEmail, validPassword)
 
-            verify { observer.onChanged(capture(loginStates)) }
-            val errorLoginStates = loginStates.filter { loginState -> loginState is LoginViewModel.LoginStatus.Error }
-            assertTrue(errorLoginStates.isEmpty())
+            verify(inverse = true) { observer.onChanged(ofType(LoginViewModel.LoginStatus.Error::class)) }
         }
     }
 }

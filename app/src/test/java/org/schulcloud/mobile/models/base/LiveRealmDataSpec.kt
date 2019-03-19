@@ -13,7 +13,7 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
 object LiveRealmDataSpec : Spek({
-    val mockRealmResults = mockk<RealmResults<RealmModel>>()
+    val mockRealmResults = mockk<RealmResults<RealmModel>>(relaxUnitFun = true)
 
     describe("A liveRealmData") {
         val liveRealmData by memoized {
@@ -30,7 +30,6 @@ object LiveRealmDataSpec : Spek({
             prepareTaskExecutor()
             every { Realm.getDefaultInstance() } returns mockRealm
             every { mockRealm.copyFromRealm(mockRealmResults) } returns realmModels
-            every { mockRealmResults.addChangeListener(ofType<RealmChangeListener<RealmResults<RealmModel>>>()) } just runs
             every { mockRealmResults.isLoaded } returns true
         }
 

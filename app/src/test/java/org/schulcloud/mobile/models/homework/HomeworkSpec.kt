@@ -29,9 +29,9 @@ object HomeworkSpec : Spek({
     val invalidDueDate = "invDueDate"
     val validDueDate = "2020-07-12T10:10:10.001Z"
     val userId = "userId"
-    val dateTime = DateTime(2020, 7, 10, 9, 10, 10, 1)
+    val dateTime = DateTime(2020, 7, 10, 11, 10, 10, 1)
     val dueTimespanDays = 2
-    val dueTimespanHours = 49
+    val dueTimespanHours = 47
     val isTeacherCases = mapOf(course to mapOf(userId to false,
                                                 teacherId to true,
                                                 substitutionTeacherId to false),

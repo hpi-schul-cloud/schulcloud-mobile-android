@@ -8,21 +8,9 @@ import org.schulcloud.mobile.utils.getCalendar
 import org.schulcloud.mobile.utils.getUserCalendar
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import java.util.*
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 object EventSpec : Spek({
-    fun getMillisecondsFromCalendarWithDatetimeValues(year: Int,
-                                                      month: Int,
-                                                      day: Int,
-                                                      hourOfDay: Int,
-                                                      minute: Int,
-                                                      second: Int): Long = GregorianCalendar.getInstance().apply {
-        clear()
-        set(year, month, day, hourOfDay, minute, second)
-    }.timeInMillis
-
     val id = "id"
     val type = "type"
     val title = "title"
@@ -35,6 +23,18 @@ object EventSpec : Spek({
     val included = RealmList<Included>()
     val courseId = "course"
     val duration = 1L
+
+    val inTwoDays = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 12, 9, 10, 1)
+    val startSixDaysAgo = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 9, 10, 1)
+    val endSixDaysAgo = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 10, 20, 1)
+
+    val noFreqText = "no"
+    val untilPastNoFreqText = "until in past with no"
+    val dayOfStartText = "on the day and time of start"
+    val neverText = "never"
+    val tomorrowText = "tomorrow"
+    val nextRelWeekdayText = "on the next relevant weekday"
+    val dependingIncludeCurrentText = "depending on includeCurrent"
 
     val includedWeeklyThursday = RealmList<Included>(Included().apply {
         attributes = IncludedAttributes().apply {
@@ -54,34 +54,37 @@ object EventSpec : Spek({
             weekday = "TU"
         }
     })
-   val includedUntil = RealmList<Included>(Included().apply {
+    val includedUntil = RealmList<Included>(Included().apply {
         attributes = IncludedAttributes().apply {
-            until = "2020-02-07'T'10:10:01.001'Z'"
+            until = "2020-02-07T10:10:01.001Z"
         }
     })
 
-    val startInTwoDays = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 12, 9, 10, 1)
-    val startSixDaysAgo = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 9, 10, 1)
-    val endSixDaysAgo = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 4, 10, 20, 1)
+    val nextStartCases = mapOf(inTwoDays to mapOf(null to Triple(noFreqText, dayOfStartText, calendarInTwoDays),
+                    includedWeeklyThursday to Triple(IncludedAttributes.FREQ_WEEKLY, dayOfStartText, calendarInTwoDays),
+                    includedDaily to Triple(IncludedAttributes.FREQ_DAILY, dayOfStartText, calendarInTwoDays),
+                    includedUntil to Triple(untilPastNoFreqText, neverText, null)),
+            startSixDaysAgo to mapOf(null to Triple(noFreqText, neverText, null),
+                    includedWeeklyThursday to Triple(IncludedAttributes.FREQ_WEEKLY, nextRelWeekdayText, calendarInTwoDays),
+                    includedDaily to Triple(IncludedAttributes.FREQ_DAILY, tomorrowText, calendarTomorrow),
+                    includedUntil to Triple(untilPastNoFreqText, neverText, null)))
 
-    val calendarInTwoDays = GregorianCalendar.getInstance().apply {
-        timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 12, 9, 10, 1)
-    }
-    val calendarInSevenDays = GregorianCalendar.getInstance().apply {
-        timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 17, 9, 10, 1)
-    }
-    val calendarTomorrow = GregorianCalendar.getInstance().apply {
-        timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 11, 9, 10, 1)
-    }
-    val calendarToday = GregorianCalendar.getInstance().apply {
-        timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 10, 9, 10, 1)
-    }
+    val nextStartCasesWithStartAndEndInPast = mapOf(null to Triple(noFreqText, neverText, Pair(null, null)),
+            includedWeeklyTuesday to Triple(IncludedAttributes.FREQ_WEEKLY, dependingIncludeCurrentText, Pair(calendarInSevenDays, calendarToday)),
+            includedDaily to Triple(IncludedAttributes.FREQ_DAILY, dependingIncludeCurrentText, Pair(calendarTomorrow, calendarToday)),
+            includedUntil to Triple(untilPastNoFreqText, neverText, Pair(null, null)))
 
-    fun userCalendar(): Calendar = GregorianCalendar.getInstance().apply {
-        timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 10, 10, 10, 1)
-    }
-    fun calendar() : Calendar = GregorianCalendar.getInstance(TimeZone.getTimeZone("TIMEZONE_UTC")).apply {
-        timeInMillis = getMillisecondsFromCalendarWithDatetimeValues(2020, 2, 10, 10, 10, 1)
+    val nextStartCasesWithStartPastAndEndFuture = mapOf(null to Triple(noFreqText, dayOfStartText, calendarSixDaysAgo),
+                    includedWeeklyThursday to Triple(IncludedAttributes.FREQ_WEEKLY, dayOfStartText, calendarSixDaysAgo),
+                    includedDaily to Triple(IncludedAttributes.FREQ_DAILY, dayOfStartText, calendarSixDaysAgo),
+                    includedUntil to Triple(untilPastNoFreqText, neverText, null))
+
+    fun relativeTimeLabel(timeInMillis: Long): String {
+        return when {
+            timeInMillis < userCalendar().timeInMillis -> "past"
+            timeInMillis == userCalendar().timeInMillis -> "present"
+            else -> "future"
+        }
     }
 
     describe("An event") {
@@ -104,9 +107,8 @@ object EventSpec : Spek({
         mockkStatic("org.schulcloud.mobile.utils.CalendarUtilsKt")
 
         beforeEach {
-            // TODO: ensure new computation on every call
-            every { getCalendar() } returns calendar()
-            every { getUserCalendar() } returns userCalendar()
+            every { getCalendar() } answers { calendar() }
+            every { getUserCalendar() } answers { userCalendar() }
         }
 
         afterEach {
@@ -129,135 +131,76 @@ object EventSpec : Spek({
             }
         }
 
-        // TODO: Summarize test cases
-        describe("setting start in future") {
-            beforeEach {
-                event.start = startInTwoDays
-            }
-
-            describe("setting no frequency") {
-                beforeEach {
-                    event.included = null
+        nextStartCases.forEach { start, nextStartCasesForStart -> 
+            describe("setting start in ${relativeTimeLabel(start)}"){
+                beforeEach { 
+                    event.start = start
                 }
+                
+                nextStartCasesForStart.forEach { included, freqTextAndNextStartTextAndNextStart ->
+                    val freqText = freqTextAndNextStartTextAndNextStart.first
+                    val nextStartText = freqTextAndNextStartTextAndNextStart.second
+                    val nextStart = freqTextAndNextStartTextAndNextStart.third
 
-                it("next start should be on the day of start") {
-                    assertEquals(calendarInTwoDays, event.nextStart())
-                }
-            }
+                    describe("setting $freqText frequency"){
+                        beforeEach {
+                            event.included = included
+                        }
 
-            describe("setting weekly frequency") {
-                beforeEach {
-                    event.included = includedWeeklyThursday
-                }
-
-                it("next start should be on the day of start") {
-                    assertEquals(calendarInTwoDays, event.nextStart())
-                }
-            }
-
-            describe("setting daily frequency") {
-                beforeEach {
-                    event.included = includedDaily
-                }
-
-                it("next start should be on the day of start") {
-                    assertEquals(calendarInTwoDays, event.nextStart())
+                        it ("nextStart should be $nextStartText"){
+                            assertEquals(nextStart, event.nextStart())
+                            assertEquals(nextStart, event.nextStart(true))
+                        }
+                    }
                 }
             }
         }
 
-        describe("setting start in past") {
-            beforeEach {
-                event.start = startSixDaysAgo
-            }
-
-            describe("setting until in past") {
-                beforeEach {
-                    event.included = includedUntil
-                }
-
-                it("there should be no next start") {
-                    assertNull(event.nextStart())
-                }
-            }
-
-            describe("setting no frequency") {
-                beforeEach {
-                    event.included = null
-                }
-
-                it("there should be no next start") {
-                    assertNull(event.nextStart())
-                }
-            }
-
-            describe("setting weekly frequency") {
-                beforeEach {
-                    event.included = includedWeeklyThursday
-                }
-
-                it("next start should be on the next relevant weekday") {
-                    assertEquals(calendarInTwoDays, event.nextStart())
-                }
-            }
-
-            describe("setting daily frequency") {
-                beforeEach {
-                    event.included = includedDaily
-                }
-
-                it("next start should be tomorrow") {
-                    assertEquals(calendarTomorrow, event.nextStart())
-                }
-            }
-        }
-
-        describe("setting start and end in past with duration including current time of day"){
+        describe("setting start and end in past with duration including current time of day") {
             beforeEach {
                 event.start = startSixDaysAgo
                 event.end = endSixDaysAgo
             }
 
-            describe("setting until in past") {
-                beforeEach {
-                    event.included = includedUntil
-                }
+            nextStartCasesWithStartAndEndInPast.forEach { included, freqTextAndNextStartTextAndNextStarts ->
+                val freqText = freqTextAndNextStartTextAndNextStarts.first
+                val nextStartText = freqTextAndNextStartTextAndNextStarts.second
+                val nextStartWithoutIncludeCurrent = freqTextAndNextStartTextAndNextStarts.third.first
+                val nextStartWithIncludeCurrent = freqTextAndNextStartTextAndNextStarts.third.second
 
-                it("there should be no next start") {
-                    assertNull(event.nextStart())
-                }
-            }
+                describe("setting $freqText frequency"){
+                    beforeEach {
+                        event.included = included
+                    }
 
-            describe("setting no frequency") {
-                beforeEach {
-                    event.included = null
-                }
-
-                it("there should be no next start") {
-                    assertNull(event.nextStart())
-                    assertNull(event.nextStart(true))
+                    it ("nextStart should be $nextStartText"){
+                        assertEquals(nextStartWithoutIncludeCurrent, event.nextStart())
+                        assertEquals(nextStartWithIncludeCurrent, event.nextStart(true))
+                    }
                 }
             }
 
-            describe("setting weekly frequency") {
+            describe("setting start in past and end in future") {
                 beforeEach {
-                    event.included = includedWeeklyTuesday
+                    event.start = startSixDaysAgo
+                    event.end = inTwoDays
                 }
 
-                it("next start should depend on includeCurrent") {
-                    assertEquals(calendarInSevenDays, event.nextStart())
-                    assertEquals(calendarToday, event.nextStart(true))
-                }
-            }
+                nextStartCasesWithStartPastAndEndFuture.forEach { included, freqTextAndNextStartTextAndNextStarts ->
+                    val freqText = freqTextAndNextStartTextAndNextStarts.first
+                    val nextStartText = freqTextAndNextStartTextAndNextStarts.second
+                    val nextStart = freqTextAndNextStartTextAndNextStarts.third
 
-            describe("setting daily frequency") {
-                beforeEach {
-                    event.included = includedDaily
-                }
+                    describe("setting $freqText frequency") {
+                        beforeEach {
+                            event.included = included
+                        }
 
-                it("next start should depend on includeCurrent") {
-                    assertEquals(calendarTomorrow, event.nextStart())
-                    assertEquals(calendarToday, event.nextStart(true))
+                        it("nextStart should be $nextStartText") {
+                            assertEquals(nextStart, event.nextStart())
+                            assertEquals(nextStart, event.nextStart(true))
+                        }
+                    }
                 }
             }
         }

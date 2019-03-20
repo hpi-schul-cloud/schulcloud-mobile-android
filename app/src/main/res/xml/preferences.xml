@@ -77,7 +77,7 @@
             app:title="@string/settings_about_contact">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="mailto:hpi-info@hpi.de?subject=Schul-Cloud Anfrage" />
+                android:data="settings_about_contact_data" />
         </Preference>
 
         <Preference

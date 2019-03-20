@@ -27,11 +27,6 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-    productFlavors.all {
-        ext.appName = "Schul-Cloud"
-        ext.appBackend = null
-    }
-
     flavorDimensions "brand"
 
     productFlavors {

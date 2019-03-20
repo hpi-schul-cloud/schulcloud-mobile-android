@@ -171,6 +171,7 @@
     <string name="settings_privacy_crashlytics">Absturzberichte senden</string>
     <string name="settings_privacy_crashlytics_summary">Nach jedem Absturz wird ein anonymer Bericht hochgeladen, um die Benutzererfahrung zu verbessern</string>
     <string name="settings_about">Über</string>
+    <string name="settings_about_version">Version</string>
     <string name="settings_about_contributors">Mitwirkende</string>
     <string name="settings_about_contributors_summary" translatable="false">Marvin Fischer, Niklas Kiefer, Lars Lange, Elias Lehnert, Andrea Nathansen, Jonas Wanke</string>
     <string name="settings_about_openSource">Diese App ist Open Source</string>

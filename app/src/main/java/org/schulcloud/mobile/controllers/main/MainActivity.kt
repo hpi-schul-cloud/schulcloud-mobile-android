@@ -121,7 +121,7 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        Changelog.showRecentsDialog(this)
+        Changelog.showDialog(this)
     }
 
     private fun showDrawer() {

@@ -25,6 +25,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.controllers.changelog.Changelog
 import org.schulcloud.mobile.controllers.login.LoginActivity
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.storages.Onboarding
@@ -119,6 +120,8 @@ class MainActivity : BaseActivity() {
                         })
             }
         }
+
+        Changelog.showRecentsDialog(this)
     }
 
     private fun showDrawer() {

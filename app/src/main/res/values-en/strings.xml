@@ -166,4 +166,8 @@
     <string name="settings_about_imprint">Imprint</string>
     <string name="settings_about_privacyPolicy">Privacy Policy</string>
 
+    <string name="changelog_tag_feature_format">[font color="%1$s"][b]New:[/b][/font] %2$s</string>
+    <string name="changelog_tag_fix_format">[font color="%1$s"][b]Fix:[/b][/font] %2$s</string>
+    <string name="changelog_tag_note_format">Note: %1$s</string>
+
 </resources>

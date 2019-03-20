@@ -8,6 +8,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import net.danlew.android.joda.JodaTimeAndroid
 import org.schulcloud.mobile.config.Config
+import org.schulcloud.mobile.controllers.changelog.Changelog
 import org.schulcloud.mobile.storages.Preferences
 import org.schulcloud.mobile.utils.ThemeConfigUtils
 
@@ -31,6 +32,8 @@ class SchulCloudApp : MultiDexApplication() {
         JodaTimeAndroid.init(this)
 
         ThemeConfigUtils.getInstance(this).startMonitoring()
+
+        Changelog.configure()
     }
 
     private fun configureRealm() {

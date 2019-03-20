@@ -36,6 +36,7 @@ dependencies {
 
     // onboarding
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+    implementation "com.github.MFlisar:changelog:1.1.5"
 
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.8'

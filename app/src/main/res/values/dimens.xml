@@ -14,4 +14,7 @@
     <dimen name="circle_course_color_diameter">20dp</dimen>
     <dimen name="homework_item_margin">20dp</dimen>
 
+    <dimen name="changelog_tag_padding">0dp</dimen>
+    <dimen name="changelog_intro_padding">8dp</dimen>
+
 </resources>

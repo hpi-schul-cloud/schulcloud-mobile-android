@@ -10,8 +10,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.controllers.base.BaseActivity
+import org.schulcloud.mobile.controllers.changelog.Changelog
 import org.schulcloud.mobile.storages.Preferences
 import org.schulcloud.mobile.utils.DarkModeUtils
 import org.schulcloud.mobile.utils.hasPermission
@@ -39,6 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         initTheme()
         initPrivacy()
+        initAbout()
     }
 
     override fun onResume() {
@@ -134,6 +137,17 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             true
         }
     }
+
+    private fun initAbout() {
+        findPreference<Preference>(Preferences.About.VERSION).apply {
+            setOnPreferenceClickListener {
+                Changelog.showDialog(activity as BaseActivity, false)
+                true
+            }
+            summary = BuildConfig.VERSION_NAME
+        }
+    }
+
 
     private fun restartRequired() {
         context!!.showGenericNeutral(R.string.settings_restartRequired)

@@ -171,11 +171,18 @@
     <string name="settings_privacy_crashlytics">Absturzberichte senden</string>
     <string name="settings_privacy_crashlytics_summary">Nach jedem Absturz wird ein anonymer Bericht hochgeladen, um die Benutzererfahrung zu verbessern</string>
     <string name="settings_about">Über</string>
+    <string name="settings_about_version">Version</string>
     <string name="settings_about_contributors">Mitwirkende</string>
     <string name="settings_about_contributors_summary" translatable="false">Marvin Fischer, Niklas Kiefer, Lars Lange, Elias Lehnert, Andrea Nathansen, Jonas Wanke</string>
     <string name="settings_about_openSource">Diese App ist Open Source</string>
     <string name="settings_about_contact">Kontakt</string>
+    <string name="settings_about_contact_data">mailto:info@schul-cloud.org?subject=Kontakt via Android-App</string>
     <string name="settings_about_imprint">Impressum</string>
     <string name="settings_about_privacyPolicy">Datenschutzerklärung</string>
+
+    <string name="changelog_title">Änderungen %1$s</string>
+    <string name="changelog_tag_feature_format">[font color="%1$s"][b]Neu:[/b][/font] %2$s</string>
+    <string name="changelog_tag_fix_format">[font color="%1$s"][b]Fix:[/b][/font] %2$s</string>
+    <string name="changelog_tag_note_format">Hinweis: %1$s</string>
 
 </resources>

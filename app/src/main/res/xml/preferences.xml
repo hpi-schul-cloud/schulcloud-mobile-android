@@ -52,6 +52,11 @@
         app:title="@string/settings_about">
 
         <Preference
+            app:icon="@drawable/ic_update_dark_24dp"
+            app:key="about_version"
+            app:title="@string/settings_about_version" />
+
+        <Preference
             app:icon="@drawable/ic_people_dark_24dp"
             app:key="about_contributors"
             app:summary="@string/settings_about_contributors_summary"
@@ -72,7 +77,7 @@
             app:title="@string/settings_about_contact">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="mailto:hpi-info@hpi.de?subject=Schul-Cloud Anfrage" />
+                android:data="settings_about_contact_data" />
         </Preference>
 
         <Preference

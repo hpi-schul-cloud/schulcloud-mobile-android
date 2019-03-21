@@ -24,4 +24,9 @@ object Preferences : BaseStorage(NAME) {
         const val CRASHLYTICS = "privacy_crashlytics"
         var crashlytics by BooleanPreference(CRASHLYTICS, true)
     }
+
+    object About : BaseStorage(NAME) {
+        const val VERSION = "about_version"
+        var version by BooleanPreference(VERSION, true)
+    }
 }

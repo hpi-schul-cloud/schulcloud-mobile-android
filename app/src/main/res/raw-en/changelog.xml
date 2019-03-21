@@ -5,7 +5,7 @@
         date="2019-03-21"
         versionCode="3000"
         versionName="Version 0.3.0">
-        <intro type="summary">It's here - the new Schul-Cloud app for Android!</intro>
+        <intro type="summary">It's here - the new HPI Schul-Cloud app for Android!</intro>
         <feature>Completely new design for better usability</feature>
         <feature>Dark mode - just visit the settings via the navigation bar and try it!</feature>
         <feature>Assignment submissions are supported</feature>

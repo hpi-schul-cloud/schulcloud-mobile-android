@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_file.*
@@ -40,10 +41,6 @@ class FileFragment : MainFragment<FileViewModel>() {
         val TAG: String = FileFragment::class.java.simpleName
     }
 
-    private val args: FileFragmentArgs by lazy {
-        FileFragmentArgs.fromBundle(arguments)
-    }
-
     private val directoryAdapter: DirectoryAdapter by lazy {
         DirectoryAdapter {
             navController.navigate(R.id.action_global_fragment_file,
@@ -69,6 +66,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             }
         }
 
+    private val args: FileFragmentArgs by navArgs()
     override fun provideConfig() = (getCourseFromFolder()?.let {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())

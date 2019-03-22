@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_course.*
 import org.schulcloud.mobile.R
@@ -47,7 +48,7 @@ class CourseFragment : MainFragment<CourseViewModel>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val args = CourseFragmentArgs.fromBundle(arguments)
+        val args: CourseFragmentArgs by navArgs()
         viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.id))
                 .get(CourseViewModel::class.java)
         super.onCreate(savedInstanceState)

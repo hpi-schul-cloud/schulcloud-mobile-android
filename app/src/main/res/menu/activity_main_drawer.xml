@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/fragment_dashboard"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_dashboard"
+        android:title="@string/main_drawer_dashboard"
+        tools:checked="true" />
+    <item
+        android:id="@+id/fragment_newsList"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_news"
+        android:title="@string/main_drawer_news" />
+    <item
+        android:id="@+id/fragment_courseList"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_course_black"
+        android:title="@string/main_drawer_courses" />
+    <!--<item
+        android:id="@+id/fragment_calendar"
+        android:checkable="true
+        android:icon="@drawable/ic_brand_calendar"
+        android:title="@string/main_drawer_calendar" />-->
+    <item
+        android:id="@+id/fragment_homeworkList"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_homework_black"
+        android:title="@string/main_drawer_homework" />
+    <!--<item
+        android:id="@+id/fragment_fileOverview"
+        android:checkable="true"
+        android:icon="@drawable/ic_brand_files_black"
+        android:title="@string/main_drawer_files" />-->
+    <!--<item
+        android:id="@+id/fragment_learnstore"
+        android:checkable="true
+        android:icon="@drawable/ic_search"
+        android:title="@string/main_drawer_learnstore" />-->
+
+</menu>

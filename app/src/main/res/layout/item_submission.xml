@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="student"
+            type="org.schulcloud.mobile.models.user.User" />
+        <variable
+            name="submission"
+            type="org.schulcloud.mobile.models.homework.submission.Submission" />
+        <variable
+            name="onSelected"
+            type="kotlin.jvm.functions.Function1" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/wrapper"
+        style="@style/Widget.Material.ListItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:selectableItemBackground"
+        android:onClick='@{() -> onSelected.invoke(submission != null ? submission.id : "")}'>
+
+        <TextView
+            style="@style/Widget.Material.ListItem.TextPrimary"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/material_listItem_paddingHorizontal"
+            android:layout_marginRight="@dimen/material_listItem_paddingHorizontal"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@{student.getName()}"
+            tools:text="Fall, Clara" />
+
+        <TextView
+            style="@style/Widget.Material.ListItem.TextSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/material_listItem_paddingHorizontal"
+            android:layout_marginRight="@dimen/material_listItem_paddingHorizontal"
+            android:width="40sp"
+            android:gravity="center"
+            android:text='@{submission.grade != null ? @string/homework_submission_grade(submission.grade) : ""}'
+            tools:text="90%" />
+
+        <ImageView
+            style="@style/Widget.Material.ListItem_Icon"
+            android:layout_gravity="center_vertical"
+            app:imageDrawable="@{submission == null ? @drawable/ic_brand_submission_pending : @drawable/ic_brand_submission_submitted}"
+            tools:srcCompat="@drawable/ic_brand_submission_pending" />
+
+    </LinearLayout>
+</layout>

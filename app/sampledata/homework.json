@@ -1,0 +1,89 @@
+{
+  "data": [
+    {
+      "title": "Kurzpräsentation Ökologie",
+      "description": "Erstellt in Partnerarbeit eine kurze Präsentation zu einem Unterthema der Ökologie (z.B. Nahrungskette, Nahrungsnetz, Umweltfaktoren, etc.). Die Themen werden im Unterricht ausgelost und an euch verteilt werden. Die Präsentationen sollten die folgenden Anforderungen erfüllen:",
+      "due": {
+        "text": "Overdue",
+        "color": "#99000000",
+        "visibility": "gone"
+      },
+      "course": {
+        "name": "Biologie 10b",
+        "color": "#93c758"
+      },
+      "header": {
+        "date": "Aug 31, 2018",
+        "visibility": "visible"
+      }
+    },
+    {
+      "title": "Create your own advertisment!",
+      "description": "Create your own advertisment!\nThink about how you want to persuade the audience so that they buy your product. Choose between the following publication platforms",
+      "due": {
+        "text": "Due in 5 hours",
+        "color": "#B10438",
+        "visibility": "visible"
+      },
+      "course": {
+        "name": "Englisch 7a",
+        "color": "#ff9224"
+      },
+      "header": {
+        "date": "Sep 1, 2018",
+        "visibility": "visible"
+      }
+    },
+    {
+      "title": "Kreatives Märchen",
+      "description": "Partnerarbeit (2 Personen):\n\nSchreibt eine kreative Geschichte ohne euch abzusprechen (am besten in WORD, damit ihr die Datei im Anschluss hochladen könnt - alternativ auch handschriftlich).",
+      "due": {
+        "text": "Due tomorrow",
+        "color": "#ff9224",
+        "visibility": "visible"
+      },
+      "course": {
+        "name": "Deutsch 10a",
+        "color": "#a9a9d6"
+      },
+      "header": {
+        "date": "Sep 2, 2018",
+        "visibility": "visible"
+      }
+    },
+    {
+      "title": "Jazz Stile erkennen",
+      "description": "Höre dir die folgenden Musikstücke an und ordne sie den jeweiligen Jazz Richtungen zu, die wir heute in der Stunde kennengelernt haben.",
+      "due": {
+        "text": "Due in 2 days",
+        "color": "#99000000",
+        "visibility": "gone"
+      },
+      "course": {
+        "name": "Musik 10a",
+        "color": "#d50000"
+      },
+      "header": {
+        "date": "Sep 3, 2018",
+        "visibility": "visible"
+      }
+    },
+    {
+      "title": "Bevölkerungsverteilung Deutschland",
+      "description": "Erstellt eine Grafik für die Bevölkerungsverteilung nach Alter in Deutschland in 2018. Nutzt dazu bitte die \"World Bank Open Data\"-Datenbank für die Recherche und das Tabellenkalkulationsprogramm Excel für die Aufnahme und Verarbeitung der Daten.",
+      "due": {
+        "text": "",
+        "color": "#00000000",
+        "visibility": "gone"
+      },
+      "course": {
+        "name": "Erdkunde 9b",
+        "color": "#ffc5a8"
+      },
+      "header": {
+        "date": "Sep 15, 2018",
+        "visibility": "visible"
+      }
+    }
+  ]
+}

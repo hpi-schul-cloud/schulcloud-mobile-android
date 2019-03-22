@@ -1,0 +1,176 @@
+<resources>
+
+    <!-- General -->
+    <string name="general_action_share">Share</string>
+    <string name="general_action_showInBrowser">Show in browser</string>
+    <string name="general_action_refresh">Refresh</string>
+    <string name="general_action_gotoCourse">Go to course</string>
+    <string name="general_action_gotoHomework">Go to assignment</string>
+    <string name="general_date_yesterday">Yesterday</string>
+    <string name="general_date_today">Today</string>
+    <string name="general_date_tomorrow">Tomorrow</string>
+    <string name="general_error_notFound">Not found</string>
+
+    <!-- Share -->
+    <string name="share_subject_format">%1$s: %2$s</string>
+    <string name="share_title">Share link</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_error_format">Error: %1$s</string>
+
+
+    <!-- Login -->
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_forgotPassword">Forgot password?</string>
+    <string name="login_login">Login</string>
+    <string name="login_error">An error occurred while trying to sign in</string>
+    <string name="login_error_emailInvalid">The email address is invalid</string>
+    <string name="login_error_passwordEmpty">Please enter your password!</string>
+    <string name="login_error_passwordWrong">The password is incorrect</string>
+    <string name="login_error_server">Can\'t connect to the server</string>
+    <string name="login_error_noConnection">No internet connection</string>
+
+    <string name="login_demo">Don\'t have an account yet? Try it out!</string>
+    <string name="login_demo_student">Demo as a student</string>
+    <string name="login_demo_teacher">Demo as a teacher</string>
+
+    <!-- Main -->
+    <string name="main_drawer_open">Open navigation drawer</string>
+    <string name="main_drawer_close">Close navigation drawer</string>
+    <string name="main_drawer_dashboard">@string/dashboard_title</string>
+    <string name="main_drawer_news">News</string>
+    <string name="main_drawer_courses">Courses</string>
+    <string name="main_drawer_calendar">Calendar</string>
+    <string name="main_drawer_homework">Assignments</string>
+    <string name="main_drawer_files">Files</string>
+    <string name="main_drawer_learnstore">Resources</string>
+    <string name="main_drawer_logout">Logout</string>
+    <string name="main_navigation_onboarding_1">Tap here for navigation</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Dashboard</string>
+    <!-- Events -->
+    <string name="dashboard_events">Schedule</string>
+    <string name="dashboard_events_none">No events for the rest of the day!</string>
+    <string name="dashboard_events_event_next">afterwards:</string>
+    <string name="dashboard_events_more">All events</string>
+    <!-- Homework -->
+    <string name="dashboard_homework">@string/homework_title</string>
+    <string name="dashboard_homework_dueToday">Next due today</string>
+    <plurals name="dashboard_homework_due">
+        <item quantity="one">Next due tomorrow</item>
+        <item quantity="other">Next due in %d days</item>
+    </plurals>
+    <plurals name="dashboard_homework_openLabel">
+        <item quantity="one">open assignment</item>
+        <item quantity="other">open assignments</item>
+    </plurals>
+    <string name="dashboard_homework_weekLabel">in the next week</string>
+    <string name="dashboard_homework_more">All assignments</string>
+    <string name="dashboard_homework_noCourse">no course</string>
+    <!-- News -->
+    <string name="dashboard_news">@string/news_title</string>
+    <string name="dashboard_news_none">There are no news at the moment</string>
+    <string name="dashboard_news_more">All news</string>
+
+    <!-- News -->
+    <string name="news_title">News</string>
+    <string name="news_error_empty">No news were found</string>
+
+    <!-- Course -->
+    <string name="course_title">My courses</string>
+    <string name="course_topics">Topics</string>
+    <string name="courses_error_empty">No courses were found</string>
+    <string name="course_action_gotoFiles">Go to course files</string>
+
+    <!-- Topic -->
+    <string name="topics_error_empty">No topics were found</string>
+
+    <!-- Content -->
+    <string name="content_unsupported_message">%s is currently not supported</string>
+    <string name="content_resource_client">via %1$s</string>
+    <string name="content_etherpad_openInBrowser">Etherpads currently can\'t be shown inside the app. Please use our website instead.</string>
+    <string name="contents_error_empty">No content was found</string>
+
+    <!-- Homework-->
+    <string name="homework_title">Assignments</string>
+    <string name="homework_error_empty">No assignments were found</string>
+    <string name="homework_error_invalidDueDate">Date invalid</string>
+    <string name="homework_due_outdated">Overdue</string>
+    <plurals name="homework_due_hours">
+        <item quantity="one">Due in %d hour</item>
+        <item quantity="other">Due in %d hours</item>
+    </plurals>
+    <plurals name="homework_due_days">
+        <item quantity="one">Due tomorrow</item>
+        <item quantity="other">Due in %d days</item>
+    </plurals>
+    <string name="homework_overview">Assignment</string>
+    <string name="homework_overview_submissionMy">My submission</string>
+    <string name="homework_overview_error_empty">No description available</string>
+    <string name="homework_submissions">Submissions</string>
+    <string name="homework_submissions_error_courseEmpty">This course does not contain any students</string>
+    <string name="homework_submission_overview">Submission</string>
+    <string name="homework_submission_hint">Submission of %1$s</string>
+    <string name="homework_submissions_error_selectedEmpty">This student has not submitted anything yet</string>
+    <string name="homework_submission_error_notFound">No submission available</string>
+    <string name="homework_submission_grade">%1$d%%</string>
+    <string name="homework_submission_feedback">Feedback</string>
+    <string name="homework_submission_feedback_grade">You solved <b>%1$d%%</b> correctly</string>
+    <string name="homework_submission_feedback_error_empty">No review text available</string>
+
+    <!-- File -->
+    <string name="file_title">Files</string>
+    <string name="fileOverview_my">Personal files</string>
+    <string name="fileOverview_my_description">Here you find all your personal files. Only you can access these files, but you can also share them with other users.</string>
+    <string name="fileOverview_courses">Course files</string>
+    <string name="fileOverview_courses_description">Here you find all files that are being used in lessons of the respective courses. Everyone in this course (teacher and students) has access to these files.</string>
+    <string name="fileOverview_courses_error">No courses were found</string>
+    <string name="file_directory_my">My files</string>
+    <string name="file_directory_course_unknown">Unknown course</string>
+    <string name="file_directory_unknown">Unknown folder</string>
+    <string name="file_directoryEmpty">This folder is empty</string>
+    <string name="file_directories">Directories</string>
+    <string name="file_files">Files</string>
+    <string name="file_fileOpen_error_404">The file was not found</string>
+    <string name="file_fileOpen_error_cantResolve">No app is available for opening a file of type \'%1$s\'</string>
+    <string name="file_fileDownload_progress">File is being downloaded&#8230;</string>
+    <string name="file_fileDownload_success">File \'%1$s\' was successfully saved in downloads!</string>
+    <string name="file_fileDownload_error_save">The file could not be saved</string>
+    <string name="file_fileDownload_error_savePermissionDenied">The file cannot be saved without permission</string>
+
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_restartRequired">The app must be restarted for the settings to take effect</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_darkMode">Dark mode</string>
+    <string name="settings_theme_darkMode_summary_always">Always active</string>
+    <string name="settings_theme_darkMode_summary_container">Active when %1$s</string>
+    <string name="settings_theme_darkMode_summary_separator">&#160;or&#160;</string>
+    <string name="settings_theme_darkMode_summary_ambientLight">it\'s dark</string>
+    <string name="settings_theme_darkMode_summary_night">it\'s night-time</string>
+    <string name="settings_theme_darkMode_summary_powerSaver">power saver is active</string>
+    <string name="settings_theme_darkMode_ambientLight">Activate when ambient light is low</string>
+    <string name="settings_theme_darkMode_night">Activate at night</string>
+    <string name="settings_theme_darkMode_powerSaver">Activate when power saver is active</string>
+    <string name="settings_theme_darkMode_night_summary_noLocationPermission">Without permission the times of sunrise and sunset can only be estimated</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_privacy_crashlytics">Send crash reports</string>
+    <string name="settings_privacy_crashlytics_summary">After every crash, an anonymous report will be uploaded to improve the user experience</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_version">Version</string>
+    <string name="settings_about_contributors">Contributors</string>
+    <string name="settings_about_openSource">This app is open source</string>
+    <string name="settings_about_contact">Contact</string>
+    <string name="settings_about_contact_data">mailto:info@schul-cloud.org?subject=Contact via Android-App</string>
+    <string name="settings_about_imprint">Imprint</string>
+    <string name="settings_about_privacyPolicy">Privacy Policy</string>
+
+    <string name="changelog_title">Changelog %1$s</string>
+    <string name="changelog_tag_feature_format">[font color="%1$s"][b]New:[/b][/font] %2$s</string>
+    <string name="changelog_tag_fix_format">[font color="%1$s"][b]Fix:[/b][/font] %2$s</string>
+    <string name="changelog_tag_note_format">Note: %1$s</string>
+
+</resources>

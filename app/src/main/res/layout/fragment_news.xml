@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.schulcloud.mobile.controllers.news.NewsFragment">
+    <data>
+        <variable
+            name="viewModel"
+            type="org.schulcloud.mobile.viewmodels.NewsViewModel" />
+    </data>
+
+    <org.schulcloud.mobile.views.ContentView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="PrivateResource">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/homework_item_margin">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textAppearance="?textAppearanceCaption"
+                    app:displayDate="@{viewModel.news.createdAt}"
+                    tools:text="July 24" />
+
+                <org.schulcloud.mobile.views.ContentWebView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:content="@{viewModel.news.content}"
+                    tools:ignore="WebViewLayout" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </org.schulcloud.mobile.views.ContentView>
+
+</layout>

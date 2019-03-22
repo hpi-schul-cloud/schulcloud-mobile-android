@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+
+        <variable
+            name="viewHolder"
+            type="org.schulcloud.mobile.controllers.topic.NexboardViewHolder" />
+        <variable
+            name="wrapper"
+            type="org.schulcloud.mobile.models.content.ContentWrapper" />
+        <variable
+            name="content"
+            type="org.schulcloud.mobile.models.content.Content" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <org.schulcloud.mobile.views.CompatTextView
+            android:id="@+id/title"
+            style="@style/Content.Header.WithLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_title_margin"
+            android:onClick="@{() -> viewHolder.openExternal()}"
+            android:text="@{wrapper.title}"
+            tools:text="Content name" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{content.description}"
+            android:textAppearance="?textAppearanceBody1"
+            android:visibility="@{ViewUtilsKt.toVisible(content.description)}"
+            tools:text="Description...\n\n\nspanning\nmultiple\nlines" />
+
+        <org.schulcloud.mobile.views.ContentWebView
+            android:id="@+id/contentView"
+            style="@style/ContentExternal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
+            app:url="@{content.url + `?username=Test`}"
+            tools:ignore="WebViewLayout" />
+
+    </LinearLayout>
+</layout>

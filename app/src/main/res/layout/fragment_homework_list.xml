@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.schulcloud.mobile.views.ContentView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/empty"
+            style="@style/Content.Text.Empty"
+            android:text="@string/homework_error_empty" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_homework" />
+
+    </LinearLayout>
+
+</org.schulcloud.mobile.views.ContentView>

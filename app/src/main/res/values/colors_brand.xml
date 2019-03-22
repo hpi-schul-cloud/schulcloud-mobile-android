@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="brand_primary">@color/brand_hpiRed</color>
+    <color name="brand_primary12">#1FB10438</color>
+    <color name="brand_primaryDark">#690221</color>
+    <color name="brand_onBackgroundPrimary">@color/brand_primary</color>
+    <color name="brand_secondary">@color/brand_primary</color>
+
+    <color name="ic_launcher_background">@android:color/white</color>
+
+    <array name="brand_swipeRefreshColors">
+        <item>@color/brand_hpiRed</item>
+        <item>@color/brand_hpiOrange</item>
+        <item>@color/brand_hpiYellow</item>
+    </array>
+
+
+    <color name="brand_hpiRed">#B10438</color>
+    <color name="brand_hpiOrange">#E2661D</color>
+    <color name="brand_hpiYellow">#F8A41B</color>
+
+</resources>

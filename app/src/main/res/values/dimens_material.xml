@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Buttons -->
+    <!-- FAB -->
+    <dimen name="material_button_fab_spacer">88dp</dimen>
+
+    <!-- List -->
+    <dimen name="material_list_paddingVertical">8dp</dimen>
+    <dimen name="material_listItem_height">48dp</dimen>
+    <dimen name="material_listItem_height_twoLine">72dp</dimen>
+    <dimen name="material_listItem_paddingHorizontal">16dp</dimen>
+    <dimen name="material_listItem_paddingVertical">12dp</dimen>
+    <dimen name="material_listItem_textPrimary_textSize">16sp</dimen>
+    <dimen name="material_listItem_icon_size">24dp</dimen>
+    <dimen name="material_listItem_icon_textSpacing">16dp</dimen>
+
+    <dimen name="material_divider_size">1dp</dimen>
+    <dimen name="material_dividerMiddle_inset">24dp</dimen>
+
+    <!-- Card -->
+    <dimen name="material_card_marginHorizontal">16dp</dimen>
+    <dimen name="material_card_marginVertical">8dp</dimen>
+    <dimen name="material_card_padding">10dp</dimen>
+
+</resources>

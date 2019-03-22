@@ -1,85 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="horizontal_margin">16dp</dimen>
-    <dimen name="vertical_margin">16dp</dimen>
 
-    <dimen name="text_headline">24sp</dimen>
-    <dimen name="text_title_large">22sp</dimen>
-    <dimen name="text_title">20sp</dimen>
-    <dimen name="text_body_large">18sp</dimen>
-    <dimen name="text_body">16sp</dimen>
-    <dimen name="text_body_small">14sp</dimen>
-    <dimen name="text_body_very_small">10sp</dimen>
-    <dimen name="input_spacing">16dp</dimen>
-    <dimen name="text_colon_space">4sp</dimen>
-
+    <dimen name="nav_header_height">96dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="fa_icon_big">32sp</dimen>
-    <dimen name="fa_icon_medium">24sp</dimen>
 
-    <dimen name="form_elementSpacing">8dp</dimen>
-    <dimen name="form_elementSpacingBig">32dp</dimen>
+    <dimen name="grid_spacing">5dp</dimen>
+    <dimen name="content_spacing_half">24dp</dimen>
 
-    <dimen name="settings_preference_padding">16dp</dimen>
-
-
-    <dimen name="content_padding">8dp</dimen>
     <dimen name="content_title_margin">8dp</dimen>
-    <dimen name="content_title_marginTop">16dp</dimen>
 
+    <dimen name="news_item_padding_horizontal">16dp</dimen>
+    <dimen name="news_item_padding_vertical">12dp</dimen>
 
-    <!-- Material Design -->
-    <!-- Buttons -->
-    <!--Floating Action Button-->
-    <dimen name="material_button_fab_margin">16dp</dimen>
-    <dimen name="material_button_fab_spacer">88dp</dimen>
+    <dimen name="circle_course_color_diameter">20dp</dimen>
+    <dimen name="homework_item_margin">20dp</dimen>
 
-    <!-- Divider -->
-    <dimen name="material_divider_height">1dp</dimen>
-
-    <!-- List -->
-    <dimen name="material_list_paddingTop">8dp</dimen>
-    <!--ListItemLayout-->
-    <dimen name="material_listItemLayout_height">48dp</dimen>
-    <dimen name="material_listItemLayout_height_singleLineWithAvatar">56dp</dimen>
-    <dimen name="material_listItemLayout_height_twoLine">72dp</dimen>
-    <dimen name="material_listItemLayout_height_threeLine">88dp</dimen>
-    <dimen name="material_listItemLayout_paddingHorizontal">16dp</dimen>
-    <dimen name="material_listItemLayout_avatar_size">48dp</dimen>
-    <dimen name="material_listItemLayout_startIcon_size">24dp</dimen>
-    <dimen name="material_listItemLayout_startDetail_marginTop_withSecondary2">
-        @dimen/material_listItemLayout_text_offsetTop_withSecondary2
-    </dimen>
-    <dimen name="material_listItemLayout_text_offsetStart_withStartDetail">56dp</dimen>
-    <dimen name="material_listItemLayout_text_offsetEnd_withEndIcon">40dp</dimen>
-    <dimen name="material_listItemLayout_text_offsetEnd_withEndText">56dp</dimen>
-    <dimen name="material_listItemLayout_text_offsetTop">20dp</dimen>
-    <dimen name="material_listItemLayout_text_offsetTop_withSecondary2">16dp</dimen>
-    <dimen name="material_listItemLayout_text_offsetBottom">20dp</dimen>
-    <dimen name="material_listItemLayout_textPrimary_textSize">16sp</dimen>
-    <dimen name="material_listItemLayout_textSecondary_textSize">14sp</dimen>
-    <dimen name="material_listItemLayout_textSecondary2_textSize">14sp</dimen>
-    <dimen name="material_listItemLayout_endIcon_size">24dp</dimen>
-    <dimen name="material_listItemLayout_endIcon_marginTop_withSecondary2">
-        @dimen/material_listItemLayout_text_offsetTop_withSecondary2
-    </dimen>
-    <dimen name="material_listItemLayout_endText_marginVertical">8dp</dimen>
-    <dimen name="material_listItemLayout_endText_marginVertical_withSecondary">12dp</dimen>
-    <dimen name="material_listItemLayout_endText_marginVertical_withSecondary2">16dp</dimen>
-    <dimen name="material_listItemLayout_endText_width">48dp</dimen>
-    <dimen name="material_listItemLayout_endText_textSize">14sp</dimen>
-
-    <!-- Toolbar -->
-    <dimen name="material_toolbar_elevation">4dp</dimen>
-
-    <!-- Card -->
-    <dimen name="material_card_marginHorizontal">12dp</dimen>
-    <dimen name="material_card_marginVertical">6dp</dimen>
-    <dimen name="material_card_padding">10dp</dimen>
-
-    <!-- Dialog -->
-    <dimen name="material_dialog_content_paddingTop">20dp</dimen>
-    <dimen name="material_dialog_content_paddingHorizontal">24dp</dimen>
+    <dimen name="changelog_tag_padding">0dp</dimen>
+    <dimen name="changelog_intro_padding">8dp</dimen>
 
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="org.schulcloud.mobile.utils.ViewUtilsKt" />
+
+        <variable
+            name="wrapper"
+            type="org.schulcloud.mobile.models.content.ContentWrapper" />
+        <variable
+            name="content"
+            type="org.schulcloud.mobile.models.content.Content" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Content.Header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_title_margin"
+            android:text="@{wrapper.title}"
+            android:visibility="@{ViewUtilsKt.toVisible(wrapper.title)}"
+            tools:text="Content name" />
+
+        <TextView
+            style="@style/Content.Text.Empty"
+            android:text="@{@string/content_unsupported_message(wrapper.component)}"
+            tools:text="@string/content_unsupported_message" />
+
+    </LinearLayout>
+</layout>

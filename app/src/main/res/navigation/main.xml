@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/fragment_dashboard">
+
+    <fragment
+        android:id="@+id/fragment_dashboard"
+        android:name="org.schulcloud.mobile.controllers.dashboard.DashboardFragment"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_newsListFragment"
+            app:destination="@id/fragment_newsList" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_courseListFragment"
+            app:destination="@id/fragment_courseList" />
+        <!--<action
+            android:id="@+id/action_dashboardFragment_to_calendarFragment"
+            app:destination="@id/fragment_calendar" />-->
+        <action
+            android:id="@+id/action_dashboardFragment_to_homeworkListFragment"
+            app:destination="@id/fragment_homeworkList" />
+        <!--<action
+            android:id="@+id/action_dashboardFragment_to_fileOverviewFragment"
+            app:destination="@id/fragment_fileOverview" />-->
+    </fragment>
+
+    <!-- News -->
+    <fragment
+        android:id="@+id/fragment_newsList"
+        android:name="org.schulcloud.mobile.controllers.news.NewsListFragment"
+        tools:layout="@layout/fragment_news_list" />
+    <fragment
+        android:id="@+id/fragment_news"
+        android:name="org.schulcloud.mobile.controllers.news.NewsFragment"
+        tools:layout="@layout/fragment_news">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_news"
+        app:destination="@id/fragment_news" />
+
+    <!-- Course -->
+    <fragment
+        android:id="@+id/fragment_courseList"
+        android:name="org.schulcloud.mobile.controllers.course.CourseListFragment"
+        tools:layout="@layout/fragment_course_list" />
+    <fragment
+        android:id="@+id/fragment_course"
+        android:name="org.schulcloud.mobile.controllers.course.CourseFragment"
+        tools:layout="@layout/fragment_course">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_course"
+        app:destination="@id/fragment_course" />
+    <fragment
+        android:id="@+id/fragment_topic"
+        android:name="org.schulcloud.mobile.controllers.topic.TopicFragment"
+        tools:layout="@layout/fragment_topic">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_topic"
+        app:destination="@id/fragment_topic" />
+
+    <!-- Calendar -->
+    <!--<fragment
+        android:id="@+id/fragment_calendar"
+        android:name="org.schulcloud.mobile.controllers.main.CalendarFragment"
+        tools:layout="@layout/fragment_calendar" />-->
+
+    <!-- Task -->
+    <fragment
+        android:id="@+id/fragment_homeworkList"
+        android:name="org.schulcloud.mobile.controllers.homework.HomeworkListFragment"
+        tools:layout="@layout/fragment_homework_list" />
+    <fragment
+        android:id="@+id/fragment_homework"
+        android:name="org.schulcloud.mobile.controllers.homework.detailed.HomeworkFragment"
+        tools:layout="@layout/fragment_homework">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_homework"
+        app:destination="@id/fragment_homework" />
+    <fragment
+        android:id="@+id/fragment_submission"
+        android:name="org.schulcloud.mobile.controllers.homework.submission.SubmissionFragment"
+        tools:layout="@layout/fragment_homework_submission">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_submission"
+        app:destination="@id/fragment_submission" />
+
+    <!-- File -->
+    <fragment
+        android:id="@+id/fragment_fileOverview"
+        android:name="org.schulcloud.mobile.controllers.file.FileOverviewFragment"
+        tools:layout="@layout/fragment_file_overview" />
+    <fragment
+        android:id="@+id/fragment_file"
+        android:name="org.schulcloud.mobile.controllers.file.FileFragment"
+        tools:layout="@layout/fragment_file">
+        <argument
+            android:name="path"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_fragment_file"
+        app:destination="@id/fragment_file" />
+
+</navigation>

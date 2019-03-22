@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AppTheme">
+        <attr name="colorPrimaryLight" format="color" />
+        <attr name="colorOnPrimaryMediumEmphasis" format="color" />
+        <attr name="colorBackground" format="color" />
+        <attr name="colorOnBackgroundPrimary" format="color" />
+        <attr name="colorOnBackgroundMediumEmphasis" format="color" />
+        <attr name="colorOnSurfaceMediumEmphasis" format="color" />
+        <attr name="colorOnSurfaceDivider" format="color" />
+
+        <attr name="contentTextViewStyle" format="reference" />
+        <attr name="breadcrumbsViewStyle" format="reference" />
+        <attr name="courseChipStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CompatTextView">
+        <attr name="drawableStart" format="reference" />
+        <attr name="drawableStartVisible" format="boolean" />
+        <attr name="drawableEnd" format="reference" />
+        <attr name="drawableEndVisible" format="reference" />
+        <attr name="drawableTop" format="reference" />
+        <attr name="drawableTopVisible" format="reference" />
+        <attr name="drawableBottom" format="reference" />
+        <attr name="drawableBottomVisible" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="BreadcrumbsView">
+        <attr name="android:textSize" />
+    </declare-styleable>
+
+</resources>

@@ -1,208 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/hpiRed</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/hpiRed</item>
-        <item name="android:typeface">serif</item>
-        <item name="drawerArrowStyle">@style/BarStyle</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="BarStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@android:color/white</item>
+    <style name="Animation.Activity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
 
-    <style name="Content" />
-    <style name="Content.Padding">
-        <item name="android:padding">@dimen/content_padding</item>
-    </style>
-    <style name="Content_Title">
-        <item name="android:layout_marginBottom">@dimen/content_title_margin</item>
-        <item name="android:textColor">@color/hpiRed</item>
-        <item name="android:textSize">@dimen/text_headline</item>
-    </style>
-    <style name="Content_Title.Margin">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginTop">16dp</item>
-    </style>
-    <style name="Content_Title.MarginTop">
-        <item name="android:layout_marginTop">@dimen/content_title_marginTop</item>
-    </style>
-
-    <style name="Content_Text.Empty" parent="TextAppearance.AppCompat.Subhead">
+    <style name="Content.Text.Empty" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textAppearance">?textAppearanceBody1</item>
+        <item name="android:textColor">?colorOnBackgroundMediumEmphasis</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <style name="Preference.Simple" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:padding">@dimen/settings_preference_padding</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:clickable">true</item>
+    <style name="Content.Header" parent="">
+        <item name="android:textAppearance">?textAppearanceHeadline5</item>
     </style>
-
-    <style name="ListItemPreference" parent="Preference.Simple">
-        <item name="android:padding">0dp</item>
-    </style>
-    <style name="Preference_Wrapper" parent="Preference.Simple"></style>
-
-    <style name="Preference_Title" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:clickable">false</item>
-    </style>
-    <style name="Preference_Description" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:clickable">false</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
-    </style>
-
-    <style name="SchulCloud" />
-    <style name="FileOverview.Card" parent="Material.Card.Margin">
-        <item name="contentPadding">0dp</item>
-        <item name="contentPaddingBottom">4dp</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-    </style>
-    <style name="FileOverview.Card_Icon" parent="Material.Icon.Dense.Inverse">
-        <item name="android:width">40dp</item>
-    </style>
-    <style name="FileOverview.Card_Title" parent="TextAppearance.AppCompat.Title.Inverse" />
-    <style name="FileOverview.Card_FileCount" parent="TextAppearance.AppCompat.Subhead.Inverse" />
-    <style name="FileOverview.Card_Description" parent="TextAppearance.AppCompat.Medium" />
-    <style name="FileOverview.Card_Open" parent="Widget.AppCompat.Button.Borderless.Colored" />
-
-    <style name="SchulCloud.Content">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginBottom">32dp</item>
-    </style>
-    <style name="SchulCloud.Content_Header" parent="Card.Header" />
-    <style name="SchulCloud.Content_Header.WithLink">
+    <style name="Content.Header.WithLink">
         <item name="android:minHeight">40dp</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:paddingRight">16dp</item>
         <item name="android:gravity">start|center_vertical</item>
+        <item name="drawableEnd">@drawable/ic_open_in_new_24dp</item>
     </style>
-    <style name="SchulCloud.Content_LinkExternal">
+    <style name="Content.LinkExternal" parent="">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
-        <item name="srcCompat">@drawable/ic_open_in_new_dark_24dp</item>
+        <item name="srcCompat">@drawable/ic_open_in_new_24dp</item>
     </style>
 
-    <style name="Card.Header" parent="TextAppearance.AppCompat.Headline">
-        <item name="android:textSize">20sp</item>
+    <style name="ContentExternal">
+        <item name="android:layout_height">300dp</item>
+        <item name="android:scrollbars">none</item>
     </style>
 
-    <!-- Material Design -->
-    <style name="Material" />
 
-    <!-- Icon -->
-    <style name="Material.Icon">
-        <item name="android:width">48dp</item>
-        <item name="android:height">48dp</item>
-        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
-        <item name="android:color">?android:attr/textColorPrimary</item>
+    <style name="Dashboard" />
+    <style name="Dashboard.Widget" parent="Widget.Material.Card.Margin">
+        <item name="contentPadding">0dp</item>
+        <item name="android:paddingTop">@dimen/material_list_paddingVertical</item>
+        <item name="android:paddingBottom">@dimen/material_list_paddingVertical</item>
     </style>
-    <style name="Material.Icon.Inverse">
-        <item name="android:color">?android:attr/textColorPrimaryInverse</item>
-        <item name="bootstrapBrand">secondary</item>
+    <style name="Dashboard.Widget.Title" parent="Widget.Material.ListHeader" />
+    <style name="Dashboard.Widget.ButtonMore" parent="Widget.Material.Button.OutlinedButton">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
-    <style name="Material.Icon.Dense">
+
+    <style name="FileOverview.Card" parent="Widget.Material.Card.Margin">
+        <item name="contentPadding">0dp</item>
+        <item name="contentPaddingBottom">4dp</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+    </style>
+    <style name="FileOverview.Card_Icon" parent="Widget.Material.Icon.Dense.Inverse">
         <item name="android:width">40dp</item>
-        <item name="android:height">40dp</item>
-        <item name="android:textSize" tools:ignore="SpUsage">18dp</item>
     </style>
-    <style name="Material.Icon.Dense.Inverse">
-        <item name="android:color">?android:attr/textColorPrimaryInverse</item>
-        <item name="bootstrapBrand">secondary</item>
+    <style name="FileOverview.Card_Title" parent="">
+        <item name="android:textAppearance">?textAppearanceHeadline6</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
-
-    <!-- Buttons -->
-    <!--Floating Action Button-->
-    <style name="Material.Fab">
-        <item name="android:layout_margin">@dimen/material_button_fab_margin</item>
-        <item name="rippleColor">@color/white</item>
+    <style name="FileOverview.Card_Description" parent="">
+        <item name="android:textAppearance">?textAppearanceBody1</item>
     </style>
 
-    <!-- List -->
-    <style name="Material.List">
-        <item name="android:paddingTop">@dimen/material_list_paddingTop</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-    <!--ListItemLayout-->
-    <style name="Material.ListItem.Simple" parent="@style/Material.ListItem_TextPrimary">
-        <item name="android:height">@dimen/material_listItemLayout_height</item>
-        <item name="android:paddingLeft">@dimen/material_listItemLayout_paddingHorizontal</item>
-        <item name="android:paddingRight">@dimen/material_listItemLayout_paddingHorizontal</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
-    <style name="Material.ListItem_TextPrimary" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="layout_position">textPrimary</item>
-        <item name="android:textSize">@dimen/material_listItemLayout_textPrimary_textSize</item>
-        <item name="android:gravity">top</item>
+    <!-- Custom Views -->
+    <style name="Widget.App.ContentTextView" parent="">
+        <item name="android:textAppearance">?textAppearanceBody1</item>
+        <item name="android:maxLines">4</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
     </style>
-    <style name="Material.ListItem_TextSecondary" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="layout_position">textSecondary</item>
-        <item name="android:textSize">@dimen/material_listItemLayout_textSecondary_textSize</item>
-        <item name="android:gravity">top</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <style name="Widget.App.BreadcrumbsView" parent="">
+        <item name="android:textAppearance">?textAppearanceBody1</item>
+        <item name="android:textSize">16sp</item>
     </style>
-    <style name="Material.ListItem_TextSecondary2" parent="@style/Material.ListItem_TextSecondary">
-        <item name="layout_position">textSecondary2</item>
-    </style>
-    <style name="Material.ListItem_EndTextTop" parent="@style/Material.ListItem_TextSecondary">
-        <item name="layout_position">endTextTop</item>
-        <item name="android:textSize">@dimen/material_listItemLayout_endText_textSize</item>
-        <item name="android:gravity">top|end</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
-    </style>
-    <style name="Material.ListItem_EndTextBottom" parent="@style/Material.ListItem_EndTextTop">
-        <item name="layout_position">endTextBottom</item>
-    </style>
-
-    <!-- Toolbar -->
-    <style name="Material.Toolbar">
-        <item name="android:height">?android:attr/actionBarSize</item>
-        <item name="android:background">@color/hpiRed</item>
-        <item name="android:elevation" tools:targetApi="lollipop">
-            @dimen/material_toolbar_elevation
-        </item>
-        <item name="theme">@style/AppTheme.AppBarOverlay</item>
-        <item name="popupTheme">@style/AppTheme.PopupOverlay</item>
-    </style>
-
-    <!-- Card -->
-    <style name="Material.Card">
-        <item name="contentPadding">@dimen/material_card_padding</item>
-    </style>
-    <style name="Material.Card.MarginVertical">
-        <item name="android:layout_marginTop">@dimen/material_card_marginVertical</item>
-        <item name="android:layout_marginBottom">@dimen/material_card_marginVertical</item>
-    </style>
-    <style name="Material.Card.Margin" parent="Material.Card.MarginVertical">
-        <item name="android:layout_marginLeft">@dimen/material_card_marginHorizontal</item>
-        <item name="android:layout_marginRight">@dimen/material_card_marginHorizontal</item>
-    </style>
-
-    <!-- Dialog -->
-    <style name="Material.Dialog_Content">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">@dimen/material_dialog_content_paddingHorizontal</item>
-        <item name="android:paddingTop">@dimen/material_dialog_content_paddingTop</item>
-        <item name="android:paddingRight">@dimen/material_dialog_content_paddingHorizontal</item>
+    <style name="Widget.App.CourseChip" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="iconStartPadding">8dp</item>
     </style>
 
 </resources>

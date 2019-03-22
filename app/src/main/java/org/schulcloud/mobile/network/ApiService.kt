@@ -17,7 +17,7 @@ import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.models.base.RealmString
 import org.schulcloud.mobile.models.user.UserRepository
-import org.schulcloud.mobile.utils.HOST
+import org.schulcloud.mobile.utils.HOST_API
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
@@ -77,7 +77,7 @@ object ApiService {
                 .addInterceptor { chain ->
                     val request = chain.request()
                     val builder = request.newBuilder()
-                    if (UserRepository.isAuthorized && request.url().host().equals(HOST, true))
+                    if (UserRepository.isAuthorized && request.url().host().equals(HOST_API, true))
                         builder.header(Config.HEADER_AUTH, Config.HEADER_AUTH_VALUE_PREFIX + UserRepository.token)
                     chain.proceed(builder.build())
                 }

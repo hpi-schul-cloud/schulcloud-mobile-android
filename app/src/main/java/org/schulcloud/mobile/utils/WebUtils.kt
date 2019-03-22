@@ -27,7 +27,8 @@ const val MIME_APPLICATION_JSON = "application/json"
 
 const val ENCODING_UTF_8 = "utf-8"
 
-val HOST = API_URL.substringAfter("://").substringBefore(':')
+val HOST_API = API_URL.substringAfter("://").substringBefore(':')
+val HOST = HOST_API.substringAfter('.')
 
 val HTTP_CLIENT: OkHttpClient by lazy {
     OkHttpClient.Builder().addInterceptor { chain ->

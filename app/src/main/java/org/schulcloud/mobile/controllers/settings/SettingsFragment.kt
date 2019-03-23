@@ -72,7 +72,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         // Dark mode
 
         // Request location permission for accurate sunrise/sunset values
-        val darkMode_night = findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_NIGHT)
+        val darkMode_night = findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_NIGHT)!!
         darkMode_night.summaryProvider = Preference.SummaryProvider<CheckBoxPreference> {
             if (Preferences.Theme.darkMode_night && !context.hasPermission(ACCESS_COARSE_LOCATION))
                 getString(R.string.settings_theme_darkMode_night_summary_noLocationPermission)
@@ -93,7 +93,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     @Suppress("FunctionName", "LocalVariableName")
     private fun updateTheme_darkMode() {
-        val darkMode = findPreference<SwitchPreferenceCompat>(Preferences.Theme.DARK_MODE)
+        val darkMode = findPreference<SwitchPreferenceCompat>(Preferences.Theme.DARK_MODE)!!
         val active = Preferences.Theme.darkMode
         val ambientLightActive = Preferences.Theme.darkMode_ambientLight
         val nightActive = Preferences.Theme.darkMode_night
@@ -117,19 +117,19 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val context = context ?: return
 
         // Check HW support for ambient light sensor
-        findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_AMBIENT_LIGHT)
+        findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_AMBIENT_LIGHT)!!
                 .isVisible = active && DarkModeUtils.getInstance(context).supportsAmbientLight
 
-        findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_NIGHT)
+        findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_NIGHT)!!
                 .isVisible = active
 
         // Check support for power saver
-        findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_POWER_SAVER)
+        findPreference<CheckBoxPreference>(Preferences.Theme.DARK_MODE_POWER_SAVER)!!
                 .isVisible = active && DarkModeUtils.getInstance(context).supportsPowerSaver
     }
 
     private fun initPrivacy() {
-        findPreference<SwitchPreferenceCompat>(Preferences.Privacy.CRASHLYTICS)
+        findPreference<SwitchPreferenceCompat>(Preferences.Privacy.CRASHLYTICS)!!
                 .onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue == true)
                 Fabric.with(context, Crashlytics())
@@ -139,7 +139,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun initAbout() {
-        findPreference<Preference>(Preferences.About.VERSION).apply {
+        findPreference<Preference>(Preferences.About.VERSION)!!.apply {
             setOnPreferenceClickListener {
                 Changelog.showDialog(activity as BaseActivity, false)
                 true

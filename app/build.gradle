@@ -2,9 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+
 apply plugin: 'realm-android'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'de.mannodermaus.android-junit5'
+apply plugin: 'io.fabric'
 
 android {
     buildToolsVersion rootProject.buildToolsVersion
@@ -23,11 +25,6 @@ android {
         applicationId "org.schulcloud.mobile"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-    }
-
-    productFlavors.all {
-        ext.appName = "Schul-Cloud"
-        ext.appBackend = null
     }
 
     flavorDimensions "brand"
@@ -88,6 +85,11 @@ android {
             includeAndroidResources = true
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 detekt {
@@ -101,3 +103,5 @@ detekt {
 }
 
 apply from: 'dependencies.gradle'
+
+apply plugin: 'com.google.gms.google-services'

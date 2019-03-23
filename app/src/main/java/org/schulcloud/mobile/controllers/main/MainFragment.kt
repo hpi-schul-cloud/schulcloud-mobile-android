@@ -46,6 +46,7 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isFirstInit = savedInstanceState == null
 
         mainViewModel.onOptionsItemSelected.observe(this, Observer {
             onOptionsItemSelected(it)
@@ -86,6 +87,8 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
         for (id in config.value?.menuTopHiddenIds.orEmpty())
             if (id != 0)
                 menu.findItem(id)?.isVisible = false
+
+        mainActivity.updateToolbarColors()
 
         super.onCreateOptionsMenu(menu, inflater)
     }

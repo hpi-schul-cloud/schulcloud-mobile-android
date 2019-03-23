@@ -10,7 +10,7 @@
         android:id="@+id/containerLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:drawable/divider_horizontal_dark"
+        android:divider="@drawable/divider"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
@@ -79,7 +79,7 @@
 
             <ProgressBar
                 android:id="@+id/progress"
-                style="?android:attr/progressBarStyleLarge"
+                style="?android:progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:layout_marginBottom="36dp"
-            android:background="@drawable/divider_dark"
+            android:background="@drawable/divider"
             android:paddingLeft="@dimen/material_dividerMiddle_inset"
             android:paddingRight="@dimen/material_dividerMiddle_inset" />
 
@@ -115,12 +115,12 @@
             android:layout_marginBottom="8dp"
             android:text="@string/login_demo"
             android:textAlignment="center"
-            android:textAppearance="?textAppearanceHeadline6"
-            android:textColor="?android:textColorSecondary" />
+            android:textAppearance="?textAppearanceSubtitle1"
+            android:textColor="?colorOnBackgroundMediumEmphasis" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/demo_student"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.Material.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -128,7 +128,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/demo_teacher"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.Material.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

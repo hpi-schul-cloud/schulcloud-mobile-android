@@ -14,14 +14,17 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.SchulCloudTestApp
+import kotlin.test.assertNull
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = SchulCloudTestApp::class)
 class BaseStorageTest {
     private val name = "name"
     private val booleanKey = "booleanKey"
+    private val defaultBooleanValue = false
     private val booleanValue = true
     private val intKey = "intKey"
+    private val defaultIntValue = 0
     private val intValue = 1
     private val stringKey = "stringKey"
     private val stringValue = "stringValue"
@@ -33,18 +36,23 @@ class BaseStorageTest {
     fun setUp() {
         mockkObject(SchulCloudApp)
         every { SchulCloudApp.instance.getSharedPreferences(name, Context.MODE_PRIVATE) } returns sharedPreferences
-        storage = object : BaseStorage(name){}
+        storage = object : BaseStorage(name) {}
     }
 
     @After
-    fun tearDown(){
-        sharedPreferences.edit { clear() }
+    fun tearDown() {
+        storage.clear()
     }
 
     @Test
-    fun shouldStoreBoolean(){
+    fun shouldStoreBoolean() {
         storage.putBoolean(booleanKey, booleanValue)
         assertEquals(booleanValue, storage.getBoolean(booleanKey))
+    }
+
+    @Test
+    fun shouldProvideCorrectDefaultBoolean() {
+        assertEquals(defaultBooleanValue, storage.getBoolean(booleanKey))
     }
 
     @Test
@@ -54,8 +62,31 @@ class BaseStorageTest {
     }
 
     @Test
-    fun shouldStoreString(){
+    fun shouldProvideCorrectDefaultInt() {
+        assertEquals(defaultIntValue, storage.getInt(intKey))
+    }
+
+    @Test
+    fun shouldStoreString() {
         storage.putString(stringKey, stringValue)
         assertEquals(stringValue, storage.getString(stringKey))
+    }
+
+    @Test
+    fun shouldProvideDefaultStringNull() {
+        assertNull(storage.getString(stringKey))
+    }
+
+    @Test
+    fun shouldDeleteAllStoredValuesWhenCleared() {
+        storage.putBoolean(booleanKey, booleanValue)
+        storage.putInt(intKey, intValue)
+        storage.putString(stringKey, stringValue)
+
+        storage.clear()
+
+        assertEquals(defaultBooleanValue, storage.getBoolean(booleanKey))
+        assertEquals(defaultIntValue, storage.getInt(intKey))
+        assertNull(storage.getString(stringKey))
     }
 }

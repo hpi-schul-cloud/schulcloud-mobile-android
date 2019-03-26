@@ -14,6 +14,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.SchulCloudTestApp
+import kotlin.test.assertNull
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = SchulCloudTestApp::class)
@@ -32,19 +33,40 @@ class UserStorageTest {
     }
 
     @After
-    fun tearDown(){
-        sharedPreferences.edit { clear() }
+    fun tearDown() {
+        UserStorage.clear()
     }
 
     @Test
-    fun shouldStoreUserId(){
+    fun shouldStoreUserId() {
         UserStorage.userId = userId
         assertEquals(userId, UserStorage.userId)
     }
 
     @Test
-    fun shouldStoreAccessToken(){
+    fun shouldProvideDefaultUserIdNull() {
+        assertNull(UserStorage.userId)
+    }
+
+    @Test
+    fun shouldStoreAccessToken() {
         UserStorage.accessToken = accessToken
         assertEquals(accessToken, UserStorage.accessToken)
+    }
+
+    @Test
+    fun shouldProvideDefaultAccessTokenNull() {
+        assertNull(UserStorage.accessToken)
+    }
+
+    @Test
+    fun shouldDeleteAllStoredValuesWhenCleared() {
+        UserStorage.userId = userId
+        UserStorage.accessToken = accessToken
+
+        UserStorage.clear()
+
+        assertNull(UserStorage.userId)
+        assertNull(UserStorage.accessToken)
     }
 }

@@ -17,8 +17,6 @@ import org.schulcloud.mobile.commonTest.prepareTaskExecutor
 import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.schulcloud.mobile.utils.emailIsValid
 
-//@RunWith(RobolectricTestRunner::class)
-//@Config(application = SchulCloudTestApp::class)
 open class LoginViewModelTest {
     protected lateinit var loginViewModel: LoginViewModel
     protected val validEmail = "email@domain.web"

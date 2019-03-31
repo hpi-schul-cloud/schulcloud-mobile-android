@@ -45,10 +45,11 @@ dependencies {
 
     // AndroidX
     // architecture
+    def androidxLifecycleVersion = '2.0.0'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
-    kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:${androidxLifecycleVersion}"
+    kapt "androidx.lifecycle:lifecycle-compiler:${androidxLifecycleVersion}"
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0'
     implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0'
     implementation "androidx.browser:browser:1.0.0"
@@ -68,7 +69,8 @@ dependencies {
     def mockkVersion = '1.9.2'
     def junitVersion = '5.4.0'
     def robolectricVersion = '4.2.1'
-    testImplementation "androidx.arch.core:core-testing:2.0.1"
+    def espressoVersion = '3.1.1'
+    testImplementation "androidx.arch.core:core-testing:${androidxLifecycleVersion}"
     testImplementation 'androidx.test:core:1.1.0'
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
@@ -85,7 +87,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotlinCoroutinesVersion}"
     testImplementation 'androidx.test.ext:junit:1.1.0'
     testImplementation 'androidx.test:rules:1.1.1'
-    testImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    testImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
 
     debugImplementation 'androidx.fragment:fragment-testing:1.1.0-alpha05'
 
@@ -97,7 +99,9 @@ dependencies {
     androidTestImplementation "androidx.test:runner:1.1.1"
     androidTestImplementation 'androidx.test:rules:1.1.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:${espressoVersion}"
+    androidTestImplementation "androidx.arch.core:core-testing:${androidxLifecycleVersion}"
 
     androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
     //for mocking realm

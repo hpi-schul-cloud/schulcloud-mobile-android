@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.controllers.login
 
-import android.app.Instrumentation
 import android.os.Bundle
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.FragmentScenario.launchInContainer
@@ -13,17 +12,18 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import io.mockk.*
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.SchulCloudApp
+import org.schulcloud.mobile.commonTest.checkActivityStarted
+import org.schulcloud.mobile.commonTest.createAndAddIntentBlockingActivityMonitor
 import org.schulcloud.mobile.controllers.main.MainActivity
 import org.schulcloud.mobile.jobs.base.RequestJobCallback
 import org.schulcloud.mobile.viewmodels.LoginViewModel
-import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.Assert.assertTrue
-import org.junit.runners.Parameterized
 
 /**
  * These tests only run on devices or emulators with Android version 28+ due to missing static mocking support
@@ -95,12 +95,11 @@ open class LoginFragmentTest {
         fun shouldStartMainActivityWhenLoginClickedAndSuccessful() {
             every { loginViewModel.login(email, password) } answers
                     { loginViewModel.loginState.value = LoginViewModel.LoginStatus.LoggedIn }
-            val activityMonitor = Instrumentation.ActivityMonitor(MainActivity::class.java.name, null, true)
-            InstrumentationRegistry.getInstrumentation().addMonitor(activityMonitor)
+            val activityMonitor = createAndAddIntentBlockingActivityMonitor(MainActivity::class.java.name)
 
             performLoginAction()
 
-            assertTrue(InstrumentationRegistry.getInstrumentation().checkMonitorHit(activityMonitor, 1))
+            assertTrue(checkActivityStarted(activityMonitor))
         }
     }
 

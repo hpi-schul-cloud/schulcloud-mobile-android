@@ -103,6 +103,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:${espressoVersion}"
     androidTestImplementation "androidx.test.espresso:espresso-intents:${espressoVersion}"
     androidTestImplementation "androidx.arch.core:core-testing:${androidxLifecycleVersion}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
 
     androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
     //for mocking realm

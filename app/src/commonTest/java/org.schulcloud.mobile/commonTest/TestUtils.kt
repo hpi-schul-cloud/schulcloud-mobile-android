@@ -37,3 +37,5 @@ fun createAndAddIntentBlockingActivityMonitor(activityName: String): Instrumenta
 
 fun checkActivityStarted(activityMonitor: Instrumentation.ActivityMonitor): Boolean
         = InstrumentationRegistry.getInstrumentation().checkMonitorHit(activityMonitor, 1)
+
+fun accessTokenJson(): String = "{\"accessToken\":\"here.comes.anAccessToken\"}"

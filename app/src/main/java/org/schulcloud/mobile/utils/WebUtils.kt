@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.BuildConfig.API_URL
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.user.UserRepository
@@ -27,6 +28,7 @@ const val MIME_APPLICATION_JSON = "application/json"
 
 const val ENCODING_UTF_8 = "utf-8"
 
+val API_URL = BuildConfig.API_URL
 val HOST_API = API_URL.substringAfter("://").substringBefore(':')
 val HOST = HOST_API.substringAfter('.')
 

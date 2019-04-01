@@ -11,12 +11,12 @@ import info.guardianproject.netcipher.client.TlsOnlySocketFactory
 import io.realm.RealmList
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.schulcloud.mobile.BuildConfig
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.models.base.RealmString
 import org.schulcloud.mobile.models.user.UserRepository
+import org.schulcloud.mobile.utils.API_URL
 import org.schulcloud.mobile.utils.HOST_API
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -115,7 +115,7 @@ object ApiService {
 
     private fun getRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(BuildConfig.API_URL)
+                .baseUrl(API_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
                 .build()

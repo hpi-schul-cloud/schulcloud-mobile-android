@@ -6,6 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.schulcloud.mobile.commonTest.TestIdRealmObject
+import org.schulcloud.mobile.commonTest.testIdRealmObject
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.commonTest.testIdRealmObjectList
 import org.schulcloud.mobile.utils.it
@@ -13,11 +14,13 @@ import org.schulcloud.mobile.utils.it
 
 class SyncTest {
     private val idRealmObjects = testIdRealmObjectList(7)
+    private val singleItem = testIdRealmObject(2.toString())
+    private val toDeleteItemId = 7.toString()
     private val items = idRealmObjects.take(4)
     private val moreItems = idRealmObjects.take(6)
     private val testConfig = RealmConfiguration.Builder().name("test-realm").schemaVersion(Config.REALM_SCHEMA_VERSION).build()
     private val deleteQuery: (RealmQuery<TestIdRealmObject>.() -> RealmQuery<TestIdRealmObject>) = ::it
-    private val idDeleteQuery: (RealmQuery<TestIdRealmObject>.() -> RealmQuery<TestIdRealmObject>) = {equalTo("id", "7")}
+    private val idDeleteQuery: (RealmQuery<TestIdRealmObject>.() -> RealmQuery<TestIdRealmObject>) = {equalTo("id", toDeleteItemId)}
     private lateinit var testRealm: Realm
 
 
@@ -36,14 +39,11 @@ class SyncTest {
     }
 
     @Test
-    fun shouldAddEveryNewItemToRealm() {
+    fun shouldAddEveryNewDataItemToRealm() {
         Sync.Data.with(TestIdRealmObject::class.java, items, deleteQuery).run()
 
-        val realmObjects = testRealm.where(TestIdRealmObject::class.java).sort("id", Sort.ASCENDING).findAll()
-        assertEquals(items.size, realmObjects.size)
-        items.forEachIndexed { index, item ->
-            assertEquals(item.id, realmObjects[index]?.id)
-        }
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(items, realmObjects)
     }
 
     @Test
@@ -52,11 +52,8 @@ class SyncTest {
 
         Sync.Data.with(TestIdRealmObject::class.java, items, deleteQuery).run()
 
-        val realmObjects = testRealm.where(TestIdRealmObject::class.java).sort("id", Sort.ASCENDING).findAll()
-        assertEquals(items.size, realmObjects.size)
-        items.forEachIndexed { index, item ->
-            assertEquals(item.id, realmObjects[index]?.id)
-        }
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(items, realmObjects)
     }
 
     @Test
@@ -65,11 +62,8 @@ class SyncTest {
 
         Sync.Data.with(TestIdRealmObject::class.java, items, idDeleteQuery).run()
 
-        val realmObjects = testRealm.where(TestIdRealmObject::class.java).sort("id", Sort.ASCENDING).findAll()
-        assertEquals(moreItems.size, realmObjects.size)
-        moreItems.forEachIndexed { index, item ->
-            assertEquals(item.id, realmObjects[index]?.id)
-        }
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(moreItems, realmObjects)
     }
 
     @Test
@@ -78,11 +72,47 @@ class SyncTest {
 
         Sync.Data.with(TestIdRealmObject::class.java, items).run()
 
-        val realmObjects = testRealm.where(TestIdRealmObject::class.java).sort("id", Sort.ASCENDING).findAll()
-        assertEquals(idRealmObjects.size, realmObjects.size)
-        idRealmObjects.forEachIndexed { index, item ->
-            assertEquals(item.id, realmObjects[index]?.id)
-        }
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(idRealmObjects, realmObjects)
+    }
+
+    @Test
+    fun shouldAddNewSingleDataItemToRealm() {
+        Sync.SingleData.with(TestIdRealmObject::class.java, singleItem).run()
+
+        val realmObjects = testRealm.where(TestIdRealmObject::class.java).findAll()
+        assertEquals(1, realmObjects.size)
+        assertEquals(singleItem.id, realmObjects.first()?.id)
+    }
+
+    @Test
+    fun shouldDeleteItemWithGivenDeleteIdFromRealm(){
+        addIdRealmObjectsToTestRealm()
+
+        Sync.SingleData.with(TestIdRealmObject::class.java, singleItem, toDeleteItemId).run()
+
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(moreItems, realmObjects)
+    }
+
+    @Test
+    fun shouldNotDeleteAnyItemsWithoutDeleteId() {
+        addIdRealmObjectsToTestRealm()
+
+        Sync.SingleData.with(TestIdRealmObject::class.java, singleItem).run()
+
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(idRealmObjects, realmObjects)
+    }
+
+    @Test
+    fun shouldNotDeleteGivenNewItem(){
+        addIdRealmObjectsToTestRealm()
+
+        Sync.SingleData.with(TestIdRealmObject::class.java, singleItem, singleItem.id).run()
+
+        val realmObjects = getOrderedTestIdRealmObjects(testRealm)
+        assertItemListEquality(idRealmObjects, realmObjects)
     }
 
     private fun addIdRealmObjectsToTestRealm(){
@@ -92,6 +122,16 @@ class SyncTest {
                 testRealm.copyToRealmOrUpdate(item)
 
             testRealm.copyToRealmOrUpdate(idRealmObjects)
+        }
+    }
+
+    private fun getOrderedTestIdRealmObjects(realm: Realm): List<TestIdRealmObject?>
+            = realm.where(TestIdRealmObject::class.java).sort("id", Sort.ASCENDING).findAll()
+
+    private fun assertItemListEquality(expected: List<TestIdRealmObject>, actual: List<TestIdRealmObject?>){
+        assertEquals(expected.size, actual.size)
+        expected.forEachIndexed { index, item ->
+            assertEquals(item.id, actual[index]?.id)
         }
     }
 }

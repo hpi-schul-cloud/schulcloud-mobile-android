@@ -1,4 +1,4 @@
-package org.schulcloud.mobile.commonTest
+package org.schulcloud.mobile
 
 import org.schulcloud.mobile.controllers.main.MainActivity
 import androidx.test.espresso.intent.rule.IntentsTestRule

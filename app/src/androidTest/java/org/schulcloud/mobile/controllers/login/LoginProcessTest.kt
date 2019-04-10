@@ -48,7 +48,6 @@ class LoginProcessTest {
     private val mockServer = MockWebServer()
     private lateinit var url: String
     private val dispatcher = object : Dispatcher() {
-
         override fun dispatch(request: RecordedRequest): MockResponse {
             return if (request.path.equals("/authentication")) {
                 response
@@ -62,7 +61,6 @@ class LoginProcessTest {
 
     @Before
     fun setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.idlingResource)
         mockServer.start()
         url = mockServer.url("/").toString()
 
@@ -77,7 +75,6 @@ class LoginProcessTest {
     @After
     fun tearDown() {
         mockServer.shutdown()
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.idlingResource)
     }
 
     @Test

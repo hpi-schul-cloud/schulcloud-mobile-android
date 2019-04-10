@@ -20,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.SchulCloudApp
-import org.schulcloud.mobile.commonTest.MainActivityIntentTestRule
+import org.schulcloud.mobile.MainActivityIntentTestRule
 
 class MainActivityTest {
     private val appContext = ApplicationProvider.getApplicationContext<SchulCloudApp>()

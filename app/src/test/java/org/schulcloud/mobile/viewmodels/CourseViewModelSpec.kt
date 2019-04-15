@@ -2,12 +2,9 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.commonTest.course
+import org.schulcloud.mobile.commonTest.*
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.topic.TopicRepository
-import org.schulcloud.mobile.commonTest.prepareTaskExecutor
-import org.schulcloud.mobile.commonTest.resetTaskExecutor
-import org.schulcloud.mobile.commonTest.topicList
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -23,15 +20,14 @@ object CourseViewModelSpec : Spek({
             CourseViewModel(id)
         }
         val mockRealm = mockk<Realm>()
+        mockRealmDefaultInstance(mockRealm)
         mockkObject(CourseRepository)
         mockkObject(TopicRepository)
-        mockkStatic(Realm::class)
 
         beforeEach {
             prepareTaskExecutor()
             every { CourseRepository.course(mockRealm, id) } returns course.asLiveData()
             every { TopicRepository.topicsForCourse(mockRealm, id) } returns topicList.asLiveData()
-            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {

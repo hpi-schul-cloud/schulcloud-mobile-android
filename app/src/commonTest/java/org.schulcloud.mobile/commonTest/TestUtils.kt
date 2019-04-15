@@ -4,6 +4,9 @@ import android.app.Instrumentation
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.test.platform.app.InstrumentationRegistry
+import io.mockk.every
+import io.mockk.mockkStatic
+import io.realm.Realm
 import org.schulcloud.mobile.controllers.settings.SettingsActivity
 
 fun prepareTaskExecutor() {
@@ -39,3 +42,8 @@ fun checkActivityStarted(activityMonitor: Instrumentation.ActivityMonitor): Bool
         = InstrumentationRegistry.getInstrumentation().checkMonitorHit(activityMonitor, 1)
 
 fun accessTokenJson(): String = "{\"accessToken\":\"here.comes.anAccessToken\"}"
+
+fun mockRealmDefaultInstance(mockRealm: Realm){
+    mockkStatic(Realm::class)
+    every { Realm.getDefaultInstance() } returns mockRealm
+}

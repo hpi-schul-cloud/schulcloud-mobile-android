@@ -3,6 +3,7 @@ package org.schulcloud.mobile.viewmodels
 import io.mockk.*
 import io.realm.Realm
 import org.schulcloud.mobile.commonTest.eventList
+import org.schulcloud.mobile.commonTest.mockRealmDefaultInstance
 import org.schulcloud.mobile.models.event.EventRepository
 import org.schulcloud.mobile.commonTest.prepareTaskExecutor
 import org.schulcloud.mobile.commonTest.resetTaskExecutor
@@ -19,13 +20,12 @@ object EventListViewModelSpec : Spek({
             EventListViewModel()
         }
         val mockRealm = mockk<Realm>()
+        mockRealmDefaultInstance(mockRealm)
         mockkObject(EventRepository)
-        mockkStatic(Realm::class)
 
         beforeEach {
             prepareTaskExecutor()
             every { EventRepository.eventsForToday(mockRealm) } returns events.asLiveData()
-            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {

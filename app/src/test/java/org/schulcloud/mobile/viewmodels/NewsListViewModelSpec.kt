@@ -2,6 +2,7 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
+import org.schulcloud.mobile.commonTest.mockRealmDefaultInstance
 import org.schulcloud.mobile.models.news.NewsRepository
 import org.schulcloud.mobile.commonTest.newsList
 import org.schulcloud.mobile.commonTest.prepareTaskExecutor
@@ -20,13 +21,12 @@ object NewsListViewModelSpec : Spek({
             NewsListViewModel()
         }
         val mockRealm = mockk<Realm>()
+        mockRealmDefaultInstance(mockRealm)
         mockkObject(NewsRepository)
-        mockkStatic(Realm::class)
 
         beforeEach {
             prepareTaskExecutor()
             every { NewsRepository.newsList(mockRealm) } returns newsList.asLiveData()
-            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {

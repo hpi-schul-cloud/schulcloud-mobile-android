@@ -2,11 +2,8 @@ package org.schulcloud.mobile.viewmodels
 
 import io.mockk.*
 import io.realm.Realm
-import org.schulcloud.mobile.commonTest.directoryList
-import org.schulcloud.mobile.commonTest.fileList
+import org.schulcloud.mobile.commonTest.*
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.commonTest.prepareTaskExecutor
-import org.schulcloud.mobile.commonTest.resetTaskExecutor
 import org.schulcloud.mobile.utils.asLiveData
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
@@ -24,15 +21,14 @@ object FileViewModelSpec : Spek({
             FileViewModel(path)
         }
         val mockRealm = mockk<Realm>()
+        mockRealmDefaultInstance(mockRealm)
         mockkObject(FileRepository)
-        mockkStatic(Realm::class)
 
         beforeEach {
             prepareTaskExecutor()
             every { FileRepository.fixPath(path) } returns fixedPath
             every { FileRepository.files(mockRealm, fixedPath) } returns fileList.asLiveData()
             every { FileRepository.directories(mockRealm, fixedPath) } returns directoryList.asLiveData()
-            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {

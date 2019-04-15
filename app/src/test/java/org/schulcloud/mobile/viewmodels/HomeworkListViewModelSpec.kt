@@ -3,6 +3,7 @@ package org.schulcloud.mobile.viewmodels
 import io.mockk.*
 import io.realm.Realm
 import org.schulcloud.mobile.commonTest.homeworkList
+import org.schulcloud.mobile.commonTest.mockRealmDefaultInstance
 import org.schulcloud.mobile.models.homework.HomeworkRepository
 import org.schulcloud.mobile.commonTest.prepareTaskExecutor
 import org.schulcloud.mobile.commonTest.resetTaskExecutor
@@ -19,13 +20,12 @@ object HomeworkListViewModelSpec : Spek({
             HomeworkListViewModel()
         }
         val mockRealm = mockk<Realm>()
+        mockRealmDefaultInstance(mockRealm)
         mockkObject(HomeworkRepository)
-        mockkStatic(Realm::class)
 
         beforeEach {
             prepareTaskExecutor()
             every { HomeworkRepository.homeworkList(mockRealm) } returns homeworkList.asLiveData()
-            every { Realm.getDefaultInstance() } returns mockRealm
         }
 
         afterEach {

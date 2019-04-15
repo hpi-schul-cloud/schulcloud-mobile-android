@@ -9,12 +9,14 @@ import io.mockk.mockkObject
 import org.junit.After
 import org.junit.Before
 import org.junit.Assert.*
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.SchulCloudTestApp
+import org.schulcloud.mobile.commonTest.rules.SharedPreferencesRule
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = SchulCloudTestApp::class)
@@ -36,10 +38,12 @@ class PreferencesTest {
     private val sharedPreferences = ApplicationProvider.getApplicationContext<SchulCloudTestApp>()
             .getSharedPreferences("test_preferences", Context.MODE_PRIVATE)
 
+    @Rule
+    @JvmField
+    val sharedPreferencesRule = SharedPreferencesRule(preferencesName, sharedPreferences)
+
     @Before
     fun setUp() {
-        mockkObject(SchulCloudApp)
-        every { SchulCloudApp.instance.getSharedPreferences(preferencesName, Context.MODE_PRIVATE) } returns sharedPreferences
         every { SchulCloudApp.instance.packageName } returns packageName
     }
 

@@ -88,11 +88,12 @@ dependencies {
     testImplementation 'androidx.test.ext:junit:1.1.0'
     testImplementation 'androidx.test:rules:1.1.1'
     testImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
-
-    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-alpha05'
-
-    //for mocking realm
+    testImplementation "androidx.test.espresso:espresso-intents:${espressoVersion}"
     testImplementation "io.reactivex.rxjava2:rxjava:2.2.6"
+
+    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-alpha06'
+
+
 
 
     // instrumented tests
@@ -104,8 +105,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:${espressoVersion}"
     androidTestImplementation "androidx.arch.core:core-testing:${androidxLifecycleVersion}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
-
     androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
-    //for mocking realm
     androidTestImplementation "io.reactivex.rxjava2:rxjava:2.2.6"
 }

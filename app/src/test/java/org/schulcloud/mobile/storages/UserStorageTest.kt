@@ -8,12 +8,14 @@ import io.mockk.mockkObject
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.SchulCloudTestApp
+import org.schulcloud.mobile.commonTest.rules.SharedPreferencesRule
 import kotlin.test.assertNull
 
 @RunWith(RobolectricTestRunner::class)
@@ -25,12 +27,9 @@ class UserStorageTest {
     private val sharedPreferences = ApplicationProvider.getApplicationContext<SchulCloudTestApp>()
             .getSharedPreferences("test_preferences", Context.MODE_PRIVATE)
 
-    @Before
-    fun setUp() {
-        // TODO: move this to a rule
-        mockkObject(SchulCloudApp)
-        every { SchulCloudApp.instance.getSharedPreferences(userStorageName, Context.MODE_PRIVATE) } returns sharedPreferences
-    }
+    @Rule
+    @JvmField
+    val sharedPreferencesRule = SharedPreferencesRule(userStorageName, sharedPreferences)
 
     @After
     fun tearDown() {

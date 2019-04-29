@@ -20,8 +20,11 @@ object HomeworkWidgetViewModelSpec : Spek({
             HomeworkWidgetViewModel()
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(HomeworkRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(HomeworkRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

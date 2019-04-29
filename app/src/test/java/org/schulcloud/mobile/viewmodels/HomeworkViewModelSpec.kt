@@ -24,7 +24,7 @@ object HomeworkViewModelSpec : Spek({
     val submissionId = "submissionId"
     val userList = userList(5)
     val course = course(courseId).apply {
-        this.users = RealmList<User>().apply{
+        this.users = RealmList<User>().apply {
             addAll(userList)
         }
     }
@@ -47,12 +47,15 @@ object HomeworkViewModelSpec : Spek({
             HomeworkViewModel(id)
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
         val observer = spyk<Observer<List<Pair<User, Submission?>>>>()
-        mockkObject(HomeworkRepository)
-        mockkObject(CourseRepository)
-        mockkObject(SubmissionRepository)
-        mockkStatic(UserRepository::class)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(HomeworkRepository)
+            mockkObject(CourseRepository)
+            mockkObject(SubmissionRepository)
+            mockkStatic(UserRepository::class)
+        }
 
         beforeEach {
             prepareTaskExecutor()

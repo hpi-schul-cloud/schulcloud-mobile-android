@@ -21,8 +21,11 @@ object FileViewModelSpec : Spek({
             FileViewModel(path)
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(FileRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(FileRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

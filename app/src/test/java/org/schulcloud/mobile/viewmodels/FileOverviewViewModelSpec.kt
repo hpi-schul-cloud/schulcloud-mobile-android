@@ -20,8 +20,11 @@ object FileOverviewViewModelSpec : Spek({
             FileOverviewViewModel()
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(CourseRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(CourseRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

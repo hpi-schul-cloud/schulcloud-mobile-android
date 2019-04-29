@@ -32,10 +32,13 @@ object SubmissionViewModelSpec : Spek({
         val mockRealm = mockk<Realm>()
         val studentObserver = spyk<Observer<User?>>()
         val homeworkObserver = spyk<Observer<Homework?>>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(SubmissionRepository)
-        mockkObject(UserRepository)
-        mockkObject(HomeworkRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(SubmissionRepository)
+            mockkObject(UserRepository)
+            mockkObject(HomeworkRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

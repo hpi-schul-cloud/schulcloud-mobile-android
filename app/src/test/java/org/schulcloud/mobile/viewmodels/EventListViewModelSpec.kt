@@ -20,8 +20,11 @@ object EventListViewModelSpec : Spek({
             EventListViewModel()
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(EventRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(EventRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

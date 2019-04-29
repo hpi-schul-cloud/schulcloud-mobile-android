@@ -23,8 +23,11 @@ object NavigationDrawerViewModelSpec : Spek({
         }
         val mockRealm = mockk<Realm>()
         val observer = spyk<Observer<User>>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(UserRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(UserRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

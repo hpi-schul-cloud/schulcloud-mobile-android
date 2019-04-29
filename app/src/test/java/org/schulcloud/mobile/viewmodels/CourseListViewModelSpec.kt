@@ -19,10 +19,12 @@ object CourseListViewModelSpec : Spek({
         val courseListViewModel by memoized {
             CourseListViewModel()
         }
-
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(CourseRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(CourseRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

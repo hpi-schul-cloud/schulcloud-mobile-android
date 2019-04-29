@@ -20,9 +20,12 @@ object CourseViewModelSpec : Spek({
             CourseViewModel(id)
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(CourseRepository)
-        mockkObject(TopicRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(CourseRepository)
+            mockkObject(TopicRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

@@ -21,8 +21,11 @@ object NewsViewModelSpec : Spek({
             NewsViewModel(id)
         }
         val mockRealm = mockk<Realm>()
-        mockRealmDefaultInstance(mockRealm)
-        mockkObject(NewsRepository)
+
+        beforeGroup {
+            mockRealmDefaultInstance(mockRealm)
+            mockkObject(NewsRepository)
+        }
 
         beforeEach {
             prepareTaskExecutor()

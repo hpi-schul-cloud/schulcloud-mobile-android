@@ -91,10 +91,7 @@ dependencies {
     testImplementation "androidx.test.espresso:espresso-intents:${espressoVersion}"
     testImplementation "io.reactivex.rxjava2:rxjava:2.2.6"
 
-    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-alpha06'
-
-
-
+    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-alpha07'
 
     // instrumented tests
     androidTestImplementation "androidx.test:runner:1.1.1"
@@ -104,6 +101,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:${espressoVersion}"
     androidTestImplementation "androidx.test.espresso:espresso-intents:${espressoVersion}"
     androidTestImplementation "androidx.arch.core:core-testing:${androidxLifecycleVersion}"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotlinCoroutinesVersion}"
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
     androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
     androidTestImplementation "io.reactivex.rxjava2:rxjava:2.2.6"

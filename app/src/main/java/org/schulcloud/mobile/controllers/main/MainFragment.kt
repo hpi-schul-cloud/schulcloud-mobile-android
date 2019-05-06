@@ -103,7 +103,7 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
             }
             R.id.base_action_refresh -> performRefresh()
         // TODO: Remove when deep linking is readded
-            R.id.base_action_openInBrowser -> context?.openUrl(url.asUri())
+            R.id.base_action_openInBrowser -> context?.openUrl(url.asPrefixedUri())
             else -> return super.onOptionsItemSelected(item)
         }
         return true

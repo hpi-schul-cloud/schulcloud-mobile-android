@@ -46,6 +46,13 @@ fun String?.asUri(): Uri {
         Uri.parse(this)
 }
 
+fun String?.asPrefixedUri(): Uri {
+    return if (this != null && !startsWith("http://") && !startsWith("https://"))
+        Uri.parse("https://$this")
+    else
+        asUri()
+}
+
 fun Context.prepareCustomTab(): CustomTabsIntent {
     return CustomTabsIntent.Builder().apply {
         setToolbarColor(ContextCompat.getColor(this@prepareCustomTab, R.color.brand_primary))

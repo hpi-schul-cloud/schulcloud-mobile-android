@@ -2,7 +2,7 @@ package org.schulcloud.mobile.models.file
 
 import androidx.lifecycle.LiveData
 import io.realm.Realm
-import org.schulcloud.mobile.jobs.ListDirectoryContentsJob
+import org.schulcloud.mobile.jobs.base.RequestJob
 import org.schulcloud.mobile.models.base.Repository
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.*
@@ -12,17 +12,17 @@ object FileRepository : Repository() {
     const val CONTEXT_MY_API = "users"
     const val CONTEXT_COURSES = "courses"
 
-    fun files(realm: Realm, path: String): LiveData<List<File>> {
-        return realm.fileDao().files(path)
+    fun files(realm: Realm, refOwnerModel: String, owner: String): LiveData<List<File>> {
+        return realm.fileDao().files(refOwnerModel, owner)
     }
 
-    fun directories(realm: Realm, path: String): LiveData<List<Directory>> {
-        return realm.fileDao().directories(path)
+    fun directories(realm: Realm, refOwnerModel: String,owner: String): LiveData<List<File>> {
+        return realm.fileDao().directories(refOwnerModel, owner)
     }
 
 
-    suspend fun syncDirectory(path: String) {
-        ListDirectoryContentsJob(path).run()
+    suspend fun syncDirectory(refOwnerModel: String, owner: String) {
+        RequestJob.Data.with({ listDirectoryContents(refOwnerModel, owner) }).run()
     }
 
 

@@ -170,7 +170,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     override suspend fun refresh() {
-        FileRepository.syncDirectory(viewModel.path)
+        FileRepository.syncDirectory(viewModel.refOwnerModel, viewModel.owner)
         getCourseFromFolder()?.also {
             CourseRepository.syncCourse(it)
         }
@@ -184,13 +184,15 @@ class FileFragment : MainFragment<FileViewModel>() {
         return args.path.getPathParts()[1]
     }
 
+
+
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
             val response = ApiService.getInstance().generateSignedUrl(
                     SignedUrlRequest().apply {
                         action = SignedUrlRequest.ACTION_GET
-                        path = file.key
+                        //path = file.key
                         fileType = file.type
                     }).await()
 

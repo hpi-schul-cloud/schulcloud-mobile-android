@@ -5,15 +5,19 @@ import io.realm.Realm
 import org.schulcloud.mobile.utils.allAsLiveData
 
 class FileDao(private val realm: Realm) {
-    fun files(path: String): LiveData<List<File>> {
+    fun files(refOwnerModel: String, owner: String): LiveData<List<File>> {
         return realm.where(File::class.java)
-                .equalTo("path", path)
+                .equalTo("owner", owner)
+                .equalTo("refOwnerModel", refOwnerModel)
+                .equalTo("isDirectory", false)
                 .allAsLiveData()
     }
 
-    fun directories(path: String): LiveData<List<Directory>> {
-        return realm.where(Directory::class.java)
-                .equalTo("path", path)
+    fun directories(refOwnerModel: String, owner: String): LiveData<List<File>> {
+        return realm.where(File::class.java)
+                .equalTo("owner", owner)
+                .equalTo("refOwnerModel", refOwnerModel)
+                .equalTo("isDirectory", true)
                 .allAsLiveData()
     }
 }

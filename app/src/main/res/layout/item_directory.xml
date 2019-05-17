@@ -6,7 +6,7 @@
     <data>
         <variable
             name="directory"
-            type="org.schulcloud.mobile.models.file.Directory" />
+            type="org.schulcloud.mobile.models.file.File" />
         <variable
             name="onSelected"
             type="kotlin.jvm.functions.Function1" />

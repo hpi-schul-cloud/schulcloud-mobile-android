@@ -9,7 +9,7 @@
             type="org.schulcloud.mobile.models.file.File" />
         <variable
             name="onSelected"
-            type="kotlin.jvm.functions.Function1" />
+            type="kotlin.jvm.functions.Function2" />
     </data>
 
     <LinearLayout
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?android:selectableItemBackground"
-        android:onClick="@{() -> onSelected.invoke(directory.name)}"
+        android:onClick="@{() -> onSelected.invoke(directory.refOwnerModel, directory.owner)}"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView

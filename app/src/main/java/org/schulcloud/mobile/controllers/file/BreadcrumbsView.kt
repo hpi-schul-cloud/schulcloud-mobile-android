@@ -30,7 +30,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
         val TAG: String = BreadcrumbsView::class.java.simpleName
     }
 
-    var onPathSelected: ((String) -> Unit)? = null
+    var onPathSelected: ((String, String) -> Unit)? = null
 
     private var textSize: Float = 0f
 
@@ -45,23 +45,23 @@ open class BreadcrumbsView @JvmOverloads constructor(
         }
     }
 
-    fun setPath(path: String?, course: Course? = null) {
+    fun setPath(refOwnerModel: String?, owner: String?, course: Course? = null) {
         removeAllViews()
-        if (path == null)
+        if (refOwnerModel == null || owner == null)
             return
 
-        val parts = path.getPathParts()
+        //val parts = path.getPathParts()
 
-        val title = when (parts.first()) {
+        val title = when (refOwnerModel) {
             FileRepository.CONTEXT_MY_API -> context.getString(R.string.file_directory_my)
-            FileRepository.CONTEXT_COURSES ->
+            FileRepository.CONTEXT_COURSE ->
                 course?.name ?: context.getString(R.string.file_directory_course_unknown)
             else -> context.getString(R.string.file_directory_unknown)
         }
-        addPartView(parts.limit(2).combinePath(), title)
+        //addPartView(parts.limit(2).combinePath(), title)
 
-        for (i in 2 until parts.size)
-            addPartView(parts.limit(i + 1).combinePath(), parts[i])
+        //for (i in 2 until parts.size)
+          //  addPartView(parts.limit(i + 1).combinePath(), parts[i])
     }
 
     fun setTextColor(@ColorInt color: Int) {
@@ -74,7 +74,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
         addView(CompatTextView(context).also {
             it.textSize = textSize
             it.text = title
-            it.setOnClickListener { onPathSelected?.invoke(path) }
+            //it.setOnClickListener { onPathSelected?.invoke(path) }
 
             with(TypedValue()) {
                 context.theme.resolveAttribute(

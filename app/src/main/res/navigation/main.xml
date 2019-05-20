@@ -116,7 +116,10 @@
         android:name="org.schulcloud.mobile.controllers.file.FileFragment"
         tools:layout="@layout/fragment_file">
         <argument
-            android:name="path"
+            android:name="refOwnerModel"
+            app:argType="string" />
+        <argument
+            android:name="owner"
             app:argType="string" />
     </fragment>
     <action

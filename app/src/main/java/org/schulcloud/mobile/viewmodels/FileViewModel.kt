@@ -7,10 +7,8 @@ import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
 import org.schulcloud.mobile.utils.getPathParts
 
-class FileViewModel(path_: String) : ViewModel() {
-    val path = FileRepository.fixPath(path_)
-
-    val realm: Realm by lazy {
+class FileViewModel(val path: String) : ViewModel() {
+       val realm: Realm by lazy {
         Realm.getDefaultInstance()
     }
 
@@ -18,7 +16,7 @@ class FileViewModel(path_: String) : ViewModel() {
     val files: LiveData<List<File>> = FileRepository.files(realm, refOwnerModel, owner)
 
     val refOwnerModel: String
-        get() = if (path.startsWith(FileRepository.CONTEXT_COURSES)) "course" else "user"
+        get() = path.getPathParts()[0]
     val owner: String
         get() = path.getPathParts()[1]
 }

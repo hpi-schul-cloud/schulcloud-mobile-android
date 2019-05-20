@@ -42,9 +42,9 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     private val directoryAdapter: DirectoryAdapter by lazy {
-        DirectoryAdapter {
+        DirectoryAdapter { refOwnerModel, owner ->
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(combinePath(viewModel.path, it)).build().toBundle())
+                    FileFragmentArgs.Builder(refOwnerModel, owner).build().toBundle())
         }
     }
     private val fileAdapter: FileAdapter by lazy {
@@ -55,13 +55,12 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     override var url: String? = null
         get() {
-            val parts = args.path.getPathParts()
-            val path = if (parts.size <= 2) ""
-            else "?dir=${parts.takeLast(parts.size - 2).combinePath().ensureSlashes()}"
+            //val path = if (parts.size <= 2) ""
+            //else "?dir=${parts.takeLast(parts.size - 2).combinePath().ensureSlashes()}"
 
-            return when (parts.first()) {
-                FileRepository.CONTEXT_MY_API -> "/files/my/$path"
-                FileRepository.CONTEXT_COURSES -> "/files/courses/${parts[1]}$path"
+            return when (args.refOwnerModel) {
+                FileRepository.CONTEXT_MY_API -> "/files/my/${args.owner}"
+                FileRepository.CONTEXT_COURSE -> "/files/courses/${args.owner}"
                 else -> null
             }
         }
@@ -71,15 +70,15 @@ class FileFragment : MainFragment<FileViewModel>() {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())
             .map { course ->
-                breadcrumbs.setPath(args.path, course)
-                val parts = args.path.getPathParts()
+                breadcrumbs.setPath(args.refOwnerModel, args.owner, course)
+               // val parts = args.path.getPathParts()
 
                 MainFragmentConfig(
                         title = when {
-                            parts.size > 2 -> parts.last()
-                            parts.first() == FileRepository.CONTEXT_MY_API ->
+                            //parts.size > 2 -> parts.last()
+                            args.refOwnerModel == FileRepository.CONTEXT_MY_API ->
                                 context?.getString(R.string.file_directory_my)
-                            parts.first() == FileRepository.CONTEXT_COURSES ->
+                            args.owner == FileRepository.CONTEXT_COURSE ->
                                 course?.name ?: context?.getString(R.string.file_directory_course_unknown)
                             else -> context?.getString(R.string.file_directory_unknown)
                         },
@@ -93,7 +92,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.path))
+        viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.refOwnerModel + java.io.File.separator + args.owner))
                 .get(FileViewModel::class.java)
         super.onCreate(savedInstanceState)
     }
@@ -143,15 +142,15 @@ class FileFragment : MainFragment<FileViewModel>() {
 
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
-        breadcrumbs.setPath(args.path)
-        breadcrumbs.onPathSelected = callback@{ path ->
-            if (path == args.path) {
+        breadcrumbs.setPath(args.refOwnerModel, args.owner)
+        breadcrumbs.onPathSelected = callback@{ refOwnerModel, owner ->
+            if (refOwnerModel == args.refOwnerModel && owner == args.owner) {
                 performRefresh()
                 return@callback
             }
 
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(path).build().toBundle())
+                    FileFragmentArgs.Builder(refOwnerModel, owner).build().toBundle())
         }
         mainViewModel.toolbarColors.observe(this, Observer {
             breadcrumbs.setTextColor(it.textColor)
@@ -178,10 +177,10 @@ class FileFragment : MainFragment<FileViewModel>() {
 
 
     private fun getCourseFromFolder(): String? {
-        if (!args.path.startsWith(FileRepository.CONTEXT_COURSES))
+        if (args.refOwnerModel != FileRepository.CONTEXT_COURSE)
             return null
 
-        return args.path.getPathParts()[1]
+        return args.owner
     }
 
 
@@ -192,6 +191,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             val response = ApiService.getInstance().generateSignedUrl(
                     SignedUrlRequest().apply {
                         action = SignedUrlRequest.ACTION_GET
+                        // TODO: correct this
                         //path = file.key
                         fileType = file.type
                     }).await()

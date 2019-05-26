@@ -27,7 +27,7 @@ class FileOverviewFragment : MainFragment<FileOverviewViewModel>() {
     private val coursesAdapter: FileOverviewCourseAdapter by lazy {
         FileOverviewCourseAdapter {
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(FileRepository.CONTEXT_COURSE, it).build().toBundle())
+                    FileFragmentArgs.Builder(FileRepository.CONTEXT_COURSE, it, null).build().toBundle())
         }
     }
 
@@ -52,7 +52,7 @@ class FileOverviewFragment : MainFragment<FileOverviewViewModel>() {
         super.onViewCreated(view, savedInstanceState)
         personal_card.setOnClickListener(Navigation.createNavigateOnClickListener(
                 R.id.action_global_fragment_file,
-                FileFragmentArgs.Builder(FileRepository.CONTEXT_MY_API, FileRepository.user).build().toBundle()))
+                FileFragmentArgs.Builder(FileRepository.CONTEXT_MY_API, FileRepository.user, null).build().toBundle()))
 
         coursesAdapter.emptyIndicator = empty
         viewModel.courses.observe(this, Observer { courses ->

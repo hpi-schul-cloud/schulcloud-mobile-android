@@ -30,6 +30,7 @@ import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
+import org.schulcloud.mobile.viewmodels.FileViewModelFactory
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
@@ -42,9 +43,9 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     private val directoryAdapter: DirectoryAdapter by lazy {
-        DirectoryAdapter { refOwnerModel, owner ->
+        DirectoryAdapter { refOwnerModel, owner, parent ->
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(refOwnerModel, owner).build().toBundle())
+                    FileFragmentArgs.Builder(refOwnerModel, owner, parent).build().toBundle())
         }
     }
     private val fileAdapter: FileAdapter by lazy {
@@ -57,7 +58,7 @@ class FileFragment : MainFragment<FileViewModel>() {
         get() {
             //val path = if (parts.size <= 2) ""
             //else "?dir=${parts.takeLast(parts.size - 2).combinePath().ensureSlashes()}"
-
+            // TODO: include parent, correct url in general
             return when (args.refOwnerModel) {
                 FileRepository.CONTEXT_MY_API -> "/files/my/${args.owner}"
                 FileRepository.CONTEXT_COURSE -> "/files/courses/${args.owner}"
@@ -75,14 +76,14 @@ class FileFragment : MainFragment<FileViewModel>() {
 
                 MainFragmentConfig(
                         title = when {
-                            //parts.size > 2 -> parts.last()
+                            args.parent != null -> args.parent
                             args.refOwnerModel == FileRepository.CONTEXT_MY_API ->
                                 context?.getString(R.string.file_directory_my)
-                            args.owner == FileRepository.CONTEXT_COURSE ->
+                            args.refOwnerModel == FileRepository.CONTEXT_COURSE ->
                                 course?.name ?: context?.getString(R.string.file_directory_course_unknown)
                             else -> context?.getString(R.string.file_directory_unknown)
                         },
-                        showTitle = false,
+                        showTitle = true,
                         toolbarColor = course?.color?.let { Color.parseColor(it) },
                         menuBottomRes = R.menu.fragment_file_bottom,
                         menuBottomHiddenIds = listOf(
@@ -92,7 +93,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.refOwnerModel + java.io.File.separator + args.owner))
+        viewModel = ViewModelProviders.of(this, FileViewModelFactory(args.refOwnerModel, args.owner, args.parent))
                 .get(FileViewModel::class.java)
         super.onCreate(savedInstanceState)
     }
@@ -143,14 +144,14 @@ class FileFragment : MainFragment<FileViewModel>() {
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
         breadcrumbs.setPath(args.refOwnerModel, args.owner)
-        breadcrumbs.onPathSelected = callback@{ refOwnerModel, owner ->
-            if (refOwnerModel == args.refOwnerModel && owner == args.owner) {
+        breadcrumbs.onPathSelected = callback@{ refOwnerModel, owner, parent ->
+            if (refOwnerModel == args.refOwnerModel && owner == args.owner && parent == args.parent) {
                 performRefresh()
                 return@callback
             }
 
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(refOwnerModel, owner).build().toBundle())
+                    FileFragmentArgs.Builder(refOwnerModel, owner, parent).build().toBundle())
         }
         mainViewModel.toolbarColors.observe(this, Observer {
             breadcrumbs.setTextColor(it.textColor)

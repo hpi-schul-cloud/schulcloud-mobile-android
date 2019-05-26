@@ -82,7 +82,7 @@ class CourseFragment : MainFragment<CourseViewModel>() {
         when (item.itemId) {
             R.id.course_action_gotoFiles -> viewModel.course.value?.id?.also { id ->
                 navController.navigate(R.id.action_global_fragment_file,
-                        FileFragmentArgs.Builder(FileRepository.CONTEXT_COURSE, id)
+                        FileFragmentArgs.Builder(FileRepository.CONTEXT_COURSE, id, null)
                                 .build().toBundle())
             }
             else -> return super.onOptionsItemSelected(item)

@@ -19,5 +19,6 @@ open class File : RealmObject(), HasId {
     var refOwnerModel: String? = null
     var owner: String? = null
     var storageFileName: String? = null
+    var parent: String? = null
     var isDirectory: Boolean? = null
 }

@@ -15,15 +15,15 @@ object FileRepository : Repository() {
     val user: String
         get() = UserRepository.userId!!
 
-    fun files(realm: Realm, refOwnerModel: String, owner: String): LiveData<List<File>> {
-        return realm.fileDao().files(refOwnerModel, owner)
+    fun files(realm: Realm, refOwnerModel: String, owner: String, parent: String?): LiveData<List<File>> {
+        return realm.fileDao().files(refOwnerModel, owner, parent)
     }
 
-    fun directories(realm: Realm, refOwnerModel: String,owner: String): LiveData<List<File>> {
-        return realm.fileDao().directories(refOwnerModel, owner)
+    fun directories(realm: Realm, refOwnerModel: String,owner: String, parent: String?): LiveData<List<File>> {
+        return realm.fileDao().directories(refOwnerModel, owner, parent)
     }
 
-
+    // TODO: use parent in syncing?
     suspend fun syncDirectory(refOwnerModel: String, owner: String) {
         RequestJob.Data.with({ listDirectoryContents(refOwnerModel, owner) }).run()
     }

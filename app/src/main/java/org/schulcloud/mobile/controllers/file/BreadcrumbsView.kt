@@ -30,7 +30,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
         val TAG: String = BreadcrumbsView::class.java.simpleName
     }
 
-    var onPathSelected: ((String, String) -> Unit)? = null
+    var onPathSelected: ((String, String, String?) -> Unit)? = null
 
     private var textSize: Float = 0f
 

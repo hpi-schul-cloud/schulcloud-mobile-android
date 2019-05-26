@@ -7,7 +7,7 @@ import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemDirectoryBinding
 import org.schulcloud.mobile.models.file.File
 
-class DirectoryAdapter(private val onSelected: (String, String) -> Unit) :
+class DirectoryAdapter(private val onSelected: (String, String, String?) -> Unit) :
         BaseAdapter<File, DirectoryAdapter.DirectoryViewHolder, ItemDirectoryBinding>() {
 
     fun update(directoryList: List<File>) {

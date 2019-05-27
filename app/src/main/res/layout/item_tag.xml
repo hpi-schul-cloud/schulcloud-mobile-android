@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="3dp"
         android:layout_marginRight="3dp"
-        android:layout_marginBottom="3dp"
         android:clickable="false"
         android:ellipsize="end"
         android:text="@{tagText}"
@@ -22,7 +21,6 @@
         android:textColor="@color/material_text_primary_light"
         app:chipBackgroundColor="@color/gray_dark"
         app:chipCornerRadius="4dp"
-        app:chipMinHeight="22dp"
         app:textEndPadding="2dp"
         app:textStartPadding="2dp" />
 

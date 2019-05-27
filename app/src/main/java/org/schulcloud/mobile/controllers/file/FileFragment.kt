@@ -9,16 +9,15 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_file.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.schulcloud.mobile.R
-import org.schulcloud.mobile.R.id.*
 import org.schulcloud.mobile.controllers.course.CourseFragmentArgs
 import org.schulcloud.mobile.controllers.main.MainFragment
 import org.schulcloud.mobile.controllers.main.MainFragmentConfig
@@ -34,15 +33,12 @@ import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
+import javax.net.ssl.SSLHandshakeException
 
 
 class FileFragment : MainFragment<FileViewModel>() {
     companion object {
         val TAG: String = FileFragment::class.java.simpleName
-    }
-
-    private val args: FileFragmentArgs by lazy {
-        FileFragmentArgs.fromBundle(arguments)
     }
 
     private val directoryAdapter: DirectoryAdapter by lazy {
@@ -70,6 +66,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             }
         }
 
+    private val args: FileFragmentArgs by navArgs()
     override fun provideConfig() = (getCourseFromFolder()?.let {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())
@@ -161,8 +158,8 @@ class FileFragment : MainFragment<FileViewModel>() {
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.file_action_gotoCourse -> getCourseFromFolder()?.also { id ->
                 navController.navigate(R.id.action_global_fragment_course,
                         CourseFragmentArgs.Builder(id).build().toBundle())
@@ -188,7 +185,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     @Suppress("ComplexMethod")
-    private fun loadFile(file: File, download: Boolean) = launch(UI) {
+    private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
             val response = ApiService.getInstance().generateSignedUrl(
                     SignedUrlRequest().apply {
@@ -204,7 +201,11 @@ class FileFragment : MainFragment<FileViewModel>() {
                 }
 
                 this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
+                    val result = try {
+                        ApiService.getInstance().downloadFile(response.url!!).await()
+                    } catch (ex: SSLHandshakeException) {
+                        ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
+                    }
                     if (!result.writeToDisk(file.name.orEmpty())) {
                         this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
                         return@withProgressDialog

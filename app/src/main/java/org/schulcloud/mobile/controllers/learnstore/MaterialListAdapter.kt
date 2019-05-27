@@ -2,17 +2,13 @@ package org.schulcloud.mobile.controllers.learnstore
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.*
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemMaterialBinding
 import org.schulcloud.mobile.models.material.Material
 import org.schulcloud.mobile.utils.asUri
 import org.schulcloud.mobile.utils.openUrl
-import org.schulcloud.mobile.utils.setForegroundForJellyBean
 
 class MaterialListAdapter
     : BaseAdapter<Material, MaterialListAdapter.MaterialViewHolder, ItemMaterialBinding>() {
@@ -27,10 +23,9 @@ class MaterialListAdapter
     }
 
     class MaterialViewHolder(binding: ItemMaterialBinding) : BaseViewHolder<Material, ItemMaterialBinding>(binding) {
-        private val tagAdapter: TagAdapter
+        private val tagAdapter: TagAdapter = TagAdapter()
 
         init {
-            tagAdapter = TagAdapter()
             binding.recyclerViewTags.apply {
                 layoutManager = FlexboxLayoutManager(this.context).apply {
                     flexWrap = FlexWrap.WRAP
@@ -44,7 +39,6 @@ class MaterialListAdapter
         override fun onItemSet() {
             binding.material = item
             binding.viewHolder = this
-            binding.materialCard.setForegroundForJellyBean(binding.materialCard.context)
 
             tagAdapter.update(item.tags ?: emptyList())
         }

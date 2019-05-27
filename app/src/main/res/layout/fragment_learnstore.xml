@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/currentEmpty"
-                style="@style/Content_Text.Empty"
+                style="@style/Content.Text.Empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/material_error_empty" />
@@ -45,7 +45,7 @@
 
             <TextView
                 android:id="@+id/popularEmpty"
-                style="@style/Content_Text.Empty"
+                style="@style/Content.Text.Empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/material_error_empty" />

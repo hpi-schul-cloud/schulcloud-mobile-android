@@ -38,7 +38,7 @@ class LearnstoreFragment : MainFragment<MaterialListViewModel>() {
     override var url: String? = "/content"
     override fun provideConfig(): LiveData<MainFragmentConfig> = MainFragmentConfig(
             fragmentType = FragmentType.PRIMARY,
-            title = "Lernstore"
+            title = getString(R.string.learnstore_title)
     ).asLiveData()
 
     override fun onCreate(savedInstanceState: Bundle?) {

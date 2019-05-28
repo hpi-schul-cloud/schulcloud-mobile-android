@@ -12,8 +12,9 @@
     <com.google.android.material.chip.Chip
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="3dp"
-        android:layout_marginRight="3dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="3dp"
         android:clickable="false"
         android:ellipsize="end"
         android:text="@{tagText}"

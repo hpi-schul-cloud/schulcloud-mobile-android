@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import io.realm.Realm
 import io.realm.Sort
 import org.joda.time.LocalDate
-import org.joda.time.format.DateTimeFormat
 import org.schulcloud.mobile.utils.allAsLiveData
 import org.schulcloud.mobile.utils.map
 

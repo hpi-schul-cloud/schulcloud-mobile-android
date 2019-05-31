@@ -72,7 +72,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     } ?: null.asLiveData<Course>())
             .map { course ->
                 breadcrumbs.setPath(args.refOwnerModel, args.owner, course)
-               // val parts = args.path.getPathParts()
+                // val parts = args.path.getPathParts()
 
                 MainFragmentConfig(
                         title = when {
@@ -80,7 +80,8 @@ class FileFragment : MainFragment<FileViewModel>() {
                             args.refOwnerModel == FileRepository.CONTEXT_MY_API ->
                                 context?.getString(R.string.file_directory_my)
                             args.refOwnerModel == FileRepository.CONTEXT_COURSE ->
-                                course?.name ?: context?.getString(R.string.file_directory_course_unknown)
+                                course?.name
+                                        ?: context?.getString(R.string.file_directory_course_unknown)
                             else -> context?.getString(R.string.file_directory_unknown)
                         },
                         showTitle = true,
@@ -185,53 +186,47 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
 
-
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
-            val response = ApiService.getInstance().generateSignedUrl(
-                    SignedUrlRequest().apply {
-                        action = SignedUrlRequest.ACTION_GET
-                        // TODO: correct this
-                        //path = file.key
-                        fileType = file.type
-                    }).await()
+            val response = ApiService.getInstance().generateSignedUrl(file.id, download).await()
 
-            if (download) {
-                if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
-                    return@launch
-                }
+        if (download) {
+            if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                return@launch
+            }
 
-                this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = try {
-                        ApiService.getInstance().downloadFile(response.url!!).await()
-                    } catch (ex: SSLHandshakeException) {
-                        ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
-                    }
-                    if (!result.writeToDisk(file.name.orEmpty())) {
-                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                        return@withProgressDialog
-                    }
-                    this@FileFragment.context?.showGenericSuccess(
-                            getString(R.string.file_fileDownload_success, file.name))
+            this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
+                val result = try {
+                    ApiService.getInstance().downloadFile(response.url!!).await()
+                } catch (ex: SSLHandshakeException) {
+                    ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
                 }
-            } else {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(Uri.parse(response.url), response.header?.contentType)
+                if (!result.writeToDisk(file.name.orEmpty())) {
+                    this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
+                    return@withProgressDialog
                 }
-                val packageManager = activity?.packageManager
-                if (packageManager != null && intent.resolveActivity(packageManager) != null)
-                    startActivity(intent)
-                else
-                    this@FileFragment.context?.showGenericError(
-                            getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
+                this@FileFragment.context?.showGenericSuccess(
+                        getString(R.string.file_fileDownload_success, file.name))
             }
-        } catch (e: HttpException) {
-            @Suppress("MagicNumber")
-            when (e.code()) {
-                404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
+        } else {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(Uri.parse(response.url), file.type)
             }
+            val packageManager = activity?.packageManager
+            if (packageManager != null && intent.resolveActivity(packageManager) != null)
+                startActivity(intent)
+            else
+                this@FileFragment.context?.showGenericError(
+                        getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
+        }
+    } catch (e: HttpException)
+    {
+        @Suppress("MagicNumber")
+        when (e.code()) {
+            404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
         }
     }
+}
 }

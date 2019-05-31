@@ -64,8 +64,9 @@ interface ApiServiceInterface {
     @GET("files")
     fun listDirectoryContents(@Query("refOwnerModel") refOwnerModel: String,
                               @Query("owner") owner: String): Call<FeathersResponse<List<File>>>
-    @POST("fileStorage/signedUrl")
-    fun generateSignedUrl(@Body signedUrlRequest: SignedUrlRequest): Call<SignedUrlResponse>
+    @GET("fileStorage/signedUrl")
+    fun generateSignedUrl(@Query("file") fileId: String,
+                          @Query("download") download: Boolean): Call<SignedUrlResponse>
     @GET
     fun downloadFile(@Url fileUrl: String): Call<ResponseBody>
 }

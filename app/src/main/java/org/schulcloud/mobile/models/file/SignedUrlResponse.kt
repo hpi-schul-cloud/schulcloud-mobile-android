@@ -15,9 +15,6 @@ class SignedUrlResponse {
         @SerializedName("Content-Type")
         var contentType: String? = null
 
-        @SerializedName("x-amz-meta-path")
-        var metaPath: String? = null
-
         @SerializedName("x-amz-meta-name")
         var metaName: String? = null
 

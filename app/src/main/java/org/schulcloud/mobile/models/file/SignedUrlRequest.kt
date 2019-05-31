@@ -10,7 +10,7 @@ class SignedUrlRequest {
         val ACTION_PUT = "putObject"
     }
 
-    var action: String? = null
-    var path: String? = null
+    var parent: String? = null
+    var filename: String? = null
     var fileType: String? = null
 }

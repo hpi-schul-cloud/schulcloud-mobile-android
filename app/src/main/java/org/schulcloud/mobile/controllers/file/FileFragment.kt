@@ -26,12 +26,10 @@ import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.FileViewModelFactory
-import org.schulcloud.mobile.viewmodels.IdViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
 import javax.net.ssl.SSLHandshakeException
@@ -72,7 +70,8 @@ class FileFragment : MainFragment<FileViewModel>() {
     } ?: null.asLiveData<Course>())
             .map { course ->
                 breadcrumbs.setPath(args.refOwnerModel, args.owner, course)
-                // val parts = args.path.getPathParts()
+                // TODO: correct title and breadcrumbs
+                //val parts = args.path.getPathParts()
 
                 MainFragmentConfig(
                         title = when {
@@ -94,7 +93,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, FileViewModelFactory(args.refOwnerModel, args.owner, args.parent))
+        viewModel = ViewModelProviders.of(this, FileViewModelFactory(args.owner, args.parent))
                 .get(FileViewModel::class.java)
         super.onCreate(savedInstanceState)
     }
@@ -171,7 +170,7 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     override suspend fun refresh() {
-        FileRepository.syncDirectory(viewModel.refOwnerModel, viewModel.owner)
+        FileRepository.syncDirectory(viewModel.owner, viewModel.parent)
         getCourseFromFolder()?.also {
             CourseRepository.syncCourse(it)
         }

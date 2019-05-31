@@ -6,7 +6,6 @@ import org.schulcloud.mobile.models.Credentials
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.event.Event
 import org.schulcloud.mobile.models.file.File
-import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.models.file.SignedUrlResponse
 import org.schulcloud.mobile.models.homework.Homework
 import org.schulcloud.mobile.models.homework.submission.Submission
@@ -62,8 +61,8 @@ interface ApiServiceInterface {
 
     // File
     @GET("files")
-    fun listDirectoryContents(@Query("refOwnerModel") refOwnerModel: String,
-                              @Query("owner") owner: String): Call<FeathersResponse<List<File>>>
+    fun listDirectoryContents(@Query("owner") owner: String,
+                              @Query("parent") parent: String?): Call<FeathersResponse<List<File>>>
     @GET("fileStorage/signedUrl")
     fun generateSignedUrl(@Query("file") fileId: String,
                           @Query("download") download: Boolean): Call<SignedUrlResponse>

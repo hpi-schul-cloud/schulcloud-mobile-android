@@ -23,8 +23,30 @@ object FileRepository : Repository() {
         return realm.fileDao().directories(owner, parent)
     }
 
+    fun directory(realm: Realm, id: String): File? {
+        return realm.fileDao().directory(id)
+    }
+
     suspend fun syncDirectory(owner: String, parent: String?) {
-        RequestJob.Data.with({ listDirectoryContents(owner, parent) }).run()
+        RequestJob.Data.with({ listDirectoryContents(owner, parent) }, {
+                beginGroup()
+                        .equalTo("isDirectory", false)
+                        .equalTo("owner", owner)
+                        .or()
+                        .notEqualTo("owner", owner)
+                        .endGroup()
+    }).run()
+    }
+
+    suspend fun syncDirectoriesForOwner(owner: String) {
+        RequestJob.Data.with({ listDirectoriesForOwner(owner) }, {
+            beginGroup()
+                    .equalTo("isDirectory", true)
+                    .equalTo("owner", owner)
+                    .or()
+                    .notEqualTo("owner", owner)
+                    .endGroup()
+        }).run()
     }
 
 

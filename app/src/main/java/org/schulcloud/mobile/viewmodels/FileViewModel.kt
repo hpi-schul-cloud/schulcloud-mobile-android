@@ -13,4 +13,6 @@ class FileViewModel(val owner: String, val parent: String?) : ViewModel() {
 
     val directories: LiveData<List<File>> = FileRepository.directories(realm, owner, parent)
     val files: LiveData<List<File>> = FileRepository.files(realm, owner, parent)
+
+    fun directory(id: String) = FileRepository.directory(realm, id)
 }

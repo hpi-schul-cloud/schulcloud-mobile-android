@@ -69,7 +69,7 @@ class FileFragment : MainFragment<FileViewModel>() {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())
             .map { course ->
-                breadcrumbs.setPath(args.refOwnerModel, args.owner, course)
+                breadcrumbs.setPath(pathParts, args.refOwnerModel, args.owner,  args.parent, course)
                 // TODO: correct title and breadcrumbs
                 //val parts = args.path.getPathParts()
 
@@ -83,7 +83,7 @@ class FileFragment : MainFragment<FileViewModel>() {
                                         ?: context?.getString(R.string.file_directory_course_unknown)
                             else -> context?.getString(R.string.file_directory_unknown)
                         },
-                        showTitle = true,
+                        showTitle = false,
                         toolbarColor = course?.color?.let { Color.parseColor(it) },
                         menuBottomRes = R.menu.fragment_file_bottom,
                         menuBottomHiddenIds = listOf(
@@ -91,6 +91,9 @@ class FileFragment : MainFragment<FileViewModel>() {
                         )
                 )
             }
+
+    private val pathParts: List<String?>
+        get() = getDirectoryPathParts(args.parent)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this, FileViewModelFactory(args.owner, args.parent))
@@ -136,6 +139,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             adapter = fileAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
     }
 
     override fun onResume() {
@@ -143,7 +147,7 @@ class FileFragment : MainFragment<FileViewModel>() {
 
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
-        breadcrumbs.setPath(args.refOwnerModel, args.owner)
+        breadcrumbs.setPath(pathParts, args.refOwnerModel, args.owner, args.parent)
         breadcrumbs.onPathSelected = callback@{ refOwnerModel, owner, parent ->
             if (refOwnerModel == args.refOwnerModel && owner == args.owner && parent == args.parent) {
                 performRefresh()
@@ -171,6 +175,7 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     override suspend fun refresh() {
         FileRepository.syncDirectory(viewModel.owner, viewModel.parent)
+        FileRepository.syncDirectoriesForOwner(viewModel.owner)
         getCourseFromFolder()?.also {
             CourseRepository.syncCourse(it)
         }
@@ -184,48 +189,59 @@ class FileFragment : MainFragment<FileViewModel>() {
         return args.owner
     }
 
+    private fun getDirectoryPathParts(directoryId: String?): List<String?> {
+        val pathParts = mutableListOf<String?>()
+        var currentId: String? = directoryId
+        var currentDirectory: File?
+        while (currentId != null){
+            currentDirectory = viewModel.directory(currentId)
+            pathParts.add(0, currentDirectory?.name)
+            currentId = currentDirectory?.parent
+        }
+        return pathParts.toList()
+    }
+
 
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
             val response = ApiService.getInstance().generateSignedUrl(file.id, download).await()
 
-        if (download) {
-            if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
-                return@launch
-            }
+            if (download) {
+                if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_savePermissionDenied)
+                    return@launch
+                }
 
-            this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                val result = try {
-                    ApiService.getInstance().downloadFile(response.url!!).await()
-                } catch (ex: SSLHandshakeException) {
-                    ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
+                this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
+                    val result = try {
+                        ApiService.getInstance().downloadFile(response.url!!).await()
+                    } catch (ex: SSLHandshakeException) {
+                        ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
+                    }
+                    if (!result.writeToDisk(file.name.orEmpty())) {
+                        this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
+                        return@withProgressDialog
+                    }
+                    this@FileFragment.context?.showGenericSuccess(
+                            getString(R.string.file_fileDownload_success, file.name))
                 }
-                if (!result.writeToDisk(file.name.orEmpty())) {
-                    this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
-                    return@withProgressDialog
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(Uri.parse(response.url), file.type)
                 }
-                this@FileFragment.context?.showGenericSuccess(
-                        getString(R.string.file_fileDownload_success, file.name))
+                val packageManager = activity?.packageManager
+                if (packageManager != null && intent.resolveActivity(packageManager) != null)
+                    startActivity(intent)
+                else
+                    this@FileFragment.context?.showGenericError(
+                            getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
             }
-        } else {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                setDataAndType(Uri.parse(response.url), file.type)
+        } catch (e: HttpException) {
+            @Suppress("MagicNumber")
+            when (e.code()) {
+                404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
             }
-            val packageManager = activity?.packageManager
-            if (packageManager != null && intent.resolveActivity(packageManager) != null)
-                startActivity(intent)
-            else
-                this@FileFragment.context?.showGenericError(
-                        getString(R.string.file_fileOpen_error_cantResolve, file.name?.fileExtension))
-        }
-    } catch (e: HttpException)
-    {
-        @Suppress("MagicNumber")
-        when (e.code()) {
-            404 -> this@FileFragment.context?.showGenericError(R.string.file_fileOpen_error_404)
         }
     }
-}
 }

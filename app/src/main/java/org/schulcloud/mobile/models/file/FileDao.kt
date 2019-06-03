@@ -20,4 +20,11 @@ class FileDao(private val realm: Realm) {
                 .equalTo("parent", parent)
                 .allAsLiveData()
     }
+
+    fun directory(id: String): File? {
+        return realm.where(File::class.java)
+                .equalTo("isDirectory", true)
+                .equalTo("id", id)
+                .findFirst()
+    }
 }

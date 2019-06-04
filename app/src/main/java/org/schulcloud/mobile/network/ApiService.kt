@@ -45,30 +45,6 @@ object ApiService {
         return service as ApiServiceInterface
     }
 
-    @Synchronized
-    fun getFileDownloadInstance(): ApiServiceInterface {
-        val client = getTlsClient(getFileDownloadKeyStore())
-        service = getRetrofit(client).create(ApiServiceInterface::class.java)
-        return service as ApiServiceInterface
-    }
-
-    // To use T-TeleSec GlobalRoot Class 2 certificate on pre-21
-    // https://developer.android.com/training/articles/security-ssl
-    private fun getFileDownloadKeyStore(): KeyStore {
-        val cf: CertificateFactory = CertificateFactory.getInstance("X.509")
-        val caInput: InputStream = SchulCloudApp.instance.resources
-                .openRawResource(R.raw.globalroot_class_2)
-        val ca: X509Certificate = caInput.use {
-            cf.generateCertificate(it) as X509Certificate
-        }
-        val keyStoreType = KeyStore.getDefaultType()
-
-        return KeyStore.getInstance(keyStoreType).apply {
-            load(null, null)
-            setCertificateEntry("globalroot_class_2", ca)
-        }
-    }
-
     private fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC

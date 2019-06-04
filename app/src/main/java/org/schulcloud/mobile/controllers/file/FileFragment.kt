@@ -214,11 +214,7 @@ class FileFragment : MainFragment<FileViewModel>() {
                 }
 
                 this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = try {
-                        ApiService.getInstance().downloadFile(response.url!!).await()
-                    } catch (ex: SSLHandshakeException) {
-                        ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
-                    }
+                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
                     if (!result.writeToDisk(file.name.orEmpty())) {
                         this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
                         return@withProgressDialog

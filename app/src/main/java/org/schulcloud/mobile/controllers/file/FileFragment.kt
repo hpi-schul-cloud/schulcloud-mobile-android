@@ -67,17 +67,14 @@ class FileFragment : MainFragment<FileViewModel>() {
     } ?: null.asLiveData<Course>())
             .map { course ->
                 breadcrumbs.setPath(namePathParts, args.refOwnerModel, args.owner,  args.parent, course)
-                // TODO: correct title and breadcrumbs
-                //val parts = args.path.getNamePathParts()
 
                 MainFragmentConfig(
                         title = when {
-                            args.parent != null -> args.parent
+                            args.parent != null -> viewModel.directory((args.parent).toString())?.name
                             args.refOwnerModel == FileRepository.CONTEXT_MY_API ->
                                 context?.getString(R.string.file_directory_my)
                             args.refOwnerModel == FileRepository.CONTEXT_COURSE ->
-                                course?.name
-                                        ?: context?.getString(R.string.file_directory_course_unknown)
+                                course?.name ?: context?.getString(R.string.file_directory_course_unknown)
                             else -> context?.getString(R.string.file_directory_unknown)
                         },
                         showTitle = false,

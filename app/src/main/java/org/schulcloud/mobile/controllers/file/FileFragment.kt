@@ -32,7 +32,6 @@ import org.schulcloud.mobile.viewmodels.FileViewModel
 import org.schulcloud.mobile.viewmodels.FileViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
-import javax.net.ssl.SSLHandshakeException
 
 
 class FileFragment : MainFragment<FileViewModel>() {
@@ -54,12 +53,10 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     override var url: String? = null
         get() {
-            //val path = if (parts.size <= 2) ""
-            //else "?dir=${parts.takeLast(parts.size - 2).combinePath().ensureSlashes()}"
-            // TODO: include parent, correct url in general
+            val path = idPathParts.combinePath()
             return when (args.refOwnerModel) {
-                FileRepository.CONTEXT_MY_API -> "/files/my/${args.owner}"
-                FileRepository.CONTEXT_COURSE -> "/files/courses/${args.owner}"
+                FileRepository.CONTEXT_MY_API -> "/files/my/$path"
+                FileRepository.CONTEXT_COURSE -> "/files/courses/${args.owner}/$path"
                 else -> null
             }
         }
@@ -69,9 +66,9 @@ class FileFragment : MainFragment<FileViewModel>() {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())
             .map { course ->
-                breadcrumbs.setPath(pathParts, args.refOwnerModel, args.owner,  args.parent, course)
+                breadcrumbs.setPath(namePathParts, args.refOwnerModel, args.owner,  args.parent, course)
                 // TODO: correct title and breadcrumbs
-                //val parts = args.path.getPathParts()
+                //val parts = args.path.getNamePathParts()
 
                 MainFragmentConfig(
                         title = when {
@@ -92,8 +89,12 @@ class FileFragment : MainFragment<FileViewModel>() {
                 )
             }
 
-    private val pathParts: List<String?>
+    private val namePathParts: List<String?>
+        get() = getDirectoryPathParts(args.parent, true)
+
+    private val idPathParts: List<String?>
         get() = getDirectoryPathParts(args.parent)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this, FileViewModelFactory(args.owner, args.parent))
@@ -147,7 +148,7 @@ class FileFragment : MainFragment<FileViewModel>() {
 
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
-        breadcrumbs.setPath(pathParts, args.refOwnerModel, args.owner, args.parent)
+        breadcrumbs.setPath(namePathParts, args.refOwnerModel, args.owner, args.parent)
         breadcrumbs.onPathSelected = callback@{ refOwnerModel, owner, parent ->
             if (refOwnerModel == args.refOwnerModel && owner == args.owner && parent == args.parent) {
                 performRefresh()
@@ -189,13 +190,13 @@ class FileFragment : MainFragment<FileViewModel>() {
         return args.owner
     }
 
-    private fun getDirectoryPathParts(directoryId: String?): List<String?> {
+    private fun getDirectoryPathParts(directoryId: String?, isNamePath: Boolean = false): List<String?> {
         val pathParts = mutableListOf<String?>()
         var currentId: String? = directoryId
         var currentDirectory: File?
         while (currentId != null){
             currentDirectory = viewModel.directory(currentId)
-            pathParts.add(0, currentDirectory?.name)
+            pathParts.add(0, if (isNamePath) currentDirectory?.name else currentDirectory?.id)
             currentId = currentDirectory?.parent
         }
         return pathParts.toList()

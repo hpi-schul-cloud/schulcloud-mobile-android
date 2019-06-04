@@ -10,15 +10,12 @@ open class File : RealmObject(), HasId {
     @SerializedName("_id")
     override var id: String = ""
 
-    var name: String? = null
-    var path: String? = null
-
-    var type: String? = null
-    var size: Long? = null
-    var thumbnail: String? = null
-    var refOwnerModel: String? = null
-    var owner: String? = null
-    var storageFileName: String? = null
-    var parent: String? = null
     var isDirectory: Boolean? = null
+    var name: String? = null
+    var size: Long? = null
+    var type: String? = null
+    var thumbnail: String? = null
+    var parent: String? = null
+    var owner: String? = null
+    var refOwnerModel: String? = null
 }

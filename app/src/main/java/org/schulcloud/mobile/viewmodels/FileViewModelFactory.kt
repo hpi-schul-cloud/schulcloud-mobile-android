@@ -1,6 +1,5 @@
 package org.schulcloud.mobile.viewmodels
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 

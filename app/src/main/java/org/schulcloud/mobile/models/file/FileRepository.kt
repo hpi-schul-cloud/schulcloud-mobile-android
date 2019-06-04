@@ -48,20 +48,4 @@ object FileRepository : Repository() {
                     .endGroup()
         }).run()
     }
-
-
-    fun fixPath(path: String): String {
-        var fixedPath = path.trimLeadingSlash().ensureTrailingSlash()
-        if (path.startsWith(CONTEXT_MY))
-            fixedPath = path.replaceRange(0, CONTEXT_MY.length, pathPersonal("").trimTrailingSlash())
-        return fixedPath
-    }
-
-    fun pathPersonal(path: String? = null): String {
-        return combinePath(CONTEXT_MY_API, UserRepository.userId!!, path)
-    }
-
-    fun pathCourse(courseId: String, path: String? = null): String {
-        return combinePath(CONTEXT_COURSE, courseId, path)
-    }
 }

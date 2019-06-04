@@ -5,11 +5,9 @@ import android.os.Environment
 import android.text.TextUtils
 import android.util.Log
 import okhttp3.ResponseBody
-import org.schulcloud.mobile.models.file.FileRepository
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 
 
 private const val TAG = "PathUtils"

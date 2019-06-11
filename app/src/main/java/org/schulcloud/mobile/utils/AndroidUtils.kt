@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.annotation.ArrayRes
@@ -41,7 +42,7 @@ fun Drawable.asBitmap(): Bitmap {
     return bitmap
 }
 
-fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
+fun Context.shareLink(uri: Uri, titleContent: CharSequence? = null) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = MIME_TEXT_PLAIN
         putExtra(Intent.EXTRA_SUBJECT,
@@ -50,7 +51,7 @@ fun Context.shareLink(url: String, titleContent: CharSequence? = null) {
                             getString(R.string.brand_name),
                             titleContent)
                 else getString(R.string.brand_name))
-        putExtra(Intent.EXTRA_TEXT, url)
+        putExtra(Intent.EXTRA_TEXT, uri.toString())
     }
     startActivity(Intent.createChooser(intent, getString(R.string.share_title)))
 }

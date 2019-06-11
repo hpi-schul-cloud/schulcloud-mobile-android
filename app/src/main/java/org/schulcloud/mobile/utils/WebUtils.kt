@@ -40,17 +40,11 @@ val HTTP_CLIENT: OkHttpClient by lazy {
 }
 
 fun String?.asUri(): Uri {
-    return if (this == null)
-        Uri.EMPTY
-    else
-        Uri.parse(this)
-}
-
-fun String?.asPrefixedUri(): Uri {
-    return if (this != null && !startsWith("http://") && !startsWith("https://"))
-        Uri.parse("https://$this")
-    else
-        asUri()
+    return when {
+        this == null -> Uri.EMPTY
+        !startsWith("http://") && !startsWith("https://") -> Uri.parse("https://$this")
+        else -> Uri.parse(this)
+    }
 }
 
 fun Context.prepareCustomTab(): CustomTabsIntent {

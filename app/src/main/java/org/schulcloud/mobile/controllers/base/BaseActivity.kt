@@ -78,7 +78,7 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
     // region Activity
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.base_action_share -> shareLink(url!!, supportActionBar?.title)
+            R.id.base_action_share -> shareLink(url.asUri(), supportActionBar?.title)
             R.id.base_action_refresh -> performRefresh()
             // TODO: Remove when deep linking is readded
             R.id.base_action_openInBrowser -> openUrl(url.asUri())

@@ -16,6 +16,7 @@ import androidx.core.view.children
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.file.FileRepository
+import org.schulcloud.mobile.utils.ellipsizedSubstring
 import org.schulcloud.mobile.views.CompatTextView
 
 open class BreadcrumbsView @JvmOverloads constructor(
@@ -54,7 +55,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
         addPartView(refOwnerModel, owner, null, title)
 
         for (part in pathParts)
-            addPartView(refOwnerModel, owner, parent, part)
+            addPartView(refOwnerModel, owner, parent, part?.ellipsizedSubstring(0, 15))
     }
 
     fun setTextColor(@ColorInt color: Int) {
@@ -65,7 +66,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
 
     private fun addPartView(refOwnerModel: String, owner: String, parent: String?, title: String?) {
         addView(CompatTextView(context).also {
-            it.textSize = textSize
+            it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             it.text = title
             it.setOnClickListener { onPathSelected?.invoke(refOwnerModel, owner, parent) }
 

@@ -29,23 +29,13 @@ object FileRepository : Repository() {
 
     suspend fun syncDirectory(owner: String, parent: String?) {
         RequestJob.Data.with({ listDirectoryContents(owner, parent) }, {
-                beginGroup()
-                        .equalTo("isDirectory", false)
-                        .equalTo("owner", owner)
-                        .or()
-                        .notEqualTo("owner", owner)
-                        .endGroup()
-    }).run()
+            equalTo("isDirectory", false)
+        }).run()
     }
 
     suspend fun syncDirectoriesForOwner(owner: String) {
         RequestJob.Data.with({ listDirectoriesForOwner(owner) }, {
-            beginGroup()
-                    .equalTo("isDirectory", true)
-                    .equalTo("owner", owner)
-                    .or()
-                    .notEqualTo("owner", owner)
-                    .endGroup()
+            equalTo("isDirectory", true)
         }).run()
     }
 }

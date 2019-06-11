@@ -31,6 +31,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
     var onPathSelected: ((String, String, String?) -> Unit)? = null
 
     private var textSize: Float = 0f
+    private val partEndIndex = 15
 
     init {
         dividerDrawable = ResourcesCompat.getDrawable(context.resources,
@@ -55,7 +56,7 @@ open class BreadcrumbsView @JvmOverloads constructor(
         addPartView(refOwnerModel, owner, null, title)
 
         for (part in pathParts)
-            addPartView(refOwnerModel, owner, parent, part?.ellipsizedSubstring(0, 15))
+            addPartView(refOwnerModel, owner, parent, part?.ellipsizedSubstring(0, partEndIndex))
     }
 
     fun setTextColor(@ColorInt color: Int) {

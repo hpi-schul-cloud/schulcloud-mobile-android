@@ -99,7 +99,7 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
                 var link = url ?: return true
                 if (link.startsWith('/'))
                     link = combinePath(HOST, link)
-                context?.shareLink(link, mainViewModel.config.value?.title)
+                context?.shareLink(link.asUri(), mainViewModel.config.value?.title)
             }
             R.id.base_action_refresh -> performRefresh()
         // TODO: Remove when deep linking is readded

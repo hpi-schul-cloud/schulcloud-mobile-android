@@ -53,7 +53,8 @@ class CurrentEventViewHolder(binding: ItemEventCurrentBinding, private val onCou
                 toLocal()
             }.timeOfDay
 
-            return (100 * (now - start) / (end - start)).toInt()
+            return if (start == end) 0
+            else (100 * (now - start) / (end - start)).toInt()
         }
     }
 

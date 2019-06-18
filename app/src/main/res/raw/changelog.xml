@@ -16,4 +16,12 @@
         </note>
     </release>
 
+    <release
+        date="18.06.2019"
+        versionCode="3001"
+        versionName="Version 0.3.1">
+        <feature>Dateien werden wieder angezeigt</feature>
+        <fix>Fehlerbehebungen</fix>
+    </release>
+
 </changelog>

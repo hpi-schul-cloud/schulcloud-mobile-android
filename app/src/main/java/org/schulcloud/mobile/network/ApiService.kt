@@ -12,18 +12,13 @@ import io.realm.RealmList
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.schulcloud.mobile.BuildConfig
-import org.schulcloud.mobile.R
-import org.schulcloud.mobile.SchulCloudApp
 import org.schulcloud.mobile.config.Config
 import org.schulcloud.mobile.models.base.RealmString
 import org.schulcloud.mobile.models.user.UserRepository
 import org.schulcloud.mobile.utils.HOST_API
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.InputStream
 import java.security.KeyStore
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -43,30 +38,6 @@ object ApiService {
 
         service = getRetrofit(client).create(ApiServiceInterface::class.java)
         return service as ApiServiceInterface
-    }
-
-    @Synchronized
-    fun getFileDownloadInstance(): ApiServiceInterface {
-        val client = getTlsClient(getFileDownloadKeyStore())
-        service = getRetrofit(client).create(ApiServiceInterface::class.java)
-        return service as ApiServiceInterface
-    }
-
-    // To use T-TeleSec GlobalRoot Class 2 certificate on pre-21
-    // https://developer.android.com/training/articles/security-ssl
-    private fun getFileDownloadKeyStore(): KeyStore {
-        val cf: CertificateFactory = CertificateFactory.getInstance("X.509")
-        val caInput: InputStream = SchulCloudApp.instance.resources
-                .openRawResource(R.raw.globalroot_class_2)
-        val ca: X509Certificate = caInput.use {
-            cf.generateCertificate(it) as X509Certificate
-        }
-        val keyStoreType = KeyStore.getDefaultType()
-
-        return KeyStore.getInstance(keyStoreType).apply {
-            load(null, null)
-            setCertificateEntry("globalroot_class_2", ca)
-        }
     }
 
     private fun getOkHttpClientBuilder(): OkHttpClient.Builder {

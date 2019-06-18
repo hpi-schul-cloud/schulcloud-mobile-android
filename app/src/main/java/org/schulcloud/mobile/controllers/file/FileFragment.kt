@@ -26,14 +26,12 @@ import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.course.CourseRepository
 import org.schulcloud.mobile.models.file.File
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.models.file.SignedUrlRequest
 import org.schulcloud.mobile.network.ApiService
 import org.schulcloud.mobile.utils.*
 import org.schulcloud.mobile.viewmodels.FileViewModel
-import org.schulcloud.mobile.viewmodels.IdViewModelFactory
+import org.schulcloud.mobile.viewmodels.FileViewModelFactory
 import retrofit2.HttpException
 import ru.gildor.coroutines.retrofit.await
-import javax.net.ssl.SSLHandshakeException
 
 
 class FileFragment : MainFragment<FileViewModel>() {
@@ -42,9 +40,9 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     private val directoryAdapter: DirectoryAdapter by lazy {
-        DirectoryAdapter {
+        DirectoryAdapter { refOwnerModel, owner, parent ->
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(combinePath(viewModel.path, it)).build().toBundle())
+                    FileFragmentArgs.Builder(refOwnerModel, owner, parent).build().toBundle())
         }
     }
     private val fileAdapter: FileAdapter by lazy {
@@ -55,13 +53,10 @@ class FileFragment : MainFragment<FileViewModel>() {
 
     override var url: String? = null
         get() {
-            val parts = args.path.getPathParts()
-            val path = if (parts.size <= 2) ""
-            else "?dir=${parts.takeLast(parts.size - 2).combinePath().ensureSlashes()}"
-
-            return when (parts.first()) {
+            val path = idPathParts.combinePath()
+            return when (args.refOwnerModel) {
                 FileRepository.CONTEXT_MY_API -> "/files/my/$path"
-                FileRepository.CONTEXT_COURSES -> "/files/courses/${parts[1]}$path"
+                FileRepository.CONTEXT_COURSE -> "/files/courses/${args.owner}/$path"
                 else -> null
             }
         }
@@ -71,15 +66,14 @@ class FileFragment : MainFragment<FileViewModel>() {
         CourseRepository.course(viewModel.realm, it)
     } ?: null.asLiveData<Course>())
             .map { course ->
-                breadcrumbs.setPath(args.path, course)
-                val parts = args.path.getPathParts()
+                breadcrumbs.setPath(namePathParts, args.refOwnerModel, args.owner,  args.parent, course)
 
                 MainFragmentConfig(
                         title = when {
-                            parts.size > 2 -> parts.last()
-                            parts.first() == FileRepository.CONTEXT_MY_API ->
+                            args.parent != null -> viewModel.directory((args.parent).toString())?.name
+                            args.refOwnerModel == FileRepository.CONTEXT_MY_API ->
                                 context?.getString(R.string.file_directory_my)
-                            parts.first() == FileRepository.CONTEXT_COURSES ->
+                            args.refOwnerModel == FileRepository.CONTEXT_COURSE ->
                                 course?.name ?: context?.getString(R.string.file_directory_course_unknown)
                             else -> context?.getString(R.string.file_directory_unknown)
                         },
@@ -92,8 +86,15 @@ class FileFragment : MainFragment<FileViewModel>() {
                 )
             }
 
+    private val namePathParts: List<String?>
+        get() = getDirectoryPathParts(args.parent, true)
+
+    private val idPathParts: List<String?>
+        get() = getDirectoryPathParts(args.parent)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this, IdViewModelFactory(args.path))
+        viewModel = ViewModelProviders.of(this, FileViewModelFactory(args.owner, args.parent))
                 .get(FileViewModel::class.java)
         super.onCreate(savedInstanceState)
     }
@@ -136,6 +137,7 @@ class FileFragment : MainFragment<FileViewModel>() {
             adapter = fileAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
     }
 
     override fun onResume() {
@@ -143,15 +145,15 @@ class FileFragment : MainFragment<FileViewModel>() {
 
         mainActivity.setToolbarWrapper(toolbarWrapper)
 
-        breadcrumbs.setPath(args.path)
-        breadcrumbs.onPathSelected = callback@{ path ->
-            if (path == args.path) {
+        breadcrumbs.setPath(namePathParts, args.refOwnerModel, args.owner, args.parent)
+        breadcrumbs.onPathSelected = callback@{ refOwnerModel, owner, parent ->
+            if (refOwnerModel == args.refOwnerModel && owner == args.owner && parent == args.parent) {
                 performRefresh()
                 return@callback
             }
 
             navController.navigate(R.id.action_global_fragment_file,
-                    FileFragmentArgs.Builder(path).build().toBundle())
+                    FileFragmentArgs.Builder(refOwnerModel, owner, parent).build().toBundle())
         }
         mainViewModel.toolbarColors.observe(this, Observer {
             breadcrumbs.setTextColor(it.textColor)
@@ -170,7 +172,8 @@ class FileFragment : MainFragment<FileViewModel>() {
     }
 
     override suspend fun refresh() {
-        FileRepository.syncDirectory(viewModel.path)
+        FileRepository.syncDirectory(viewModel.owner, viewModel.parent)
+        FileRepository.syncDirectoriesForOwner(viewModel.owner)
         getCourseFromFolder()?.also {
             CourseRepository.syncCourse(it)
         }
@@ -178,21 +181,29 @@ class FileFragment : MainFragment<FileViewModel>() {
 
 
     private fun getCourseFromFolder(): String? {
-        if (!args.path.startsWith(FileRepository.CONTEXT_COURSES))
+        if (args.refOwnerModel != FileRepository.CONTEXT_COURSE)
             return null
 
-        return args.path.getPathParts()[1]
+        return args.owner
     }
+
+    private fun getDirectoryPathParts(directoryId: String?, isNamePath: Boolean = false): List<String?> {
+        val pathParts = mutableListOf<String?>()
+        var currentId: String? = directoryId
+        var currentDirectory: File?
+        while (currentId != null){
+            currentDirectory = viewModel.directory(currentId)
+            pathParts.add(0, if (isNamePath) currentDirectory?.name else currentDirectory?.id)
+            currentId = currentDirectory?.parent
+        }
+        return pathParts.toList()
+    }
+
 
     @Suppress("ComplexMethod")
     private fun loadFile(file: File, download: Boolean) = launch(Dispatchers.Main) {
         try {
-            val response = ApiService.getInstance().generateSignedUrl(
-                    SignedUrlRequest().apply {
-                        action = SignedUrlRequest.ACTION_GET
-                        path = file.key
-                        fileType = file.type
-                    }).await()
+            val response = ApiService.getInstance().generateSignedUrl(file.id, download).await()
 
             if (download) {
                 if (!requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -201,11 +212,7 @@ class FileFragment : MainFragment<FileViewModel>() {
                 }
 
                 this@FileFragment.context?.withProgressDialog(R.string.file_fileDownload_progress) {
-                    val result = try {
-                        ApiService.getInstance().downloadFile(response.url!!).await()
-                    } catch (ex: SSLHandshakeException) {
-                        ApiService.getFileDownloadInstance().downloadFile(response.url!!).await()
-                    }
+                    val result = ApiService.getInstance().downloadFile(response.url!!).await()
                     if (!result.writeToDisk(file.name.orEmpty())) {
                         this@FileFragment.context?.showGenericError(R.string.file_fileDownload_error_save)
                         return@withProgressDialog
@@ -215,7 +222,7 @@ class FileFragment : MainFragment<FileViewModel>() {
                 }
             } else {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(Uri.parse(response.url), response.header?.contentType)
+                    setDataAndType(Uri.parse(response.url), file.type)
                 }
                 val packageManager = activity?.packageManager
                 if (packageManager != null && intent.resolveActivity(packageManager) != null)

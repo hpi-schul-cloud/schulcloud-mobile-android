@@ -22,9 +22,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_homeworkListFragment"
             app:destination="@id/fragment_homeworkList" />
-        <!--<action
+        <action
             android:id="@+id/action_dashboardFragment_to_fileOverviewFragment"
-            app:destination="@id/fragment_fileOverview" />-->
+            app:destination="@id/fragment_fileOverview" />
     </fragment>
 
     <!-- News -->
@@ -116,8 +116,15 @@
         android:name="org.schulcloud.mobile.controllers.file.FileFragment"
         tools:layout="@layout/fragment_file">
         <argument
-            android:name="path"
+            android:name="refOwnerModel"
             app:argType="string" />
+        <argument
+            android:name="owner"
+            app:argType="string" />
+        <argument
+            android:name="parent"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <action
         android:id="@+id/action_global_fragment_file"

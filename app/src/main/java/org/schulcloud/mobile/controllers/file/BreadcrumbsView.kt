@@ -16,21 +16,20 @@ import androidx.core.view.children
 import org.schulcloud.mobile.R
 import org.schulcloud.mobile.models.course.Course
 import org.schulcloud.mobile.models.file.FileRepository
-import org.schulcloud.mobile.utils.combinePath
-import org.schulcloud.mobile.utils.getPathParts
-import org.schulcloud.mobile.utils.limit
+import org.schulcloud.mobile.utils.ellipsizedSubstring
 import org.schulcloud.mobile.views.CompatTextView
 
 open class BreadcrumbsView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    @AttrRes defStyleAttr: Int = R.attr.breadcrumbsViewStyle
+        context: Context,
+        attrs: AttributeSet? = null,
+        @AttrRes defStyleAttr: Int = R.attr.breadcrumbsViewStyle
 ) : LinearLayoutCompat(context, attrs, defStyleAttr) {
     companion object {
         val TAG: String = BreadcrumbsView::class.java.simpleName
+        private const val PART_END_INDEX = 15
     }
 
-    var onPathSelected: ((String) -> Unit)? = null
+    var onPathSelected: ((String, String, String?) -> Unit)? = null
 
     private var textSize: Float = 0f
 
@@ -45,23 +44,19 @@ open class BreadcrumbsView @JvmOverloads constructor(
         }
     }
 
-    fun setPath(path: String?, course: Course? = null) {
+    fun setPath(pathParts: List<String?>, refOwnerModel: String, owner: String, parent: String?, course: Course? = null) {
         removeAllViews()
-        if (path == null)
-            return
 
-        val parts = path.getPathParts()
-
-        val title = when (parts.first()) {
+        val title = when (refOwnerModel) {
             FileRepository.CONTEXT_MY_API -> context.getString(R.string.file_directory_my)
-            FileRepository.CONTEXT_COURSES ->
+            FileRepository.CONTEXT_COURSE ->
                 course?.name ?: context.getString(R.string.file_directory_course_unknown)
             else -> context.getString(R.string.file_directory_unknown)
         }
-        addPartView(parts.limit(2).combinePath(), title)
+        addPartView(refOwnerModel, owner, null, title)
 
-        for (i in 2 until parts.size)
-            addPartView(parts.limit(i + 1).combinePath(), parts[i])
+        for (part in pathParts)
+            addPartView(refOwnerModel, owner, parent, part?.ellipsizedSubstring(0, PART_END_INDEX))
     }
 
     fun setTextColor(@ColorInt color: Int) {
@@ -70,11 +65,11 @@ open class BreadcrumbsView @JvmOverloads constructor(
         dividerDrawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
     }
 
-    private fun addPartView(path: String, title: String) {
+    private fun addPartView(refOwnerModel: String, owner: String, parent: String?, title: String?) {
         addView(CompatTextView(context).also {
-            it.textSize = textSize
+            it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             it.text = title
-            it.setOnClickListener { onPathSelected?.invoke(path) }
+            it.setOnClickListener { onPathSelected?.invoke(refOwnerModel, owner, parent) }
 
             with(TypedValue()) {
                 context.theme.resolveAttribute(

@@ -14,4 +14,12 @@
         <note>Access to files is currently not working, but will be added back as soon as possible.</note>
     </release>
 
+    <release
+        date="2019-06-18"
+        versionCode="3001"
+        versionName="Version 0.3.1">
+        <feature>Files are back</feature>
+        <fix>Improved stability</fix>
+    </release>
+
 </changelog>

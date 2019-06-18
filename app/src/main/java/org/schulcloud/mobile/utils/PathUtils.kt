@@ -16,6 +16,7 @@ fun String.getPathParts(limit: Int = 0): List<String> = trimSlashes().split(File
 
 fun combinePath(vararg parts: String?): String = parts.toList().combinePath()
 fun List<String?>.combinePath(): String {
+    if (isEmpty()) return ""
     val builder = StringBuilder(this[0] ?: "")
     for (i in 1 until size) {
         if (this[i] == null || TextUtils.isEmpty(this[i]))

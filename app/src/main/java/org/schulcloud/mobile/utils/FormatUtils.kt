@@ -30,3 +30,8 @@ fun DateTime?.formatDaysLeft(context: Context): String {
         else -> DateTimeFormat.mediumDate().print(this)
     }
 }
+
+fun String.ellipsizedSubstring(startIndex: Int, endIndex: Int) =
+        if (endIndex < length)
+            substring(startIndex, endIndex) + "..."
+        else this

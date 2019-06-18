@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import org.schulcloud.mobile.controllers.base.BaseAdapter
 import org.schulcloud.mobile.controllers.base.BaseViewHolder
 import org.schulcloud.mobile.databinding.ItemDirectoryBinding
-import org.schulcloud.mobile.models.file.Directory
+import org.schulcloud.mobile.models.file.File
 
-class DirectoryAdapter(private val onSelected: (String) -> Unit) :
-        BaseAdapter<Directory, DirectoryAdapter.DirectoryViewHolder, ItemDirectoryBinding>() {
+class DirectoryAdapter(private val onSelected: (String, String, String?) -> Unit) :
+        BaseAdapter<File, DirectoryAdapter.DirectoryViewHolder, ItemDirectoryBinding>() {
 
-    fun update(directoryList: List<Directory>) {
+    fun update(directoryList: List<File>) {
         items = directoryList
     }
 
@@ -21,7 +21,7 @@ class DirectoryAdapter(private val onSelected: (String) -> Unit) :
     }
 
     class DirectoryViewHolder(binding: ItemDirectoryBinding) :
-            BaseViewHolder<Directory, ItemDirectoryBinding>(binding) {
+            BaseViewHolder<File, ItemDirectoryBinding>(binding) {
         override fun onItemSet() {
             binding.directory = item
         }

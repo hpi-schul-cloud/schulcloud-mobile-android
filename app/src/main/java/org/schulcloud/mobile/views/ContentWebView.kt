@@ -28,11 +28,12 @@ open class ContentWebView @JvmOverloads constructor(
         val TAG: String = ContentWebView::class.java.simpleName
 
         // language=HTML
-        const val CONTENT_TEXT_FORMAT = """
+        val CONTENT_TEXT_FORMAT = """
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
+    <base href="https://$HOST" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         * {

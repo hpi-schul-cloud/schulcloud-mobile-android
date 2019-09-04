@@ -22,4 +22,11 @@
         <fix>Improved stability</fix>
     </release>
 
+    <release
+        date="2019-09-04"
+        versionCode="3002"
+        versionName="Version 0.3.2">
+        <fix>Missing images in topics are now shown</fix>
+    </release>
+
 </changelog>

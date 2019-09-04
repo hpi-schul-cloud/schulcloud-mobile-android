@@ -24,4 +24,11 @@
         <fix>Fehlerbehebungen</fix>
     </release>
 
+    <release
+        date="04.09.2019"
+        versionCode="3002"
+        versionName="Version 0.3.2">
+        <fix>Fehlende Bilder in Themen werden nun angezeigt</fix>
+    </release>
+
 </changelog>

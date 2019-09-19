@@ -29,4 +29,11 @@
         <fix>Missing images in topics are now shown</fix>
     </release>
 
+    <release
+        date="2019-09-19"
+        versionCode="3003"
+        versionName="Version 0.3.3">
+        <fix>Removed link sharing</fix>
+    </release>
+
 </changelog>

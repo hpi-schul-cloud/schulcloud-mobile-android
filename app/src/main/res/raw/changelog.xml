@@ -31,4 +31,11 @@
         <fix>Fehlende Bilder in Themen werden nun angezeigt</fix>
     </release>
 
+    <release
+        date="19.09.2019"
+        versionCode="3003"
+        versionName="Version 0.3.3">
+        <fix>Teilen von Links wurde entfernt</fix>
+    </release>
+
 </changelog>

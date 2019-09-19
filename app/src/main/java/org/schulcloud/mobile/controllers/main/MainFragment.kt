@@ -95,12 +95,6 @@ abstract class MainFragment<VM : ViewModel>(refreshableImpl: RefreshableImpl = R
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.base_action_share -> {
-                var link = url ?: return true
-                if (link.startsWith('/'))
-                    link = combinePath(HOST, link)
-                context?.shareLink(link.asUri(), mainViewModel.config.value?.title)
-            }
             R.id.base_action_refresh -> performRefresh()
         // TODO: Remove when deep linking is readded
             R.id.base_action_openInBrowser -> context?.openUrl(url.asUri())

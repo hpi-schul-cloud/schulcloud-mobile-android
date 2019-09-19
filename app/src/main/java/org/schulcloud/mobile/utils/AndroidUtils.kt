@@ -42,20 +42,6 @@ fun Drawable.asBitmap(): Bitmap {
     return bitmap
 }
 
-fun Context.shareLink(uri: Uri, titleContent: CharSequence? = null) {
-    val intent = Intent(Intent.ACTION_SEND).apply {
-        type = MIME_TEXT_PLAIN
-        putExtra(Intent.EXTRA_SUBJECT,
-                if (titleContent != null)
-                    getString(R.string.share_subject_format,
-                            getString(R.string.brand_name),
-                            titleContent)
-                else getString(R.string.brand_name))
-        putExtra(Intent.EXTRA_TEXT, uri.toString())
-    }
-    startActivity(Intent.createChooser(intent, getString(R.string.share_title)))
-}
-
 
 fun isLtr() = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_LTR
 

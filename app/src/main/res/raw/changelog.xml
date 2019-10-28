@@ -38,4 +38,11 @@
         <fix>Teilen von Links wurde entfernt</fix>
     </release>
 
+    <release
+        date="28.10.2019"
+        versionCode="3004"
+        versionName="Version 0.3.4">
+        <fix>Loginprobleme behoben</fix>
+    </release>
+
 </changelog>

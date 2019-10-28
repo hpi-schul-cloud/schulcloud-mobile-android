@@ -36,4 +36,11 @@
         <fix>Removed link sharing</fix>
     </release>
 
+    <release
+        date="2019-10-28"
+        versionCode="3004"
+        versionName="Version 0.3.4">
+        <fix>Fix login</fix>
+    </release>
+
 </changelog>

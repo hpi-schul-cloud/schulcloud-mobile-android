@@ -1,4 +1,9 @@
 package org.schulcloud.mobile.models
 
 
-data class Credentials(var username: String, var password: String)
+data class Credentials(
+        var username: String,
+        var password: String
+) {
+    val strategy = "local"
+}

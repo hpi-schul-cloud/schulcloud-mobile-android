@@ -96,7 +96,6 @@
     <!-- Homework-->
     <string name="homework_title">Assignments</string>
     <string name="homework_error_empty">No assignments were found</string>
-    <string name="homework_error_invalidDueDate">Date invalid</string>
     <string name="homework_due_outdated">Overdue</string>
     <plurals name="homework_due_hours">
         <item quantity="one">Due in %d hour</item>

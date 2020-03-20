@@ -105,7 +105,6 @@
     <!-- Homework-->
     <string name="homework_title">Aufgaben</string>
     <string name="homework_error_empty">Es wurden keine Aufgaben gefunden</string>
-    <string name="homework_error_invalidDueDate">Datum fehlerhaft</string>
     <string name="homework_due_outdated">Überfällig</string>
     <plurals name="homework_due_hours">
         <item quantity="one">In %d Stunden fällig</item>

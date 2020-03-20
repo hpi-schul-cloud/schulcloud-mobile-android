@@ -19,7 +19,7 @@ fun dueLabelRequired(homework: Homework?): Boolean {
 fun Context.getDueText(homework: Homework?): String {
     val days = homework?.dueTimespanDays
     return when (days) {
-        null -> getString(R.string.homework_error_invalidDueDate)
+        null -> ""
         in Int.MIN_VALUE until 0 -> getString(R.string.homework_due_outdated)
         0 -> {
             val hours = homework.dueTimespanHours ?: Int.MAX_VALUE

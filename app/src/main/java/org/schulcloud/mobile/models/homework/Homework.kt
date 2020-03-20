@@ -28,10 +28,13 @@ open class Homework : RealmObject(), HasId {
     var publicSubmissions: Boolean = false
 
     val dueDateTime: DateTime?
-        get() = try {
-            DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate)
-        } catch (e: IllegalArgumentException) {
-            null
+        get() {
+            dueDate ?: return null
+            return try {
+                DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(dueDate)
+            } catch (e: IllegalArgumentException) {
+                null
+            }
         }
 
     val dueTimespanDays: Int?

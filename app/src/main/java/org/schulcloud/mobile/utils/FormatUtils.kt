@@ -21,9 +21,8 @@ fun Long.formatFileSize(): String {
 }
 
 fun DateTime?.formatDaysLeft(context: Context): String {
-    return if (this == null)
-        context.getString(R.string.homework_error_invalidDueDate)
-    else when (Days.daysBetween(LocalDateTime.now(), toLocalDateTime()).days) {
+    this ?: return ""
+    return when (Days.daysBetween(LocalDateTime.now(), toLocalDateTime()).days) {
         -1 -> context.getString(R.string.general_date_yesterday)
         0 -> context.getString(R.string.general_date_today)
         1 -> context.getString(R.string.general_date_tomorrow)

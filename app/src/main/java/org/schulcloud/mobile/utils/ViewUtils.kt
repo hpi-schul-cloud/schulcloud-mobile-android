@@ -28,7 +28,11 @@ private const val LIGHTNESS_THRESHOLD = 0.6 * 255 // values in 0..255
 private fun parseColor(color: String?): Int {
     return if (color == null || color.isBlank())
         0
-    else Color.parseColor(color)
+    else try {
+        Color.parseColor(color)
+    } catch (e: IllegalArgumentException) {
+        Color.rgb(0x62, 0x62, 0x62)
+    }
 }
 
 

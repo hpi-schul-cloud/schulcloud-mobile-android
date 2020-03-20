@@ -50,4 +50,11 @@
         <fix>Removed crash reporting</fix>
     </release>
 
+    <release
+        date="2020-03-20"
+        versionCode="3006"
+        versionName="Version 0.3.6">
+        <fix>Improved stability</fix>
+    </release>
+
 </changelog>

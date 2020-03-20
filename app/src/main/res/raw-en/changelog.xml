@@ -43,4 +43,11 @@
         <fix>Fix login</fix>
     </release>
 
+    <release
+        date="2019-11-12"
+        versionCode="3005"
+        versionName="Version 0.3.5">
+        <fix>Removed crash reporting</fix>
+    </release>
+
 </changelog>

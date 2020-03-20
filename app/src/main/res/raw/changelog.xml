@@ -45,4 +45,11 @@
         <fix>Loginprobleme behoben</fix>
     </release>
 
+    <release
+        date="12.11.2019"
+        versionCode="3005"
+        versionName="Version 0.3.5">
+        <fix>Absturzberichte werden nicht mehr gesendet</fix>
+    </release>
+
 </changelog>

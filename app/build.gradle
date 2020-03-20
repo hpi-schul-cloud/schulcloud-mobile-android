@@ -5,7 +5,6 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'realm-android'
 apply plugin: 'androidx.navigation.safeargs'
-apply plugin: 'io.fabric'
 
 
 android {
@@ -78,5 +77,3 @@ detekt {
 }
 
 apply from: 'dependencies.gradle'
-
-apply plugin: 'com.google.gms.google-services'

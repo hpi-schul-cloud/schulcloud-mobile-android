@@ -167,9 +167,6 @@
     <string name="settings_theme_darkMode_night">Bei Nacht aktivieren</string>
     <string name="settings_theme_darkMode_powerSaver">Beim Energiesparmodus aktivieren</string>
     <string name="settings_theme_darkMode_night_summary_noLocationPermission">Ohne die Berechtigung kann der Sonnenauf- und -untergang nur geschätzt werden</string>
-    <string name="settings_privacy">Datenschutz</string>
-    <string name="settings_privacy_crashlytics">Absturzberichte senden</string>
-    <string name="settings_privacy_crashlytics_summary">Nach jedem Absturz wird ein anonymer Bericht hochgeladen, um die Benutzererfahrung zu verbessern</string>
     <string name="settings_about">Über</string>
     <string name="settings_about_version">Version</string>
     <string name="settings_about_contributors">Mitwirkende</string>
